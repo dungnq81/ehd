@@ -1,0 +1,27 @@
+@import "mixins";
+
+/** */
+.elementor-element {
+
+    /** */
+    @for $i from 1 through 6 {
+        &.e-h#{$i} {
+            margin-bottom: 0;
+
+            .elementor-heading-title {
+                @include fs-heading(h#{$i});
+                line-height: $header-line-height;
+            }
+        }
+    }
+
+    /** */
+    &.e-scale {
+        .elementor-image-box-img {
+            overflow: hidden;
+            img {
+                @include responsive-scale();
+            }
+        }
+    }
+}

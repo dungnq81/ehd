@@ -1,0 +1,25 @@
+{
+    "name": "wordpress/ehd",
+    "description": "eHD Wordpress Theme",
+    "authors": [
+        {
+            "name": "WEBHD Team"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "includes/helpers.php",
+            "includes/image-sizes.php"
+        ],
+        "psr-4": {
+            "EHD\\Helpers\\": "includes/Helpers",
+            "EHD\\Themes\\": "includes/Themes",
+            "EHD\\Walkers\\": "includes/Walkers"
+        },
+        "exclude-from-classmap": []
+    },
+    "require": {
+        "symfony/var-dumper": "^v5.4.9",
+        "vectorface/whip": "^v0.4.0"
+    }
+}

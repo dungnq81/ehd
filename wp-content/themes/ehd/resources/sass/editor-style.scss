@@ -1,0 +1,134 @@
+$body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, sans-serif;
+html {
+	font-size: 100%;
+	font-variant-ligatures: no-common-ligatures;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+}
+p {
+	margin-bottom: 0.75rem;
+}
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+	border-style: none;
+}
+code, kbd, pre, samp {
+	font-family: $body-font-family;
+	font-size: 1rem;
+}
+pre {
+	font-family: monospace;
+	white-space: pre-wrap;
+}
+blockquote {
+	font-style: italic;
+}
+.wp-editor-area {
+	font-family: $body-font-family;
+}
+
+/*tinymce*/
+body#tinymce {
+	&.wp-editor {
+		&.content {
+			font-family: $body-font-family;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			font-size: 15px;
+			width: 900px;
+			line-height: 1.5;
+			margin: 15px auto;
+			table,
+			cite,
+			figcaption,
+			p,
+			ol,
+			ul,
+			dl,
+			dt,
+			.wp-caption-text,
+			.wp-caption-dd {
+				font-family: $body-font-family;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			p,
+			ul,
+			ol,
+			blockquote {
+				margin-bottom: 20px;
+				line-height: 1.7;
+			}
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				font-weight: 700;
+			}
+			h1 {
+				font-size: 21px;
+			}
+			h2 {
+				font-size: 20px;
+			}
+			h3 {
+				font-size: 19px;
+			}
+			h4 {
+				font-size: 18px;
+			}
+			h5 {
+				font-size: 17px;
+			}
+			h6 {
+				font-size: 16px;
+				text-transform: inherit;
+			}
+		}
+	}
+}
+
+/*Gutenberg */
+.editor-styles-wrapper {
+	& > *,
+	p,
+	ol,
+	ul,
+	dl,
+	dt {
+		font-family: $body-font-family;
+		font-size: 16px;
+	}
+	.wp-block {
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		.has-drop-cap:not(:focus)::first-letter,
+		cite,
+		figcaption,
+		.wp-caption-text {
+			font-family: $body-font-family;
+		}
+	}
+	.editor-post-title__block {
+		.editor-post-title__input {
+			font-family: $body-font-family;
+		}
+	}
+	p {
+		line-height: 1.7;
+	}
+	.edit-post-visual-editor__post-title-wrapper {
+		.editor-post-title {
+			font-weight: 500;
+			font-size: 2.3rem;
+		}
+	}
+}

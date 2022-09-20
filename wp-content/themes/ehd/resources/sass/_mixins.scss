@@ -1,0 +1,958 @@
+@use "sass:list";
+@use "sass:math";
+
+@import "zf_settings";
+@import "linear-gradient";
+
+/** media */
+@mixin mq-max($width: $wp-mobile-width) {
+    @media only screen and (max-width: #{$width}) {
+        @content;
+    }
+}
+
+@mixin mq-min($width: $desktop-width) {
+    @media only screen and (min-width: #{$width}) {
+        @content;
+    }
+}
+
+/** breakpoint */
+@mixin mq($breakpoint, $type: min) {
+    $breakpoint-value: get-breakpoint($breakpoint);
+    @if $breakpoint-value {
+        @if $type == max {
+            $breakpoint-value: #{$breakpoint-value - fs(0.5)};
+        }
+        @media only screen and (#{$type}-width: $breakpoint-value) {
+            @content;
+        }
+    } @else {
+        @warn 'Invalid breakpoint: `#{$breakpoint}`.';
+    }
+}
+
+/** */
+@mixin not-xxdesktop {
+    @include mq(xxdesktop, max) {
+        @content;
+    }
+}
+
+@mixin not-xdesktop {
+    @include mq(xdesktop, max) {
+        @content;
+    }
+}
+
+@mixin not-desktop {
+    @include mq(desktop, max) {
+        @content;
+    }
+}
+
+@mixin wp-mobile {
+    @include mq(wp-mobile, max) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @include mq(mobile, max) {
+        @content;
+    }
+}
+
+@mixin wp-mobile-small {
+    @include mq(wp-mobile-small, max) {
+        @content;
+    }
+}
+
+/** */
+@mixin not-mobile {
+    @include mq(mobile) {
+        @content;
+    }
+}
+
+@mixin wp-desktop {
+    @include mq(wp-mobile) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @include mq(desktop) {
+        @content;
+    }
+}
+
+@mixin xdesktop {
+    @include mq(xdesktop) {
+        @content;
+    }
+}
+
+@mixin xxdesktop {
+    @include mq(xxdesktop) {
+        @content;
+    }
+}
+
+/** */
+@mixin media-css($css_property: font-size, $d: 16, $t: false, $m: false) {
+    @if false != $d {
+        #{$css_property}: fs($d);
+    }
+    @if false != $t {
+        @include not-desktop {
+            #{$css_property}: fs($t);
+        }
+    }
+    @if false != $m {
+        @include mobile {
+            #{$css_property}: fs($m);
+        }
+    }
+}
+
+@mixin media-box($d: 300, $t: false, $m: false) {
+    @if false != $d {
+        @include box($d);
+    }
+    @if false != $t {
+        @include not-desktop {
+            @include box($t);
+        }
+    }
+    @if false != $m {
+        @include mobile {
+            @include box($m);
+        }
+    }
+}
+
+/** media shorthand */
+@mixin media-fs($d: 16, $t: false, $m: false) {
+    @include media-css(font-size, $d, $t, $m);
+}
+
+@mixin media-padding($d: 30, $t: false, $m: false) {
+    @include media-pt($d, $t, $m);
+    @include media-pb($d, $t, $m);
+    @include media-pl($d, $t, $m);
+    @include media-pr($d, $t, $m);
+}
+
+@mixin media-pt($d: 30, $t: false, $m: false) {
+    @include media-css(padding-top, $d, $t, $m);
+}
+
+@mixin media-pb($d: 30, $t: false, $m: false) {
+    @include media-css(padding-bottom, $d, $t, $m);
+}
+
+@mixin media-pl($d: 30, $t: false, $m: false) {
+    @include media-css(padding-left, $d, $t, $m);
+}
+
+@mixin media-pr($d: 30, $t: false, $m: false) {
+    @include media-css(padding-right, $d, $t, $m);
+}
+
+@mixin media-margin($d: 30, $t: false, $m: false) {
+    @include media-mt($d, $t, $m);
+    @include media-mb($d, $t, $m);
+    @include media-ml($d, $t, $m);
+    @include media-mr($d, $t, $m);
+}
+
+@mixin media-mt($d: 30, $t: false, $m: false) {
+    @include media-css(margin-top, $d, $t, $m);
+}
+
+@mixin media-mb($d: 30, $t: false, $m: false) {
+    @include media-css(margin-bottom, $d, $t, $m);
+}
+
+@mixin media-ml($d: 30, $t: false, $m: false) {
+    @include media-css(margin-left, $d, $t, $m);
+}
+
+@mixin media-mr($d: 30, $t: false, $m: false) {
+    @include media-css(margin-right, $d, $t, $m);
+}
+
+/** */
+@mixin fs-heading($heading: h1) {
+    font-size: fs(map-get($header-styles-small, $heading));
+    @include not-mobile {
+        font-size: fs(map-get($header-styles-medium, $heading));
+    }
+}
+
+@mixin placeholder($color: $gray) {
+    &::placeholder {
+        color: $color;
+    }
+}
+
+@mixin webkit-scrollbar($width: $scrollbar-with, $height: $scrollbar-height) {
+    &::-webkit-scrollbar {
+        @include box($width, $height);
+    }
+}
+
+@mixin webkit-scrollbar-track($bg_color: $light-gray) {
+    &::-webkit-scrollbar-track {
+        background-color: $bg_color;
+    }
+}
+
+@mixin webkit-scrollbar-thumb($bg_color: $gray) {
+    &::-webkit-scrollbar-thumb {
+        background-color: $bg_color;
+    }
+}
+
+/** */
+@mixin responsive-bg-ratio($image-width: 204, $image-height: 81) {
+    background-size: cover;
+    background-position: center;
+    display: block;
+    height: 0;
+    padding-bottom: percentage(divide($image-height, $image-width));
+
+    @supports (aspect-ratio: 1 / 1) {
+        aspect-ratio: list.slash($image-width, $image-height);
+    }
+}
+
+@mixin responsive-wrapper($width: 100%) {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    width: $width;
+    & > img {
+        display: block;
+        height: 100% !important;
+        width: auto;
+        min-width: 100%;
+        max-width: unset;
+        object-fit: cover;
+        object-position: center;
+        @include absolute-center;
+    }
+}
+
+@mixin responsive-scale($scale: 1.06, $opacity: 0.95) {
+    transform: scale(1.0001);
+    will-change: transform;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s;
+    &:hover {
+        transform: scale($scale);
+        opacity: $opacity;
+    }
+}
+
+@mixin responsive-image-auto {
+    height: auto !important;
+    width: auto !important;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 80%;
+    min-height: 80%;
+}
+
+@mixin responsive-ratio($ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100%) {
+    $padding: divide($width_percent * $ratio-height, $ratio-width);
+    @if $pseudo {
+        &::before {
+            content: '';
+            position: relative;
+            width: $width_percent;
+            padding-bottom: $padding;
+        }
+    } @else {
+        height: 0;
+        padding-bottom: $padding;
+    }
+
+    @supports (aspect-ratio: 3 / 2) {
+        aspect-ratio: list.slash($ratio-width, $ratio-height);
+    }
+}
+
+/** */
+@mixin linear-gradient($angle: 90deg, $c: $color1, $amount: 12deg) {
+    background-image: linear-gradient($angle, $c 0%, adjust-hue($c, $amount) 100%);
+}
+
+@mixin linear-gradient2($angle: 90deg, $c1: $color1, $c2: $color2) {
+    background-image: linear-gradient($angle, $c1 0%, $c2 100%);
+}
+
+@mixin gradient-text($angle: 135deg, $c: $color1, $amount: 12deg) {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient($angle, $c, adjust-hue($c, $amount));
+    color: transparent;
+    display: inline-block;
+}
+
+@mixin gradient-text2($angle: 135deg, $c1: $color1, $c2: $color2) {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient($angle, $c1 0%, $c2 100%);
+    color: transparent;
+    display: inline-block;
+}
+
+/** */
+@mixin box($width: 300, $height: $width) {
+    width: fs($width);
+    height: fs($height);
+}
+
+@mixin centering-self($width: 300, $height: $width) {
+    @include box($width, $height);
+    position: absolute;
+    top: calc(50% - #{fs(divide($height, 2))});
+    left: calc(50% - #{fs(divide($width, 2))});
+}
+
+/** $gap_support : auto, true, false */
+@mixin grid-self($total_n: 1, $self_n: 1, $gap: 0, $gap_support: auto) {
+    @if $gap < 0 {
+        $gap: 0;
+    }
+
+    @if is-int($total_n) and is-int($self_n) and $self_n > 0 {
+        @if $total_n == $self_n {
+            width: percentage(1);
+        } @else if $gap == 0 and $total_n > $self_n {
+            width: percentage(divide($self_n, $total_n));
+        } @else if $gap > 0 and $total_n > $self_n {
+
+            @if true == $gap_support {
+                width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
+            } @else if false == $gap_support {
+                width: percentage(divide($self_n, $total_n));
+            } @else if auto == $gap_support {
+
+                // support aspect-ratio tag
+                @supports (aspect-ratio: 1 / 1) {
+                    width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
+                }
+
+                // not support aspect-ratio tag, there will also skip the gap
+                @supports not (aspect-ratio: 1 / 1) {
+                    width: percentage(divide($self_n, $total_n));
+                }
+            }
+        }
+    }
+}
+
+/** */
+@mixin media-grid-self($d: 1, $t: false, $m: false, $gap: 0, $gap_m: 0, $gap_support: auto) {
+    @if is-int($d) and $d > 0 {
+        @include grid-self($d, 1, $gap, $gap_support);
+    }
+
+    @if is-int($t) and $t > 0 {
+        @include not-desktop {
+            @include grid-self($t, 1, $gap, $gap_support);
+        }
+    }
+
+    @if is-int($m) and $m > 0 {
+        @include mobile {
+            @if is-int($gap_m) and $gap_m > 0 {
+                @include grid-self($m, 1, $gap_m, $gap_support);
+            } @else {
+                @include grid-self($m, 1, $gap, $gap_support);
+            }
+        }
+    }
+}
+
+/** */
+@mixin grid-flex($d: 1, $t: false, $m: false, $gap: $gap, $gap_m: $gap-mobile, $class_cell: '.cell') {
+    // use @support not (aspect-ratio: 1 / 1 )
+    // you just need to check if old Safari really doesnt support such css tag
+    @supports not (aspect-ratio: 1 / 1 ) {
+        $gutter: divide($gap, 2);
+        $gutter_m: divide($gap_m, 2);
+
+        @include grid-gutter($d, $t, $m, $gutter, $gutter_m, $class_cell);
+    }
+
+    // support aspect-ratio tag, there will also be support flex gap tag
+    @supports (aspect-ratio: 1 / 1 ) {
+        @include -media-gap($gap, false, $gap_m);
+
+        & > #{unquote($class_cell)} {
+            @if ($class_cell != '.cell') {
+                @include cell(false);
+            }
+
+            @include media-grid-self($d, $t, $m, $gap, $gap_m, true);
+        }
+    }
+}
+
+/** $gutter: padding or margin */
+@mixin grid-gutter($d: 1, $t: false, $m: false, $gutter: $gutter, $gutter_m: $gutter-mobile, $class_cell: '.cell') {
+    @include grid-padding-x($gutter, $gutter_m, $class_cell);
+    @include grid-padding-y($gutter, $gutter_m, $class_cell);
+    & > #{unquote($class_cell)} {
+
+        @if ($class_cell != '.cell') {
+            @include cell(false);
+        }
+
+        @include media-grid-self($d, $t, $m, 0, 0, false);
+    }
+}
+
+/** $gutter: padding or margin */
+@mixin mx-gutter($gutter: $gutter, $gutter_m: $gutter-mobile) {
+    @if is-int($gutter) and $gutter > 0 {
+        margin-left: -#{fs($gutter)};
+        margin-right: -#{fs($gutter)};
+    }
+    @if is-int($gutter_m) and $gutter_m > 0 {
+        @include mobile {
+            margin-left: -#{fs($gutter_m)};
+            margin-right: -#{fs($gutter_m)};
+        }
+    }
+}
+
+@mixin my-gutter($gutter: $gutter, $gutter_m: $gutter-mobile) {
+    @if is-int($gutter) and $gutter > 0 {
+        margin-top: -#{fs($gutter)};
+        margin-bottom: -#{fs($gutter)};
+    }
+    @if is-int($gutter_m) and $gutter_m > 0 {
+        @include mobile {
+            margin-top: -#{fs($gutter_m)};
+            margin-bottom: -#{fs($gutter_m)};
+        }
+    }
+}
+
+/** $gutter: padding or margin */
+@mixin px-gutter($gutter: $gutter, $gutter_m: $gutter-mobile) {
+    @if is-int($gutter) and $gutter > 0 {
+        padding-left: fs($gutter);
+        padding-right: fs($gutter);
+    }
+    @if is-int($gutter_m) and $gutter_m > 0 {
+        @include mobile {
+            padding-left: fs($gutter_m);
+            padding-right: fs($gutter_m);
+        }
+    }
+}
+
+@mixin py-gutter($gutter: $gutter, $gutter_m: $gutter_mobile) {
+    @if is-int($gutter) and $gutter > 0 {
+        padding-top: fs($gutter);
+        padding-bottom: fs($gutter);
+    }
+    @if is-int($gutter_m) and $gutter_m > 0 {
+        @include mobile {
+            padding-top: fs($gutter_m);
+            padding-bottom: fs($gutter_m);
+        }
+    }
+}
+
+/** */
+@mixin cell($width: 100%) {
+    flex: 0 0 auto;
+    min-height: 0;
+    min-width: 0;
+    @if $width != false {
+        width: $width;
+    }
+}
+
+@mixin grid-container($padding: $gutter, $padding_m: $gutter-mobile, $extra_width: false) {
+    max-width: $global-screen;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: fs($padding);
+    padding-left: fs($padding);
+
+    @if $extra_width == true {
+        @include xxdesktop {
+            max-width: $global-screen-extra;
+        }
+    }
+
+    @include not-xxdesktop {
+        max-width: $global-screen-medium;
+    }
+
+    @include mobile {
+        padding-right: fs($padding_m);
+        padding-left: fs($padding_m);
+    }
+}
+
+@mixin grid-x {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+@mixin grid-y {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+@mixin grid-padding-x($padding: $gutter, $padding_m: $gutter-mobile, $class_cell: '.cell') {
+    @include mx-gutter($padding, $padding_m);
+    & > #{unquote($class_cell)} {
+        @include px-gutter($padding, $padding_m);
+    }
+}
+
+@mixin grid-padding-y($padding: $gutter, $padding_m: $gutter-mobile, $class_cell: '.cell') {
+    @include my-gutter($padding, $padding_m);
+    & > #{unquote($class_cell)} {
+        @include py-gutter($padding, $padding_m);
+    }
+}
+
+/** */
+@mixin line-clamp($n: 2, $value_fallback: ( false, false, false ), $attr_fallback: max-height) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+
+    @supports (-webkit-line-clamp: $n) {
+        -webkit-line-clamp: $n;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+    }
+
+    @supports not (-webkit-line-clamp: $n) {
+        $d: nth($value_fallback, 1);
+        $t: nth($value_fallback, 2);
+        $m: nth($value_fallback, 3);
+
+        @include media-css($attr_fallback, $d, $t, $m);
+    }
+}
+
+/** padding-left, padding-right, left, right ... */
+@mixin position-screen($css_property: padding-left, $gutter: 0, $gutter_m: 0, $extra_width: false) {
+
+    $_property: calc(50vw - #{divide($global-screen, 2)} + #{fs($gutter)});
+    @if 0 == $gutter or false == $gutter {
+        $_property: calc(50vw - #{divide($global-screen, 2)});
+    }
+
+    #{$css_property}: $_property;
+
+    /** */
+    @if $extra_width == true {
+        @include xxdesktop {
+
+            $_property_extra: calc(50vw - #{divide($global-screen-extra, 2)} + #{fs($gutter)});
+            @if 0 == $gutter or false == $gutter {
+                $_property_extra: calc(50vw - #{divide($global-screen-extra, 2)});
+            }
+
+            #{$css_property}: $_property_extra;
+        }
+    }
+
+    /** */
+    @include not-xxdesktop {
+
+        $_property_medium: calc(50vw - #{divide($global-screen-medium, 2)} + #{fs($gutter)});
+        @if 0 == $gutter or false == $gutter {
+            $_property_medium: calc(50vw - #{divide($global-screen-medium, 2)});
+        }
+
+        #{$css_property}: $_property_medium;
+    }
+
+    /** */
+    @include mobile {
+        @if false == $gutter_m {
+            $gutter_m: 0;
+        }
+
+        #{$css_property}: fs($gutter_m);
+    }
+}
+
+/** */
+@mixin right-fullwidth($padding: $gutter, $padding_m: $gutter-mobile, $extra_width: false) {
+    margin: 0 0 0 auto;
+    padding-left: fs($padding);
+    max-width: calc(50% + #{divide($global-screen, 2)});
+
+    @if $extra_width == true {
+        @include xxdesktop {
+            max-width: calc(50% + #{divide($global-screen-extra, 2)});
+        }
+    }
+
+    @include not-xxdesktop {
+        max-width: calc(50% + #{divide($global-screen-medium, 2)});
+    }
+
+    @include mobile {
+        padding-left: fs($padding_m);
+        max-width: 100%;
+    }
+}
+
+@mixin left-fullwidth($padding: $gutter, $padding_m: $gutter-mobile, $extra_width: false) {
+    margin: 0 auto 0 0;
+    padding-right: fs($padding);
+    max-width: calc(50% + #{divide($global-screen, 2)});
+
+    @if $extra_width == true {
+        @include xxdesktop {
+            max-width: calc(50% + #{divide($global-screen-extra, 2)});
+        }
+    }
+
+    @include not-xxdesktop {
+        max-width: calc(50% + #{divide($global-screen-medium, 2)});
+    }
+
+    @include mobile {
+        padding-right: fs($padding_m);
+        max-width: 100%;
+    }
+}
+
+/** */
+@mixin flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin flex-justify-center {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-shrink {
+    flex: 0 0 auto;
+    max-width: 100%;
+}
+
+@mixin flex-auto {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+/** */
+@mixin hover-color($c1: $color1, $c2: $c1, $text-decoration: false) {
+    color: $c1;
+    &:hover {
+        color: $c2;
+        @if $text-decoration == false {
+            text-decoration: none;
+        } @else {
+            text-decoration: underline;
+        }
+    }
+}
+
+@mixin hover-svg($c1: $color1, $c2: $c1) {
+    fill: $c1;
+    &:hover {
+        fill: $c2;
+    }
+}
+
+/** */
+@mixin underline($color: $gray, $height: 1px, $width: 100%, $left: 0, $bottom: 0) {
+    position: relative;
+    display: inline-block;
+    &::before {
+        content: "";
+        display: inline-block;
+        width: $width;
+        height: $height;
+        position: absolute;
+        bottom: $bottom;
+        left: $left;
+        background-color: $color;
+        transform-origin: right center;
+        transform: scaleX(0);
+        transition: transform 0.2s cubic-bezier(1, 0, 0, 1);
+    }
+    &:hover {
+        &::before {
+            transform-origin: left center;
+            transform: scaleX(1);
+        }
+    }
+}
+
+@mixin button-arrow($width: 16, $height: $width, $color: #fff) {
+    overflow-wrap: break-word;
+    &::after {
+        content: '';
+        display: inline-block;
+        margin: 0 0 0 10px;
+        @include box($width, $height);
+        background-image: inline-svg('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill:#{$color};"><path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"></path></svg>');
+        vertical-align: -10%;
+    }
+}
+
+@mixin button-scale($scale: 0.98) {
+    transition: all .3s ease-out .07s;
+    &:hover {
+        transition: all .3s ease-out .07s;
+        transform: scale($scale);
+    }
+}
+
+/** */
+@mixin hardware($backface: true, $perspective: 1000) {
+    @if $backface {
+        backface-visibility: hidden;
+    }
+    transform: translate3d(0, 0, 0);
+    perspective: $perspective;
+}
+
+@mixin list-reset($margin: 0, $padding: 0) {
+    margin: $margin;
+    padding: $padding;
+    list-style: none;
+}
+
+@mixin fade($type) {
+    @if $type== "hide" {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 1s, opacity 1s;
+    } @else if $type== "show" {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 1s, opacity 1s;
+    }
+}
+
+@mixin fixed-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin absolute-full {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
+@mixin fixed-full {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+}
+
+/** */
+@mixin keyframes($name) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+    @-moz-keyframes #{$name} {
+        @content;
+    }
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+/** Button hover effect*/
+@mixin _effect1($c1: $black, $c2: $white) {
+    box-shadow: 0 0 0 2.5em $c1 inset;
+    background-color: transparent;
+    transition: all 300ms ease;
+    color: $c2;
+    &:hover {
+        box-shadow: 0 0 0 0 $c1 inset, 0 3px 10px rgb(0 0 0 / 30%);
+        color: $c1;
+        background-color: $c2;
+    }
+}
+
+// Button hover effect
+// http://el.commonsupport.com/newwp/autorex/services-2/
+@mixin _effect2($border_radius: 0, $c: $black, $opacity_hover: 0.15) {
+    position: relative;
+    border-radius: fs($border_radius);
+    &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0;
+        content: "";
+        background-color: $c;
+        transition: 0.5s;
+        opacity: 0;
+        border-radius: fs($border_radius);
+    }
+    &:hover {
+        &::before {
+            width: 100%;
+            opacity: $opacity_hover;
+        }
+    }
+}
+
+// Image Hover Effect
+// http://el.commonsupport.com/newwp/autorex/services-2/
+@mixin _effect3($bg: rgba(255, 255, 255, 0.2), $border: 0) {
+    position: relative;
+    overflow: hidden;
+    border-radius: $border;
+    &::before {
+        @include absolute-center;
+        display: block;
+        content: "";
+        width: 0;
+        height: 0;
+        background: $bg;
+        opacity: 0;
+        z-index: 10;
+        border-radius: $border;
+    }
+    &:hover {
+        opacity: 1;
+
+        &::before {
+            animation: circle 0.75s;
+        }
+    }
+}
+
+/** */
+/** functions to urlencode the svg string*/
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+@function url-encode($string) {
+    $map: (
+            "%": "%25",
+            "<": "%3C",
+            ">": "%3E",
+            " ": "%20",
+            "!": "%21",
+            "*": "%2A",
+            "'": "%27",
+            '"': "%22",
+            "(": "%28",
+            ")": "%29",
+            ";": "%3B",
+            ":": "%3A",
+            "@": "%40",
+            "&": "%26",
+            "=": "%3D",
+            "+": "%2B",
+            "$": "%24",
+            ",": "%2C",
+            "/": "%2F",
+            "?": "%3F",
+            "#": "%23",
+            "[": "%5B",
+            "]": "%5D"
+    );
+    $new: $string;
+    @each $search, $replace in $map {
+        $new: str-replace($new, $search, $replace);
+    }
+    @return $new;
+}
+
+/** $string - svg */
+@function inline-svg($string) {
+    @return url('data:image/svg+xml;utf8,#{url-encode($string)}');
+}
+
+/** add unique id image url */
+@function inline-image($url) {
+    @return url("#{$url}?v=#{$unique_id}");
+}
+
+/** https://github.com/pentzzsolt/sass-is-int/blob/master/_is-int.scss */
+@function is-int($value) {
+    @if type-of($value) != number {
+        //@warn '`#{$value}` is not a valid number!';
+        @return null;
+    }
+    @return round($value) == $value;
+}
+
+/** https://webdesign.tutsplus.com/tutorials/an-introduction-to-error-handling-in-sass--cms-19996 */
+@function throw($log: '') {
+    @warn $log;
+    @return false;
+}
+
+/** get breakpoint */
+@function get-breakpoint($breakpoint) {
+    @if map-has-key($mq-breakpoints, $breakpoint) {
+        @return map-get($mq-breakpoints, $breakpoint);
+    } @else {
+        //@warn 'given `#{$breakpoint}` is not available in `#{$mq-breakpoints}`';
+        //@return false;
+        @return throw($log: 'given `#{$breakpoint}` is not available in `#{$mq-breakpoints}`');
+    }
+}
+
+/** size */
+@function fs($size: inherit) {
+    @if false == $size {
+        @warn '`#{$size}` is not a valid size!';
+        @return null;
+    } @else if inherit == $size or auto == $size or unit($size) == '%' {
+        @return $size;
+    } @else {
+        @return rem-calc($size);
+    }
+}
+
+/** */
+
+/// @access private
+@mixin -media-gap($d: 30, $t: false, $m: false) {
+    @include media-css(gap, $d, $t, $m);
+}
