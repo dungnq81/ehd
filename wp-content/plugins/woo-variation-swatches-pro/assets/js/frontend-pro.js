@@ -2,7 +2,7 @@
  * Variation Swatches for WooCommerce - PRO
  *
  * Author: Emran Ahmed ( emran.bd.08@gmail.com )
- * Date: 8/21/2022, 5:53:45 PM
+ * Date: 9/15/2022, 6:49:52 PM
  * Released under the GPLv3 license.
  */
 /******/ (function() { // webpackBootstrap
@@ -41,7 +41,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _defineProperty(this, "defaults", {});
 
         _defineProperty(this, "onInit", function (event) {
-          _this.init();
+          // this.init();
+          _this.initFetch();
         });
 
         _defineProperty(this, "onAjaxAddToCart", function (event) {
@@ -136,6 +137,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$attributeFields = this.$element.find('.variations select');
         this.$resetVariations = this.$element.find('.wvs_archive_reset_variations');
         var single_variation_preview_selector = false;
+        var single_variation_preview_selected = false;
 
         if (woo_variation_swatches_pro_options.enable_single_variation_preview && woo_variation_swatches_pro_options.enable_single_variation_preview_archive) {
           var _name = this.$firstUL.data('preview_attribute_name') ? this.$firstUL.data('preview_attribute_name') : this.$attributeFields.first().data('attribute_name');
@@ -328,9 +330,66 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       }, {
+        key: "initFetch",
+        value: function initFetch() {
+          var _this4 = this;
+
+          var limit = this.threshold_max;
+          var total = this.total_children; // The Logic
+          // threshold_min = 30
+          // threshold_max = 200
+          // total_children = 20
+          // then load by html attr
+          //
+          // threshold_min = 30
+          // threshold_max = 200
+          // total_children = 100
+          // then load all variations by ajax
+          //
+          // threshold_min = 30
+          // threshold_max = 200
+          // total_children = 500
+          // then load selected variations only via ajax
+          // Store default image
+
+          this.defaultImage();
+          this.defaultCartButton();
+
+          if (this.isAjaxVariation() && limit >= total) {
+            if (woo_variation_swatches_pro_options.enable_archive_preloader) {
+              this.$element.block({
+                message: null,
+                overlayCSS: {
+                  background: '#FFFFFF',
+                  opacity: 0.6
+                }
+              });
+            }
+
+            wp.apiFetch({
+              path: "woo-variation-swatches/v1/archive-product/".concat(this.product_id)
+            }).then(function (variations) {
+              _this4.$element.data('product_variations', variations);
+
+              _this4.product_variations = _this4.$element.data('product_variations');
+              _this4.is_ajax_variation = false;
+
+              _this4.start();
+            })["catch"](function (error) {
+              console.error("archive product variations fetching failed: ".concat(_this4.product_id, "."), error);
+            })["finally"](function () {
+              if (woo_variation_swatches_pro_options.enable_archive_preloader) {
+                _this4.$element.unblock();
+              }
+            });
+          } else {
+            this.start();
+          }
+        }
+      }, {
         key: "previewChange",
         value: function previewChange(el) {
-          var _this4 = this;
+          var _this5 = this;
 
           var attribute_name = $(el).data('attribute_name') || $(el).attr('name');
           var value = $(el).val() || '';
@@ -347,11 +406,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               data: currentAttributes
             });
             this.previewXhr.fail(function (jqXHR, textStatus) {
-              console.error("archive product preview not available on ".concat(_this4.product_id, "."), attribute_name, textStatus);
+              console.error("archive product preview not available on ".concat(_this5.product_id, "."), attribute_name, textStatus);
             });
             this.previewXhr.done(function (variation) {
               // console.log(variation)
-              _this4.updatePreviewImage(variation);
+              _this5.updatePreviewImage(variation);
             });
           }
         }
@@ -434,7 +493,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "updateAttributes",
         value: function updateAttributes(event) {
-          var _this5 = this;
+          var _this6 = this;
 
           var attributes = this.getChosenAttributes();
           var currentAttributes = attributes.data;
@@ -468,7 +527,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var checkAttributes = $.extend(true, {}, currentAttributes);
             checkAttributes[current_attr_name] = '';
 
-            var variations = _this5.findMatchingVariations(_this5.getAvailableVariations(), checkAttributes); // Loop through variations.
+            var variations = _this6.findMatchingVariations(_this6.getAvailableVariations(), checkAttributes); // Loop through variations.
 
 
             for (var num in variations) {
@@ -596,7 +655,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "checkVariations",
         value: function checkVariations() {
-          var _this6 = this;
+          var _this7 = this;
 
           var chosenAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
           var attributes = chosenAttributes ? chosenAttributes : this.getChosenAttributes();
@@ -625,19 +684,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 data: currentAttributes
               });
               this.xhr.fail(function (jqXHR, textStatus) {
-                console.error("product variations not available on ".concat(_this6.product_id, "."), textStatus);
+                console.error("product variations not available on ".concat(_this7.product_id, "."), textStatus);
               });
               this.xhr.done(function (variation) {
                 if (variation) {
-                  _this6.$element.trigger('found_variation', [variation, true]);
+                  _this7.$element.trigger('found_variation', [variation, true]);
                 } else {
-                  _this6.$element.trigger('reset_data');
+                  _this7.$element.trigger('reset_data');
 
                   attributes.chosenCount = 0;
                 }
               });
               this.xhr.always(function () {
-                _this6.$element.unblock();
+                _this7.$element.unblock();
               });
             } else {
               // by html attr
@@ -675,7 +734,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "setupSwatchesItems",
         value: function setupSwatchesItems() {
-          var _this7 = this;
+          var _this8 = this;
 
           var self = this;
           this.$element.find('ul.variable-items-wrapper').each(function (i, element) {
@@ -711,13 +770,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             var in_stocks = _.difference(selects, disabled_selects);
 
-            _this7.setupSwatchesItem(element, selected, in_stocks, out_of_stocks);
+            _this8.setupSwatchesItem(element, selected, in_stocks, out_of_stocks);
           });
         }
       }, {
         key: "setupSwatchesItem",
         value: function setupSwatchesItem(element, selected, in_stocks, out_of_stocks) {
-          var _this8 = this;
+          var _this9 = this;
 
           // Mark Selected
           $(element).find('li.variable-item').each(function (index, el) {
@@ -730,7 +789,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             $(el).attr('data-wvstooltip-out-of-stock', '');
             $(el).find('input.variable-item-radio-input:radio').prop('disabled', true).prop('checked', false); // Ajax variation
 
-            if (_this8.isAjaxVariation()) {
+            if (_this9.isAjaxVariation()) {
               $(el).find('input.variable-item-radio-input:radio').prop('disabled', false);
               $(el).removeClass('selected disabled no-stock'); // Selected
 
@@ -772,7 +831,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "setupSwatchesEvents",
         value: function setupSwatchesEvents() {
-          var _this9 = this;
+          var _this10 = this;
 
           var self = this;
           this.$element.find('ul.variable-items-wrapper').each(function (i, element) {
@@ -877,7 +936,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
 
             if (!woo_variation_swatches_pro_options.is_mobile && woo_variation_swatches_pro_options.enable_catalog_mode && 'hover' === woo_variation_swatches_pro_options.catalog_mode_trigger) {
-              if (_this9.threshold_max < _this9.total_children) {
+              if (_this10.threshold_max < _this10.total_children) {
                 $(element).on('mouseenter.wvs', 'li.variable-item:not(.radio-variable-item)', function () {
                   $(this).trigger('click');
                   $(element).off('mouseenter.wvs');
@@ -1140,7 +1199,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var jQueryPlugin = function ($) {
     return function (PluginName, ClassName) {
       $.fn[PluginName] = function (options) {
-        var _this10 = this;
+        var _this11 = this;
 
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
@@ -1168,7 +1227,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           }
 
-          return _this10;
+          return _this11;
         });
       }; // Constructor
 

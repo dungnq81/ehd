@@ -23,12 +23,14 @@
                 parent::includes();
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-pro-product-page.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-pro-archive-page.php';
+                require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-pro-rest-api.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-pro-widget-layered-nav.php';
             }
             
             protected function init() {
                 $this->get_archive_page();
                 $this->get_compatibility();
+                $this->get_rest_api();
             }
             
             // Start
@@ -39,6 +41,10 @@
             
             public function get_archive_page() {
                 return Woo_Variation_Swatches_Pro_Archive_Page::instance();
+            }
+    
+            public function get_rest_api() {
+                return Woo_Variation_Swatches_Pro_REST_API::instance();
             }
             
             public function get_product_attribute_is_dual_color( $term, $data = array() ) {

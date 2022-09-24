@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Emran Ahmed <emran.bd.08@gmail.com>\n"
-"POT-Creation-Date: 2022-08-21 11:53+0000\n"
+"POT-Creation-Date: 2022-09-15 12:49+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -15,23 +15,23 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:353
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:393
 msgid "Sorry, no products matched your selection. Please choose a different combination."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:354
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:394
 msgid "Please select some product options before adding this product to your cart."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:355, ../templates/variation-template.php:8
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:395, ../templates/variation-template.php:8
 msgid "Sorry, this product is unavailable. Please choose a different combination."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:393
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:433
 msgid "(Unavailable)"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:584, ../includes/class-woo-variation-swatches-pro-product-page.php:612, ../includes/class-woo-variation-swatches-pro-product-page.php:795
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:624, ../includes/class-woo-variation-swatches-pro-product-page.php:612, ../includes/class-woo-variation-swatches-pro-product-page.php:795
 msgid "Choose an option"
 msgstr ""
 
@@ -155,11 +155,11 @@ msgstr ""
 msgid "Swatches Settings"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:255
+#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:244
 msgid "Upload / Add image"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:256
+#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:245
 msgid "Remove image"
 msgstr ""
 

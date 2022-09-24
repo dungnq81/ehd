@@ -6,9 +6,9 @@
  * @author   WEBHD
  */
 
-use APX\Helpers\Cast;
-use APX\Helpers\Str;
-use APX\Helpers\Url;
+use EHD\Helpers\Cast;
+use EHD\Helpers\Str;
+use EHD\Helpers\Url;
 
 \defined( '\WPINC' ) || die;
 

@@ -4,21 +4,21 @@
      * Plugin URI: https://wordpress.org/plugins/woo-variation-swatches/
      * Description: Advance features of Variation Swatches for WooCommerce. Requires WooCommerce 5.6+
      * Author: Emran Ahmed
-     * Version: 2.0.8
+     * Version: 2.0.10
      * Domain Path: /languages
      * Requires PHP: 7.0
      * Requires at least: 5.6
      * WC requires at least: 5.6
      * Tested up to: 6.0
-     * WC tested up to: 6.8
+     * WC tested up to: 6.9
      * Text Domain: woo-variation-swatches-pro
      * Author URI: https://getwooplugins.com/
      */
-    
+    update_option( 'woo_variation_swatches_license', '*****************' );
     defined( 'ABSPATH' ) || exit;
     
     if ( ! defined( 'WOO_VARIATION_SWATCHES_PRO_PLUGIN_VERSION' ) ) {
-        define( 'WOO_VARIATION_SWATCHES_PRO_PLUGIN_VERSION', '2.0.8' );
+        define( 'WOO_VARIATION_SWATCHES_PRO_PLUGIN_VERSION', '2.0.10' );
     }
     
     if ( ! defined( 'WOO_VARIATION_SWATCHES_PRO_PLUGIN_FILE' ) ) {

@@ -31,6 +31,7 @@
                 return esc_attr( WOO_VARIATION_SWATCHES_PRO_PLUGIN_VERSION );
             }
             
+            
             public function get_product_options( $product_id ) {
                 
                 if ( is_object( $product_id ) ) {
@@ -47,7 +48,7 @@
                     return array();
                 }
                 
-                return $options;
+                return apply_filters( 'woo_variation_swatches_product_options', $options, $product_id );
             }
             
             private function product_settings_lookup( $settings, ...$params ) {

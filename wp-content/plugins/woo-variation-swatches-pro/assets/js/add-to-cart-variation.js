@@ -2,12 +2,12 @@
  * Variation Swatches for WooCommerce - PRO
  *
  * Author: Emran Ahmed ( emran.bd.08@gmail.com )
- * Date: 8/21/2022, 5:53:45 PM
+ * Date: 9/15/2022, 6:49:52 PM
  * Released under the GPLv3 license.
  */
 /******/ (function() { // webpackBootstrap
 var __webpack_exports__ = {};
-/*global wc_add_to_cart_variation_params, woo_variation_swatches_pro_params, woo_variation_swatches_pro_options */
+/*global wpApiSettings, wp, wc_add_to_cart_variation_params, woo_variation_swatches_pro_params, woo_variation_swatches_pro_options */
 ;
 
 (function ($, window, document, undefined) {
@@ -35,10 +35,12 @@ var __webpack_exports__ = {};
 
     self.$firstUL = $form.find('.variations ul:first');
     var single_variation_preview_selector = false;
+    self.single_variation_preview_selected = false;
 
     if (woo_variation_swatches_pro_options.enable_single_variation_preview) {
       var name = self.$firstUL.data('preview_attribute_name') ? self.$firstUL.data('preview_attribute_name') : self.$attributeFields.first().data('attribute_name');
       single_variation_preview_selector = ".variations select[data-attribute_name='".concat(name, "']");
+      self.single_variation_preview_selected = ".variations select[data-attribute_name='".concat(name, "'] :selected");
     } // Initial state.
 
 
@@ -92,11 +94,12 @@ var __webpack_exports__ = {};
       $form.on('click.wc-variation-form', '.reset_variations', {
         variationForm: self
       }, self.onResetDisplayedVariation);
-    }
+    } // $form.on('woo_variation_swatches_add-to-cart-variation_init.wc-variation-form', {variationForm : self}, self.init);
+
 
     $form.on('woo_variation_swatches_add-to-cart-variation_init.wc-variation-form', {
       variationForm: self
-    }, self.init);
+    }, self.initFetch);
     $form.trigger('woo_variation_swatches_add-to-cart-variation_init', self); // this.init2();
   };
 
@@ -173,6 +176,58 @@ var __webpack_exports__ = {};
         }
       });
       form.xhr.always(function () {
+        if (woo_variation_swatches_pro_options.enable_single_preloader) {
+          form.$form.unblock();
+        }
+      });
+    } else {
+      // Init after gallery load.
+      form.start(event);
+    }
+  }; // Init fetch
+
+
+  VariationForm.prototype.initFetch = function (event) {
+    var form = event.data.variationForm;
+    var limit = parseInt(wc_add_to_cart_variation_params.woo_variation_swatches_ajax_variation_threshold_max, 10);
+    var total = parseInt(wc_add_to_cart_variation_params.woo_variation_swatches_total_children, 10);
+    var product_id = form.product_id; // The Logic
+    // threshold_min = 30
+    // threshold_max = 200
+    // total_children = 20
+    // then load by html attr
+    //
+    // threshold_min = 30
+    // threshold_max = 200
+    // total_children = 100
+    // then load all variations by ajax
+    //
+    // threshold_min = 30
+    // threshold_max = 200
+    // total_children = 500
+    // then load selected variations only via ajax
+
+    if (form.useAjax && limit >= total) {
+      if (woo_variation_swatches_pro_options.enable_single_preloader) {
+        form.$form.block({
+          message: null,
+          overlayCSS: {
+            background: '#FFFFFF',
+            opacity: 0.6
+          }
+        });
+      }
+
+      wp.apiFetch({
+        path: "woo-variation-swatches/v1/single-product/".concat(product_id)
+      }).then(function (variations) {
+        form.$form.data('product_variations', variations);
+        form.variationData = form.$form.data('product_variations');
+        form.useAjax = false;
+        form.start(event);
+      })["catch"](function (error) {
+        console.error("single product variations fetching failed: ".concat(product_id, "."), error);
+      })["finally"](function () {
         if (woo_variation_swatches_pro_options.enable_single_preloader) {
           form.$form.unblock();
         }

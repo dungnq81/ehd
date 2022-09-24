@@ -166,7 +166,7 @@ class Updater {
 				'high' => 'https://ps.w.org/elementor/assets/banner-1544x500.png?rev=1494133',
 				'low' => 'https://ps.w.org/elementor/assets/banner-1544x500.png?rev=1494133',
 			];
-			$api_request_transient->autoupdate = true;
+			//$api_request_transient->autoupdate = true;
 
 			$api_request_transient->sections = unserialize( $api_response['sections'] );
 

@@ -62,7 +62,7 @@ class Notice_Bar extends Base_Notice_Bar {
 				'secondary_action_title' => esc_html__( 'Reload Editor', 'elementor-pro' ),
 				'secondary_action_url' => Admin::get_url() . '&redirect-to-document=' . Plugin::elementor()->documents->get_current()->get_id(),
 				'secondary_action_target' => '_self',
-				'muted_period' => 365,
+				'muted_period' => 0,
 			];
 		}
 
@@ -108,7 +108,7 @@ class Notice_Bar extends Base_Notice_Bar {
 			'message' => $message,
 			'action_title' => esc_html__( 'Renew now', 'elementor-pro' ),
 			'action_url' => 'https://go.elementor.com/editor-notice-bar-renew/',
-			'muted_period' => 365,
+			'muted_period' => 1,
 		];
 	}
 }

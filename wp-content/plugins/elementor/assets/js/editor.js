@@ -1,4 +1,4 @@
-/*! elementor - v3.7.6 - 15-09-2022 */
+/*! elementor - v3.7.7 - 20-09-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -42330,8 +42330,7 @@ var ControlConditions = /*#__PURE__*/function (_Conditions) {
           controlValue; // If the conditioning control is responsive, get the appropriate device's value.
 
       if (!!controlResponsiveProp && (_controls$conditionNa = controls[conditionNameWithoutSubKey]) !== null && _controls$conditionNa !== void 0 && _controls$conditionNa.responsive) {
-        var queryDevice = controlResponsiveProp.max || controlResponsiveProp.min;
-        var deviceSuffix = 'desktop' === queryDevice ? '' : '_' + queryDevice;
+        var deviceSuffix = this.getResponsiveControlDeviceSuffix(controlResponsiveProp);
         conditionNameToCheck = conditionNameWithoutSubKey + deviceSuffix;
 
         if (conditionSubKey) {
@@ -42349,6 +42348,19 @@ var ControlConditions = /*#__PURE__*/function (_Conditions) {
         operator: this.getOperator(conditionValue, isNegativeCondition, controlValue),
         value: conditionValue
       };
+    }
+    /**
+     * Get Responsive Control Device Suffix
+     *
+     * @param {Object} controlResponsiveProp
+     * @return {string|string}
+     */
+
+  }, {
+    key: "getResponsiveControlDeviceSuffix",
+    value: function getResponsiveControlDeviceSuffix(controlResponsiveProp) {
+      var queryDevice = controlResponsiveProp.max || controlResponsiveProp.min;
+      return 'desktop' === queryDevice ? '' : '_' + queryDevice;
     }
     /**
      * Get Condition Value
@@ -42685,9 +42697,17 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
   },
   parsePropertyPlaceholder: function parsePropertyPlaceholder(control, value, controls, values, placeholder, parserControlName) {
     if (parserControlName) {
-      control = _.findWhere(controls, {
-        name: parserControlName
-      });
+      if (control.responsive && controls[parserControlName]) {
+        var deviceSuffix = elementor.conditions.getResponsiveControlDeviceSuffix(control.responsive);
+        control = _.findWhere(controls, {
+          name: parserControlName + deviceSuffix
+        });
+      } else {
+        control = _.findWhere(controls, {
+          name: parserControlName
+        });
+      }
+
       value = this.getStyleControlValue(control, values);
     }
 

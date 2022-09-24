@@ -1,6 +1,6 @@
 <?php
 
-namespace APX\Helpers;
+namespace EHD\Helpers;
 
 \defined('\WPINC') || die;
 

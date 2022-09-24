@@ -9,12 +9,17 @@
     "autoload": {
         "files": [
             "includes/helpers.php",
-            "includes/image-sizes.php"
+            "includes/hooks.php",
+            "includes/image-sizes.php",
+            "includes/plugins.php",
+            "includes/widgets.php"
         ],
         "psr-4": {
             "EHD\\Helpers\\": "includes/Helpers",
+            "EHD\\Plugins\\": "includes/Plugins",
             "EHD\\Themes\\": "includes/Themes",
-            "EHD\\Walkers\\": "includes/Walkers"
+            "EHD\\Walkers\\": "includes/Walkers",
+            "EHD\\Widgets\\": "includes/Widgets"
         },
         "exclude-from-classmap": []
     },

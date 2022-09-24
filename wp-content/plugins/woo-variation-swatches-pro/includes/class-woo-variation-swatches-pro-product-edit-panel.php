@@ -96,18 +96,7 @@
             }
             
             public function get_product_options( $product_id ) {
-                
-                $old_options = get_post_meta( $product_id, '_wvs_product_attributes', true );
-                $new_options = get_post_meta( $product_id, '_woo_variation_swatches_product_settings', true );
-                
-                // Backward Compatibility
-                $options = empty( $new_options ) ? $old_options : $new_options;
-                
-                if ( empty( $options ) ) {
-                    return array();
-                }
-                
-                return $options;
+                return woo_variation_swatches_pro()->get_product_options( $product_id );
             }
             
             public function array_merge_recursive( $new_data, $old_data = array() ) {

@@ -37,9 +37,49 @@
                 add_filter( 'woocommerce_loop_add_to_cart_args', array( $this, 'add_to_cart_args' ), 20, 2 );
                 
                 add_action( 'widgets_init', array( $this, 'register_widget' ) );
+                
+                // WPML Support
+                add_filter( 'woo_variation_swatches_product_options', array( $this, 'wpml_translate_product_options' ) );
             }
             
             // Start
+            
+            // WPML Support: https://wpml.org/forums/topic/variation-swatches-for-woocommerce-not-working-correctly-using-wpml/
+            public function wpml_object_id( $object_id, $type = 'post', $language = null ) {
+                $current_language = apply_filters( 'wpml_current_language', $language );
+                
+                return apply_filters( 'wpml_object_id', $object_id, $type, true, $current_language );
+            }
+            
+            public function wpml_translate_product_options( $value ) {
+                foreach ( $value as $slug => $data ) {
+                    if ( is_array( $data ) && array_key_exists( 'terms', $data ) ) {
+                        $value[ $slug ][ 'terms' ] = $this->wpml_translate_product_option_terms( $slug, $data[ 'terms' ] );
+                    }
+                }
+                
+                return $value;
+            }
+            
+            public function wpml_translate_product_option_terms( $slug, $terms ) {
+                
+                $out = array();
+                foreach ( $terms as $term_id => $data ) {
+                    if ( ! empty( $data[ 'image_id' ] ) && ! empty( $data[ 'type' ] ) && 'image' == $data[ 'type' ] ) {
+                        $data[ 'image_id' ] = $this->wpml_object_id( $data[ 'image_id' ], 'attachment' );
+                    }
+                    
+                    if ( term_exists( $term_id, $slug ) ) {
+                        $term_id = $this->wpml_object_id( $term_id, $slug );
+                    }
+                    
+                    $out[ $term_id ] = $data;
+                }
+                
+                return $out;
+            }
+            
+            // WPML Done
             
             public function register_widget() {
                 if ( wc_string_to_bool( woo_variation_swatches()->get_option( 'show_swatches_on_filter_widget', 'yes' ) ) ) {

@@ -2,7 +2,7 @@
 
 namespace EHD\Themes;
 
-\defined( '\WPINC' ) || die;
+\defined('\WPINC') || die;
 
 /**
  * Builds our dynamic CSS.
@@ -93,10 +93,10 @@ if (!class_exists('Css')) {
          *
          * @access public
          *
-         * @param string $property - the css property
-         * @param string $value - the value to be placed with the property
+         * @param string $property   - the css property
+         * @param string $value      - the value to be placed with the property
          * @param string $og_default - check to see if the value matches the default
-         * @param string $unit - the unit for the value (px)
+         * @param string $unit       - the unit for the value (px)
          *
          * @return $this
          * @since  1.0

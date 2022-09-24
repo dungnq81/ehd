@@ -33,9 +33,10 @@ class API {
 	/**
 	 * @param array $body_args
 	 *
-	 * @return \stdClass|\WP_Error
-	 */
+	 * @return string[]
+     */
 	private static function remote_post( $body_args = [] ) {
+
 		$use_home_url = true;
 
 		/**
@@ -115,7 +116,11 @@ class API {
 	private static function get_transient( $cache_key ) {
 		$cache = get_option( $cache_key );
 
-		if ( empty( $cache['timeout'] ) || current_time( 'timestamp' ) > $cache['timeout'] ) {
+		if ( empty( $cache['timeout'] ) ) {
+			return false;
+		}
+
+		if ( current_time( 'timestamp' ) > $cache['timeout'] && is_user_logged_in() ) {
 			return false;
 		}
 
@@ -123,7 +128,7 @@ class API {
 	}
 
 	public static function set_license_data( $license_data, $expiration = null ) {
-		$expiration = 'lifetime';
+        $expiration = 'lifetime';
 		if ( null === $expiration ) {
 			$expiration = '+12 hours';
 
@@ -155,21 +160,18 @@ class API {
 	}
 
 	public static function get_license_data( $force_request = false ) {
-		$license_data_error = [
-			'license' => 'valid',
-			'payment_id' => '140',
-			'license_limit' => null,
-			'site_count' => '1',
-			'activations_left' => null,
-			'expires' => 'lifetime',
-			'success' => true,
-		];
+        $license_data_error = [
+            'license' => 'valid',
+            'payment_id' => '140',
+            'license_limit' => '9999',
+            'site_count' => '1',
+            'activations_left' => '9999',
+            'expires' => 'lifetime',
+            'success' => true,
+        ];
 
-		$license_key = Admin::get_license_key();
-
-		if ( empty( $license_key ) ) {
-			return $license_data_error;
-		}
+        $license_key = Admin::get_license_key();
+        return $license_data_error;
 
 		$license_data = self::get_transient( Admin::LICENSE_DATA_OPTION_NAME );
 
@@ -346,34 +348,18 @@ class API {
 		];
 	}
 
-	public static function get_error_message( $error ) {
-		$errors = self::get_errors();
+    public static function get_error_message( $error ) {
+        $errors = self::get_errors();
+        return '';
+    }
 
-		if ( isset( $errors[ $error ] ) ) {
-			$error_msg = $errors[ $error ];
-		} else {
-			$error_msg = esc_html__( 'An error occurred. Please check your internet connection and try again. If the problem persists, contact our support.', 'elementor-pro' ) . ' (' . $error . ')';
-		}
-
-		return $error_msg;
-	}
-
-	public static function is_license_active() {
-		$license_data = self::get_license_data();
-
-        if (!isset($license_data['license'])) {
-            $license_data['license'] = 'valid';
-        }
-
-		return self::STATUS_VALID === $license_data['license'];
-	}
+    public static function is_license_active() {
+        $license_data = self::get_license_data();
+        return true;
+    }
 
 	public static function is_license_expired() {
 		$license_data = self::get_license_data();
-
-        if (!isset($license_data['license'])) {
-            $license_data['license'] = 'valid';
-        }
 
 		return self::STATUS_EXPIRED === $license_data['license'];
 	}
@@ -382,26 +368,13 @@ class API {
 		return self::is_licence_has_feature( self::FEATURE_PRO_TRIAL );
 	}
 
-	public static function is_licence_has_feature( $feature_name ) {
-		$license_data = self::get_license_data();
+    public static function is_licence_has_feature( $feature_name ) {
+        $license_data = self::get_license_data();
+    }
 
-		return ! empty( $license_data['features'] )
-			&& in_array( $feature_name, $license_data['features'], true );
-	}
-
-	public static function is_license_about_to_expire() {
-		$license_data = self::get_license_data();
-
-		if ( ! empty( $license_data['subscriptions'] ) && 'enable' === $license_data['subscriptions'] ) {
-			return false;
-		}
-
-		if ( 'lifetime' === $license_data['expires'] ) {
-			return false;
-		}
-
-		return time() > strtotime( '-28 days', strtotime( $license_data['expires'] ) );
-	}
+    public static function is_license_about_to_expire() {
+        return false;
+    }
 
 	/**
 	 * @param string $library_type
@@ -411,7 +384,8 @@ class API {
 	public static function get_library_access_level( $library_type = 'template' ) {
 		$license_data = static::get_license_data();
 
-		$access_level = ConnectModule::ACCESS_LEVEL_PRO;
+        $access_level = ConnectModule::ACCESS_LEVEL_PRO;
+        return $access_level;
 
 		if ( static::is_license_active() ) {
 			$access_level = ConnectModule::ACCESS_LEVEL_PRO;

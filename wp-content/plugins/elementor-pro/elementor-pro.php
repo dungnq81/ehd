@@ -4,7 +4,7 @@
  * Description: Elevate your designs and unlock the full power of Elementor. Gain access to dozens of Pro widgets and kits, Theme Builder, Pop Ups, Forms and WooCommerce building capabilities.
  * Plugin URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  * Author: Elementor.com
- * Version: 3.7.5
+ * Version: 3.7.6
  * Elementor tested up to: 3.7.0
  * Author URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  *
@@ -16,12 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 update_option( 'elementor_pro_license_key', 'activated' );
-set_transient( 'elementor_pro_license_data', [ 
-	'license' => 'valid', 
-	'expires' => $date = date('M d, Y', strtotime('+2 years')) ] );
+set_transient( 'elementor_pro_license_data', [ 'license' => 'valid', 'expires' => $date = date('M d, Y', strtotime('+1 years')) ] );
 set_transient( 'timeout_elementor_pro_license_data', 36001040400 );
 
-define( 'ELEMENTOR_PRO_VERSION', '3.7.5' );
+define( 'ELEMENTOR_PRO_VERSION', '3.7.6' );
 
 define( 'ELEMENTOR_PRO__FILE__', __FILE__ );
 define( 'ELEMENTOR_PRO_PLUGIN_BASE', plugin_basename( ELEMENTOR_PRO__FILE__ ) );
