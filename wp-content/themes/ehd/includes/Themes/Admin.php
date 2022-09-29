@@ -174,7 +174,7 @@ if (!class_exists('Admin')) {
                     }
 
                     return $out = $term_thumb;
-                //break;
+                break;
 
                 case 'term_order':
                     if (function_exists('get_field')) {
@@ -183,11 +183,11 @@ if (!class_exists('Admin')) {
                     }
 
                     return $out = 0;
-                //break;
+                break;
 
                 default:
                     return $out;
-                //break;
+                break;
             }
         }
 
@@ -243,6 +243,9 @@ if (!class_exists('Admin')) {
                         }
                     }
 
+                    break;
+
+                default:
                     break;
             }
         }

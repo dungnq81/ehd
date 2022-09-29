@@ -2,7 +2,7 @@
 
 namespace EHD\Helpers;
 
-\defined( '\WPINC' ) || die;
+\defined('\WPINC') || die;
 
 class Str
 {
@@ -79,8 +79,8 @@ class Str
     }
 
     /**
-     * @param string $string
-     * @param string $prefix
+     * @param string      $string
+     * @param string      $prefix
      * @param string|null $trim
      *
      * @return string
@@ -111,7 +111,7 @@ class Str
 
     /**
      * @param string|string[] $needles
-     * @param string $haystack
+     * @param string          $haystack
      *
      * @return bool
      */
@@ -128,7 +128,7 @@ class Str
 
     /**
      * @param string|string[] $needles
-     * @param string $haystack
+     * @param string          $haystack
      *
      * @return bool
      */
@@ -195,8 +195,8 @@ class Str
     /**
      * Strpos over an array.
      *
-     * @param $haystack
-     * @param $needles
+     * @param     $haystack
+     * @param     $needles
      * @param int $offset
      *
      * @return bool
@@ -244,7 +244,7 @@ class Str
 
     /**
      * @param string $value
-     * @param int $length
+     * @param int    $length
      * @param string $end
      *
      * @return string
@@ -257,7 +257,7 @@ class Str
     }
 
     /**
-     * @param $string
+     * @param      $string
      * @param bool $strip_tags
      * @return array|string|string[]|null
      */

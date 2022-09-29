@@ -5,6 +5,9 @@
 # END WordPress
 
 # BEGIN ng
+
+SetEnv HTACCESS on
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     # Rewrite "www.example.com -> example.com"

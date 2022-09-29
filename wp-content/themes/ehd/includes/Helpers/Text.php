@@ -2,14 +2,14 @@
 
 namespace EHD\Helpers;
 
-\defined( '\WPINC' ) || die;
+\defined('\WPINC') || die;
 
 class Text
 {
     /**
      * @param string $text
-     * @param int $limit
-     * @param bool $splitWords
+     * @param int    $limit
+     * @param bool   $splitWords
      * @param string $showMore
      *
      * @return string
@@ -67,7 +67,7 @@ class Text
 
     /**
      * @param string $text
-     * @param int $limit
+     * @param int    $limit
      *
      * @return int
      */
@@ -91,7 +91,7 @@ class Text
 
     /**
      * @param string $text
-     * @param int $limit
+     * @param int    $limit
      *
      * @return int
      */

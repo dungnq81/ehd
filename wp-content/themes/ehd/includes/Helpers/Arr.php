@@ -30,7 +30,7 @@ class Arr
             $value = array_map('trim', explode(',', Cast::toString($value)));
         }
         $callback = if_empty(Cast::toString($callback), 'is_not_empty');
-        return static::reindex(array_filter((array)$value, $callback));
+        return static::reindex(array_filter((array) $value, $callback));
     }
 
     /**
@@ -56,8 +56,8 @@ class Arr
 
     /**
      * @param string $key
-     * @param array $array
-     * @param array $insert_array
+     * @param array  $array
+     * @param array  $insert_array
      *
      * @return array
      */
@@ -68,8 +68,8 @@ class Arr
 
     /**
      * @param string $key
-     * @param array $array
-     * @param array $insert_array
+     * @param array  $array
+     * @param array  $insert_array
      *
      * @return array
      */
@@ -79,10 +79,10 @@ class Arr
     }
 
     /**
-     * @param array $array
-     * @param array $insert_array
+     * @param array  $array
+     * @param array  $insert_array
      * @param string $key
-     * @param $position
+     * @param        $position
      *
      * @return array
      */
@@ -102,9 +102,9 @@ class Arr
     }
 
     /**
-     * @param array $values
+     * @param array  $values
      * @param string $prefix
-     * @param mixed $prefixed
+     * @param mixed  $prefixed
      *
      * @return array
      */
@@ -123,7 +123,7 @@ class Arr
     }
 
     /**
-     * @param array $values
+     * @param array  $values
      * @param string $prefix
      *
      * @return array

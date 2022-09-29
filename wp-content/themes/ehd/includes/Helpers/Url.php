@@ -2,7 +2,7 @@
 
 namespace EHD\Helpers;
 
-\defined( '\WPINC' ) || die;
+\defined('\WPINC') || die;
 
 class Url
 {
@@ -101,7 +101,7 @@ class Url
         $url = preg_replace('/\s+/', '', $url);
         $headers = @get_headers($url);
 
-        return (bool)stripos($headers[0], "200 OK");
+        return (bool) stripos($headers[0], "200 OK");
     }
 
     /**
@@ -138,13 +138,13 @@ class Url
     public static function queries($url)
     {
         $queries = [];
-        parse_str(parse_url($url, PHP_URL_QUERY), $queries);
+        parse_str(wp_parse_url($url, PHP_URL_QUERY), $queries);
         return $queries;
     }
 
     /**
-     * @param string $url
-     * @param string $param
+     * @param string     $url
+     * @param string     $param
      * @param string|int $fallback
      *
      * @return string

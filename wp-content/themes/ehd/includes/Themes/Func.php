@@ -26,6 +26,22 @@ if (!class_exists('Func')) {
         // -------------------------------------------------------------
 
         /**
+         * Using `rawurlencode` on any variable used as part of the query string, either by using
+         * `add_query_arg()` or directly by string concatenation, will prevent parameter hijacking.
+         *
+         * @param $url
+         * @param $args
+         * @return string
+         */
+        public static function addQueryArg($url, $args)
+        {
+            $args = array_map('rawurlencode', $args);
+            return add_query_arg($args, $url);
+        }
+
+        // -------------------------------------------------------------
+
+        /**
          * @param      $attachment_id
          * @param bool $return_object
          * @return array|object|null
@@ -136,16 +152,17 @@ if (!class_exists('Func')) {
         // -------------------------------------------------------------
 
         /**
-         * @param object   $term
-         * @param string   $post_type
-         * @param bool     $include_children
+         * @param object      $term
+         * @param string      $post_type
+         * @param bool        $include_children
          *
-         * @param int      $posts_per_page
-         * @param int|bool $paged
-         * @param array    $orderby
+         * @param int         $posts_per_page
+         * @param int|bool    $paged
+         * @param array       $orderby
+         * @param bool|string $strtotime_recent - strtotime( 'last week' );
          * @return bool|WP_Query
          */
-        public static function queryByTerm($term, string $post_type = 'any', bool $include_children = true, int $posts_per_page = 0, $paged = false, $orderby = [])
+        public static function queryByTerm($term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $paged = false, $orderby = [], $strtotime_recent = false)
         {
             if (!$term || !$post_type) {
                 return false;
@@ -162,6 +179,9 @@ if (!class_exists('Func')) {
             }
 
             $_args = [
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+
                 'ignore_sticky_posts' => true,
                 'no_found_rows' => true,
                 'post_status' => 'publish',
@@ -190,25 +210,42 @@ if (!class_exists('Func')) {
                 $_args['nopaging'] = false;
             }
 
+            // ...
+            if ($strtotime_recent) {
+
+                // constrain to just posts in $strtotime_recent
+                $recent = strtotime($strtotime_recent);
+                if ($recent) {
+                    $_args['date_query'] = [
+                        'after' => [
+                            'year' => date('Y', $recent),
+                            'month' => date('n', $recent),
+                            'day' => date('j', $recent),
+                        ]
+                    ];
+                }
+            }
+
             $_query = new \WP_Query($_args);
             if (!$_query->have_posts()) {
                 return false;
             }
+
             return $_query;
         }
 
         // -------------------------------------------------------------
 
         /**
-         * @param array  $term_ids
-         * @param string $taxonomy
-         * @param string $post_type
-         * @param bool   $include_children
-         * @param int    $posts_per_page
-         *
+         * @param array       $term_ids
+         * @param string      $taxonomy
+         * @param string      $post_type
+         * @param bool        $include_children
+         * @param int         $posts_per_page
+         * @param bool|string $strtotime_str
          * @return bool|WP_Query
          */
-        public static function queryByTerms($term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = true, int $posts_per_page = 10)
+        public static function queryByTerms($term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = false, int $posts_per_page = 10, $strtotime_str = false)
         {
             if (!$term_ids) {
                 return false;
@@ -235,6 +272,9 @@ if (!class_exists('Func')) {
                 'nopaging' => true,
                 'no_found_rows' => true,
                 'ignore_sticky_posts' => true,
+
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
             ];
 
             if ($post_type) {
@@ -243,6 +283,22 @@ if (!class_exists('Func')) {
 
             if ($posts_per_page) {
                 $_args['posts_per_page'] = $posts_per_page;
+            }
+
+            // ...
+            if ($strtotime_str) {
+
+                // constrain to just posts in $strtotime_str
+                $recent = strtotime($strtotime_str);
+                if ($recent) {
+                    $_args['date_query'] = [
+                        'after' => [
+                            'year' => date('Y', $recent),
+                            'month' => date('n', $recent),
+                            'day' => date('j', $recent),
+                        ]
+                    ];
+                }
             }
 
             // query
@@ -467,7 +523,7 @@ if (!class_exists('Func')) {
          * @param string|null $class
          * @return string
          */
-        function siteLogo(string $theme = 'default', ?string $class = '')
+        public static function siteLogo(string $theme = 'default', ?string $class = '')
         {
             $html = '';
             $custom_logo_id = null;
@@ -597,14 +653,14 @@ if (!class_exists('Func')) {
             //$post = get_post( $post );
             //$ID   = $post->ID ?? null;
 
-            // @todo not optimized
             if (!$taxonomy) {
                 $post_type = get_post_type($post);
-                $taxonomies = get_object_taxonomies($post_type);
-                if (isset($taxonomies[0])) {
-                    if ('product_type' == $taxonomies[0] && isset($taxonomies[2])) {
-                        $taxonomy = $taxonomies[2];
-                    }
+                if ('product' == $post_type) {
+                    $taxonomy = 'product_cat';
+                } elseif ('banner' == $post_type) {
+                    $taxonomy = 'product_cat';
+                } elseif ('service' == $post_type) {
+                    $taxonomy = 'service_cat';
                 }
             }
 
@@ -826,7 +882,7 @@ if (!class_exists('Func')) {
             $_ago = __('ago', 'ehd');
 
             if (empty($to)) {
-                $to = current_time('timestamp');
+                $to = current_time('U');
             }
             if (empty($from)) {
                 $from = get_the_time('U', $post);

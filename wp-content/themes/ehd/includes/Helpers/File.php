@@ -7,7 +7,7 @@ namespace EHD\Helpers;
 class File
 {
     /**
-     * @param $filename
+     * @param      $filename
      * @param bool $include_dot
      *
      * @return string
@@ -22,7 +22,7 @@ class File
     }
 
     /**
-     * @param $filename
+     * @param      $filename
      * @param bool $include_ext
      *
      * @return string
@@ -36,7 +36,7 @@ class File
     }
 
     /**
-     * @param $file
+     * @param      $file
      * @param bool $convert_to_array
      *
      * @return false|mixed|string
@@ -54,8 +54,8 @@ class File
     }
 
     /**
-     * @param $path
-     * @param $data
+     * @param      $path
+     * @param      $data
      * @param bool $json
      *
      * @return bool

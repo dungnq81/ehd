@@ -4,7 +4,7 @@
  * Description: Elevate your designs and unlock the full power of Elementor. Gain access to dozens of Pro widgets and kits, Theme Builder, Pop Ups, Forms and WooCommerce building capabilities.
  * Plugin URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  * Author: Elementor.com
- * Version: 3.7.6
+ * Version: 3.7.7
  * Elementor tested up to: 3.7.0
  * Author URI: https://go.elementor.com/wp-dash-wp-plugins-author-uri/
  *
@@ -14,12 +14,30 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-
 update_option( 'elementor_pro_license_key', 'activated' );
-set_transient( 'elementor_pro_license_data', [ 'license' => 'valid', 'expires' => $date = date('M d, Y', strtotime('+1 years')) ] );
-set_transient( 'timeout_elementor_pro_license_data', 36001040400 );
+update_option( '_elementor_pro_license_data', [ 'timeout' => strtotime( '+12 hours', current_time( 'timestamp' ) ), 'value' => json_encode( [ 'license' => 'valid', 'expires' => '01.01.2030', 'features' => [ 'pro_trial' => false ] ] ) ] );
+add_filter( 'elementor/connect/additional-connect-info', '__return_empty_array', 999 );
 
-define( 'ELEMENTOR_PRO_VERSION', '3.7.6' );
+add_action( 'init', function() {
+	add_filter( 'pre_http_request', function( $pre, $parsed_args, $url ) {
+		if ( strpos( $url, 'my.elementor.com/api/v1/licenses' ) !== false ) {
+			return [
+				'response' => [ 'code' => 200, 'message' => 'ÎÊ' ],
+				'body'     => json_encode( [ 'license' => 'valid', 'expires' => '01.01.2030' ] )
+			];
+		} elseif ( strpos( $url, 'my.elementor.com/api/connect/v1/library/get_template_content' ) !== false ) {
+			$response = wp_remote_get( "http://wordpressnull.org/elementor/templates/{$parsed_args['body']['id']}.json", [ 'sslverify' => false, 'timeout' => 25 ] );
+			if ( wp_remote_retrieve_response_code( $response ) == 200 ) {
+				return $response;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}, 10, 3 );
+} );
+define( 'ELEMENTOR_PRO_VERSION', '3.7.7' );
 
 define( 'ELEMENTOR_PRO__FILE__', __FILE__ );
 define( 'ELEMENTOR_PRO_PLUGIN_BASE', plugin_basename( ELEMENTOR_PRO__FILE__ ) );

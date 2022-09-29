@@ -295,14 +295,19 @@ if (!function_exists('ewc_sale_flash_percent')) {
      */
     function ewc_sale_flash_percent($product)
     {
-        $percent_off = 0;
+        global $product;
+        $percent_off = '';
+
         if ($product->is_on_sale()) {
-            $regular_price = wc_get_price_to_display($product, ['price' => $product->get_regular_price()]);
-            $sale_price = wc_get_price_to_display($product);
-            $percent_off = (($regular_price - $sale_price) / $regular_price) * 100;
+
+            if ($product->is_type('variable')) {
+                $percent_off = ceil(100 - ($product->get_variation_sale_price() / $product->get_variation_regular_price('min')) * 100);
+            } elseif ($product->get_regular_price() && !$product->is_type('grouped')) {
+                $percent_off = ceil(100 - ($product->get_sale_price() / $product->get_regular_price()) * 100);
+            }
         }
 
-        return round($percent_off);
+        return $percent_off;
     }
 }
 

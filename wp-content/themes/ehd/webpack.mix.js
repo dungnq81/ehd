@@ -33,10 +33,10 @@ mix.disableNotifications()
         ]
     });
 
-mix.copyDirectory('resources/img', 'assets/img')
-    .copyDirectory('resources/fonts/SVN-Poppins', 'assets/fonts/SVN-Poppins')
-    .copyDirectory('resources/fonts/fontawesome/webfonts', 'assets/webfonts')
-    .copyDirectory('resources/js/plugins', 'assets/js/plugins');
+// mix.copyDirectory('resources/img', 'assets/img')
+//     .copyDirectory('resources/fonts/SVN-Poppins', 'assets/fonts/SVN-Poppins')
+//     .copyDirectory('resources/fonts/fontawesome/webfonts', 'assets/webfonts')
+//     .copyDirectory('resources/js/plugins', 'assets/js/plugins');
 
 /** */
 mix.setPublicPath('assets')

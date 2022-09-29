@@ -9,9 +9,9 @@
     "autoload": {
         "files": [
             "includes/helpers.php",
-            "includes/hooks.php",
             "includes/image-sizes.php",
             "includes/plugins.php",
+            "includes/template-hooks.php",
             "includes/widgets.php"
         ],
         "psr-4": {
@@ -21,7 +21,10 @@
             "EHD\\Walkers\\": "includes/Walkers",
             "EHD\\Widgets\\": "includes/Widgets"
         },
-        "exclude-from-classmap": []
+        "exclude-from-classmap": [
+            "**/Plugins/ACF/_/**",
+            "**/Widgets/_/**"
+        ]
     },
     "require": {
         "symfony/var-dumper": "^v5.4.9",

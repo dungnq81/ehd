@@ -43,6 +43,18 @@ if (!class_exists('Optimizer')) {
                 update_user_meta($user_id, 'show_admin_bar_front', false);
                 update_user_meta($user_id, 'show_admin_bar_admin', false);
             }, 10, 1);
+
+            // Hooks the wp action to insert some cache control
+            // max-age headers.
+            add_action('wp', function ($wp) {
+                if (is_feed()) {
+
+                    // Set the max age for feeds to 5 minutes.
+                    if (!is_user_logged_in()) {
+                        header('Cache-Control: max-age=' . (5 * MINUTE_IN_SECONDS));
+                    }
+                }
+            });
         }
 
         // ------------------------------------------------------
@@ -90,7 +102,7 @@ if (!class_exists('Optimizer')) {
 
             // Changing the alt text on the logo to show your site name
             add_filter('login_headertext', function () {
-                return get_option('blogname');
+                return get_bloginfo('name');
             });
 
             // Changing the logo link from wordpress.org to your site
@@ -122,6 +134,19 @@ if (!class_exists('Optimizer')) {
             //...
             add_filter('excerpt_more', function () {
                 return ' ' . '&hellip;';
+            });
+
+            /**
+             * @param $orders
+             * @return array
+             */
+            add_filter('widget_tag_cloud_args', function (array $args) {
+                $args['smallest'] = '10';
+                $args['largest'] = '19';
+                $args['unit'] = 'px';
+                $args['number'] = 12;
+
+                return $args;
             });
 
             // remove id li navigation
@@ -256,7 +281,7 @@ if (!class_exists('Optimizer')) {
         public function script_loader_tag(string $tag, string $handle, string $src)
         {
             // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
-            $loader = new ScriptLoader;
+            $loader = new ScriptLoader();
             $tag = $loader->filterScriptTag($tag, $handle, $src);
 
             $str_parsed = [];
@@ -287,7 +312,7 @@ if (!class_exists('Optimizer')) {
         public function enqueue_scripts()
         {
             /*extra scripts*/
-            wp_enqueue_script("draggable", get_stylesheet_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
+            wp_enqueue_script("o-draggable", get_stylesheet_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
             wp_enqueue_script("backtop", get_stylesheet_directory_uri() . "/assets/js/plugins/backtop.js", [], false, true);
             wp_enqueue_script("shares", get_stylesheet_directory_uri() . "/assets/js/plugins/shares.min.js", ["jquery"], false, true);
 

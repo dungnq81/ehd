@@ -342,6 +342,10 @@ In case of problems, please contact us in [the support forum](https://url.mattpl
 
 == Changelog ==
 
+= 5.2.4 (2022-09-27) =
+* `[Changed]` Messages displayed during bulk optimization of images
+* `[Added]` Debug information about registered image sub-sizes
+
 = 5.2.3 (2022-09-23) =
 * `[Added]` Debug information about disabled functions
 

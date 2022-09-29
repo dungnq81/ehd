@@ -8,7 +8,9 @@ use WP_Query;
 \defined('\WPINC') || die;
 
 // If plugin - 'Woocommerce' not exist then return.
-class_exists('\WooCommerce') || die;
+if ( ! class_exists( '\WooCommerce' ) ) {
+    return;
+}
 
 if (!class_exists('Woocommerce_Plugin')) {
     require __DIR__ . '/woocommerce.php';
@@ -68,11 +70,13 @@ if (!class_exists('Woocommerce_Plugin')) {
         {
             add_theme_support('woocommerce');
 
-            // Enabling WooCommerce product gallery features (are off by default since WC 3.0.0).
             // Add support for WC features.
             //add_theme_support( 'wc-product-gallery-zoom' );
             //add_theme_support( 'wc-product-gallery-lightbox' );
             //add_theme_support( 'wc-product-gallery-slider' );
+
+            // Remove woocommerce defauly styles
+            add_filter( 'woocommerce_enqueue_styles', '__return_false' );
 
             // Remove default WooCommerce wrappers.
             remove_action('woocommerce_before_main_content', 'woocommerce_output_content_wrapper');
@@ -103,7 +107,7 @@ if (!class_exists('Woocommerce_Plugin')) {
              * @return array
              */
             add_filter('woocommerce_product_tag_cloud_widget_args', function (array $args) {
-                $args['smallest'] = '11';
+                $args['smallest'] = '10';
                 $args['largest'] = '19';
                 $args['unit'] = 'px';
                 $args['number'] = 12;
@@ -113,14 +117,13 @@ if (!class_exists('Woocommerce_Plugin')) {
 
             /**
              * @param $orders
-             *
              * @return array
              */
             add_filter('woocommerce_catalog_orderby', function ($orders) {
                 $orders = [
                     'menu_order' => __('Thứ tự sắp xếp', 'ehd'),
                     'popularity' => __('Phổ biến', 'ehd'),
-                    'rating' => __('Đánh giá trung bình', 'ehd'),
+                    'rating' => __('Đánh giá', 'ehd'),
                     'date' => __('Mới nhất', 'ehd'),
                     'price' => __('Giá thấp đến cao', 'ehd'),
                     'price-desc' => __('Giá cao đến thấp', 'ehd'),
@@ -158,8 +161,6 @@ if (!class_exists('Woocommerce_Plugin')) {
 //            add_filter('woocommerce_product_add_to_cart_text', function () {
 //                return __('Thêm vào giỏ', 'hd');
 //            });
-
-
         }
 
         /** ---------------------------------------- */
@@ -249,7 +250,6 @@ if (!class_exists('Woocommerce_Plugin')) {
         public function woocommerce_body_class($classes)
         {
             $classes[] = 'woocommerce-active';
-
             return $classes;
         }
 

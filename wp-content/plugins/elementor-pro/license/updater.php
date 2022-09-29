@@ -66,7 +66,7 @@ class Updater {
 		// include an unmodified $wp_version
 		include( ABSPATH . WPINC . '/version.php' );
 
-		if ( version_compare( $wp_version, $version_info['requires'], '<' ) ) {
+		if ( isset($version_info['requires']) && version_compare( $wp_version, $version_info['requires'], '<' ) ) {
 			return $_transient_data;
 		}
 
@@ -81,7 +81,7 @@ class Updater {
 
 		$plugin_info->plugin = $this->plugin_name;
 
-		if ( version_compare( $this->plugin_version, $version_info['new_version'], '<' ) ) {
+		if ( isset($version_info['new_version']) && version_compare( $this->plugin_version, $version_info['new_version'], '<' ) ) {
 			$_transient_data->response[ $this->plugin_name ] = $plugin_info;
 			$_transient_data->checked[ $this->plugin_name ] = $version_info['new_version'];
 		} else {
@@ -166,7 +166,7 @@ class Updater {
 				'high' => 'https://ps.w.org/elementor/assets/banner-1544x500.png?rev=1494133',
 				'low' => 'https://ps.w.org/elementor/assets/banner-1544x500.png?rev=1494133',
 			];
-			//$api_request_transient->autoupdate = true;
+			$api_request_transient->autoupdate = true;
 
 			$api_request_transient->sections = unserialize( $api_response['sections'] );
 
