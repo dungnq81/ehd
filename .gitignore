@@ -140,14 +140,18 @@ fabric.properties
 #
 #
 # Project exclude paths
-/wp-content/themes/apx/node_modules/
-/wp-content/themes/apx/vendor/
-/wp-content/themes/apx/composer.lock
-/wp-content/themes/apx/package-lock.json
-/wp-content/themes/apx/yarn.lock
+/wp-content/themes/ehd/node_modules/
+/wp-content/themes/ehd/vendor/
+/wp-content/themes/ehd/composer.lock
+/wp-content/themes/ehd/package-lock.json
+/wp-content/themes/ehd/yarn.lock
 # Project exclude paths
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/cart.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/contexts.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/hooks.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/shipping.js
-/wp-content/themes/ehd/node_modules/
+/node_modules/
+/yarn.lock
+/mix-manifest.json
+/package-lock.json
+/wp-content/themes/hello-elementor/

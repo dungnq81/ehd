@@ -27,6 +27,9 @@ if (!class_exists('Optimizer')) {
         // Actions hook
         // ------------------------------------------------------
 
+        /**
+         * @return void
+         */
         protected function _doActions()
         {
             add_action('wp_default_scripts', [&$this, 'default_scripts']);
@@ -61,6 +64,9 @@ if (!class_exists('Optimizer')) {
         // Filters hook
         // ------------------------------------------------------
 
+        /**
+         * @return void
+         */
         protected function _doFilters()
         {
             add_filter('body_class', [&$this, 'body_classes'], 11, 1);
@@ -171,6 +177,8 @@ if (!class_exists('Optimizer')) {
 
         /**
          * Launching operation cleanup.
+         *
+         * @return void
          */
         protected function _cleanup()
         {
@@ -248,25 +256,22 @@ if (!class_exists('Optimizer')) {
         /**
          * Build the back to top button
          *
-         * - GeneratePress
-         * - @since 1.3.24
+         * @return void
          */
         public function back_to_top()
         {
             $back_to_top = apply_filters('back_to_top', true);
-            if (!$back_to_top) {
-                return;
+            if ($back_to_top) {
+                echo apply_filters( // phpcs:ignore
+                    'back_to_top_output',
+                    sprintf(
+                        '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" style="opacity:0;visibility:hidden;" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
+                        esc_attr__('Scroll back to top', 'ehd'),
+                        absint(apply_filters('back_to_top_scroll_speed', 400)),
+                        absint(apply_filters('back_to_top_start_scroll', 300)),
+                    )
+                );
             }
-
-            echo apply_filters( // phpcs:ignore
-                'back_to_top_output',
-                sprintf(
-                    '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" style="opacity:0;visibility:hidden;" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
-                    esc_attr__('Scroll back to top', 'ehd'),
-                    absint(apply_filters('back_to_top_scroll_speed', 400)),
-                    absint(apply_filters('back_to_top_start_scroll', 300)),
-                )
-            );
         }
 
         // ------------------------------------------------------
@@ -309,6 +314,9 @@ if (!class_exists('Optimizer')) {
 
         /** ---------------------------------------- */
 
+        /**
+         * @return void
+         */
         public function enqueue_scripts()
         {
             /*extra scripts*/
@@ -329,6 +337,7 @@ if (!class_exists('Optimizer')) {
 
         /**
          * @param $scripts
+         * @return void
          */
         public function default_scripts($scripts)
         {
@@ -359,12 +368,14 @@ if (!class_exists('Optimizer')) {
 
             foreach ($classes as $class) {
                 if (
-                    str_contains($class, 'page-template-templates')
+                    str_contains($class, 'page-template-default')
+                    || str_contains($class, 'page-template-templates')
                     || str_contains($class, 'page-template-templatespage-homepage-php')
                     || str_contains($class, 'wp-custom-logo')
                     || str_contains($class, 'no-customize-support')
                     || str_contains($class, 'theme-hello-elementor')
                     || str_contains($class, 'elementor-kit-')
+                    || str_contains($class, 'wvs-theme-')
                 ) {
                     $classes = array_diff($classes, [$class]);
                 }

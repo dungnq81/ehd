@@ -1,0 +1,17 @@
+{
+    "name": "wordpress/ehd-core",
+    "description": "eHD core plugin",
+    "authors": [
+        {
+            "name": "WEBHD Team"
+        }
+    ],
+    "autoload": {
+        "files": [],
+        "psr-4": {},
+        "exclude-from-classmap": []
+    },
+    "require": {
+        "symfony/var-dumper": "^v5.4.9"
+    }
+}

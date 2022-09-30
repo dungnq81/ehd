@@ -1,33 +1,33 @@
 {
-    "name": "wordpress/ehd",
-    "description": "eHD Wordpress Theme",
-    "authors": [
-        {
-            "name": "WEBHD Team"
-        }
-    ],
-    "autoload": {
-        "files": [
-            "includes/helpers.php",
-            "includes/image-sizes.php",
-            "includes/plugins.php",
-            "includes/template-hooks.php",
-            "includes/widgets.php"
-        ],
-        "psr-4": {
-            "EHD\\Helpers\\": "includes/Helpers",
-            "EHD\\Plugins\\": "includes/Plugins",
-            "EHD\\Themes\\": "includes/Themes",
-            "EHD\\Walkers\\": "includes/Walkers",
-            "EHD\\Widgets\\": "includes/Widgets"
-        },
-        "exclude-from-classmap": [
-            "**/Plugins/ACF/_/**",
-            "**/Widgets/_/**"
-        ]
-    },
-    "require": {
-        "symfony/var-dumper": "^v5.4.9",
-        "vectorface/whip": "^v0.4.0"
-    }
+	"name": "wordpress/ehd",
+	"description": "eHD Wordpress Theme",
+	"authors": [
+		{
+			"name": "WEBHD Team"
+		}
+	],
+	"autoload": {
+		"files": [
+			"includes/helpers.php",
+			"includes/image-sizes.php",
+			"includes/plugins.php",
+			"includes/template-hooks.php",
+			"includes/widgets.php"
+		],
+		"psr-4": {
+			"EHD\\Helpers\\": "includes/Helpers",
+			"EHD\\Plugins\\": "includes/Plugins",
+			"EHD\\Themes\\": "includes/Themes",
+			"EHD\\Walkers\\": "includes/Walkers",
+			"EHD\\Widgets\\": "includes/Widgets"
+		},
+		"exclude-from-classmap": [
+			"**/Plugins/ACF/_/**",
+			"**/Widgets/_/**"
+		]
+	},
+	"require": {
+		"symfony/var-dumper": "^v5.4.9",
+		"vectorface/whip": "^v0.4.0"
+	}
 }

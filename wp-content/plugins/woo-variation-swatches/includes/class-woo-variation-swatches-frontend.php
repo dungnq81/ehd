@@ -49,9 +49,9 @@
             
             public function get_attribute_taxonomy_by_name( $attribute_name ) {
                 
-                $transient_name = sprintf( 'wvs_attribute_taxonomy_%s', $attribute_name );
+                $cache_name = sprintf( 'wvs_attribute_taxonomy_%s', $attribute_name );
                 
-                $cache = new Woo_Variation_Swatches_Cache( $transient_name, 'wvs_attribute_taxonomy' );
+                $cache = new Woo_Variation_Swatches_Cache( $cache_name, 'wvs_attribute_taxonomy' );
                 
                 if ( isset( $_GET[ 'wvs_clear_transient' ] ) ) {
                     $cache->delete_transient();

@@ -800,7 +800,6 @@ if (!class_exists('Func')) {
          * @param string $size
          *
          * @return string|null
-         * @deprecated use get_the_post_thumbnail_url( $post, $size )
          */
         public static function postImageSrc($post = null, string $size = 'thumbnail')
         {
@@ -815,7 +814,6 @@ if (!class_exists('Func')) {
          * @param string $size
          *
          * @return string|null
-         * @deprecated use wp_get_attachment_image_url( $attachment_id, $size )
          */
         public static function attachmentImageSrc($attachment_id, string $size = 'thumbnail')
         {

@@ -37,6 +37,9 @@
                 add_filter( 'woocommerce_variable_children_args', array( $this, 'variable_children_args' ), 10, 3 );
                 add_filter( 'woocommerce_variation_is_active', array( $this, 'disable_out_of_stock_item' ), 10, 2 );
                 add_filter( 'woocommerce_available_variation', array( $this, 'add_variation_data' ), 10, 3 );
+                
+                add_action( 'woocommerce_before_variations_form', array( $this, 'before_variations_form' ) );
+                add_action( 'woocommerce_after_variations_form', array( $this, 'after_variations_form' ) );
                 // add_action( 'woocommerce_after_variations_form', array( $this, 'enqueue_script' ) );
                 
                 // add_filter( 'nocache_headers', array( $this, 'cache_ajax_response' ), 99 );
@@ -49,6 +52,25 @@
             }
             
             // Start
+            
+            public function before_variations_form() {
+                global $product;
+                $threshold_min  = apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );
+                $threshold_max  = $this->get_variation_threshold_max( $product );
+                $total_children = count( $product->get_children() );
+                $attributes     = apply_filters( 'woo_variation_swatches_single_product_wrapper_attributes', array(
+                    'data-product_id'    => absint( $product->get_id() ),
+                    'data-threshold_min' => absint( $threshold_min ),
+                    'data-threshold_max' => absint( $threshold_max ),
+                    'data-total'         => absint( $total_children ),
+                ),                               $product );
+                
+                echo sprintf( '<div %s>', wc_implode_html_attributes( $attributes ) ); // WPCS: XSS ok. );
+            }
+            
+            public function after_variations_form() {
+                echo '</div>';
+            }
             
             public function stop_prevent_ajax_caching() {
                 global $wp_query;
@@ -139,8 +161,8 @@
             public function add_to_cart_variation_params( $params, $handle ) {
                 
                 if ( 'wc-add-to-cart-variation' === $handle ) {
-                    
                     if ( is_product() ) {
+                        
                         $product = wc_get_product();
                         
                         $params[ 'woo_variation_swatches_ajax_variation_threshold_min' ] = apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );

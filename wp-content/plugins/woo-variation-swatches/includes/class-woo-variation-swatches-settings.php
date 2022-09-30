@@ -253,7 +253,7 @@
                 }
             }
             
-            public static function get_all_image_sizes() {
+            public function get_all_image_sizes() {
                 
                 $image_subsizes = wp_get_registered_image_subsizes();
                 
@@ -267,6 +267,21 @@
                     
                     return $carry;
                 },                                                                                array() ) );
+            }
+            
+            public function get_product_categories() {
+                
+                $args = array(
+                    'orderby'    => 'name',
+                    'order'      => 'asc',
+                    'hide_empty' => true,
+                );
+                
+                $categories = get_terms( 'product_cat', $args );
+                
+                $ids = wp_list_pluck( $categories, 'name', 'term_id' );
+                
+                return apply_filters( 'woo_variation_swatches_get_product_categories', $ids, $categories, $args );
             }
             
             public function plugins_tab( $label ) {

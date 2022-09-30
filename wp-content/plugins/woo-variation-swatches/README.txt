@@ -6,7 +6,7 @@ Requires at least: 5.5
 Tested up to: 6.0
 WC requires at least: 5.5
 WC tested up to: 6.9
-Stable tag: 2.0.10
+Stable tag: 2.0.11
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -615,6 +615,10 @@ And your are ready to go.
 12. Global Variation Color Swatches Attribute List Preview
 
 == Changelog ==
+
+= 2.0.11 - 28-09-2022 =
+
+* Update: WooCommerce Support
 
 = 2.0.10 - 15-09-2022 =
 

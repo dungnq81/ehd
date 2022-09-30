@@ -242,14 +242,14 @@ if (!class_exists('Woocommerce_Plugin')) {
         /** ---------------------------------------- */
 
         /**
-         * Add 'woocommerce-active' class to the body tag
+         * Add 'woocommerce' class to the body tag
          *
          * @param array $classes css classes applied to the body tag.
-         * @return array $classes modified to include 'woocommerce-active' class
+         * @return array $classes modified to include 'woocommerce' class
          */
         public function woocommerce_body_class($classes)
         {
-            $classes[] = 'woocommerce-active';
+            $classes[] = 'woocommerce';
             return $classes;
         }
 
