@@ -155,3 +155,5 @@ fabric.properties
 /mix-manifest.json
 /package-lock.json
 /wp-content/themes/hello-elementor/
+/wp-content/themes/ehd/assets/
+/wp-content/plugins/ehd-core/assets/

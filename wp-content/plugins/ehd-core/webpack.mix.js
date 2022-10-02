@@ -8,7 +8,7 @@ const assets = dir + '/assets';
 
 mix.disableNotifications()
     .sourceMaps()
-    // .copyDirectory(dir + '/resources/img', assets + '/img')
+    .copyDirectory(dir + '/resources/img', assets + '/img')
 
     .sass(dir + '/resources/sass/editor-style.scss', assets + '/css')
     .sass(dir + '/resources/sass/admin.scss', assets + '/css')

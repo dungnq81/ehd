@@ -1,3 +1,0 @@
-@supports not (aspect-ratio:1/1){.test>.cell{width:25%}@media only screen and (max-width:63.96875rem){.test>.cell{width:33.3333333333%}}@media only screen and (max-width:39.96875rem){.test>.cell{width:50%}}}@supports (aspect-ratio:1/1){.test{gap:0}@media only screen and (max-width:39.96875rem){.test{gap:0}}.test>.cell{width:25%}@media only screen and (max-width:63.96875rem){.test>.cell{width:33.3333333333%}}@media only screen and (max-width:39.96875rem){.test>.cell{width:50%}}}
-
-/*# sourceMappingURL=app.css.map*/
