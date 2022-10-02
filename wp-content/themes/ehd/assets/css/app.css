@@ -1,1 +1,81 @@
-
+/** */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** media */
+/** breakpoint */
+/** */
+/** */
+/** */
+/** media shorthand */
+/** */
+/** */
+/** */
+/** */
+/** $gap_support : auto, true, false */
+/** */
+/** */
+/** $gutter: padding or margin */
+/** $gutter: padding or margin */
+/** $gutter: padding or margin */
+/** */
+/** */
+/** padding-left, padding-right, left, right ... */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** */
+/** Button hover effect*/
+/** */
+/** functions to urlencode the svg string*/
+/** $string - svg */
+/** add unique id image url */
+/** https://github.com/pentzzsolt/sass-is-int/blob/master/_is-int.scss */
+/** https://webdesign.tutsplus.com/tutorials/an-introduction-to-error-handling-in-sass--cms-19996 */
+/** get breakpoint */
+/** size */
+@supports not (aspect-ratio: 1/1) {
+  .test > .cell {
+    width: 25%;
+  }
+  @media only screen and (max-width: 63.96875rem) {
+    .test > .cell {
+      width: 33.3333333333%;
+    }
+  }
+  @media only screen and (max-width: 39.96875rem) {
+    .test > .cell {
+      width: 50%;
+    }
+  }
+}
+@supports (aspect-ratio: 1/1) {
+  .test {
+    gap: 0;
+  }
+  @media only screen and (max-width: 39.96875rem) {
+    .test {
+      gap: 0;
+    }
+  }
+  .test > .cell {
+    width: 25%;
+  }
+  @media only screen and (max-width: 63.96875rem) {
+    .test > .cell {
+      width: 33.3333333333%;
+    }
+  }
+  @media only screen and (max-width: 39.96875rem) {
+    .test > .cell {
+      width: 50%;
+    }
+  }
+}

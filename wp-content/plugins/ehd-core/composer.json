@@ -1,5 +1,5 @@
 {
-    "name": "wordpress/ehd-core",
+    "name": "plugins/ehd-core",
     "description": "eHD core plugin",
     "authors": [
         {
@@ -7,11 +7,24 @@
         }
     ],
     "autoload": {
-        "files": [],
-        "psr-4": {},
-        "exclude-from-classmap": []
+        "files": [
+            "inc/Plugin.php",
+            "inc/elementor_widgets.php",
+            "inc/widgets.php"
+        ],
+        "psr-4": {
+            "EHD\\Plugins\\Core\\": "inc/Core",
+            "EHD\\Plugins\\Elementor\\": "inc/Elementor",
+            "EHD\\Plugins\\Themes\\": "inc/Themes",
+            "EHD\\Plugins\\Widgets\\": "inc/Widgets",
+            "EHD\\Plugins\\Woocommerce\\": "inc/Woocommerce"
+        },
+        "exclude-from-classmap": [
+            "**/Widgets/_/**"
+        ]
     },
     "require": {
-        "symfony/var-dumper": "^v5.4.9"
+        "symfony/var-dumper": "^v5.4.9",
+        "roots/wp-password-bcrypt": "^1.1"
     }
 }

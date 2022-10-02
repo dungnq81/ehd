@@ -10,11 +10,10 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        '41ce70c6c7f3c6791821442646f117cb' => __DIR__ . '/../..' . '/includes/helpers.php',
-        '285781b1c13f0e1463cd9c52f4ef3cb2' => __DIR__ . '/../..' . '/includes/image-sizes.php',
-        '253a366e4bace02871b18360660117f9' => __DIR__ . '/../..' . '/includes/plugins.php',
-        '12a980a32773b0e9b8242be9de060eae' => __DIR__ . '/../..' . '/includes/template-hooks.php',
-        'c0c66a97fd0752c21063c3da995d1ce4' => __DIR__ . '/../..' . '/includes/widgets.php',
+        '15a24e14812a947eb0b080b5e42d8e48' => __DIR__ . '/../..' . '/inc/helpers.php',
+        '844ebf298fed0f1076c0950eea19aae3' => __DIR__ . '/../..' . '/inc/image-sizes.php',
+        '42297ec638874c95bc93e4e7a25b4a49' => __DIR__ . '/../..' . '/inc/ins.php',
+        'bfea11ae2d4ffd753983e5d485ab7c98' => __DIR__ . '/../..' . '/inc/template-hooks.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -34,11 +33,9 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         ),
         'E' => 
         array (
-            'EHD\\Widgets\\' => 12,
             'EHD\\Walkers\\' => 12,
             'EHD\\Themes\\' => 11,
-            'EHD\\Plugins\\' => 12,
-            'EHD\\Helpers\\' => 12,
+            'EHD\\Ins\\' => 8,
         ),
     );
 
@@ -63,25 +60,17 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'EHD\\Widgets\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/includes/Widgets',
-        ),
         'EHD\\Walkers\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/includes/Walkers',
+            0 => __DIR__ . '/../..' . '/inc/Walkers',
         ),
         'EHD\\Themes\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/includes/Themes',
+            0 => __DIR__ . '/../..' . '/inc/Themes',
         ),
-        'EHD\\Plugins\\' => 
+        'EHD\\Ins\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/includes/Plugins',
-        ),
-        'EHD\\Helpers\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/includes/Helpers',
+            0 => __DIR__ . '/../..' . '/inc/Ins',
         ),
     );
 

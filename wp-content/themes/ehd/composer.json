@@ -8,22 +8,18 @@
 	],
 	"autoload": {
 		"files": [
-			"includes/helpers.php",
-			"includes/image-sizes.php",
-			"includes/plugins.php",
-			"includes/template-hooks.php",
-			"includes/widgets.php"
+			"inc/helpers.php",
+			"inc/image-sizes.php",
+			"inc/ins.php",
+			"inc/template-hooks.php"
 		],
 		"psr-4": {
-			"EHD\\Helpers\\": "includes/Helpers",
-			"EHD\\Plugins\\": "includes/Plugins",
-			"EHD\\Themes\\": "includes/Themes",
-			"EHD\\Walkers\\": "includes/Walkers",
-			"EHD\\Widgets\\": "includes/Widgets"
+			"EHD\\Ins\\": "inc/Ins",
+			"EHD\\Themes\\": "inc/Themes",
+			"EHD\\Walkers\\": "inc/Walkers"
 		},
 		"exclude-from-classmap": [
-			"**/Plugins/ACF/_/**",
-			"**/Widgets/_/**"
+			"**/Ins/ACF/_/**"
 		]
 	},
 	"require": {

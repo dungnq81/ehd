@@ -328,7 +328,7 @@
 
 /** $gap_support : auto, true, false */
 @mixin grid-self($total_n: 1, $self_n: 1, $gap: 0, $gap_support: auto) {
-    @if $gap < 0 {
+    @if $gap <= 0 {
         $gap: 0;
     }
 
@@ -950,9 +950,7 @@
     }
 }
 
-/** */
-
-/// @access private
+//// @access private
 @mixin -media-gap($d: 30, $t: false, $m: false) {
     @include media-css(gap, $d, $t, $m);
 }

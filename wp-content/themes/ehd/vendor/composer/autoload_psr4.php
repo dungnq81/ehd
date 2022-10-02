@@ -11,9 +11,7 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
-    'EHD\\Widgets\\' => array($baseDir . '/includes/Widgets'),
-    'EHD\\Walkers\\' => array($baseDir . '/includes/Walkers'),
-    'EHD\\Themes\\' => array($baseDir . '/includes/Themes'),
-    'EHD\\Plugins\\' => array($baseDir . '/includes/Plugins'),
-    'EHD\\Helpers\\' => array($baseDir . '/includes/Helpers'),
+    'EHD\\Walkers\\' => array($baseDir . '/inc/Walkers'),
+    'EHD\\Themes\\' => array($baseDir . '/inc/Themes'),
+    'EHD\\Ins\\' => array($baseDir . '/inc/Ins'),
 );
