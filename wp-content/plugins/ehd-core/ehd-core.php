@@ -38,6 +38,7 @@ function ehd_load()
 {
     // Load localization file
     load_plugin_textdomain('ehd-core');
+    load_plugin_textdomain('ehd-core', false, EHD_PLUGIN_PATH . 'languages');
 
     // Notice if the Elementor is not active
     if (!did_action('elementor/loaded')) {

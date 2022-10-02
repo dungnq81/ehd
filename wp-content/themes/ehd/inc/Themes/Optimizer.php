@@ -137,6 +137,11 @@ if (!class_exists('Optimizer')) {
                 return $actions;
 
             }, 10, 4);
+
+            //...
+            add_filter('admin_footer_text', function () {
+                printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', 'ehd'), EHD_AUTHOR);
+            });
         }
 
         // ------------------------------------------------------

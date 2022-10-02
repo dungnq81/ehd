@@ -21,6 +21,8 @@ class Admin
             add_filter('update_footer', '__return_empty_string', 11);
         }
 
+        add_action('admin_enqueue_scripts', [&$this, 'admin_enqueue_scripts'], 31);
+
         add_action('admin_init', [&$this, 'ehd_admin_init'], 10);
         add_action('admin_menu', [&$this, 'ehd_dashboard_meta_box'], 11);
 
@@ -307,5 +309,16 @@ class Admin
 
         /*Remove WordPress Events and News*/
         remove_meta_box('dashboard_primary', 'dashboard', 'normal');
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * @return void
+     */
+    public function admin_enqueue_scripts()
+    {
+        wp_enqueue_style("admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_VERSION);
+        wp_enqueue_script("admin", EHD_PLUGIN_URL . "assets/js/admin.js", ["jquery"], EHD_VERSION, true);
     }
 }

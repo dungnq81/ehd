@@ -19,7 +19,11 @@ class Customizer
     public function __construct()
     {
         // Theme Customizer settings and controls.
-        add_action('customize_register', [&$this, 'ehd_register'], 30);
+        add_action('customize_register', [&$this, 'customize_register'], 29);
+
+        //...
+        add_action('login_enqueue_scripts', [&$this, 'login_enqueue_script'], 31);
+        add_action('enqueue_block_editor_assets', [&$this, 'enqueue_block_editor_assets']);
     }
 
     /**
@@ -27,7 +31,7 @@ class Customizer
      *
      * @param WP_Customize_Manager $wp_customize Theme Customizer object.
      */
-    public function ehd_register(WP_Customize_Manager $wp_customize)
+    public function customize_register(WP_Customize_Manager $wp_customize)
     {
         // logo mobile
         $wp_customize->add_setting('alternative_logo');
@@ -593,5 +597,49 @@ class Customizer
                 'type' => 'textarea',
             ]
         );
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * @retun void
+     */
+    public function login_enqueue_script()
+    {
+        wp_enqueue_style("login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_VERSION);
+        wp_enqueue_script("login", EHD_PLUGIN_URL . "assets/js/login.js", ["jquery"], EHD_VERSION, true);
+
+        // custom script/style
+        $logo = EHD_PLUGIN_URL . "assets/img/logo.png";
+        $logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
+
+        $css = new Css;
+        if ($logo_bg) {
+            $css->set_selector('body.login');
+            $css->add_property('background-image', 'url(' . $logo_bg . ')');
+        }
+
+        $css->set_selector('body.login #login h1 a');
+        if ($logo) {
+            $css->add_property('background-image', 'url(' . $logo . ')');
+        } else {
+            $css->add_property('background-image', 'unset');
+        }
+
+        if ($css->css_output()) {
+            wp_add_inline_style('login-style', $css->css_output());
+        }
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * Gutenberg editor
+     *
+     * @return void
+     */
+    public function enqueue_block_editor_assets()
+    {
+        wp_enqueue_style('editor-style', EHD_PLUGIN_URL . "assets/css/editor-style.css");
     }
 }

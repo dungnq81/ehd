@@ -1,8 +1,8 @@
 <?php
 
-namespace EHD\Themes;
+namespace EHD\Plugins\Themes;
 
-\defined('\WPINC') || die;
+\defined('ABSPATH') || die;
 
 /**
  * Builds our dynamic CSS.

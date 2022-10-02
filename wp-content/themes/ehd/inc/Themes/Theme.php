@@ -29,8 +29,6 @@ class Theme
         add_filter('hello_elementor_register_menus', [&$this, 'ehd_register_menus']);
 
         //...
-        add_action('login_enqueue_scripts', [&$this, 'ehd_login_enqueue_script'], 30);
-        add_action('enqueue_block_editor_assets', [&$this, 'ehd_block_editor_assets']);
         add_action('wp_enqueue_scripts', [&$this, 'ehd_enqueue_scripts'], 99);
 
         //...
@@ -46,14 +44,12 @@ class Theme
      */
     public function init()
     {
-        (new Optimizer());
-        (new Shortcode());
-
-        if (is_admin()) {
-            (new Admin());
-        } else {
+        if (!is_admin()) {
             (new Fonts());
         }
+
+        (new Optimizer());
+        (new Shortcode());
     }
 
     /** ---------------------------------------- */
@@ -165,7 +161,7 @@ class Theme
          * See: https://translate.wordpress.org/projects/wp-themes/hello-elementor
          */
         load_theme_textdomain('hello-elementor', get_template_directory() . '/languages');
-        load_theme_textdomain('ehd', trailingslashit(WP_LANG_DIR) . 'themes/');
+        load_theme_textdomain('ehd', trailingslashit(WP_LANG_DIR) . 'themes');
         load_theme_textdomain('ehd', get_stylesheet_directory() . '/languages');
 
         // Add theme support for various features.
@@ -190,8 +186,7 @@ class Theme
         add_theme_support('wp-block-styles');
 
         // This theme styles the visual editor to resemble the theme style.
-        add_theme_support('editor-styles');
-        add_editor_style(get_stylesheet_directory_uri() . "/assets/css/editor-style.css");
+        add_editor_style();
 
         // Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
         remove_theme_support('block-templates');
@@ -224,50 +219,6 @@ class Theme
                 ]
             )
         );
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * Gutenberg editor
-     *
-     * @return void
-     */
-    public function ehd_block_editor_assets()
-    {
-        wp_enqueue_style('editor-style', get_stylesheet_directory_uri() . "/assets/css/editor-style.css");
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @retun void
-     */
-    public function ehd_login_enqueue_script()
-    {
-        wp_enqueue_style("login-style", get_stylesheet_directory_uri() . "/assets/css/admin.css", [], EHD_THEME_VERSION);
-        wp_enqueue_script("login", get_stylesheet_directory_uri() . "/assets/js/login.js", ["jquery"], EHD_THEME_VERSION, true);
-
-        // custom script/style
-        $logo = get_theme_file_uri("/assets/img/logo.png");
-        $logo_bg = get_theme_file_uri("/assets/img/login-bg.jpg");
-
-        $css = new Css;
-        if ($logo_bg) {
-            $css->set_selector('body.login');
-            $css->add_property('background-image', 'url(' . $logo_bg . ')');
-        }
-
-        $css->set_selector('body.login #login h1 a');
-        if ($logo) {
-            $css->add_property('background-image', 'url(' . $logo . ')');
-        } else {
-            $css->add_property('background-image', 'unset');
-        }
-
-        if ($css->css_output()) {
-            wp_add_inline_style('login-style', $css->css_output());
-        }
     }
 
     /** ---------------------------------------- */
@@ -312,6 +263,6 @@ class Theme
 
         // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
         $loader = new ScriptLoader;
-        add_filter( 'script_loader_tag', [ &$loader, 'filterScriptTag' ], 10, 3 );
+        add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
     }
 }

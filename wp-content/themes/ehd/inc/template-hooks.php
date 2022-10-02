@@ -5,7 +5,7 @@
  */
 
 use EHD\Plugins\Core\Helper;
-use EHD\Themes\Css;
+use EHD\Plugins\Themes\Css;
 
 \defined('\WPINC') || die;
 
