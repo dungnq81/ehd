@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Plugins\Core\Trait;
+namespace EHD\Plugins\Core\Traits;
 
 \defined('ABSPATH') || die;
 
@@ -67,7 +67,7 @@ trait Arr
     }
 
     /**
-     * @param string $key
+     * @param mixed $key
      * @param array  $array
      * @param array  $insert_array
      *
@@ -86,7 +86,7 @@ trait Arr
      *
      * @return array
      */
-    public static function insert(array $array, array $insert_array, mixed $key, string $position = 'before')
+    public static function insert(array $array, array $insert_array, $key, string $position = 'before')
     {
         $keyPosition = array_search($key, array_keys($array));
         if ($keyPosition === false) {
@@ -109,7 +109,7 @@ trait Arr
      *
      * @return array
      */
-    public static function prepend(array &$array, mixed $value, mixed $key = null)
+    public static function prepend(array &$array, $value, $key = null)
     {
         if (!is_null($key)) {
             return $array = [$key => $value] + $array;

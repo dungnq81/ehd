@@ -220,7 +220,7 @@
 .elementor-templates-modal .dialog-message {
   height: 750px;
   max-height: 85vh;
-  overflow: auto;
+  overflow-y: scroll;
   padding-top: 25px;
 }
 .elementor-templates-modal .dialog-content {

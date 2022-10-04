@@ -2,6 +2,8 @@
 
 namespace EHD\Ins;
 
+use EHD\Plugins\Core\Helper;
+
 /**
  * RankMath Plugins
  * @author   WEBHD
@@ -22,7 +24,7 @@ if (!class_exists('WpRocket_Ins')) {
         public function __construct()
         {
             // server does not support using .htaccess
-            if (!htaccess()) {
+            if (!Helper::htAccess()) {
 
                 // Remove rewrite rules block of WP Rocket from .htaccess.
                 add_filter('rocket_htaccess_charset', '__return_false');

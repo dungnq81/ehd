@@ -39,7 +39,7 @@ abstract class Widget extends WP_Widget
             return null;
         }
 
-        return (object) get_fields($id);
+        return Helper::toObject(get_fields($id));
     }
 
     /**

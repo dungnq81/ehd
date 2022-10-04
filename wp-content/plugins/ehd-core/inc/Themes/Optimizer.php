@@ -17,6 +17,9 @@ class Optimizer
     {
         $this->_cleanup();
 
+        // filter post search only by title
+        add_filter("posts_search", [&$this, 'post_search_by_title'], 500, 2);
+
         // remove id li navigation
         add_filter('nav_menu_item_id', '__return_null', 10, 3);
 
@@ -53,6 +56,11 @@ class Optimizer
         add_filter('wp_headers', function ($headers) {
             unset($headers['X-Pingback'], $headers['x-pingback']);
             return $headers;
+        });
+
+        //...
+        add_filter('excerpt_more', function () {
+            return ' ' . '&hellip;';
         });
 
         //...
@@ -162,5 +170,41 @@ class Optimizer
         }
 
         return $src;
+    }
+
+    // ------------------------------------------------------
+
+    /**
+     * @param $search
+     * @param $wp_query
+     *
+     * @return string
+     */
+    public function post_search_by_title($search, $wp_query)
+    {
+        global $wpdb;
+
+        if (empty($search)) {
+            return $search; // skip processing – no search term in query
+        }
+
+        $q = $wp_query->query_vars;
+        $n = !empty($q['exact']) ? '' : '%';
+
+        $search = $searchand = '';
+        foreach (Helper::toArray($q['search_terms']) as $term) {
+            $term = esc_sql($wpdb->esc_like($term));
+            $search .= "{$searchand}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
+            $searchand = " AND ";
+        }
+
+        if (!empty($search)) {
+            $search = " AND ({$search}) ";
+            if (!is_user_logged_in()) {
+                $search .= " AND ($wpdb->posts.post_password = '') ";
+            }
+        }
+
+        return $search;
     }
 }

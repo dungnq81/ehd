@@ -2,16 +2,16 @@
 
 namespace EHD\Plugins\Core;
 
-use EHD\Plugins\Core\Trait\File;
-use EHD\Plugins\Core\Trait\Plugin;
-use EHD\Plugins\Core\Trait\Wp;
+use EHD\Plugins\Core\Traits\File;
+use EHD\Plugins\Core\Traits\Plugin;
+use EHD\Plugins\Core\Traits\Wp;
 
 \defined('ABSPATH') || die;
 
 /**
  * Helper Class
  *
- * @author   WEBHD
+ * @author WEBHD
  */
 class Helper
 {
@@ -24,7 +24,7 @@ class Helper
     /**
      * @return string[]
      */
-    public static function getSqlOperators()
+    public static function getSqlOperators() : array
     {
         $compare = self::getMetaCompare();
         $compare['IS NULL'] = 'IS NULL';
@@ -49,7 +49,7 @@ class Helper
      * @param bool $thumb
      * @return string
      */
-    public static function placeholderSrc(bool $img_wrap = true, bool $thumb = true)
+    public static function placeholderSrc(bool $img_wrap = true, bool $thumb = true) : string
     {
         $src = EHD_PLUGIN_URL . 'assets/img/placeholder.png';
         if ($thumb) {

@@ -8,13 +8,8 @@ use EHD\Plugins\Themes\Optimizer;
 
 \defined('ABSPATH') || die;
 
-class Plugin
+final class Plugin
 {
-    /**
-     * Constructor
-     *
-     * @access public
-     */
     public function __construct()
     {
         $this->init();
@@ -23,7 +18,7 @@ class Plugin
     /**
      * @return void
      */
-    public function init()
+    public function init() : void
     {
         (new Customizer());
         (new Optimizer());

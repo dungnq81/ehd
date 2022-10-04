@@ -30,20 +30,6 @@ $(() => {
 
 });
 
-/** DOMContentLoaded */
-document.addEventListener( 'DOMContentLoaded', () => {
-
-    /*attribute target="_blank" is not W3C compliant*/
-    const _blanks = [...document.querySelectorAll('a._blank, a.blank, a[target="_blank"]')];
-    _blanks.forEach((el, index) => {
-        el.removeAttribute('target');
-        el.setAttribute('target', '_blank');
-        if (!1 === el.hasAttribute('rel')) {
-            el.setAttribute('rel', 'noopener noreferrer nofollow');
-        }
-    });
-});
-
 /** vars */
 const getParameters = (URL) => JSON.parse('{"' + decodeURI(URL.split("?")[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 const touchSupported = () => { ('ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch); };
@@ -121,6 +107,3 @@ function pushState(page, title, url) {
         window.location.assign(url);
     }
 }
-
-/** import Swiper bundle with all modules installed */
-import { Swiper } from 'swiper/bundle';

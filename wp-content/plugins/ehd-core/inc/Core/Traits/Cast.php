@@ -1,6 +1,8 @@
 <?php
 
-namespace EHD\Plugins\Core\Trait;
+namespace EHD\Plugins\Core\Traits;
+
+use EHD\Plugins\Core\Helper;
 
 \defined('ABSPATH') || die;
 
@@ -62,7 +64,7 @@ trait Cast
         if (is_object($value) && in_array('__toString', get_class_methods($value))) {
             return (string) $value->__toString();
         }
-        if (is_empty($value)) {
+        if (Helper::isEmpty($value)) {
             return '';
         }
         if (self::isIndexedAndFlat($value)) {

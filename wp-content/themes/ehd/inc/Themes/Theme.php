@@ -11,7 +11,7 @@ use EHD\Plugins\Core\Helper;
  *
  * @author EHD
  */
-class Theme
+final class Theme
 {
     public function __construct()
     {

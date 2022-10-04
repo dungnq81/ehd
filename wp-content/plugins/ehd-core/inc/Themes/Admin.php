@@ -12,11 +12,11 @@ use EHD\Plugins\Core\Helper;
 
 \defined('ABSPATH') || die;
 
-class Admin
+final class Admin
 {
     public function __construct()
     {
-        /** remove admin wp version */
+        /** Remove admin wp version */
         if (!WP_DEBUG) {
             add_filter('update_footer', '__return_empty_string', 11);
         }
@@ -318,7 +318,7 @@ class Admin
      */
     public function admin_enqueue_scripts()
     {
-        wp_enqueue_style("admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_VERSION);
-        wp_enqueue_script("admin", EHD_PLUGIN_URL . "assets/js/admin.js", ["jquery"], EHD_VERSION, true);
+        wp_enqueue_style("admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION);
+        wp_enqueue_script("admin", EHD_PLUGIN_URL . "assets/js/admin.js", ["jquery"], EHD_PLUGIN_VERSION, true);
     }
 }

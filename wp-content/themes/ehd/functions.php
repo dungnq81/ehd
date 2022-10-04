@@ -22,7 +22,7 @@ if (!file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
 require_once $composer;
 
 if (!is_admin()) {
-    defined('EHD_VERSION') || wp_die(__('eHD Theme requires "ehd-core" plugin to work properly', 'ehd'));
+    defined('EHD_PLUGIN_VERSION') || wp_die(__('eHD Theme requires "ehd-core" plugin to work properly', 'ehd'));
 }
 
 // Initialize theme settings.

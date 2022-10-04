@@ -1,4 +1,4 @@
-/*! elementor - v3.7.7 - 20-09-2022 */
+/*! elementor - v3.7.8 - 02-10-2022 */
 .dialog-widget-content {
   background-color: #fff;
   position: absolute;
@@ -230,7 +230,7 @@
 .elementor-templates-modal .dialog-message {
   height: 750px;
   max-height: 85vh;
-  overflow: auto;
+  overflow-y: scroll;
   padding-top: 25px;
 }
 .elementor-templates-modal .dialog-content {

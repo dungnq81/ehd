@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Plugins\Core\Trait;
+namespace EHD\Plugins\Core\Traits;
 
 use WP_Error;
 use WP_Query;

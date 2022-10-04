@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Plugins\Core\Trait;
+namespace EHD\Plugins\Core\Traits;
 
 \defined('ABSPATH') || die;
 
