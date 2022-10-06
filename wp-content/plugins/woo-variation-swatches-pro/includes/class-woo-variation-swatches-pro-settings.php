@@ -272,6 +272,18 @@
                     ),
                     
                     array(
+                        'id'      => 'exclude_categories',
+                        'type'    => 'multiselect',
+                        //'is_pro' => true,
+                        'is_new'  => true,
+                        //'help_preview' => true,
+                        'options' => $this->get_product_categories(),
+                        'title'   => esc_html__( 'Exclude Product Categories', 'woo-variation-swatches-pro' ),
+                        'desc'    => esc_html__( 'Exclude product categories to disable variation swatches.', 'woo-variation-swatches-pro' ),
+                        'default' => '',
+                    ),
+                    
+                    array(
                         'type' => 'sectionend',
                         'id'   => 'advanced_options',
                     ),
@@ -471,7 +483,7 @@
                         'type'    => 'select',
                         'title'   => esc_html__( 'Tooltip image size', 'woo-variation-swatches-pro' ),
                         'default' => 'variation_swatches_tooltip_size',
-                        'options' => self::get_all_image_sizes(),
+                        'options' => $this->get_all_image_sizes(),
                     ),
                     
                     array(
@@ -889,8 +901,6 @@
                         'type' => 'sectionend',
                         'id'   => 'archive_options',
                     ),
-                
-                
                 );
                 
                 return $settings;
@@ -972,20 +982,20 @@
                     ),
                     
                     array(
-                        'id'      => 'linkable_attribute_link_type',
-                        'type'    => 'select',
-                        'title'   => esc_html__( 'Linkable Attribute Link type', 'woo-variation-swatches-pro' ),
-                        'desc_tip'    => esc_html__( 'Linkable Attribute Link should be full url or partial url', 'woo-variation-swatches-pro' ),
-                        'default' => 'variation',
-                        'options' => array(
+                        'id'       => 'linkable_attribute_link_type',
+                        'type'     => 'select',
+                        'title'    => esc_html__( 'Linkable Attribute Link type', 'woo-variation-swatches-pro' ),
+                        'desc_tip' => esc_html__( 'Linkable Attribute Link should be full url or partial url', 'woo-variation-swatches-pro' ),
+                        'default'  => 'variation',
+                        'options'  => array(
                             'variation' => esc_html__( 'Variation Product Link', 'woo-variation-swatches-pro' ),
                             'attribute' => esc_html__( 'Selected Attribute Link', 'woo-variation-swatches-pro' ),
                         ),
-                        'require' => $this->normalize_required_attribute( array(
-                                                                              'catalog_mode_trigger' => array( 'type' => 'equal', 'value' => 'hover' ),
-                                                                              'enable_catalog_mode'  => array( 'type' => '!empty' ),
-                                                                              'linkable_attribute'   => array( 'type' => '!empty' )
-                                                                          ) )
+                        'require'  => $this->normalize_required_attribute( array(
+                                                                               'catalog_mode_trigger' => array( 'type' => 'equal', 'value' => 'hover' ),
+                                                                               'enable_catalog_mode'  => array( 'type' => '!empty' ),
+                                                                               'linkable_attribute'   => array( 'type' => '!empty' )
+                                                                           ) )
                     ),
                     
                     array(

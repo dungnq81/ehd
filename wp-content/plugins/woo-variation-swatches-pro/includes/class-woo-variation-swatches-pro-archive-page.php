@@ -402,19 +402,15 @@
                 
                 parent::enqueue_scripts();
                 
-                if ( is_product() ) {
-                    $product = wc_get_product();
-                    
-                    // Disable Pro
-                    if ( apply_filters( 'disable_woo_variation_swatches_archive_product', false, $product, $this ) ) {
-                        return;
-                    }
-                    
-                    if ( $product->is_type( 'variable' ) ) {
-                        wp_deregister_script( 'wc-add-to-cart-variation' );
-                        wp_register_script( 'wc-add-to-cart-variation', woo_variation_swatches()->pro_assets_url( "/js/add-to-cart-variation{$suffix}.js" ), array( 'jquery', 'wp-util', 'underscore', 'jquery-blockui' ), woo_variation_swatches()->pro_assets_version( "/js/add-to-cart-variation{$suffix}.js" ), true );
-                    }
+                $product = is_product() ? wc_get_product() : null;
+                
+                // Disable Pro
+                if ( apply_filters( 'disable_woo_variation_swatches_archive_product', false, $product, $this ) ) {
+                    return;
                 }
+                
+                wp_deregister_script( 'wc-add-to-cart-variation' );
+                wp_register_script( 'wc-add-to-cart-variation', woo_variation_swatches()->pro_assets_url( "/js/add-to-cart-variation{$suffix}.js" ), array( 'jquery', 'wp-util', 'underscore', 'jquery-blockui' ), woo_variation_swatches()->pro_assets_version( "/js/add-to-cart-variation{$suffix}.js" ), true );
                 
                 wp_register_script( 'woo-variation-swatches-pro', woo_variation_swatches()->pro_assets_url( "/js/frontend-pro{$suffix}.js" ), array( 'jquery', 'wp-util', 'underscore', 'jquery-blockui' ), woo_variation_swatches()->pro_assets_version( "/js/frontend-pro{$suffix}.js" ), true );
                 
@@ -423,7 +419,6 @@
                 
                 wp_localize_script( 'wc-add-to-cart-variation', 'woo_variation_swatches_pro_options', $this->js_options() );
                 wp_localize_script( 'wc-add-to-cart-variation', 'woo_variation_swatches_pro_params', $this->js_params() );
-                
             }
             
             public function extra_js_options( $options ) {
@@ -645,8 +640,8 @@
                 $product_attribute_type    = woo_variation_swatches()->get_product_settings( $product, $attribute, 'type' );
                 
                 // Actual Settings
-                $default_to_button = empty( $product_default_to_button ) ? $global_convert_to_button : $product_default_to_button;
-                $convert_to_image  = empty( $product_convert_to_image ) ? $global_convert_to_image : $product_convert_to_image;
+                $default_to_button = empty( $product_default_to_button ) ? wc_string_to_bool( $global_convert_to_button ) : wc_string_to_bool( $product_default_to_button );
+                $convert_to_image  = empty( $product_convert_to_image ) ? wc_string_to_bool( $global_convert_to_image ) : wc_string_to_bool( $product_convert_to_image );
                 $attribute_type    = empty( $product_attribute_type ) ? $global_attribute_type : $product_attribute_type;
                 
                 if ( ! in_array( $attribute_type, $attribute_types ) ) {

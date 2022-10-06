@@ -591,6 +591,7 @@
                     return $html;
                 }
                 
+                
                 // Get selected value.
                 if ( empty( $args[ 'selected' ] ) && $args[ 'attribute' ] && $args[ 'product' ] instanceof WC_Product ) {
                     $selected_key = wc_variation_attribute_name( $args[ 'attribute' ] );
@@ -636,6 +637,18 @@
                 $default_to_button = empty( $product_default_to_button ) ? wc_string_to_bool( $global_default_to_button ) : wc_string_to_bool( $product_default_to_button );
                 $convert_to_image  = empty( $product_default_to_image ) ? wc_string_to_bool( $global_default_to_image ) : wc_string_to_bool( $product_default_to_image );
                 $attribute_type    = empty( $product_attribute_type ) ? $global_attribute_type : $product_attribute_type;
+                
+                // Exclude Category
+                $global_exclude_categories = map_deep( woo_variation_swatches()->get_option( 'exclude_categories', array() ), 'absint' );
+                $product_cats_ids          = wc_get_product_term_ids( $product->get_id(), 'product_cat' );
+                
+                $exclude = array_filter( $global_exclude_categories, function ( $value ) use ( $product_cats_ids ) {
+                    return in_array( $value, $product_cats_ids );
+                } );
+                
+                if ( ! empty( $exclude ) ) {
+                    return $html;
+                }
                 
                 if ( ! in_array( $attribute_type, $attribute_types ) ) {
                     return $html;

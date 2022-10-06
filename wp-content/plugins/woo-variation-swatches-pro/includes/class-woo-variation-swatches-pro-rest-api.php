@@ -34,15 +34,21 @@
                 // /wp-json/woo-variation-swatches/v1/single-product/PRODUCT_ID
                 add_action( 'rest_api_init', array( $this, 'register_archive_product_rest_route' ) );
                 add_action( 'rest_api_init', array( $this, 'register_single_product_rest_route' ) );
+                
+                add_filter( 'wp_rest_cache/allowed_endpoints', array( $this, 'rest_cache_allowed_endpoints' ) );
+                
+                add_filter( 'litespeed_const_DONOTCACHEPAGE', '__return_false' );
+                add_action( 'litespeed_load_thirdparty', array( $this, 'litespeed_cache' ) );
             }
             
             protected function init() {
+            
             }
             
             public function get_args_params() {
                 $params                 = array();
                 $params[ 'product_id' ] = array(
-                    'description'       => __( 'Product ID.', 'woocommerce' ),
+                    'description'       => esc_html__( 'Product ID.', 'woocommerce' ),
                     'type'              => 'integer',
                     'sanitize_callback' => 'absint',
                     'validate_callback' => array( $this, 'validate_request_arg' ),
@@ -55,10 +61,34 @@
                 return is_numeric( $param );
             }
             
-            public function do_not_cache( $status = false ) {
-                wc_maybe_define_constant( 'DONOTCACHEPAGE', $status );
-                wc_maybe_define_constant( 'DONOTCACHEOBJECT', $status );
-                wc_maybe_define_constant( 'DONOTCACHEDB', $status );
+            public function rest_cache_allowed_endpoints( $allowed_endpoints ) {
+                
+                if ( ! isset( $allowed_endpoints[ 'woo-variation-swatches/v1' ] ) ) {
+                    $allowed_endpoints[ 'woo-variation-swatches/v1' ][] = 'archive-product';
+                    $allowed_endpoints[ 'woo-variation-swatches/v1' ][] = 'single-product';
+                }
+                
+                return $allowed_endpoints;
+            }
+            
+            public function litespeed_cache() {
+                add_action( 'litespeed_control_finalize', function () {
+                    
+                    if ( ! apply_filters( 'woo_variation_swatches_litespeed_cache_control', true ) ) {
+                        return;
+                    }
+                    
+                    if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+                        do_action( 'litespeed_control_set_cacheable', 'Woo Variation Swatches - REST API Set Cache' );
+                        do_action( 'litespeed_control_force_cacheable', 'Woo Variation Swatches - REST API Force Cache' );
+                    }
+                },          20 );
+            }
+            
+            public function enable_cache_constant( $status = true ) {
+                wc_maybe_define_constant( 'DONOTCACHEPAGE', ! $status );
+                wc_maybe_define_constant( 'DONOTCACHEOBJECT', ! $status );
+                wc_maybe_define_constant( 'DONOTCACHEDB', ! $status );
             }
             
             public function rest_header( $object ) {
@@ -109,10 +139,16 @@
                                                  ), 403 );
                 }
                 
+                // Object cache single product
+                $cache_name = sprintf( 'wvs_rest_single_product_%s', $product->get_id() );
+                $cache      = new Woo_Variation_Swatches_Cache( $cache_name, 'wvs_rest_single_product' );
                 
-                $response_objects = $product->get_available_variations();
+                if ( false === ( $response_objects = $cache->get_cache( $cache_name ) ) ) {
+                    $response_objects = $product->get_available_variations();
+                    $cache->set_cache( $response_objects, $cache_name );
+                }
                 
-                
+                $this->enable_cache_constant();
                 $headers  = $this->rest_header( $product );
                 $response = rest_ensure_response( $response_objects );
                 $response->set_headers( $headers );
@@ -167,8 +203,17 @@
                     $available_variations[] = $this->get_available_variation( $variation, $product );
                 }
                 
-                $response_objects = array_values( array_filter( $available_variations ) );
                 
+                // Object cache archive product
+                $cache_name = sprintf( 'wvs_rest_archive_product_%s', $product->get_id() );
+                $cache      = new Woo_Variation_Swatches_Cache( $cache_name, 'wvs_rest_archive_product' );
+                
+                if ( false === ( $response_objects = $cache->get_cache( $cache_name ) ) ) {
+                    $response_objects = array_values( array_filter( $available_variations ) );
+                    $cache->set_cache( $response_objects, $cache_name );
+                }
+                
+                $this->enable_cache_constant();
                 $headers  = $this->rest_header( $product );
                 $response = rest_ensure_response( $response_objects );
                 $response->set_headers( $headers );

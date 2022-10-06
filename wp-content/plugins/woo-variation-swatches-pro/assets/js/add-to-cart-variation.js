@@ -2,7 +2,7 @@
  * Variation Swatches for WooCommerce - PRO
  *
  * Author: Emran Ahmed ( emran.bd.08@gmail.com )
- * Date: 9/15/2022, 6:49:52 PM
+ * Date: 9/29/2022, 5:01:14 PM
  * Released under the GPLv3 license.
  */
 /******/ (function() { // webpackBootstrap
@@ -17,6 +17,9 @@ var __webpack_exports__ = {};
   var VariationForm = function VariationForm($form) {
     var self = this;
     self.$form = $form;
+    self.$wrapper = $form.find('>div');
+    self.threshold_max = parseInt(self.$wrapper.data('threshold_max'), 10);
+    self.total_children = parseInt(self.$wrapper.data('total'), 10);
     self.$attributeFields = $form.find('.variations select');
     self.$singleVariation = $form.find('.single_variation');
     self.$singleVariationWrap = $form.find('.single_variation_wrap');
@@ -191,7 +194,9 @@ var __webpack_exports__ = {};
     var form = event.data.variationForm;
     var limit = parseInt(wc_add_to_cart_variation_params.woo_variation_swatches_ajax_variation_threshold_max, 10);
     var total = parseInt(wc_add_to_cart_variation_params.woo_variation_swatches_total_children, 10);
-    var product_id = form.product_id; // The Logic
+    var product_id = form.product_id;
+    limit = isNaN(limit) ? form.threshold_max : limit;
+    total = isNaN(total) ? form.total_children : total; // The Logic
     // threshold_min = 30
     // threshold_max = 200
     // total_children = 20

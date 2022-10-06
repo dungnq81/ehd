@@ -15,6 +15,20 @@
     
     // $initial_loop = absint( $woocommerce_loop[ 'loop' ] <= 3 );
     
+    
+    // Exclude Category
+    $global_exclude_categories = map_deep( woo_variation_swatches()->get_option( 'exclude_categories', array() ), 'absint' );
+    $product_cats_ids          = wc_get_product_term_ids( $product->get_id(), 'product_cat' );
+    
+    $exclude = array_filter( $global_exclude_categories, function ( $value ) use ( $product_cats_ids ) {
+        return in_array( $value, $product_cats_ids );
+    } );
+    
+    if ( ! empty( $exclude ) ) {
+        return __return_empty_string();
+    }
+    
+    
     $attribute_keys      = array_keys( $attributes );
     $variations_json     = wp_json_encode( $available_variations );
     $variations_attr     = wc_esc_json( $variations_json );
