@@ -11,6 +11,4 @@ return array(
     '841f98c5d948ce534a6f87abe5b50614' => $vendorDir . '/roots/wp-password-bcrypt/wp-password-bcrypt.php',
     '667aeda72477189d0494fecd327c3641' => $vendorDir . '/symfony/var-dumper/Resources/functions/dump.php',
     'ed8e8b1c5434502ce047f777d92c74a3' => $baseDir . '/inc/Plugin.php',
-    '47e43d209d20faec761a54e41f71fca4' => $baseDir . '/inc/elementor_widgets.php',
-    'ed4c265d76a1930cdd19a6c8f742be07' => $baseDir . '/inc/widgets.php',
 );

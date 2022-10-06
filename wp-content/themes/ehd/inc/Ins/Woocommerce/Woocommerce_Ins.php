@@ -118,12 +118,12 @@ if (!class_exists('Woocommerce_Ins')) {
              */
             add_filter('woocommerce_catalog_orderby', function ($orders) {
                 $orders = [
-                    'menu_order' => __('Thứ tự sắp xếp', 'ehd'),
-                    'popularity' => __('Phổ biến', 'ehd'),
-                    'rating' => __('Đánh giá', 'ehd'),
-                    'date' => __('Mới nhất', 'ehd'),
-                    'price' => __('Giá thấp đến cao', 'ehd'),
-                    'price-desc' => __('Giá cao đến thấp', 'ehd'),
+                    'menu_order' => __('Thứ tự sắp xếp', EHD_TEXT_DOMAIN),
+                    'popularity' => __('Phổ biến', EHD_TEXT_DOMAIN),
+                    'rating' => __('Đánh giá', EHD_TEXT_DOMAIN),
+                    'date' => __('Mới nhất', EHD_TEXT_DOMAIN),
+                    'price' => __('Giá thấp đến cao', EHD_TEXT_DOMAIN),
+                    'price-desc' => __('Giá cao đến thấp', EHD_TEXT_DOMAIN),
                 ];
 
                 return $orders;
@@ -142,7 +142,7 @@ if (!class_exists('Woocommerce_Ins')) {
                     'wrap_after' => '</ul>',
                     'before' => '<li><span property="itemListElement" typeof="ListItem">',
                     'after' => '</span></li>',
-                    'home' => __('Home', 'ehd'),
+                    'home' => __('Home', EHD_TEXT_DOMAIN),
                 ];
 
                 return $defaults;

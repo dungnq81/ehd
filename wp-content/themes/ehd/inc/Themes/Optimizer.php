@@ -120,7 +120,7 @@ final class Optimizer
 
         //...
         add_filter('admin_footer_text', function () {
-            printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', 'ehd'), EHD_AUTHOR);
+            printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', EHD_TEXT_DOMAIN), EHD_AUTHOR);
         });
     }
 
@@ -171,7 +171,7 @@ final class Optimizer
                 'back_to_top_output',
                 sprintf(
                     '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" style="opacity:0;visibility:hidden;" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
-                    esc_attr__('Scroll back to top', 'ehd'),
+                    esc_attr__('Scroll back to top', EHD_TEXT_DOMAIN),
                     absint(apply_filters('back_to_top_scroll_speed', 400)),
                     absint(apply_filters('back_to_top_start_scroll', 300)),
                 )
@@ -364,7 +364,7 @@ final class Optimizer
         if ($fb_appid && $fb_pageid && $fb_livechat && !is_customize_preview()) {
             if ($fb_pageid) {
                 echo '<script async defer data-type="lazy" data-src="https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js"></script>';
-                $_fb_message = __('If you need assistance, please leave a message here. Thanks', 'ehd');
+                $_fb_message = __('If you need assistance, please leave a message here. Thanks', EHD_TEXT_DOMAIN);
                 echo '<div class="fb-customerchat" attribution="setup_tool" page_id="' . $fb_pageid . '" theme_color="#CC3366" logged_in_greeting="' . esc_attr($_fb_message) . '" logged_out_greeting="' . esc_attr($_fb_message) . '"></div>';
             }
         }
@@ -374,7 +374,7 @@ final class Optimizer
         $zalo_livechat = Helper::getThemeMod('zalo_chat_setting');
         if ($zalo_oaid) {
             if ($zalo_livechat) {
-                echo '<div class="zalo-chat-widget" data-oaid="' . $zalo_oaid . '" data-welcome-message="' . __('Rất vui khi được hỗ trợ bạn.', 'ehd') . '" data-autopopup="0" data-width="350" data-height="420"></div>';
+                echo '<div class="zalo-chat-widget" data-oaid="' . $zalo_oaid . '" data-welcome-message="' . __('Rất vui khi được hỗ trợ bạn.', EHD_TEXT_DOMAIN) . '" data-autopopup="0" data-width="350" data-height="420"></div>';
             }
 
             echo "<script defer data-type='lazy' data-src=\"https://sp.zalo.me/plugins/sdk.js\"></script>";

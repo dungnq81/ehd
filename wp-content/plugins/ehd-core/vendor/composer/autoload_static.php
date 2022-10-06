@@ -12,8 +12,6 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
         '841f98c5d948ce534a6f87abe5b50614' => __DIR__ . '/..' . '/roots/wp-password-bcrypt/wp-password-bcrypt.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'ed8e8b1c5434502ce047f777d92c74a3' => __DIR__ . '/../..' . '/inc/Plugin.php',
-        '47e43d209d20faec761a54e41f71fca4' => __DIR__ . '/../..' . '/inc/elementor_widgets.php',
-        'ed4c265d76a1930cdd19a6c8f742be07' => __DIR__ . '/../..' . '/inc/widgets.php',
     );
 
     public static $prefixLengthsPsr4 = array (

@@ -705,7 +705,7 @@ trait Wp
      */
     public static function humanizeTime($post = null, $from = null, $to = null)
     {
-        $_ago = __('ago', 'ehd-core');
+        $_ago = __('ago', EHD_PLUGIN_TEXT_DOMAIN);
 
         if (empty($to)) {
             $to = current_time('U');
@@ -737,7 +737,7 @@ trait Wp
 
         if (!is_home() && !is_front_page()) {
             echo '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">';
-            echo '<li><a class="home" href="' . self::home() . '">' . __('Home', 'ehd-core') . '</a></li>';
+            echo '<li><a class="home" href="' . self::home() . '">' . __('Home', EHD_PLUGIN_TEXT_DOMAIN) . '</a></li>';
 
             //...
             if (class_exists('\WooCommerce') && @is_shop()) {
@@ -793,12 +793,12 @@ trait Wp
             } /** search page */
             elseif (is_search()) {
                 echo $before;
-                printf(__('Search Results for: %s', 'ehd-core'), get_search_query());
+                printf(__('Search Results for: %s', EHD_PLUGIN_TEXT_DOMAIN), get_search_query());
                 echo $after;
             } /** tag */
             elseif (is_tag()) {
                 echo $before;
-                printf(__('Tag Archives: %s', 'ehd-core'), single_tag_title('', false));
+                printf(__('Tag Archives: %s', EHD_PLUGIN_TEXT_DOMAIN), single_tag_title('', false));
                 echo $after;
             } /** author */
             elseif (is_author()) {
@@ -836,7 +836,7 @@ trait Wp
             } /** 404 */
             elseif (is_404()) {
                 echo $before;
-                __('Not Found', 'ehd-core');
+                __('Not Found', EHD_PLUGIN_TEXT_DOMAIN);
                 echo $after;
             }
 
@@ -844,7 +844,7 @@ trait Wp
             if (get_query_var('paged')) {
                 echo '<li class="paged">';
                 echo ' (';
-                echo __('page', 'ehd-core') . ' ' . get_query_var('paged');
+                echo __('page', EHD_PLUGIN_TEXT_DOMAIN) . ' ' . get_query_var('paged');
                 echo ')';
                 echo $after;
             }
@@ -994,15 +994,15 @@ trait Wp
 
         /* translators: %1$s: link to menus, %2$s: link to customize. */
         printf(
-            __('Please assign a menu to the primary menu location under %1$s or %2$s the design.', 'ehd-core'),
+            __('Please assign a menu to the primary menu location under %1$s or %2$s the design.', EHD_PLUGIN_TEXT_DOMAIN),
             /* translators: %s: menu url */
             sprintf(
-                __('<a class="_blank" href="%s">Menus</a>', 'ehd-core'),
+                __('<a class="_blank" href="%s">Menus</a>', EHD_PLUGIN_TEXT_DOMAIN),
                 get_admin_url(get_current_blog_id(), 'nav-menus.php')
             ),
             /* translators: %s: customize url */
             sprintf(
-                __('<a class="_blank" href="%s">Customize</a>', 'ehd-core'),
+                __('<a class="_blank" href="%s">Customize</a>', EHD_PLUGIN_TEXT_DOMAIN),
                 get_admin_url(get_current_blog_id(), 'customize.php')
             )
         );

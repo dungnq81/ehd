@@ -15,6 +15,8 @@ final class Theme
 {
     public function __construct()
     {
+        $this->_init();
+
         //...
         remove_action('after_setup_theme', 'hello_elementor_content_width', 0);
 
@@ -30,8 +32,6 @@ final class Theme
 
         //...
         add_action('wp_enqueue_scripts', [&$this, 'ehd_enqueue_scripts'], 99);
-
-        //...
         add_action('widgets_init', [&$this, 'ehd_register_sidebars'], 10);
     }
 
@@ -42,7 +42,7 @@ final class Theme
      *
      * @return void
      */
-    public function init()
+    protected function _init() : void
     {
         if (!is_admin()) {
             (new Fonts());
@@ -54,6 +54,9 @@ final class Theme
 
     /** ---------------------------------------- */
 
+    /**
+     * @return void
+     */
     public function ehd_register_menus()
     {
         /**
@@ -63,11 +66,11 @@ final class Theme
          */
         register_nav_menus(
             [
-                'main-nav' => __('Primary Menu', 'ehd'),
-                'second-nav' => __('Secondary Menu', 'ehd'),
-                'mobile-nav' => __('Handheld Menu', 'ehd'),
-                'social-nav' => __('Social menu', 'ehd'),
-                'policy-nav' => __('Terms menu', 'ehd'),
+                'main-nav' => __('Primary Menu', EHD_TEXT_DOMAIN),
+                'second-nav' => __('Secondary Menu', EHD_TEXT_DOMAIN),
+                'mobile-nav' => __('Handheld Menu', EHD_TEXT_DOMAIN),
+                'social-nav' => __('Social menu', EHD_TEXT_DOMAIN),
+                'policy-nav' => __('Terms menu', EHD_TEXT_DOMAIN),
             ]
         );
     }
@@ -86,8 +89,8 @@ final class Theme
             [
                 'container' => false,
                 'id' => 'w-header-sidebar',
-                'name' => __('Header', 'ehd'),
-                'description' => __('Widgets added here will appear in right header.', 'ehd'),
+                'name' => __('Header', EHD_TEXT_DOMAIN),
+                'description' => __('Widgets added here will appear in right header.', EHD_TEXT_DOMAIN),
                 'before_widget' => '<div class="header-widgets %2$s">',
                 'after_widget' => '</div>',
                 'before_title' => '<span>',
@@ -110,17 +113,17 @@ final class Theme
                 if (1 === $rows) {
 
                     /* translators: 1: column number */
-                    $footer_region_name = sprintf(__('Footer Column %1$d', 'ehd'), $region);
+                    $footer_region_name = sprintf(__('Footer Column %1$d', EHD_TEXT_DOMAIN), $region);
 
                     /* translators: 1: column number */
-                    $footer_region_description = sprintf(__('Widgets added here will appear in column %1$d of the footer.', 'ehd'), $region);
+                    $footer_region_description = sprintf(__('Widgets added here will appear in column %1$d of the footer.', EHD_TEXT_DOMAIN), $region);
                 } else {
 
                     /* translators: 1: row number, 2: column number */
-                    $footer_region_name = sprintf(__('Footer Row %1$d - Column %2$d', 'ehd'), $row, $region);
+                    $footer_region_name = sprintf(__('Footer Row %1$d - Column %2$d', EHD_TEXT_DOMAIN), $row, $region);
 
                     /* translators: 1: column number, 2: row number */
-                    $footer_region_description = sprintf(__('Widgets added here will appear in column %1$d of footer row %2$d.', 'ehd'), $region, $row);
+                    $footer_region_description = sprintf(__('Widgets added here will appear in column %1$d of footer row %2$d.', EHD_TEXT_DOMAIN), $region, $row);
                 }
 
                 $footer_args[$footer] = [
@@ -161,8 +164,8 @@ final class Theme
          * See: https://translate.wordpress.org/projects/wp-themes/hello-elementor
          */
         load_theme_textdomain('hello-elementor', get_template_directory() . '/languages');
-        load_theme_textdomain('ehd', trailingslashit(WP_LANG_DIR) . 'themes');
-        load_theme_textdomain('ehd', get_stylesheet_directory() . '/languages');
+        load_theme_textdomain(EHD_TEXT_DOMAIN, trailingslashit(WP_LANG_DIR) . 'themes');
+        load_theme_textdomain(EHD_TEXT_DOMAIN, get_stylesheet_directory() . '/languages');
 
         // Add theme support for various features.
         add_theme_support('automatic-feed-links');
@@ -249,12 +252,12 @@ final class Theme
             'lang' => Helper::getLang(),
             //'domain'    => DOMAIN_CURRENT_SITE,
             'lg' => [
-                'view_more' => __('View more', 'ehd'),
-                'view_detail' => __('Detail', 'ehd')
+                'view_more' => __('View more', EHD_TEXT_DOMAIN),
+                'view_detail' => __('Detail', EHD_TEXT_DOMAIN)
             ]
         ];
 
-        wp_localize_script('jquery-core', 'eHD', $l10n);
+        wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
 
         /*comments*/
         if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -262,7 +265,7 @@ final class Theme
         }
 
         // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
-        $loader = new ScriptLoader;
+        $loader = new ScriptLoader();
         add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
     }
 }

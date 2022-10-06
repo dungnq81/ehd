@@ -33,7 +33,7 @@ function woocommerce_default_product_tabs(array $tabs = [])
     // Description tab - shows product content.
     if ($post->post_content) {
         $tabs['description'] = [
-            'title' => __('Description', 'ehd'),
+            'title' => __('Description', EHD_TEXT_DOMAIN),
             'priority' => 10,
             'callback' => 'woocommerce_product_description_tab',
         ];
@@ -42,7 +42,7 @@ function woocommerce_default_product_tabs(array $tabs = [])
     // Additional information tab - shows attributes.
     if ($product && ($product->has_attributes() || apply_filters('wc_product_enable_dimensions_display', $product->has_weight() || $product->has_dimensions()))) {
         $tabs['additional_information'] = [
-            'title' => __('Additional information', 'ehd'),
+            'title' => __('Additional information', EHD_TEXT_DOMAIN),
             'priority' => 20,
             'callback' => 'woocommerce_product_additional_information_tab',
         ];
@@ -63,7 +63,7 @@ function woocommerce_default_product_tabs(array $tabs = [])
     if (comments_open() || true === $facebook_comment || true === $zalo_comment) {
         $tabs['reviews'] = [
             /* translators: %s: reviews count */
-            'title' => sprintf(__('Reviews (%d)', 'ehd'), $product->get_review_count()),
+            'title' => sprintf(__('Reviews (%d)', EHD_TEXT_DOMAIN), $product->get_review_count()),
             'priority' => 40,
             //'callback' => 'comments_template',
             'callback' => 'ewc_comments_template',
@@ -314,7 +314,7 @@ if (!function_exists('ehd_template_loop_quick_view')) {
                 ),
                 'attributes' => [
                     'data-product_id' => $product->get_id(),
-                    'aria-label' => __('Quick View', 'ehd'),
+                    'aria-label' => __('Quick View', EHD_TEXT_DOMAIN),
                     'rel' => 'nofollow',
                 ],
             ];

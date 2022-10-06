@@ -42,14 +42,14 @@ class Shortcode
         );
 
         $_unique_id = esc_attr(uniqid('search-form-'));
-        $title = __('Search', 'ehd');
-        $title_for = __('Search for', 'ehd');
-        $placeholder_title = esc_attr(__('Search ...', 'ehd'));
+        $title = __('Search', EHD_TEXT_DOMAIN);
+        $title_for = __('Search for', EHD_TEXT_DOMAIN);
+        $placeholder_title = esc_attr(__('Search ...', EHD_TEXT_DOMAIN));
 
         if (class_exists('\WooCommerce')) :
-            $title = __('Search products', 'ehd');
-            $title_for = __('Search products', 'ehd');
-            $placeholder_title = esc_attr(__('Search products ...', 'ehd'));
+            $title = __('Search products', EHD_TEXT_DOMAIN);
+            $title_for = __('Search products', EHD_TEXT_DOMAIN);
+            $placeholder_title = esc_attr(__('Search products ...', EHD_TEXT_DOMAIN));
         endif;
 
         ?>

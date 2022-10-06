@@ -8,9 +8,7 @@
     ],
     "autoload": {
         "files": [
-            "inc/Plugin.php",
-            "inc/elementor_widgets.php",
-            "inc/widgets.php"
+            "inc/Plugin.php"
         ],
         "psr-4": {
             "EHD\\Plugins\\Core\\": "inc/Core",

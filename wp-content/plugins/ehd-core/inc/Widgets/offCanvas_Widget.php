@@ -14,13 +14,13 @@ if (!class_exists('offCanvas_Widget')) {
          */
         public function __construct()
         {
-            $this->widget_description = __('Display offCanvas Button', 'ehd-core' );
-            $this->widget_name        = __('W - offCanvas Button', 'ehd-core' );
+            $this->widget_description = __('Display offCanvas Button', EHD_PLUGIN_TEXT_DOMAIN );
+            $this->widget_name        = __('W - offCanvas Button', EHD_PLUGIN_TEXT_DOMAIN );
             $this->settings = [
                 'hide_if_desktop' => [
                     'type' => 'checkbox',
                     'std' => 1,
-                    'label' => __('Hide if desktop devices', 'ehd-core'),
+                    'label' => __('Hide if desktop devices', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
             ];
 
@@ -50,7 +50,7 @@ if (!class_exists('offCanvas_Widget')) {
             ?>
 			<div class="off-canvas-content<?=$class?>" data-off-canvas-content>
 				<button class="menu-lines" type="button" data-open="offCanvasMenu" aria-label="button">
-					<span class="menu-txt"><?php echo __('Menu', 'ehd-core' ); ?></span>
+					<span class="menu-txt"><?php echo __('Menu', EHD_PLUGIN_TEXT_DOMAIN ); ?></span>
 				</button>
 			</div>
 		<?php

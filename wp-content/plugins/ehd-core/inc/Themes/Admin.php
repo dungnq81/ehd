@@ -202,13 +202,13 @@ final class Admin
 
             // thumb
             $thumb = [
-                "term_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", 'ehd-core')),
+                "term_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", EHD_PLUGIN_TEXT_DOMAIN)),
             ];
             $columns = Helper::insertBefore('name', $columns, $thumb);
 
             // order
             $menu_order = [
-                'term_order' => sprintf('<span class="term-order tips">%1$s</span>', __("Order", 'ehd-core')),
+                'term_order' => sprintf('<span class="term-order tips">%1$s</span>', __("Order", EHD_PLUGIN_TEXT_DOMAIN)),
             ];
             $columns = array_merge($columns, $menu_order);
         }
@@ -258,7 +258,7 @@ final class Admin
     public function post_header($columns)
     {
         $in = [
-            "post_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", 'ehd-core')),
+            "post_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", EHD_PLUGIN_TEXT_DOMAIN)),
         ];
 
         return Helper::insertBefore('title', $columns, $in);

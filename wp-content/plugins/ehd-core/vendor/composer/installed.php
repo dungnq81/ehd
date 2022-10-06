@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '734ae997cac433f7ba73d4f2ce30cd14f28a4407',
+        'reference' => 'e3a0aa49c7a4606d111701ee62dde956b4262908',
         'name' => 'plugins/ehd-core',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '734ae997cac433f7ba73d4f2ce30cd14f28a4407',
+            'reference' => 'e3a0aa49c7a4606d111701ee62dde956b4262908',
             'dev_requirement' => false,
         ),
         'roots/wp-password-bcrypt' => array(
