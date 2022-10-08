@@ -1,6 +1,9 @@
-// const $ = jQuery;
-// window.$ = jQuery;
-// window.jQuery = jQuery;
+/*jshint esversion: 6 */
+import $ from 'jquery';
+
+//const $ = jQuery;
+window.$ = jQuery;
+window.jQuery = jQuery;
 
 import { Foundation } from 'foundation-sites/js/foundation.core';
 import * as CoreUtils from 'foundation-sites/js/foundation.core.utils';

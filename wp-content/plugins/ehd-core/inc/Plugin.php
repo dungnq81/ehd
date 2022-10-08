@@ -5,7 +5,13 @@ namespace EHD\Plugins;
 use EHD\Plugins\Themes\Admin;
 use EHD\Plugins\Themes\Customizer;
 use EHD\Plugins\Themes\Optimizer;
+
+use EHD\Plugins\Elementor\Elementor;
+use EHD\Plugins\WooCommerce\WooCommerce;
+
 use EHD\Plugins\Widgets\offCanvas_Widget;
+use EHD\Plugins\Widgets\Search_Widget;
+use EHD\Plugins\Widgets\DropdownSearch_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -25,25 +31,54 @@ final class Plugin
     /**
      * @return void
      */
-    public function plugins_loaded() : void
+    public function plugins_loaded()
     {
-        // Notice if the Elementor is not active
+        /** WooCommerce */
+        class_exists('\WooCommerce') && (new WooCommerce());
+
+        // Widgets wordpress
+        add_action('widgets_init', [&$this, 'unregister_default_widgets'], 11);
+        add_action('widgets_init', [&$this, 'register_widgets'], 11);
+
+        /**
+         * Elementor
+         * Notice if the Elementor is not active
+         */
         if (!did_action('elementor/loaded')) {
             add_action('admin_notices', [$this, 'admin_notice_missing_elementor']);
             return;
         }
 
-        // widgets wordpress
-        add_action('widgets_init', [&$this, 'w_register_widgets'], 10);
+        /** Elementor */
+        (new Elementor());
+    }
 
-        // Elementor action
-        //
+    /**
+     * Unregisters a WP_Widget widget
+     *
+     * @return void
+     */
+    public function unregister_default_widgets()
+    {
+        unregister_widget('WP_Widget_Search');
+    }
+
+    /**
+     * Registers a WP_Widget widget
+     *
+     * @return void
+     */
+    public function register_widgets()
+    {
+        class_exists(offCanvas_Widget::class) && register_widget(new offCanvas_Widget());
+        class_exists(Search_Widget::class) && register_widget(new Search_Widget());
+        class_exists(DropdownSearch_Widget::class) && register_widget(new DropdownSearch_Widget());
     }
 
     /**
      * @return void
      */
-    public function i18n() : void
+    public function i18n()
     {
         // Load localization file
         load_plugin_textdomain(EHD_PLUGIN_TEXT_DOMAIN);
@@ -56,7 +91,7 @@ final class Plugin
      *
      * @return void
      */
-    public function admin_notice_missing_elementor() : void
+    public function admin_notice_missing_elementor()
     {
         $class = 'notice notice-error';
         $message = sprintf(__('You need %1$s"Elementor"%2$s for the %1$s"EHD-Core"%2$s plugin to work and updated.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
@@ -67,25 +102,15 @@ final class Plugin
     /**
      * @return void
      */
-    public function enqueue() : void
+    public function enqueue()
     {
 
     }
 
     /**
-     * Registers a WP_Widget widget
-     *
      * @return void
      */
-    public function w_register_widgets() : void
-    {
-        class_exists(offCanvas_Widget::class) && register_widget(new offCanvas_Widget);
-    }
-
-    /**
-     * @return void
-     */
-    protected function _init() : void
+    protected function _init()
     {
         if (is_admin()) {
             (new Admin());

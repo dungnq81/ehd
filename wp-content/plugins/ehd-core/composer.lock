@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b281076de9fa9bf310c9112d9fc87cf6",
+    "content-hash": "29ac43f7c466567a4e3e6fa89dc28db6",
     "packages": [
         {
             "name": "roots/wp-password-bcrypt",

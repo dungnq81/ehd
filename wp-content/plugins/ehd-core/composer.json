@@ -7,22 +7,22 @@
         }
     ],
     "autoload": {
-        "files": [
-            "inc/Plugin.php"
-        ],
         "psr-4": {
             "EHD\\Plugins\\Core\\": "inc/Core",
             "EHD\\Plugins\\Elementor\\": "inc/Elementor",
             "EHD\\Plugins\\Themes\\": "inc/Themes",
             "EHD\\Plugins\\Widgets\\": "inc/Widgets",
-            "EHD\\Plugins\\Woocommerce\\": "inc/Woocommerce"
+            "EHD\\Plugins\\WooCommerce\\": "inc/WooCommerce"
         },
         "exclude-from-classmap": [
             "**/Widgets/_/**"
+        ],
+        "files": [
+            "inc/Plugin.php"
         ]
     },
     "require": {
-        "symfony/var-dumper": "^v5.4.9",
-        "roots/wp-password-bcrypt": "^1.1"
+        "symfony/var-dumper": "^v5.4.13",
+        "roots/wp-password-bcrypt": "^1.1.0"
     }
 }

@@ -33,7 +33,7 @@ abstract class Widget extends WP_Widget
      *
      * @return object|null
      */
-    protected function acfFields($id) : ?object
+    protected function acfFields($id)
     {
         if (!class_exists('\ACF')) {
             return null;
@@ -45,7 +45,7 @@ abstract class Widget extends WP_Widget
     /**
      * @return array
      */
-    protected function widget_options() : array
+    protected function widget_options()
     {
         return [
             'classname' => $this->widget_classname,
@@ -59,7 +59,7 @@ abstract class Widget extends WP_Widget
      * Flush the cache
      * @return void
      */
-    public function flush_widget_cache() : void
+    public function flush_widget_cache()
     {
         foreach (['https', 'http'] as $scheme) {
             wp_cache_delete($this->get_widget_id_for_cache($this->widget_id, $scheme), 'widget');
@@ -137,7 +137,7 @@ abstract class Widget extends WP_Widget
      * @param array $instance Array of instance options.
      * @return string
      */
-    protected function get_instance_title($instance) : string
+    protected function get_instance_title($instance)
     {
         if (isset($instance['title'])) {
             return $instance['title'];
@@ -192,9 +192,7 @@ abstract class Widget extends WP_Widget
                     break;
             }
 
-            /**
-             * Sanitize the value of a setting.
-             */
+            // Sanitize the value of a setting.
             $instance[$key] = apply_filters('w_widget_settings_sanitize_option', $instance[$key], $new_instance, $key, $setting);
         }
 
@@ -282,6 +280,7 @@ abstract class Widget extends WP_Widget
                                id="<?php echo esc_attr($this->get_field_id($key)); ?>"
                                name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="checkbox"
                                value="1" <?php checked($value, 1); ?> />
+
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                     </p>
                     <?php

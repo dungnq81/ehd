@@ -27,7 +27,7 @@
     "axios": "^0.27.2",
     "current-device": "^0.10.2",
     "foundation-sites": "^6.7.5",
-    "jquery": "^3.6.1",
+    "jquery": "3.6.0",
     "jquery.marquee": "^1.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",

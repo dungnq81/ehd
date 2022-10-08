@@ -23,7 +23,7 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
         ),
         'E' => 
         array (
-            'EHD\\Plugins\\Woocommerce\\' => 24,
+            'EHD\\Plugins\\WooCommerce\\' => 24,
             'EHD\\Plugins\\Widgets\\' => 20,
             'EHD\\Plugins\\Themes\\' => 19,
             'EHD\\Plugins\\Elementor\\' => 22,
@@ -44,9 +44,9 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
-        'EHD\\Plugins\\Woocommerce\\' => 
+        'EHD\\Plugins\\WooCommerce\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/inc/Woocommerce',
+            0 => __DIR__ . '/../..' . '/inc/WooCommerce',
         ),
         'EHD\\Plugins\\Widgets\\' => 
         array (
