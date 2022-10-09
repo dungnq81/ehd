@@ -176,6 +176,18 @@ trait Plugin
     /**
      * @return bool
      */
+    public static function isElementorActive()
+    {
+        if (class_exists('\Elementor\\Plugin')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public static function isElementorProActive()
     {
         if (class_exists('\ElementorPro\\Plugin')) {

@@ -38,23 +38,6 @@ final class Theme
     /** ---------------------------------------- */
 
     /**
-     * Init function
-     *
-     * @return void
-     */
-    protected function _init() : void
-    {
-        if (!is_admin()) {
-            (new Fonts());
-        }
-
-        (new Optimizer());
-        (new Shortcode());
-    }
-
-    /** ---------------------------------------- */
-
-    /**
      * @return void
      */
     public function ehd_register_menus()
@@ -150,6 +133,51 @@ final class Theme
     /** ---------------------------------------- */
 
     /**
+     * Enqueue scripts and styles
+     *
+     * @return void
+     */
+    public function ehd_enqueue_scripts()
+    {
+        // stylesheet.
+        wp_register_style("plugin-style", get_stylesheet_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION);
+        wp_register_style("layout-style", get_stylesheet_directory_uri() . '/assets/css/layout.css', ["plugin-style"], EHD_THEME_VERSION);
+
+        wp_enqueue_style("app-style", get_stylesheet_directory_uri() . '/assets/css/app.css', ["layout-style"], EHD_THEME_VERSION);
+
+        // scripts.
+        wp_enqueue_script("app", get_stylesheet_directory_uri() . "/assets/js/app.js", ["jquery", "hello-theme-frontend", "ehd-core"], EHD_THEME_VERSION, true);
+        wp_script_add_data("app", "defer", true);
+
+        // inline js
+        $l10n = [
+            'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
+            'baseUrl' => trailingslashit(site_url()),
+            'themeUrl' => trailingslashit(get_template_directory_uri()),
+            'locale' => get_locale(),
+            'lang' => Helper::getLang(),
+            //'domain'    => DOMAIN_CURRENT_SITE,
+            'lg' => [
+                'view_more' => __('View more', EHD_TEXT_DOMAIN),
+                'view_detail' => __('Detail', EHD_TEXT_DOMAIN)
+            ]
+        ];
+
+        wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
+
+        /*comments*/
+        if (is_singular() && comments_open() && get_option('thread_comments')) {
+            wp_enqueue_script('comment-reply');
+        }
+
+        // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
+        $loader = new ScriptLoader();
+        add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
+    }
+
+    /** ---------------------------------------- */
+
+    /**
      * Sets up theme defaults and registers support for various WordPress features.
      *
      * Note that this function is hooked into the after_setup_theme hook, which
@@ -227,45 +255,17 @@ final class Theme
     /** ---------------------------------------- */
 
     /**
-     * Enqueue scripts and styles
+     * Init function
      *
      * @return void
      */
-    public function ehd_enqueue_scripts()
+    protected function _init() : void
     {
-        // stylesheet.
-        wp_register_style("plugin-style", get_stylesheet_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION);
-        wp_register_style("layout-style", get_stylesheet_directory_uri() . '/assets/css/layout.css', ["plugin-style"], EHD_THEME_VERSION);
-
-        wp_enqueue_style("app-style", get_stylesheet_directory_uri() . '/assets/css/app.css', ["layout-style"], EHD_THEME_VERSION);
-
-        // scripts.
-        wp_enqueue_script("app", get_stylesheet_directory_uri() . "/assets/js/app.js", ["jquery", "hello-theme-frontend"], EHD_THEME_VERSION, true);
-        wp_script_add_data("app", "defer", true);
-
-        // inline js
-        $l10n = [
-            'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
-            'baseUrl' => trailingslashit(site_url()),
-            'themeUrl' => trailingslashit(get_template_directory_uri()),
-            'locale' => get_locale(),
-            'lang' => Helper::getLang(),
-            //'domain'    => DOMAIN_CURRENT_SITE,
-            'lg' => [
-                'view_more' => __('View more', EHD_TEXT_DOMAIN),
-                'view_detail' => __('Detail', EHD_TEXT_DOMAIN)
-            ]
-        ];
-
-        wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
-
-        /*comments*/
-        if (is_singular() && comments_open() && get_option('thread_comments')) {
-            wp_enqueue_script('comment-reply');
+        if (!is_admin()) {
+            (new Fonts());
         }
 
-        // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
-        $loader = new ScriptLoader();
-        add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
+        (new Optimizer());
+        (new Shortcode());
     }
 }

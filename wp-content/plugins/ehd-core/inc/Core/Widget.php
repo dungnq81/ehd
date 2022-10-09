@@ -236,7 +236,6 @@ abstract class Widget extends WP_Widget
                         <input class="widefat <?php echo esc_attr($class); ?>"
                                id="<?php echo esc_attr($this->get_field_id($key)); ?>"
                                name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="number"
-                               step="<?php echo esc_attr($setting['step']); ?>"
                                min="<?php echo esc_attr($setting['min']); ?>"
                                max="<?php echo esc_attr($setting['max']); ?>" value="<?php echo esc_attr($value); ?>"/>
                     </p>

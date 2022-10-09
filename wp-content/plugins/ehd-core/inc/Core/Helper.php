@@ -2,8 +2,10 @@
 
 namespace EHD\Plugins\Core;
 
+use EHD\Plugins\Core\Traits\Elementor;
 use EHD\Plugins\Core\Traits\File;
 use EHD\Plugins\Core\Traits\Plugin;
+use EHD\Plugins\Core\Traits\WooCommerce;
 use EHD\Plugins\Core\Traits\Wp;
 
 \defined('ABSPATH') || die;
@@ -18,6 +20,8 @@ class Helper
     use File;
     use Plugin;
     use Wp;
+    use WooCommerce;
+    use Elementor;
 
     // --------------------------------------------------
 

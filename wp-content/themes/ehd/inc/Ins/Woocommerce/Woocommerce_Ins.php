@@ -37,14 +37,6 @@ if (!class_exists('Woocommerce_Ins')) {
             // Visited cookies products
             add_action('wp', [&$this, 'visited_product_cookie']);
 
-            // https://stackoverflow.com/questions/57321805/remove-header-from-the-woocommerce-administrator-panel
-            add_action('admin_head', function () {
-                remove_action('in_admin_header', ['Automattic\WooCommerce\Internal\Admin\Loader', 'embed_page_header']);
-                remove_action('in_admin_header', ['Automattic\WooCommerce\Admin\Loader', 'embed_page_header']);
-
-                echo '<style>#wpadminbar ~ #wpbody { margin-top: 0 !important; }</style>';
-            });
-
             // before shop loop
             add_action('woocommerce_before_shop_loop', function () {
                 echo '<div class="woocommerce-sorting">';
@@ -65,16 +57,6 @@ if (!class_exists('Woocommerce_Ins')) {
          */
         public function woocommerce_setup()
         {
-            add_theme_support('woocommerce');
-
-            // Add support for WC features.
-            //add_theme_support( 'wc-product-gallery-zoom' );
-            //add_theme_support( 'wc-product-gallery-lightbox' );
-            //add_theme_support( 'wc-product-gallery-slider' );
-
-            // Remove woocommerce defauly styles
-            add_filter( 'woocommerce_enqueue_styles', '__return_false' );
-
             // Remove default WooCommerce wrappers.
             remove_action('woocommerce_before_main_content', 'woocommerce_output_content_wrapper');
             remove_action('woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end');
@@ -94,9 +76,6 @@ if (!class_exists('Woocommerce_Ins')) {
                     'crop' => 0,
                 ];
             });
-
-            // Trim zeros in price decimals
-            add_filter('woocommerce_price_trim_zeros', '__return_true');
 
             /**
              * @param array $args
@@ -284,15 +263,6 @@ if (!class_exists('Woocommerce_Ins')) {
         public function enqueue_scripts()
         {
             wp_enqueue_style("woocommerce-style", get_stylesheet_directory_uri() . '/assets/css/woocommerce.css', ["layout-style"], EHD_THEME_VERSION);
-
-            $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
-            $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
-            if ($gutenberg_widgets_off && $gutenberg_off) {
-
-                // Remove WooCommerce block CSS
-                wp_deregister_style('wc-blocks-vendors-style');
-                wp_deregister_style('wc-block-style');
-            }
         }
     }
 }
