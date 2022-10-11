@@ -51,10 +51,7 @@ if (!class_exists('offCanvas_Widget')) {
                 </button>
             </div>
             <?php
-            $content = ob_get_clean();
-            echo $content; // WPCS: XSS ok.
-
-            $this->cache_widget($args, $content);
+            echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
         }
     }
 }

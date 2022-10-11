@@ -12,13 +12,13 @@ if (!class_exists('Search_Widget')) {
     {
         public function __construct()
         {
-            $this->widget_description = __('A search form for your site.', EHD_PLUGIN_TEXT_DOMAIN);
-            $this->widget_name = __('Search', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_description = __('A search form for your site.');
+            $this->widget_name = __('Search');
             $this->settings = [
                 'title' => [
                     'type' => 'text',
-                    'std' => __('Search', EHD_PLUGIN_TEXT_DOMAIN),
-                    'label' => __('Title', EHD_PLUGIN_TEXT_DOMAIN),
+                    'std' => __('Search'),
+                    'label' => __('Title'),
                 ],
                 'css_class' => [
                     'type' => 'text',
@@ -45,14 +45,20 @@ if (!class_exists('Search_Widget')) {
             ob_start();
 
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
-            $css_class = isset($instance['css_class']) ? trim(strip_tags($instance['css_class'])) : '';
+            $css_class = ( ! empty( $instance['css_class'] ) ) ? sanitize_title($instance['css_class']) : '';
 
             $_unique_id = esc_attr(uniqid('search-form-'));
             $title_for = __('Search for', EHD_PLUGIN_TEXT_DOMAIN);
             $placeholder_title = esc_attr(__('Search ...', EHD_PLUGIN_TEXT_DOMAIN));
 
+            // class
+            $_class = $this->widget_classname . ' ' . $this->id;
+            if ($css_class) {
+                $_class = $_class . ' ' . $css_class;
+            }
+
             ?>
-            <div class="inside-search <?php echo $css_class; ?>">
+            <div class="inside-search <?php echo $_class; ?>">
                 <form role="search" action="<?php echo Helper::home(); ?>" class="frm-search" method="get"
                       accept-charset="UTF-8" data-abide novalidate>
                     <label for="<?php echo $_unique_id; ?>" class="screen-reader-text"><?php echo $title_for; ?></label>
@@ -68,10 +74,7 @@ if (!class_exists('Search_Widget')) {
                 </form>
             </div>
             <?php
-            $content = ob_get_clean();
-            echo $content; // WPCS: XSS ok.
-
-            $this->cache_widget($args, $content);
+            echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
         }
     }
 }

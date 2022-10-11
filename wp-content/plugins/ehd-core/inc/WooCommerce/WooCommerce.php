@@ -3,7 +3,9 @@
 namespace EHD\Plugins\WooCommerce;
 
 use EHD\Plugins\Core\Helper;
+
 use EHD\Plugins\Widgets\MiniCart_Widget;
+use EHD\Plugins\Widgets\Products_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -28,6 +30,7 @@ final class WooCommerce
     public function register_widgets() : void
     {
         class_exists(MiniCart_Widget::class) && register_widget(new MiniCart_Widget());
+        class_exists(Products_Widget::class) && register_widget(new Products_Widget());
     }
 
     /**
@@ -38,6 +41,7 @@ final class WooCommerce
     public function unregister_default_widgets() : void
     {
         unregister_widget('WC_Widget_Product_Search');
+        unregister_widget('WC_Widget_Products');
     }
 
     /**

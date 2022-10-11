@@ -196,16 +196,6 @@ trait Wp
             return false;
         }
 
-        $term = self::toObject($term);
-        $tax_query = [];
-        if (isset($term->taxonomy) && isset($term->term_id)) {
-            $tax_query[] = [
-                'taxonomy' => $term->taxonomy,
-                'terms' => [$term->term_id],
-                'include_children' => (bool) $include_children,
-            ];
-        }
-
         $_args = [
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
@@ -213,9 +203,18 @@ trait Wp
             'ignore_sticky_posts' => true,
             'no_found_rows' => true,
             'post_status' => 'publish',
-            'tax_query' => $tax_query,
-            'nopaging' => true,
+            'tax_query' => ['relation' => 'AND'],
         ];
+
+        //...
+        $term = self::toObject($term);
+        if (isset($term->taxonomy) && isset($term->term_id)) {
+            $_args['tax_query'][] = [
+                'taxonomy' => $term->taxonomy,
+                'terms' => [$term->term_id],
+                'include_children' => (bool) $include_children,
+            ];
+        }
 
         if (is_array($orderby)) {
             $orderby = self::removeEmptyValues($orderby);
@@ -235,7 +234,6 @@ trait Wp
 
         if ($paged !== false && self::toInt($paged) >= 0) {
             $_args['paged'] = $paged;
-            $_args['nopaging'] = false;
         }
 
         // ...
@@ -279,6 +277,17 @@ trait Wp
             return false;
         }
 
+        $_args = [
+            'post_status' => 'publish',
+            'orderby' => ['date' => 'DESC'],
+            'tax_query' => ['relation' => 'AND'],
+            'no_found_rows' => true,
+            'ignore_sticky_posts' => true,
+
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+        ];
+
         if (!is_array($term_ids)) {
             $term_ids = self::toArray($term_ids);
         }
@@ -287,22 +296,10 @@ trait Wp
             $taxonomy = 'category';
         }
 
-        $tax_query[] = [
+        $_args['tax_query'][] = [
             'taxonomy' => $taxonomy,
             'terms' => $term_ids,
             'include_children' => (bool) $include_children,
-        ];
-
-        $_args = [
-            'post_status' => 'publish',
-            'orderby' => ['date' => 'DESC'],
-            'tax_query' => $tax_query,
-            'nopaging' => true,
-            'no_found_rows' => true,
-            'ignore_sticky_posts' => true,
-
-            'update_post_meta_cache' => false,
-            'update_post_term_cache' => false,
         ];
 
         if ($post_type) {
@@ -717,7 +714,7 @@ trait Wp
         $diff = (int) abs($to - $from);
 
         $since = human_time_diff($from, $to);
-        $since = $since . ' <span class="ago">' . $_ago . '</span>';
+        $since = $since . ' ' . $_ago;
 
         return apply_filters('humanize_time', $since, $diff, $from, $to);
     }

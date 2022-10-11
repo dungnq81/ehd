@@ -11,7 +11,8 @@ mix.sourceMaps()
         postCss: [
             require('autoprefixer')({
                 // Browserslist’s default browsers (> 0.5%, last 2 versions, Firefox ESR, not dead).
-                //browsers: ['defaults'],
+                // browsers: ['defaults'],
+                browsers: ['last 3 versions', '> 0.5%', 'iOS >= 9', 'not dead'],
                 grid: true
             })
         ]

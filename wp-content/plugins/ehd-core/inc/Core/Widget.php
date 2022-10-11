@@ -18,8 +18,8 @@ abstract class Widget extends WP_Widget
     public function __construct()
     {
         $className = (new \ReflectionClass($this))->getShortName();
-        $this->widget_classname = str_replace(['_Widget', 'Widget'], '', $className);
-        $this->widget_id = $this->prefix . Helper::dashCase($className);
+        $this->widget_classname = str_replace(['_widget', '-widget'], '', Helper::dashCase(strtolower($className)));
+        $this->widget_id = $this->prefix . $this->widget_classname;
 
         parent::__construct($this->widget_id, $this->widget_name, $this->widget_options());
 

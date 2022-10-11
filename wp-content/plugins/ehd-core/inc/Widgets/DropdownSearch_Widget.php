@@ -17,8 +17,8 @@ if (!class_exists('DropdownSearch_Widget')) {
             $this->settings = [
                 'title' => [
                     'type' => 'text',
-                    'std' => __('Search', EHD_PLUGIN_TEXT_DOMAIN),
-                    'label' => __('Title', EHD_PLUGIN_TEXT_DOMAIN),
+                    'std' => __('Search'),
+                    'label' => __('Title'),
                 ],
                 'css_class' => [
                     'type' => 'text',
@@ -45,10 +45,10 @@ if (!class_exists('DropdownSearch_Widget')) {
             ob_start();
 
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
-            $css_class = isset($instance['css_class']) ? trim(strip_tags($instance['css_class'])) : '';
+            $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
 
             // class
-            $_class = $this->id;
+            $_class = $this->widget_classname . ' ' . $this->id;
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
             }
@@ -87,10 +87,7 @@ if (!class_exists('DropdownSearch_Widget')) {
                 </div>
             </div>
             <?php
-            $content = ob_get_clean();
-            echo $content; // WPCS: XSS ok.
-
-            $this->cache_widget($args, $content);
+            echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
 }

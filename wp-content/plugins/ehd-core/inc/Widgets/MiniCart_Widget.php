@@ -3,11 +3,12 @@
 namespace EHD\Plugins\Widgets;
 
 use EHD\Plugins\Core\Helper;
+use WC_Widget_Cart;
 
 \defined('ABSPATH') || die;
 
 if (!class_exists('MiniCart_Widget')) {
-    class MiniCart_Widget extends \WC_Widget_Cart
+    class MiniCart_Widget extends WC_Widget_Cart
     {
         /**
          * Creating widget front-end
@@ -22,7 +23,7 @@ if (!class_exists('MiniCart_Widget')) {
             }
 
             $hide_if_empty = empty($instance['hide_if_empty']) ? 0 : 1;
-            $title = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
+            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
 
             echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
             if ($title) {
@@ -55,7 +56,7 @@ if (!class_exists('MiniCart_Widget')) {
                 </li>
             </ul>
             <?php
-                echo $args['after_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+            echo $args['after_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         }
     }
 }

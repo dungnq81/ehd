@@ -14,9 +14,7 @@
             "EHD\\Plugins\\Widgets\\": "inc/Widgets",
             "EHD\\Plugins\\WooCommerce\\": "inc/WooCommerce"
         },
-        "exclude-from-classmap": [
-            "**/Widgets/_/**"
-        ],
+        "exclude-from-classmap": [],
         "files": [
             "inc/Plugin.php"
         ]
