@@ -15,7 +15,7 @@ if (!class_exists('Products_Widget')) {
         {
             $this->widget_description = __("A list of your store's products.", 'woocommerce');
             $this->widget_name = __('Products list', 'woocommerce');
-            $this->widget_cssclass = 'woocommerce products-list';
+            $this->widget_cssclass = 'products-list';
             $this->widget_id = 'w-products-list';
             $this->settings = [
                 'title' => [
@@ -84,71 +84,17 @@ if (!class_exists('Products_Widget')) {
                     'std' => 0,
                     'label' => __('Includes products of children cat', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'desktop_columns' => [
-                    'type' => 'number',
-                    'step' => 1,
-                    'min' => 0,
-                    'max' => '',
-                    'std' => 1,
-                    'class' => 'tiny-text',
-                    'label' => __('Desktop column(s)', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'tablet_columns' => [
-                    'type' => 'number',
-                    'step' => 1,
-                    'min' => 0,
-                    'max' => '',
-                    'std' => 1,
-                    'class' => 'tiny-text',
-                    'label' => __('Tablet column(s)', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'mobile_columns' => [
-                    'type' => 'number',
-                    'step' => 1,
-                    'min' => 0,
-                    'max' => '',
-                    'std' => 1,
-                    'class' => 'tiny-text',
-                    'label' => __('Mobile column(s)', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'display_type' => [
-                    'type' => 'select',
-                    'std' => 'list',
-                    'label' => __('Display Type', EHD_PLUGIN_TEXT_DOMAIN),
-                    'options' => [
-                        'list' => __('List', EHD_PLUGIN_TEXT_DOMAIN),
-                        'slideshow' => __('Slideshow', EHD_PLUGIN_TEXT_DOMAIN),
-                    ],
-                ],
-                'desktop_gutter' => [
-                    'type' => 'number',
-                    'step' => 1,
-                    'min' => 0,
-                    'max' => '',
-                    'std' => 30,
-                    'class' => 'tiny-text',
-                    'label' => __('Desktop gutter', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'mobile_gutter' => [
-                    'type' => 'number',
-                    'step' => 1,
-                    'min' => 0,
-                    'max' => '',
-                    'std' => 20,
-                    'class' => 'tiny-text',
-                    'label' => __('Mobile gutter', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
                 'show_viewmore_button' => [
                     'type' => 'checkbox',
                     'std' => 0,
                     'label' => __('Show view more button', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'title_viewmore_button' => [
+                'viewmore_button_title' => [
                     'type' => 'text',
                     'std' => __('View more', EHD_PLUGIN_TEXT_DOMAIN),
                     'label' => __('View more title', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'title_viewmore_link' => [
+                'viewmore_button_link' => [
                     'type' => 'text',
                     'std' => '#',
                     'label' => __('View more link', EHD_PLUGIN_TEXT_DOMAIN),
@@ -287,37 +233,89 @@ if (!class_exists('Products_Widget')) {
          */
         public function widget($args, $instance)
         {
-            if ($this->get_cached_widget($args)) {
+            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+            $number = !empty($instance['number']) ? absint($instance['number']) : 0;
+
+            // class
+            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
+
+            $products = $this->get_products( $args, $instance );
+            if (!$products || !$products->have_posts()) {
                 return;
             }
 
-            ob_start();
+            // ACF attributes
+            $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
-            wc_set_loop_prop( 'name', 'widget' );
-            $products = $this->get_products( $args, $instance );
-            if ( $products && $products->have_posts() ) {
+            // has products
+            wc_set_loop_prop( 'name', 'products_widget' );
 
-                $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+        ?>
+        <section class="section products-section <?= $css_class ?>">
+            <div class="inner inner-section">
+                <?php if ($title) : ?>
+                <h2 class="heading-title"><?php echo $title; ?></h2>
+                <?php endif; ?>
+                <div class="<?=$this->widget_cssclass?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                    <div class="grid-products grid-x">
+                        <?php
+                        $i = 0;
 
-                $number = !empty($instance['number']) ? absint($instance['number']) : 0;
-                $desktop_columns = !empty($instance['desktop_columns']) ? absint($instance['desktop_columns']) : 0;
-                $tablet_columns = !empty($instance['tablet_columns']) ? absint($instance['tablet_columns']) : 0;
-                $mobile_columns = !empty($instance['mobile_columns']) ? absint($instance['mobile_columns']) : 0;
+                        // Load slides loop
+                        while ( $products->have_posts() && $i < $number) : $products->the_post();
 
-                $display_type = sanitize_title($instance['display_type']);
-                $desktop_gutter = !empty($instance['desktop_gutter']) ? absint($instance['desktop_gutter']) : 0;
-                $mobile_gutter = !empty($instance['mobile_gutter']) ? absint($instance['mobile_gutter']) : 0;
+                            global $product;
 
-                $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
+                            if (0 === $i && isset($ACF->banner)) {
+                                echo '<div class="cell banner-cell">';
+                                echo '<figure>';
+                                if (isset($ACF->url_banner)) echo '<a class="after-overlay _blank" href="' . esc_url($ACF->url_banner) . '" title="' . esc_attr($title) . '">';
+                                echo wp_get_attachment_image($ACF->banner, 'medium');
+                                if (isset($ACF->url_banner)) echo '</a>';
+                                echo '</figure>';
+                                echo '</div>';
+                            }
 
-                if (!empty($instance['show_viewmore_button'])) {
-                    $title_viewmore_button = $instance['title_viewmore_button'] ?: '';
-                    $title_viewmore_link = filter_var($instance['title_viewmore_link'], FILTER_VALIDATE_URL) ? $instance['title_viewmore_link'] : '#';
-                }
+                            if (empty($product) || FALSE === wc_get_loop_product_visibility($product->get_id()) || !$product->is_visible()) {
+                                continue;
+                            }
+
+                            echo '<div class="cell cell-' . $i . '">';
+                            wc_get_template_part('content', 'product');
+                            echo '</div>';
+
+                            ++$i;
+                        endwhile;
+                        ?>
+                    </div>
+                    <?php
+                    if (!empty($instance['show_viewmore_button'])) {
+                        $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
+                        $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
+                        if ($viewmore_button_title) {
+                            echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </section>
+        <?php
+            wp_reset_postdata();
+        }
+
+        /**
+         * @param $id
+         *
+         * @return object|null
+         */
+        protected function acfFields($id)
+        {
+            if (!class_exists('\ACF')) {
+                return null;
             }
 
-            wp_reset_postdata();
-            echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
+            return Helper::toObject(get_fields($id));
         }
     }
 }
