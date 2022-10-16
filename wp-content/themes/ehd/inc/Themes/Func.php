@@ -14,67 +14,6 @@ use EHD\Plugins\Core\Helper;
 class Func
 {
     /**
-     * @link http://codex.wordpress.org/Function_Reference/wp_nav_menu
-     *
-     * @param string $location
-     * @param string $menu_class
-     * @param string $menu_id
-     *
-     * @return bool|string
-     */
-    public static function mainNav(string $location = 'main-nav', string $menu_class = 'desktop-menu', string $menu_id = 'main-menu')
-    {
-        return Helper::horizontalNav([
-            'menu_id'        => $menu_id,
-            'menu_class'     => $menu_class . ' dropdown menu horizontal horizontal-menu',
-            'theme_location' => $location,
-            'echo'           => false,
-        ]);
-    }
-
-    // -------------------------------------------------------------
-
-    /**
-     * @param string $location
-     * @param string $menu_class
-     * @param string $menu_id
-     *
-     * @return bool|string
-     */
-    public static function mobileNav(string $location = 'mobile-nav', string $menu_class = 'mobile-menu', string $menu_id = 'mobile-menu')
-    {
-        return Helper::verticalNav([
-            'menu_id'        => $menu_id,
-            'menu_class'     => $menu_class . ' vertical menu',
-            'theme_location' => $location,
-            'echo'           => false,
-        ]);
-    }
-
-    // -------------------------------------------------------------
-
-    /**
-     * @param string $location
-     * @param string $menu_class
-     *
-     * @return bool|string
-     */
-    public static function termNav(string $location = 'policy-nav', string $menu_class = 'terms-menu')
-    {
-        return wp_nav_menu([
-            'container'      => false,
-            'menu_class'     => $menu_class . ' menu horizontal horizontal-menu',
-            'theme_location' => $location,
-            'items_wrap'     => '<ul role="menubar" class="%2$s">%3$s</ul>',
-            'depth'          => 1,
-            'fallback_cb'    => false,
-            'echo'           => false,
-        ]);
-    }
-
-    // -------------------------------------------------------------
-
-    /**
      * @param bool $echo
      *
      * @return string|null

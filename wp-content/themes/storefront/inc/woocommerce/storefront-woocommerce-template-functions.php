@@ -460,7 +460,7 @@ if ( ! function_exists( 'storefront_popular_products' ) ) {
 		/**
 		 * Only display the section if the shortcode returns products
 		 */
-		if ( false !== strpos( $shortcode_content, 'product' ) ) {
+		if (str_contains($shortcode_content, 'product')) {
 			echo '<section class="storefront-product-section storefront-popular-products" aria-label="' . esc_attr__( 'Popular Products', 'storefront' ) . '">';
 
 			do_action( 'storefront_homepage_before_popular_products' );

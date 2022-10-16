@@ -31,7 +31,7 @@ trait Wp
             [
                 'container'      => false, // Remove nav container
                 'menu_id'        => '',
-                'menu_class'     => 'vertical menu',
+                'menu_class'     => 'menu vertical',
                 'theme_location' => '',
                 'depth'          => 4,
                 'fallback_cb'    => false,

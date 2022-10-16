@@ -9,7 +9,7 @@ namespace EHD\Plugins\Core;
  *
  * @author WEBHD
  */
-final class Shortcode
+class Shortcode
 {
     /**
      * @return void
@@ -41,20 +41,25 @@ final class Shortcode
     {
         $atts = shortcode_atts(
             [
-                'class'    => 'mobile-menu',
                 'location' => 'mobile-nav',
+                'class'    => 'mobile-menu',
+                'id'       => esc_attr(uniqid('menu-')),
                 'depth'    => 4,
-                'id'       => '',
             ],
             $atts,
             'vertical_menu'
         );
 
+        $location = $atts['location'] ?: 'mobile-nav';
+        $class = $atts['class'] ?: 'mobile-menu';
+        $depth = $atts['depth'] ? absint($atts['depth']) : 1;
+        $id = $atts['id'] ?: esc_attr(uniqid('menu-'));
+
         return Helper::verticalNav([
-            'menu_id'        => $a['id'],
-            'menu_class'     => 'vertical menu vertical-menu ' . $a['class'],
-            'theme_location' => $a['location'],
-            'depth'          => $a['depth'],
+            'menu_id'        => $id,
+            'menu_class'     => 'menu vertical vertical-menu ' . $class,
+            'theme_location' => $location,
+            'depth'          => $depth,
             'echo'           => false,
         ]);
     }
@@ -69,20 +74,25 @@ final class Shortcode
     {
         $atts = shortcode_atts(
             [
-                'class'    => 'desktop-menu',
                 'location' => 'main-nav',
+                'class'    => 'desktop-menu',
+                'id'       => esc_attr(uniqid('menu-')),
                 'depth'    => 4,
-                'id'       => '',
             ],
             $atts,
             'horizontal_menu'
         );
 
+        $location = $atts['location'] ?: 'main-nav';
+        $class = $atts['class'] ?: 'desktop-menu';
+        $depth = $atts['depth'] ? absint($atts['depth']) : 1;
+        $id = $atts['id'] ?: esc_attr(uniqid('menu-'));
+
         return Helper::horizontalNav([
-            'menu_id'        => $atts['id'],
-            'menu_class'     => 'dropdown menu horizontal horizontal-menu ' . $atts['class'],
-            'theme_location' => $atts['location'],
-            'depth'          => $atts['depth'],
+            'menu_id'        => $id,
+            'menu_class'     => 'dropdown menu horizontal horizontal-menu ' . $class,
+            'theme_location' => $location,
+            'depth'          => $depth,
             'echo'           => false,
         ]);
     }
@@ -129,7 +139,6 @@ final class Shortcode
             [
                 'title'      => '',
                 'email'      => 'info@webhd.vn',
-                'attributes' => '',
                 'class'      => '',
                 'id'         => esc_attr(uniqid('mail-')),
             ],
@@ -137,28 +146,14 @@ final class Shortcode
             'safe_mail'
         );
 
-        $_tmp = [];
-
-        if (empty($atts['title'])) {
-            $atts['title'] = esc_attr($atts['email']);
-        }
-        $_tmp['title'] = $atts['title'];
-
-        if ($atts['id']) {
-            $_tmp['id'] = $atts['id'];
-        }
+        $attributes['title'] = $atts['title'] ? esc_attr($atts['title']) : esc_attr($atts['email']);
+        $attributes['id'] = $atts['id'] ? esc_attr($atts['id']) : esc_attr(uniqid('mail-'));
 
         if ($atts['class']) {
-            $_tmp['class'] = $atts['class'];
+            $attributes['class'] = esc_attr($atts['class']);
         }
 
-        if ($atts['attributes']) {
-            $atts['attributes'] = array_merge($_tmp, (array) $atts['attributes']);
-        } else {
-            $atts['attributes'] = $_tmp;
-        }
-
-        return Helper::safeMailTo($atts['email'], $atts['title'], $atts['attributes']);
+        return Helper::safeMailTo($atts['email'], $atts['title'], $attributes);
     }
 
     // ------------------------------------------------------

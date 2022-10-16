@@ -49,7 +49,8 @@ if (!class_exists('DropdownSearch_Widget')) {
                 'dropdown_search',
                 [
                     'title' => $title,
-                    'class'  => $this->widget_classname . ' ' . $css_class,
+                    'class' => $this->widget_classname . ' ' . $css_class,
+                    'id'    => '',
                 ]
             );
 

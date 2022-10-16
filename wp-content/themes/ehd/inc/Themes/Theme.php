@@ -15,7 +15,7 @@ final class Theme
 {
     public function __construct()
     {
-        $this->_init();
+        add_action('init', [&$this, 'init']);
 
         //...
         remove_action('after_setup_theme', 'hello_elementor_content_width', 0);
@@ -259,13 +259,13 @@ final class Theme
      *
      * @return void
      */
-    protected function _init() : void
+    public function init() : void
     {
         if (!is_admin()) {
             (new Fonts());
         }
 
         (new Optimizer());
-        (new Shortcode());
+        (new Shortcode())::init();
     }
 }

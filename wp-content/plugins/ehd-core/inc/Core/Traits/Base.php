@@ -55,7 +55,7 @@ trait Base
      * @param bool  $strict
      * @return mixed
      */
-    function ifEmpty(mixed $value, mixed $fallback, bool $strict = false)
+    public static function ifEmpty(mixed $value, mixed $fallback, bool $strict = false)
     {
         $isEmpty = $strict ? empty($value) : self::isEmpty($value);
         return $isEmpty ? $fallback : $value;
