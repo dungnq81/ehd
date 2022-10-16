@@ -137,11 +137,11 @@ if (!class_exists('Recent_Posts_Widget')) {
                                     if ('default' == $ratio or !$ratio) {
                                         $ratio_class = '3-2';
                                     }
-                                    ?>
-                                    <a class="d-block" href="<?php the_permalink($recent_post->ID); ?>"
-                                       aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
-                                        <span class="cover after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
-                                    </a>
+                                ?>
+                                <a class="d-block" href="<?php the_permalink($recent_post->ID); ?>"
+                                   aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
+                                    <span class="cover after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
+                                </a>
                                 <?php endif; ?>
                                 <div class="post-info">
                                     <a href="<?php the_permalink($recent_post->ID); ?>"

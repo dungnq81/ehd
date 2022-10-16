@@ -127,7 +127,7 @@ trait Base
             'options' => [
                 'min_range' => intval($min),
                 'max_range' => intval($max),
-            ]
+            ],
         ]);
 
         return false !== $inRange;
@@ -281,6 +281,10 @@ trait Base
      */
     public static function safeMailTo(string $email, string $title = '', $attributes = '')
     {
+        if (!$email || !is_email($email)) {
+            return null;
+        }
+
         if (trim($title) === '') {
             $title = $email;
         }

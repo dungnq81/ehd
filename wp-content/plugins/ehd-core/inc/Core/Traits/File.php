@@ -78,8 +78,9 @@ trait File
      *
      * @return false|string
      */
-    public static function jsonEncodePrettify( $data ) {
-        return json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+    public static function jsonEncodePrettify($data)
+    {
+        return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     /**

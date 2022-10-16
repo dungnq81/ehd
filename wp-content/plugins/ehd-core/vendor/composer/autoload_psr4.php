@@ -14,4 +14,5 @@ return array(
     'EHD\\Plugins\\Themes\\' => array($baseDir . '/inc/Themes'),
     'EHD\\Plugins\\Elementor\\' => array($baseDir . '/inc/Elementor'),
     'EHD\\Plugins\\Core\\' => array($baseDir . '/inc/Core'),
+    'EHD\\Plugins\\' => array($baseDir . '/inc'),
 );

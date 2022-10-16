@@ -43,7 +43,7 @@ class Optimizer
 
         // normalize upload filename
         add_filter('sanitize_file_name', function (string $filename) {
-            return remove_accents($filename);
+            return sanitize_title($filename, '', 'save');
         }, 10, 1);
 
         // Disable XML-RPC authentication

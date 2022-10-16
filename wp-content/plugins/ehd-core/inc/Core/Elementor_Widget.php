@@ -73,10 +73,10 @@ abstract class Elementor_Widget extends \WP_Widget
     protected function widget_options()
     {
         return [
-            'classname' => $this->widget_classname,
-            'description' => $this->widget_description,
+            'classname'                   => $this->widget_classname,
+            'description'                 => $this->widget_description,
             'customize_selective_refresh' => true,
-            'show_instance_in_rest' => true,
+            'show_instance_in_rest'       => true,
         ];
     }
 

@@ -5,6 +5,7 @@ namespace EHD\Plugins;
 use EHD\Plugins\Themes\Admin;
 use EHD\Plugins\Themes\Customizer;
 use EHD\Plugins\Themes\Optimizer;
+use EHD\Plugins\Core\Shortcode;
 
 use EHD\Plugins\Elementor\Elementor;
 use EHD\Plugins\WooCommerce\WooCommerce;
@@ -20,12 +21,10 @@ final class Plugin
 {
     public function __construct()
     {
-        $this->_init();
-
-        //...
         add_action('init', [&$this, 'i18n']);
-        add_action('plugins_loaded', [&$this, 'plugins_loaded']);
+        add_action('init', [&$this, 'init']);
 
+        add_action('plugins_loaded', [&$this, 'plugins_loaded']);
         add_action('wp_enqueue_scripts', [&$this, 'enqueue']);
     }
 
@@ -114,7 +113,7 @@ final class Plugin
     /**
      * @return void
      */
-    protected function _init() : void
+    public function init() : void
     {
         if (is_admin()) {
             (new Admin());
@@ -122,5 +121,6 @@ final class Plugin
 
         (new Customizer());
         (new Optimizer());
+        (new Shortcode())::init();
     }
 }

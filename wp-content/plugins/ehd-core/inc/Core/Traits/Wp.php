@@ -2,6 +2,8 @@
 
 namespace EHD\Plugins\Core\Traits;
 
+use EHD\Plugins\Walkers\Horizontal_Nav_Walker;
+use EHD\Plugins\Walkers\Vertical_Nav_Walker;
 use WP_Error;
 use WP_Query;
 use WP_Term;
@@ -17,6 +19,96 @@ trait Wp
 
     // -------------------------------------------------------------
 
+    /**
+     * @param array $args
+     *
+     * @return bool|false|string|void
+     */
+    public static function verticalNav(array $args = [])
+    {
+        $args = wp_parse_args(
+            (array) $args,
+            [
+                'container'      => false, // Remove nav container
+                'menu_id'        => '',
+                'menu_class'     => 'vertical menu',
+                'theme_location' => '',
+                'depth'          => 4,
+                'fallback_cb'    => false,
+                'walker'         => new Vertical_Nav_Walker,
+                'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-accordion-menu data-submenu-toggle="true">%3$s</ul>',
+                'echo'           => false,
+            ]
+        );
+
+        if (true === $args['echo']) {
+            echo wp_nav_menu($args);
+        } else {
+            return wp_nav_menu($args);
+        }
+    }
+
+    // -------------------------------------------------------------
+
+    /**
+     * @link http://codex.wordpress.org/Function_Reference/wp_nav_menu
+     *
+     * @param array $args
+     *
+     * @return bool|false|string|void
+     */
+    public static function horizontalNav(array $args = [])
+    {
+        $args = wp_parse_args(
+            (array) $args,
+            [
+                'container'      => false,
+                'menu_id'        => '',
+                'menu_class'     => 'dropdown menu horizontal horizontal-menu',
+                'theme_location' => '',
+                'depth'          => 4,
+                'fallback_cb'    => false,
+                'walker'         => new Horizontal_Nav_Walker,
+                'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-dropdown-menu>%3$s</ul>',
+                'echo'           => false,
+            ]
+        );
+
+        if (true === $args['echo']) {
+            echo wp_nav_menu($args);
+        } else {
+            return wp_nav_menu($args);
+        }
+    }
+
+    // -------------------------------------------------------------
+
+    /**
+     * (storefront_do_shortcode)
+     * Call a shortcode function by tag name.
+     *
+     * @param string     $tag     The shortcode whose function to call.
+     * @param array      $atts    The attributes to pass to the shortcode function. Optional.
+     * @param array|null $content The shortcode's content. Default is null (none).
+     *
+     * @return false|mixed False on failure, the result of the shortcode on success.
+     */
+    public static function doShortcode($tag, array $atts = [], $content = null)
+    {
+        global $shortcode_tags;
+        if (!isset($shortcode_tags[$tag])) {
+            return false;
+        }
+
+        return call_user_func($shortcode_tags[$tag], $atts, $content, $tag);
+    }
+
+    // -------------------------------------------------------------
+
+    /**
+     * @param $image_url
+     * @return false|mixed
+     */
     public static function getImageId($image_url)
     {
         global $wpdb;
@@ -65,12 +157,12 @@ trait Wp
         }
 
         $_return = [
-            'alt' => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
-            'caption' => $attachment->post_excerpt,
+            'alt'         => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
+            'caption'     => $attachment->post_excerpt,
             'description' => $attachment->post_content,
-            'href' => get_permalink($attachment->ID),
-            'src' => $attachment->guid,
-            'title' => $attachment->post_title
+            'href'        => get_permalink($attachment->ID),
+            'src'         => $attachment->guid,
+            'title'       => $attachment->post_title,
         ];
 
         if (true === $return_object) {
@@ -162,7 +254,12 @@ trait Wp
 
     // -------------------------------------------------------------
 
-    public static function getTerm($term_id, $taxonomy = 'category')
+    /**
+     * @param        $term_id
+     * @param string $taxonomy
+     * @return array|false|WP_Error|WP_Term|null
+     */
+    public static function getTerm($term_id, string $taxonomy = 'category')
     {
         $term = false;
         if (is_numeric($term_id)) {
@@ -199,19 +296,18 @@ trait Wp
         $_args = [
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
-
-            'ignore_sticky_posts' => true,
-            'no_found_rows' => true,
-            'post_status' => 'publish',
-            'tax_query' => ['relation' => 'AND'],
+            'ignore_sticky_posts'    => true,
+            'no_found_rows'          => true,
+            'post_status'            => 'publish',
+            'tax_query'              => ['relation' => 'AND'],
         ];
 
         //...
         $term = self::toObject($term);
         if (isset($term->taxonomy) && isset($term->term_id)) {
             $_args['tax_query'][] = [
-                'taxonomy' => $term->taxonomy,
-                'terms' => [$term->term_id],
+                'taxonomy'         => $term->taxonomy,
+                'terms'            => [$term->term_id],
                 'include_children' => (bool) $include_children,
             ];
         }
@@ -244,10 +340,10 @@ trait Wp
             if ($recent) {
                 $_args['date_query'] = [
                     'after' => [
-                        'year' => date('Y', $recent),
+                        'year'  => date('Y', $recent),
                         'month' => date('n', $recent),
-                        'day' => date('j', $recent),
-                    ]
+                        'day'   => date('j', $recent),
+                    ],
                 ];
             }
         }
@@ -278,10 +374,10 @@ trait Wp
         }
 
         $_args = [
-            'post_status' => 'publish',
-            'orderby' => ['date' => 'DESC'],
-            'tax_query' => ['relation' => 'AND'],
-            'no_found_rows' => true,
+            'post_status'         => 'publish',
+            'orderby'             => ['date' => 'DESC'],
+            'tax_query'           => ['relation' => 'AND'],
+            'no_found_rows'       => true,
             'ignore_sticky_posts' => true,
 
             'update_post_meta_cache' => false,
@@ -297,8 +393,8 @@ trait Wp
         }
 
         $_args['tax_query'][] = [
-            'taxonomy' => $taxonomy,
-            'terms' => $term_ids,
+            'taxonomy'         => $taxonomy,
+            'terms'            => $term_ids,
             'include_children' => (bool) $include_children,
         ];
 
@@ -318,10 +414,10 @@ trait Wp
             if ($recent) {
                 $_args['date_query'] = [
                     'after' => [
-                        'year' => date('Y', $recent),
+                        'year'  => date('Y', $recent),
                         'month' => date('n', $recent),
-                        'day' => date('j', $recent),
-                    ]
+                        'day'   => date('j', $recent),
+                    ],
                 ];
             }
         }
@@ -382,7 +478,7 @@ trait Wp
         // We have a logo. Logo is go.
         if ($custom_logo_id) {
             $custom_logo_attr = [
-                'class' => $theme . '-logo',
+                'class'   => $theme . '-logo',
                 'loading' => 'lazy',
             ];
 
@@ -722,8 +818,7 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * Breadcrumbs
-     * return void
+     * @return void
      */
     public static function breadcrumbs()
     {
@@ -926,7 +1021,12 @@ trait Wp
 
     // -------------------------------------------------------------
 
-    public static function getId($obj = null, $fallback = \false)
+    /**
+     * @param $obj
+     * @param $fallback
+     * @return false|int|mixed
+     */
+    public static function getId($obj = null, $fallback = false)
     {
         if (empty($obj) && $fallback) {
             return get_the_ID();
@@ -965,11 +1065,15 @@ trait Wp
 
     // -------------------------------------------------------------
 
+    /**
+     * @param $url
+     * @return int
+     */
     public static function getPostIdFromUrl($url = '')
     {
         if (!$url) {
             global $wp;
-            $url = home_url(add_query_arg(array(), $wp->request));
+            $url = home_url(add_query_arg([], $wp->request));
         }
         return url_to_postid($url);
     }
@@ -982,7 +1086,7 @@ trait Wp
      * @param string|null $container
      * @return void
      */
-    public static function menuFallback(?string $container = 'grid-container')
+    public static function menuFallback(?string $container = '')
     {
         echo '<div class="menu-fallback">';
         if ($container) {

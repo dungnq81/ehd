@@ -11,7 +11,6 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '841f98c5d948ce534a6f87abe5b50614' => __DIR__ . '/..' . '/roots/wp-password-bcrypt/wp-password-bcrypt.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        'ed8e8b1c5434502ce047f777d92c74a3' => __DIR__ . '/../..' . '/inc/Plugin.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -28,6 +27,7 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
             'EHD\\Plugins\\Themes\\' => 19,
             'EHD\\Plugins\\Elementor\\' => 22,
             'EHD\\Plugins\\Core\\' => 17,
+            'EHD\\Plugins\\' => 12,
         ),
     );
 
@@ -63,6 +63,10 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
         'EHD\\Plugins\\Core\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Core',
+        ),
+        'EHD\\Plugins\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc',
         ),
     );
 

@@ -6,6 +6,7 @@ use EHD\Plugins\Core\Helper;
 
 use EHD\Plugins\Widgets\MiniCart_Widget;
 use EHD\Plugins\Widgets\Products_Widget;
+use EHD\Plugins\Widgets\ProductsCarousel_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -31,6 +32,7 @@ final class WooCommerce
     {
         class_exists(MiniCart_Widget::class) && register_widget(new MiniCart_Widget());
         class_exists(Products_Widget::class) && register_widget(new Products_Widget());
+        class_exists(ProductsCarousel_Widget::class) && register_widget(new ProductsCarousel_Widget());
     }
 
     /**

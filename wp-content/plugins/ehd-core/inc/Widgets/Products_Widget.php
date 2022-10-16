@@ -233,7 +233,13 @@ if (!class_exists('Products_Widget')) {
          */
         public function widget($args, $instance)
         {
+            // ACF attributes
+            $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
+            // title
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+
+            // number
             $number = !empty($instance['number']) ? absint($instance['number']) : 0;
 
             // class
@@ -244,14 +250,11 @@ if (!class_exists('Products_Widget')) {
                 return;
             }
 
-            // ACF attributes
-            $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
-
             // has products
             wc_set_loop_prop( 'name', 'products_widget' );
 
         ?>
-        <section class="section products-section <?= $css_class ?>">
+        <section class="section products-section <?= $css_class ?>" id="<?= esc_attr(uniqid($this->widget_cssclass . '-')) ?>">
             <div class="inner inner-section">
                 <?php if ($title) : ?>
                 <h2 class="heading-title"><?php echo $title; ?></h2>

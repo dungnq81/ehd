@@ -15,7 +15,7 @@ use EHD\Plugins\Core\Traits\Wp;
  *
  * @author WEBHD
  */
-class Helper
+final class Helper
 {
     use File;
     use Plugin;

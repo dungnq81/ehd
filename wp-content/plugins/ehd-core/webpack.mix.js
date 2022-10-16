@@ -6,8 +6,9 @@ let directory = path.basename(path.resolve(__dirname));
 const dir = 'wp-content/plugins/' + directory;
 const assets = dir + '/assets';
 
-mix.disableNotifications()
-    .sourceMaps()
+mix
+    .disableNotifications()
+    
     //.copyDirectory(dir + '/resources/img', assets + '/img')
 
     .sass(dir + '/resources/sass/editor-style.scss', assets + '/css')

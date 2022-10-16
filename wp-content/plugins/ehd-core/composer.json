@@ -1,26 +1,25 @@
 {
-    "name": "plugins/ehd-core",
-    "description": "eHD core plugin",
-    "authors": [
-        {
-            "name": "WEBHD Team"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "EHD\\Plugins\\Core\\": "inc/Core",
-            "EHD\\Plugins\\Elementor\\": "inc/Elementor",
-            "EHD\\Plugins\\Themes\\": "inc/Themes",
-            "EHD\\Plugins\\Widgets\\": "inc/Widgets",
-            "EHD\\Plugins\\WooCommerce\\": "inc/WooCommerce"
-        },
-        "exclude-from-classmap": [],
-        "files": [
-            "inc/Plugin.php"
-        ]
-    },
-    "require": {
-        "symfony/var-dumper": "^v5.4.13",
-        "roots/wp-password-bcrypt": "^1.1.0"
-    }
+	"name": "plugins/ehd-core",
+	"description": "eHD core plugin",
+	"authors": [
+		{
+			"name": "WEBHD Team"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"EHD\\Plugins\\": "inc",
+			"EHD\\Plugins\\Core\\": "inc/Core",
+			"EHD\\Plugins\\Elementor\\": "inc/Elementor",
+			"EHD\\Plugins\\Themes\\": "inc/Themes",
+			"EHD\\Plugins\\Widgets\\": "inc/Widgets",
+			"EHD\\Plugins\\WooCommerce\\": "inc/WooCommerce"
+		},
+		"exclude-from-classmap": [],
+		"files": []
+	},
+	"require": {
+		"symfony/var-dumper": "^v5.4.13",
+		"roots/wp-password-bcrypt": "^1.1.0"
+	}
 }

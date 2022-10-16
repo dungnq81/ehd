@@ -68,8 +68,8 @@ trait Arr
 
     /**
      * @param mixed $key
-     * @param array  $array
-     * @param array  $insert_array
+     * @param array $array
+     * @param array $insert_array
      *
      * @return array
      */

@@ -108,7 +108,7 @@ final class Optimizer
                     $plugin_file,
                     [
                         'ehd-core/ehd-core.php',
-                        'advanced-custom-fields-pro/acf.php'
+                        'advanced-custom-fields-pro/acf.php',
                     ])
             ) {
                 unset($actions['deactivate']);

@@ -7,8 +7,8 @@ let directory = path.basename(path.resolve(__dirname));
 const dir = 'wp-content/themes/' + directory;
 const assets = dir + '/assets';
 
-mix.disableNotifications()
-    .sourceMaps()
+mix
+    .disableNotifications()
 
     // .copyDirectory(dir + '/resources/img', assets + '/img')
     // .copyDirectory(dir + '/resources/fonts/SVN-Poppins', assets + '/fonts/SVN-Poppins')

@@ -2,6 +2,7 @@
 
 namespace EHD\Plugins\Widgets;
 
+use EHD\Plugins\Core\Helper;
 use EHD\Plugins\Core\Widget;
 
 \defined('ABSPATH') || die;
@@ -37,21 +38,16 @@ if (!class_exists('offCanvas_Widget')) {
             }
 
             $hide_if_desktop = empty($instance['hide_if_desktop']) ? 0 : 1;
-            $class = '';
-            if ($hide_if_desktop) {
-                $class = ' hide-for-large';
-            }
 
-            ob_start();
+            $shortcode_content = Helper::doShortcode(
+                'off_canvas_button',
+                [
+                    'title' => '',
+                    'hide_if_desktop'  => $hide_if_desktop,
+                ]
+            );
 
-            ?>
-            <div class="off-canvas-content<?= $class ?>" data-off-canvas-content>
-                <button class="menu-lines" type="button" data-open="offCanvasMenu" aria-label="button">
-                    <span class="menu-txt"><?php echo __('Menu', EHD_PLUGIN_TEXT_DOMAIN); ?></span>
-                </button>
-            </div>
-            <?php
-            echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
+            echo $this->cache_widget($args, $shortcode_content); // WPCS: XSS ok.
         }
     }
 }

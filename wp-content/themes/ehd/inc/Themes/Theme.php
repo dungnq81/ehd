@@ -49,7 +49,7 @@ final class Theme
          */
         register_nav_menus(
             [
-                'main-nav' => __('Primary Menu', EHD_TEXT_DOMAIN),
+                'main-nav'   => __('Primary Menu', EHD_TEXT_DOMAIN),
                 'second-nav' => __('Secondary Menu', EHD_TEXT_DOMAIN),
                 'mobile-nav' => __('Handheld Menu', EHD_TEXT_DOMAIN),
                 'social-nav' => __('Social menu', EHD_TEXT_DOMAIN),
@@ -70,14 +70,14 @@ final class Theme
         /** header sidebar */
         register_sidebar(
             [
-                'container' => false,
-                'id' => 'w-header-sidebar',
-                'name' => __('Header', EHD_TEXT_DOMAIN),
-                'description' => __('Widgets added here will appear in right header.', EHD_TEXT_DOMAIN),
+                'container'     => false,
+                'id'            => 'w-header-sidebar',
+                'name'          => __('Header', EHD_TEXT_DOMAIN),
+                'description'   => __('Widgets added here will appear in right header.', EHD_TEXT_DOMAIN),
                 'before_widget' => '<div class="header-widgets %2$s">',
-                'after_widget' => '</div>',
-                'before_title' => '<span>',
-                'after_title' => '</span>',
+                'after_widget'  => '</div>',
+                'before_title'  => '<span>',
+                'after_title'   => '</span>',
             ]
         );
 
@@ -110,8 +110,8 @@ final class Theme
                 }
 
                 $footer_args[$footer] = [
-                    'name' => $footer_region_name,
-                    'id' => sprintf('w-footer-%d', $footer_n),
+                    'name'        => $footer_region_name,
+                    'id'          => sprintf('w-footer-%d', $footer_n),
                     'description' => $footer_region_description,
                 ];
             }
@@ -119,11 +119,11 @@ final class Theme
 
         foreach ($footer_args as $args) {
             $footer_tags = [
-                'container' => false,
+                'container'     => false,
                 'before_widget' => '<div class="widget %2$s">',
-                'after_widget' => '</div>',
-                'before_title' => '<p class="widget-title h6">',
-                'after_title' => '</p>',
+                'after_widget'  => '</div>',
+                'before_title'  => '<p class="widget-title h6">',
+                'after_title'   => '</p>',
             ];
 
             register_sidebar($args + $footer_tags);
@@ -151,16 +151,16 @@ final class Theme
 
         // inline js
         $l10n = [
-            'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
-            'baseUrl' => trailingslashit(site_url()),
+            'ajaxUrl'  => esc_url(admin_url('admin-ajax.php')),
+            'baseUrl'  => trailingslashit(site_url()),
             'themeUrl' => trailingslashit(get_template_directory_uri()),
-            'locale' => get_locale(),
-            'lang' => Helper::getLang(),
+            'locale'   => get_locale(),
+            'lang'     => Helper::getLang(),
             //'domain'    => DOMAIN_CURRENT_SITE,
-            'lg' => [
-                'view_more' => __('View more', EHD_TEXT_DOMAIN),
-                'view_detail' => __('Detail', EHD_TEXT_DOMAIN)
-            ]
+            'lg'       => [
+                'view_more'   => __('View more', EHD_TEXT_DOMAIN),
+                'view_detail' => __('Detail', EHD_TEXT_DOMAIN),
+            ],
         ];
 
         wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
@@ -242,10 +242,10 @@ final class Theme
             apply_filters(
                 'custom_logo_args',
                 [
-                    'height' => $logo_height,
-                    'width' => $logo_width,
-                    'flex-height' => true,
-                    'flex-width' => true,
+                    'height'               => $logo_height,
+                    'width'                => $logo_width,
+                    'flex-height'          => true,
+                    'flex-width'           => true,
                     'unlink-homepage-logo' => false,
                 ]
             )
