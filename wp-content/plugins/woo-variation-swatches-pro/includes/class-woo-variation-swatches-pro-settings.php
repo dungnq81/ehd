@@ -275,7 +275,7 @@
                         'id'      => 'exclude_categories',
                         'type'    => 'multiselect',
                         //'is_pro' => true,
-                        'is_new'  => true,
+                        // 'is_new'  => true,
                         //'help_preview' => true,
                         'options' => $this->get_product_categories(),
                         'title'   => esc_html__( 'Exclude Product Categories', 'woo-variation-swatches-pro' ),

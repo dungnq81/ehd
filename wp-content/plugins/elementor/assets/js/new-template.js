@@ -1,4 +1,4 @@
-/*! elementor - v3.7.8 - 02-10-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -161,11 +161,26 @@ module.exports = elementorModules.common.views.modal.Layout.extend({
   },
   initialize: function initialize() {
     elementorModules.common.views.modal.Layout.prototype.initialize.apply(this, arguments);
+    var lookupControlIdPrefix = 'elementor-new-template__form__';
+    var templateTypeSelectId = "".concat(lookupControlIdPrefix, "template-type");
     this.showLogo();
     this.showContentView();
     this.initElements();
     this.lockProBehavior = new _lockPro.default(this.elements);
     this.lockProBehavior.bindEvents();
+
+    var dynamicControlsVisibilityListener = function dynamicControlsVisibilityListener() {
+      elementorAdmin.templateControls.setDynamicControlsVisibility(lookupControlIdPrefix, elementor_new_template_form_controls);
+    };
+
+    this.getModal().onShow = function () {
+      dynamicControlsVisibilityListener();
+      document.getElementById(templateTypeSelectId).addEventListener('change', dynamicControlsVisibilityListener);
+    };
+
+    this.getModal().onHide = function () {
+      document.getElementById(templateTypeSelectId).removeEventListener('change', dynamicControlsVisibilityListener);
+    };
   },
   initElements: function initElements() {
     var container = this.$el[0],

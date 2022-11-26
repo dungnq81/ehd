@@ -31,22 +31,32 @@
                 return esc_attr( WOO_VARIATION_SWATCHES_PRO_PLUGIN_VERSION );
             }
             
-            
             public function get_product_options( $product_id ) {
                 
                 if ( is_object( $product_id ) ) {
                     $product_id = $product_id->get_id();
                 }
                 
-                $old_options = get_post_meta( $product_id, '_wvs_product_attributes', true );
-                $new_options = get_post_meta( $product_id, '_woo_variation_swatches_product_settings', true );
+                $cache_key   = woo_variation_swatches_pro()->get_cache()->get_key_with_language_suffix( sprintf( 'product_settings_of__%s', $product_id ) );
+                $cache_group = 'woo_variation_swatches';
                 
-                // Backward Compatibility
-                $options = empty( $new_options ) ? $old_options : $new_options;
+                if ( false === ( $options = wp_cache_get( $cache_key, $cache_group ) ) ) {
+                    
+                    $old_options = get_post_meta( $product_id, '_wvs_product_attributes', true );
+                    $new_options = get_post_meta( $product_id, '_woo_variation_swatches_product_settings', true );
+                    
+                    // Backward Compatibility
+                    $options = empty( $new_options ) ? $old_options : $new_options;
+                    
+                    if ( ! empty( $options ) ) {
+                        wp_cache_set( $cache_key, $options, $cache_group );
+                    }
+                }
                 
                 if ( empty( $options ) ) {
-                    return array();
+                    $options = array();
                 }
+                
                 
                 return apply_filters( 'woo_variation_swatches_product_options', $options, $product_id );
             }

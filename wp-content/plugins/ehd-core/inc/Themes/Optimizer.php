@@ -47,7 +47,6 @@ class Optimizer
         }, 10, 1);
 
         // Disable XML-RPC authentication
-        // Filter whether XML-RPC methods requiring authentication, such as for publishing purposes, are enabled.
         add_filter('xmlrpc_enabled', '__return_false');
         add_filter('pre_update_option_enable_xmlrpc', '__return_false');
         add_filter('pre_option_enable_xmlrpc', '__return_zero');
@@ -62,6 +61,29 @@ class Optimizer
         add_filter('excerpt_more', function () {
             return ' ' . '&hellip;';
         });
+
+        // Remove admin bar
+        add_action('wp_before_admin_bar_render', function () {
+            global $wp_admin_bar;
+            $wp_admin_bar->remove_menu('wp-logo');
+        });
+
+        // Prevent Specific Plugins from Deactivation
+        add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
+            if (array_key_exists('deactivate', $actions)
+                && in_array(
+                    $plugin_file,
+                    [
+                        'ehd-core/ehd-core.php',
+                        'advanced-custom-fields-pro/acf.php',
+                    ])
+            ) {
+                unset($actions['deactivate']);
+            }
+
+            return $actions;
+
+        }, 10, 4);
 
         //...
         if (!WP_DEBUG) {
@@ -84,16 +106,15 @@ class Optimizer
      */
     protected function _cleanup()
     {
-        // Xóa widget mặc định "Welcome to WordPress".
         remove_action('welcome_panel', 'wp_welcome_panel');
 
         // wp_head
-        remove_action('wp_head', 'rsd_link'); // Remove the EditURI/RSD link
-        remove_action('wp_head', 'wlwmanifest_link'); // Remove Windows Live Writer Manifest link
-        remove_action('wp_head', 'wp_shortlink_wp_head'); // Remove the shortlink
-        remove_action('wp_head', 'wp_generator'); // remove WordPress Generator
-        remove_action('wp_head', 'feed_links_extra', 3); //remove comments feed.
-        remove_action('wp_head', 'adjacent_posts_rel_link'); // Remove relational links for the posts adjacent to the current post.
+        remove_action('wp_head', 'rsd_link');                        // Remove the EditURI/RSD link
+        remove_action('wp_head', 'wlwmanifest_link');                // Remove Windows Live Writer Manifest link
+        remove_action('wp_head', 'wp_shortlink_wp_head');            // Remove the shortlink
+        remove_action('wp_head', 'wp_generator');                    // remove WordPress Generator
+        remove_action('wp_head', 'feed_links_extra', 3);             //remove comments feed.
+        remove_action('wp_head', 'adjacent_posts_rel_link');         // Remove relational links for the posts adjacent to the current post.
         remove_action('wp_head', 'adjacent_posts_rel_link_wp_head'); // Remove prev and next links
         remove_action('wp_head', 'parent_post_rel_link');
         remove_action('wp_head', 'start_post_rel_link');
@@ -130,7 +151,7 @@ class Optimizer
      *
      * @return string
      */
-    public function script_loader_tag(string $tag, string $handle, string $src)
+    public function script_loader_tag(string $tag, string $handle, string $src) : string
     {
         $str_parsed = [];
         $str_parsed = apply_filters('defer_script_loader_tag', $str_parsed);

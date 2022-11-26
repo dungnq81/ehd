@@ -1,4 +1,4 @@
-/*! elementor - v3.7.8 - 02-10-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1836,6 +1836,86 @@ function createListenerMiddleware(middlewareOptions) {
 (0,immer__WEBPACK_IMPORTED_MODULE_2__.enableES5)();
 
 //# sourceMappingURL=redux-toolkit.esm.js.map
+
+/***/ }),
+
+/***/ "../app/assets/js/utils/utils.js":
+/*!***************************************!*\
+  !*** ../app/assets/js/utils/utils.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.stringToRemValues = exports.rgbToHex = exports.pxToRem = exports.isOneOf = exports.arrayToObjectByKey = exports.arrayToClassName = void 0;
+
+var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
+
+var pxToRem = function pxToRem(pixels) {
+  if (!pixels) {
+    return;
+  } else if ('string' !== typeof pixels) {
+    pixels = pixels.toString();
+  }
+
+  return pixels.split(' ').map(function (value) {
+    return "".concat(value * 0.0625, "rem");
+  }).join(' ');
+};
+
+exports.pxToRem = pxToRem;
+
+var arrayToClassName = function arrayToClassName(array, action) {
+  return array.filter(function (item) {
+    return 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][1] : item;
+  }).map(function (item) {
+    var value = 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][0] : item;
+    return action ? action(value) : value;
+  }).join(' ');
+};
+
+exports.arrayToClassName = arrayToClassName;
+
+var stringToRemValues = function stringToRemValues(string) {
+  return string.split(' ').map(function (value) {
+    return pxToRem(value);
+  }).join(' ');
+};
+
+exports.stringToRemValues = stringToRemValues;
+
+var rgbToHex = function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map(function (x) {
+    var hex = x.toString(16);
+    return 1 === hex.length ? '0' + hex : hex;
+  }).join('');
+};
+
+exports.rgbToHex = rgbToHex;
+
+var isOneOf = function isOneOf(filetype, filetypeOptions) {
+  return filetypeOptions.some(function (type) {
+    return filetype.includes(type);
+  });
+};
+
+exports.isOneOf = isOneOf;
+
+var arrayToObjectByKey = function arrayToObjectByKey(array, key) {
+  var finalObject = {};
+  array.forEach(function (item) {
+    return finalObject[item[key]] = item;
+  });
+  return finalObject;
+};
+
+exports.arrayToObjectByKey = arrayToObjectByKey;
 
 /***/ }),
 
@@ -5420,7 +5500,9 @@ var AttachPreview = /*#__PURE__*/function (_$e$modules$CommandIn) {
     key: "attachDocumentToPreview",
     value: function attachDocumentToPreview(document, args) {
       var _args$selector = args.selector,
-          selector = _args$selector === void 0 ? '.elementor-' + document.id : _args$selector;
+          selector = _args$selector === void 0 ? '.elementor-' + document.id : _args$selector,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
       return new Promise(function (resolve, reject) {
         // Not yet loaded.
         if (!document) {
@@ -5451,7 +5533,11 @@ var AttachPreview = /*#__PURE__*/function (_$e$modules$CommandIn) {
         elementor.initPreviewView(document);
         document.container.view = elementor.getPreviewView();
         document.container.model.attributes.elements = elementor.elements;
-        elementor.helpers.scrollToView(document.$element);
+
+        if (shouldScroll) {
+          elementor.helpers.scrollToView(document.$element);
+        }
+
         document.$element.addClass('elementor-edit-area-active').removeClass('elementor-editor-preview');
         resolve();
       });
@@ -5558,7 +5644,9 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
   }, {
     key: "apply",
     value: function apply(args) {
-      var config = args.config;
+      var config = args.config,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
 
       if (elementorCommon.config.experimentalFeatures.additional_custom_breakpoints) {
         // When the Responsive Optimization experiment is active, the responsive controls are generated on the
@@ -5589,7 +5677,9 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
         // TODO: Find better solution - Fix issue when globals does not render after saving from kit.
         // The issue is that the css-parser is depends upon cache and cache is not available during this time.
         return $e.data.get('globals/index').then(function () {
-          return $e.internal('editor/documents/attach-preview');
+          return $e.internal('editor/documents/attach-preview', {
+            shouldScroll: shouldScroll
+          });
         });
       }
 
@@ -5738,6 +5828,8 @@ var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
     value: function apply(args) {
       var id = args.id,
           selector = args.selector,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll,
           currentDocument = elementor.documents.getCurrent(); // Already opened.
 
       if (currentDocument && id === currentDocument.id) {
@@ -5754,7 +5846,8 @@ var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
 
         return $e.internal('editor/documents/load', {
           config: config,
-          selector: selector
+          selector: selector,
+          shouldScroll: shouldScroll
         });
       }).always(function () {
         // TODO: move to $e.hooks.ui.
@@ -5923,14 +6016,17 @@ var Switch = /*#__PURE__*/function (_$e$modules$CommandBa) {
     value: function apply(args) {
       var id = args.id,
           mode = args.mode,
-          onClose = args.onClose;
+          onClose = args.onClose,
+          _args$shouldScroll = args.shouldScroll,
+          shouldScroll = _args$shouldScroll === void 0 ? true : _args$shouldScroll;
       return $e.run('editor/documents/close', {
         id: elementor.documents.getCurrentId(),
         mode: mode,
         onClose: onClose
       }).then(function () {
         return $e.run('editor/documents/open', {
-          id: id
+          id: id,
+          shouldScroll: shouldScroll
         });
       }).then(function () {
         elementor.getPanelView().getPages('menu').view.addExitItem();
@@ -6541,7 +6637,7 @@ module.exports = Marionette.Behavior.extend({
       },
       actionButton: {
         url: hasProAndNotConnected ? elementorProEditorConfig.urls.connect : elementor.config.dynamicPromotionURL.replace('%s', this.view.model.get('name')),
-        text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('See it in Action', 'elementor')
+        text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('Upgrade', 'elementor')
       }
     };
     elementor.promotion.showDialog(dialogOptions);
@@ -9976,6 +10072,7 @@ InsertTemplateHandler = Marionette.Behavior.extend({
     var args = {
       model: this.view.model
     };
+    this.ui.insertButton.addClass('elementor-disabled');
 
     if ('remote' === args.model.get('source') && !elementor.config.library_connect.is_connected) {
       $e.route('library/connect', args);
@@ -33653,7 +33750,7 @@ BaseElementView = BaseContainer.extend({
     var _this4 = this;
 
     // Init the draggable only for Containers and their children.
-    if (!this.$el.hasClass('.e-container') && !this.$el.parents('.e-container').length) {
+    if (!this.$el.hasClass('.e-con') && !this.$el.parents('.e-con').length) {
       return;
     }
 
@@ -35297,10 +35394,12 @@ var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "
 var ContainerView = BaseElementView.extend({
   template: Marionette.TemplateCache.get('#tmpl-elementor-container-content'),
   emptyView: ColumnEmptyView,
-  // Child view is empty in order to use the parent element.
-  childViewContainer: '',
+  getChildViewContainer: function getChildViewContainer() {
+    this.childViewContainer = 'boxed' === this.getContainer().settings.get('content_width') ? '> .e-con-inner' : '';
+    return Marionette.CompositeView.prototype.getChildViewContainer.apply(this, arguments);
+  },
   className: function className() {
-    return "".concat(BaseElementView.prototype.className.apply(this), " e-container");
+    return "".concat(BaseElementView.prototype.className.apply(this), " e-con");
   },
   tagName: function tagName() {
     return this.model.getSetting('html_tag') || 'div';
@@ -35381,9 +35480,10 @@ var ContainerView = BaseElementView.extend({
   getDroppableOptions: function getDroppableOptions() {
     var _this = this;
 
+    var items = 'boxed' === this.getContainer().settings.get('content_width') ? '> .elementor-widget, > .e-con-full, > .e-con > .e-con-inner, > .elementor-empty-view > .elementor-first-add' : '> .elementor-element, > .elementor-empty-view .elementor-first-add';
     return {
       axis: this.getDroppableAxis(),
-      items: '> .elementor-element, > .elementor-empty-view .elementor-first-add',
+      items: items,
       groups: ['elementor-element'],
       horizontalThreshold: 5,
       // TODO: Stop the magic.
@@ -35399,15 +35499,17 @@ var ContainerView = BaseElementView.extend({
 
         elementor.getPreviewView().onPanelElementDragEnd();
         var draggedView = elementor.channels.editor.request('element:dragged'),
-            draggingInSameParent = (draggedView === null || draggedView === void 0 ? void 0 : draggedView.parent) === _this;
-        var $elements = jQuery(event.currentTarget.parentElement).find('> .elementor-element'); // Exclude the dragged element from the indexing calculations.
+            draggingInSameParent = (draggedView === null || draggedView === void 0 ? void 0 : draggedView.parent) === _this,
+            hasInnerContainer = jQuery(event.currentTarget).hasClass('e-con-inner'),
+            containerSelector = hasInnerContainer ? event.currentTarget.parentElement.parentElement : event.currentTarget.parentElement;
+        var $elements = jQuery(containerSelector).find('> .elementor-element'); // Exclude the dragged element from the indexing calculations.
 
         if (draggingInSameParent) {
           $elements = $elements.not(draggedView.$el);
         }
 
         var widgetsArray = Object.values($elements);
-        var newIndex = widgetsArray.indexOf(event.currentTarget); // Plus one in order to insert it after the current target element.
+        var newIndex = hasInnerContainer ? widgetsArray.indexOf(event.currentTarget.parentElement) : widgetsArray.indexOf(event.currentTarget); // Plus one in order to insert it after the current target element.
 
         if (['bottom', 'right'].includes(side)) {
           newIndex++;
@@ -35471,7 +35573,10 @@ var ContainerView = BaseElementView.extend({
         targetContainer = 'container' !== containerAncestry[1].type ? this.getContainer() : this.getContainer().parent;
     $e.run('document/elements/create', {
       model: {
-        elType: 'container'
+        elType: 'container',
+        settings: {
+          content_width: 'full'
+        }
       },
       container: targetContainer
     });
@@ -35599,22 +35704,22 @@ var ContainerView = BaseElementView.extend({
       _this2.nestingLevel = _this2.getNestingLevel();
       _this2.$el[0].dataset.nestingLevel = _this2.nestingLevel;
 
-      _this2.$el.html5Droppable(_this2.getDroppableOptions());
+      _this2.droppableInitialize(_this2.container.settings);
     });
   },
   renderOnChange: function renderOnChange(settings) {
-    BaseElementView.prototype.renderOnChange.apply(this, arguments); // Re-initialize the droppable in order to make sure the axis works properly.
+    BaseElementView.prototype.renderOnChange.apply(this, arguments);
 
-    if (settings.changed.flex_direction) {
-      this.$el.html5Droppable('destroy');
-      this.$el.html5Droppable(this.getDroppableOptions());
+    if (settings.changed.flex_direction || settings.changed.content_width) {
+      this.droppableDestroy();
+      this.droppableInitialize(settings);
     }
   },
   onDragStart: function onDragStart() {
-    this.$el.html5Droppable('destroy');
+    this.droppableDestroy();
   },
   onDragEnd: function onDragEnd() {
-    this.$el.html5Droppable(this.getDroppableOptions());
+    this.droppableInitialize(this.container.settings);
   },
   // TODO: Copied from `views/column.js`.
   attachElContent: function attachElContent() {
@@ -35652,6 +35757,17 @@ var ContainerView = BaseElementView.extend({
   onResizeStop: function onResizeStop() {
     if (this.ui.percentsTooltip) {
       this.ui.percentsTooltip.hide();
+    }
+  },
+  droppableDestroy: function droppableDestroy() {
+    this.$el.html5Droppable('destroy');
+    this.$el.find('> .e-con-inner').html5Droppable('destroy');
+  },
+  droppableInitialize: function droppableInitialize(settings) {
+    if ('boxed' === settings.get('content_width')) {
+      this.$el.find('> .e-con-inner').html5Droppable(this.getDroppableOptions());
+    } else {
+      this.$el.html5Droppable(this.getDroppableOptions());
     }
   }
 });
@@ -40240,28 +40356,6 @@ PanelMenu.addAdminMenu = function () {
     at: 0
   });
   PanelMenu.addItem({
-    name: 'notes',
-    icon: 'eicon-commenting-o',
-    title: __('Notes', 'elementor'),
-    callback: function callback() {
-      var hasProAndNotConnected = elementor.helpers.hasProAndNotConnected(),
-          dialogOptions = {
-        title: __('Notes', 'elementor'),
-        content: __('With Notes, teamwork gets even better. Stay in sync with comments, feedback & more on your website.', 'elementor'),
-        targetElement: this.$el,
-        position: {
-          blockStart: '-3',
-          inlineStart: '+10'
-        },
-        actionButton: {
-          url: hasProAndNotConnected ? elementorProEditorConfig.urls.connect : 'https://go.elementor.com/go-pro-notes/',
-          text: hasProAndNotConnected ? __('Connect & Activate', 'elementor') : __('See it in Action', 'elementor')
-        }
-      };
-      elementor.promotion.showDialog(dialogOptions);
-    }
-  }, 'navigate_from_page', 'view-page');
-  PanelMenu.addItem({
     name: 'finder',
     icon: 'eicon-search',
     title: __('Finder', 'elementor'),
@@ -42698,9 +42792,13 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
   parsePropertyPlaceholder: function parsePropertyPlaceholder(control, value, controls, values, placeholder, parserControlName) {
     if (parserControlName) {
       if (control.responsive && controls[parserControlName]) {
+        var _$findWhere;
+
         var deviceSuffix = elementor.conditions.getResponsiveControlDeviceSuffix(control.responsive);
-        control = _.findWhere(controls, {
+        control = (_$findWhere = _.findWhere(controls, {
           name: parserControlName + deviceSuffix
+        })) !== null && _$findWhere !== void 0 ? _$findWhere : _.findWhere(controls, {
+          name: parserControlName
         });
       } else {
         control = _.findWhere(controls, {
@@ -45166,7 +45264,7 @@ var AddSectionBase = /*#__PURE__*/function (_Marionette$ItemView) {
         addTemplateButton: '.elementor-add-template-button',
         selectPreset: '.elementor-select-preset',
         presets: '.elementor-preset',
-        containerPresets: '.e-container-preset'
+        containerPresets: '.e-con-preset'
       };
     }
   }, {
@@ -45868,7 +45966,7 @@ BaseSectionsContainerView = BaseContainer.extend({
   getSortableOptions: function getSortableOptions() {
     return {
       handle: '> .elementor-element-overlay .elementor-editor-element-edit',
-      items: '> .elementor-section, > .e-container'
+      items: '> .elementor-section, > .e-con'
     };
   },
   getChildType: function getChildType() {
@@ -47418,86 +47516,6 @@ var EventManager = function EventManager() {
 };
 
 module.exports = EventManager;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/utils/utils.js":
-/*!********************************************!*\
-  !*** ../core/app/assets/js/utils/utils.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.stringToRemValues = exports.rgbToHex = exports.pxToRem = exports.isOneOf = exports.arrayToObjectByKey = exports.arrayToClassName = void 0;
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js"));
-
-var pxToRem = function pxToRem(pixels) {
-  if (!pixels) {
-    return;
-  } else if ('string' !== typeof pixels) {
-    pixels = pixels.toString();
-  }
-
-  return pixels.split(' ').map(function (value) {
-    return "".concat(value * 0.0625, "rem");
-  }).join(' ');
-};
-
-exports.pxToRem = pxToRem;
-
-var arrayToClassName = function arrayToClassName(array, action) {
-  return array.filter(function (item) {
-    return 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][1] : item;
-  }).map(function (item) {
-    var value = 'object' === (0, _typeof2.default)(item) ? Object.entries(item)[0][0] : item;
-    return action ? action(value) : value;
-  }).join(' ');
-};
-
-exports.arrayToClassName = arrayToClassName;
-
-var stringToRemValues = function stringToRemValues(string) {
-  return string.split(' ').map(function (value) {
-    return pxToRem(value);
-  }).join(' ');
-};
-
-exports.stringToRemValues = stringToRemValues;
-
-var rgbToHex = function rgbToHex(r, g, b) {
-  return '#' + [r, g, b].map(function (x) {
-    var hex = x.toString(16);
-    return 1 === hex.length ? '0' + hex : hex;
-  }).join('');
-};
-
-exports.rgbToHex = rgbToHex;
-
-var isOneOf = function isOneOf(filetype, filetypeOptions) {
-  return filetypeOptions.some(function (type) {
-    return filetype.includes(type);
-  });
-};
-
-exports.isOneOf = isOneOf;
-
-var arrayToObjectByKey = function arrayToObjectByKey(array, key) {
-  var finalObject = {};
-  array.forEach(function (item) {
-    return finalObject[item[key]] = item;
-  });
-  return finalObject;
-};
-
-exports.arrayToObjectByKey = arrayToObjectByKey;
 
 /***/ }),
 
@@ -51803,7 +51821,7 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*!
 
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
 
-var _utils = __webpack_require__(/*! elementor/core/app/assets/js/utils/utils */ "../core/app/assets/js/utils/utils.js");
+var _utils = __webpack_require__(/*! elementor-app/utils/utils */ "../app/assets/js/utils/utils.js");
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 
@@ -62121,19 +62139,25 @@ var __webpack_exports__ = {};
     };
 
     var insertPlaceholder = function insertPlaceholder() {
+      var _$parentContainer$fin;
+
       if (!settings.placeholder) {
         return;
-      } // Fix placeholder placement for Container with `flex-direction: row`.
-
+      }
 
       var $currentElement = $(currentElement),
-          isRowContainer = $currentElement.parents('.e-container--row').length,
-          isFirstInsert = $currentElement.hasClass('elementor-first-add');
+          isRowContainer = $currentElement.parents('.e-con--row').length,
+          isFirstInsert = $currentElement.hasClass('elementor-first-add'),
+          isInnerContainer = $currentElement.hasClass('e-con-inner'),
+          $parentContainer = $currentElement.closest('.e-con').parent().closest('.e-con'); // Make sure that the previous placeholder is removed before inserting a new one.
+
+      (_$parentContainer$fin = $parentContainer.find('.elementor-widget-placeholder')) === null || _$parentContainer$fin === void 0 ? void 0 : _$parentContainer$fin.remove(); // Fix placeholder placement for Container with `flex-direction: row`.
 
       if (isRowContainer && !isFirstInsert) {
-        var _insertMethod = ['bottom', 'right'].includes(currentSide) ? 'after' : 'before';
+        var _insertMethod = ['bottom', 'right'].includes(currentSide) ? 'after' : 'before',
+            $rowTargetElement = isInnerContainer ? $currentElement.closest('.e-con') : $currentElement;
 
-        $currentElement[_insertMethod](elementsCache.$placeholder);
+        $rowTargetElement[_insertMethod](elementsCache.$placeholder);
 
         return;
       }
@@ -62327,6 +62351,9 @@ var __webpack_exports__ = {};
             $.removeData(this, pluginName);
           }
 
+          return;
+        } else if ('destroy' === options) {
+          // Escape the loop when an element is destroyed before initialisation.
           return;
         }
 

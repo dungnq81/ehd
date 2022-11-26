@@ -10,7 +10,7 @@ use WebpConverter\HookableInterface;
 class EndpointIntegration implements HookableInterface {
 
 	const ROUTE_NAMESPACE    = 'webp-converter/v1';
-	const ROUTE_NONCE_PARAM  = 'nonce_token';
+	const ROUTE_NONCE_HEADER = 'Webpc-Nonce';
 	const ROUTE_NONCE_ACTION = 'webpc_rest-%s';
 
 	/**
@@ -40,11 +40,16 @@ class EndpointIntegration implements HookableInterface {
 	public function register_rest_route() {
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			$this->endpoint_object->get_route_name() . '-(?P<nonce_token>[a-zA-Z0-9.]+)',
+			$this->endpoint_object->get_route_name(),
 			[
 				'methods'             => $this->endpoint_object->get_http_methods(),
 				'permission_callback' => function ( \WP_REST_Request $request ) {
-					return $this->endpoint_object->is_valid_request( $request );
+					$header_value = $request->get_header( EndpointIntegration::ROUTE_NONCE_HEADER );
+					if ( $header_value === null ) {
+						return false;
+					}
+
+					return $this->endpoint_object->is_valid_request( $header_value );
 				},
 				'callback'            => [ $this, 'get_route_response' ],
 				'args'                => $this->endpoint_object->get_route_args(),

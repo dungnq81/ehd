@@ -15,14 +15,14 @@ if (!class_exists('DropdownSearch_Widget')) {
             $this->widget_description = __('Display the dropdown search box', EHD_PLUGIN_TEXT_DOMAIN);
             $this->widget_name = __('Dropdown Search', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
-                'title' => [
-                    'type' => 'text',
-                    'std' => __('Search'),
+                'title'     => [
+                    'type'  => 'text',
+                    'std'   => __('Search'),
                     'label' => __('Title'),
                 ],
                 'css_class' => [
-                    'type' => 'text',
-                    'std' => '',
+                    'type'  => 'text',
+                    'std'   => '',
                     'label' => __('Css class', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
             ];
@@ -47,11 +47,14 @@ if (!class_exists('DropdownSearch_Widget')) {
 
             $shortcode_content = Helper::doShortcode(
                 'dropdown_search',
-                [
-                    'title' => $title,
-                    'class' => $this->widget_classname . ' ' . $css_class,
-                    'id'    => '',
-                ]
+                apply_filters(
+                    'dropdown_search_widget_shortcode_args',
+                    [
+                        'title' => $title,
+                        'class' => $this->widget_classname . ' ' . $css_class,
+                        'id'    => '',
+                    ]
+                )
             );
 
             echo $this->cache_widget($args, $shortcode_content); // WPCS: XSS ok.

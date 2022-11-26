@@ -1,4 +1,4 @@
-/*! elementor - v3.7.8 - 02-10-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend-modules"],{
 
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
@@ -91,7 +91,7 @@ class _default extends elementorModules.ViewModule {
   }
 
   runElementsHandlers() {
-    this.elements.$elements.each((index, element) => elementorFrontend.elementsHandler.runReadyTrigger(element));
+    this.elements.$elements.each((index, element) => setTimeout(() => elementorFrontend.elementsHandler.runReadyTrigger(element)));
   }
 
   onInit() {

@@ -2,7 +2,7 @@
  * Variation Swatches for WooCommerce - PRO
  *
  * Author: Emran Ahmed ( emran.bd.08@gmail.com )
- * Date: 9/29/2022, 5:01:14 PM
+ * Date: 11/17/2022, 7:31:14 PM
  * Released under the GPLv3 license.
  */
 /******/ (function() { // webpackBootstrap
@@ -67,9 +67,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _defineProperty(this, "onPreviewChange", function (event) {
           event.preventDefault();
 
-          _this.$element.off('reset_data.wc-variation-form');
+          _this.$element.off('reset_data.wc-variation-form'); // this.previewChange(event.currentTarget);
 
-          _this.previewChange(event.currentTarget);
+
+          _this.fetchPreviewChange(event.currentTarget);
         });
 
         _defineProperty(this, "onChange", function (event) {
@@ -162,7 +163,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           this.$cart_button.on('click.wc-variation-form', this.onAjaxAddToCart);
         }
 
-        if (!woo_variation_swatches_pro_options.enable_catalog_mode && woo_variation_swatches_pro_options.enable_single_variation_preview && woo_variation_swatches_pro_options.enable_single_variation_preview_archive) {
+        if (this.haveSingleVariationPreview()) {
           this.$element.on('click.wc-variation-form', '.wvs_archive_reset_variations > a', this.onResetDisplayedVariation);
           this.$element.on('change.wc-variation-form', single_variation_preview_selector, this.onPreviewChange);
         }
@@ -189,6 +190,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             _this2.swatchInit();
           }, 100);
+        }
+      }, {
+        key: "haveSingleVariationPreview",
+        value: function haveSingleVariationPreview() {
+          return !woo_variation_swatches_pro_options.enable_catalog_mode && woo_variation_swatches_pro_options.enable_single_variation_preview && woo_variation_swatches_pro_options.enable_single_variation_preview_archive;
         }
       }, {
         key: "AjaxAddToCart",
@@ -387,9 +393,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }
       }, {
+        key: "fetchPreviewChange",
+        value: function fetchPreviewChange(el) {
+          var _this5 = this;
+
+          var attribute_name = $(el).data('attribute_name') || $(el).attr('name');
+          var value = $(el).val() || '';
+          var currentAttributes = {};
+          var attributes = this.getChosenAttributes();
+
+          if (value && attributes.count && attributes.count > attributes.chosenCount) {
+            currentAttributes['product_id'] = this.product_id;
+            currentAttributes[attribute_name] = value;
+            wp.apiFetch({
+              path: wp.url.addQueryArgs("/woo-variation-swatches/v1/archive-product-preview", currentAttributes)
+            }).then(function (variation) {
+              _this5.updatePreviewImage(variation);
+            })["catch"](function (error) {
+              console.error("archive product variation preview fetching failed: ".concat(_this5.product_id, "."), error);
+            })["finally"](function () {});
+          }
+        }
+      }, {
         key: "previewChange",
         value: function previewChange(el) {
-          var _this5 = this;
+          var _this6 = this;
 
           var attribute_name = $(el).data('attribute_name') || $(el).attr('name');
           var value = $(el).val() || '';
@@ -406,11 +434,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               data: currentAttributes
             });
             this.previewXhr.fail(function (jqXHR, textStatus) {
-              console.error("archive product preview not available on ".concat(_this5.product_id, "."), attribute_name, textStatus);
+              console.error("archive product preview not available on ".concat(_this6.product_id, "."), attribute_name, textStatus);
             });
             this.previewXhr.done(function (variation) {
               // console.log(variation)
-              _this5.updatePreviewImage(variation);
+              _this6.updatePreviewImage(variation);
             });
           }
         }
@@ -493,7 +521,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "updateAttributes",
         value: function updateAttributes(event) {
-          var _this6 = this;
+          var _this7 = this;
 
           var attributes = this.getChosenAttributes();
           var currentAttributes = attributes.data;
@@ -527,7 +555,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var checkAttributes = $.extend(true, {}, currentAttributes);
             checkAttributes[current_attr_name] = '';
 
-            var variations = _this6.findMatchingVariations(_this6.getAvailableVariations(), checkAttributes); // Loop through variations.
+            var variations = _this7.findMatchingVariations(_this7.getAvailableVariations(), checkAttributes); // Loop through variations.
 
 
             for (var num in variations) {
@@ -655,7 +683,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "checkVariations",
         value: function checkVariations() {
-          var _this7 = this;
+          var _this8 = this;
 
           var chosenAttributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
           var attributes = chosenAttributes ? chosenAttributes : this.getChosenAttributes();
@@ -684,19 +712,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 data: currentAttributes
               });
               this.xhr.fail(function (jqXHR, textStatus) {
-                console.error("product variations not available on ".concat(_this7.product_id, "."), textStatus);
+                console.error("product variations not available on ".concat(_this8.product_id, "."), textStatus);
               });
               this.xhr.done(function (variation) {
                 if (variation) {
-                  _this7.$element.trigger('found_variation', [variation, true]);
+                  _this8.$element.trigger('found_variation', [variation, true]);
                 } else {
-                  _this7.$element.trigger('reset_data');
+                  _this8.$element.trigger('reset_data');
 
                   attributes.chosenCount = 0;
                 }
               });
               this.xhr.always(function () {
-                _this7.$element.unblock();
+                _this8.$element.unblock();
               });
             } else {
               // by html attr
@@ -719,6 +747,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
           this.toggleResetLink(attributes.chosenCount > 0);
+          this.$element.trigger('woo_variation_swatches_pro_check_variations', [attributes]);
         }
       }, {
         key: "isAjaxVariation",
@@ -734,7 +763,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "setupSwatchesItems",
         value: function setupSwatchesItems() {
-          var _this8 = this;
+          var _this9 = this;
 
           var self = this;
           this.$element.find('ul.variable-items-wrapper').each(function (i, element) {
@@ -770,13 +799,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             var in_stocks = _.difference(selects, disabled_selects);
 
-            _this8.setupSwatchesItem(element, selected, in_stocks, out_of_stocks);
+            _this9.setupSwatchesItem(element, selected, in_stocks, out_of_stocks);
           });
         }
       }, {
         key: "setupSwatchesItem",
         value: function setupSwatchesItem(element, selected, in_stocks, out_of_stocks) {
-          var _this9 = this;
+          var _this10 = this;
 
           // Mark Selected
           $(element).find('li.variable-item').each(function (index, el) {
@@ -789,7 +818,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             $(el).attr('data-wvstooltip-out-of-stock', '');
             $(el).find('input.variable-item-radio-input:radio').prop('disabled', true).prop('checked', false); // Ajax variation
 
-            if (_this9.isAjaxVariation()) {
+            if (_this10.isAjaxVariation()) {
               $(el).find('input.variable-item-radio-input:radio').prop('disabled', false);
               $(el).removeClass('selected disabled no-stock'); // Selected
 
@@ -831,7 +860,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         key: "setupSwatchesEvents",
         value: function setupSwatchesEvents() {
-          var _this10 = this;
+          var _this11 = this;
 
           var self = this;
           this.$element.find('ul.variable-items-wrapper').each(function (i, element) {
@@ -936,7 +965,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
 
             if (!woo_variation_swatches_pro_options.is_mobile && woo_variation_swatches_pro_options.enable_catalog_mode && 'hover' === woo_variation_swatches_pro_options.catalog_mode_trigger) {
-              if (_this10.threshold_max < _this10.total_children) {
+              if (_this11.threshold_max < _this11.total_children) {
                 $(element).on('mouseenter.wvs', 'li.variable-item:not(.radio-variable-item)', function () {
                   $(this).trigger('click');
                   $(element).off('mouseenter.wvs');
@@ -1199,7 +1228,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var jQueryPlugin = function ($) {
     return function (PluginName, ClassName) {
       $.fn[PluginName] = function (options) {
-        var _this11 = this;
+        var _this12 = this;
 
         for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
@@ -1227,7 +1256,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
           }
 
-          return _this11;
+          return _this12;
         });
       }; // Constructor
 
@@ -1289,6 +1318,9 @@ jQuery(function ($) {
   }); // Support for Yith Ajax Filter
 
   $(document).on('yith-wcan-ajax-filtered.wvs', function () {
+    $(document).trigger('woo_variation_swatches_pro_init');
+  });
+  $(document).on('yith_wcwl_reload_fragments', function () {
     $(document).trigger('woo_variation_swatches_pro_init');
   }); // Support for beRocket ajax filters
 

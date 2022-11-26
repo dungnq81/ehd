@@ -24,7 +24,6 @@
             }
             
             protected function includes() {
-            
             }
             
             protected function hooks() {
@@ -204,7 +203,14 @@
                 
                 $this->add_inline_style();
                 
-                wp_register_script( 'woo-variation-swatches', woo_variation_swatches()->assets_url( "/js/frontend{$suffix}.js" ), array( 'jquery', 'wp-util', 'underscore', 'jquery-blockui', 'wp-api-request', 'wp-api-fetch', 'wp-polyfill' ), woo_variation_swatches()->assets_version( "/js/frontend{$suffix}.js" ), true );
+                wp_register_script( 'woo-variation-swatches', woo_variation_swatches()->assets_url( "/js/frontend{$suffix}.js" ), array( 'jquery', 'wp-util', 'underscore', 'jquery-blockui', 'wp-api-request', 'wp-api-fetch', 'wp-polyfill', 'wp-url' ), woo_variation_swatches()->assets_version( "/js/frontend{$suffix}.js" ), true );
+                
+                $extra_params_for_rest_uri = apply_filters( 'woo_variation_swatches_rest_add_extra_params', array() );
+                
+                if ( $extra_params_for_rest_uri ) {
+                    $extra_params_for_rest_uri = map_deep( $extra_params_for_rest_uri, 'sanitize_text_field' );
+                    wp_add_inline_script( 'woo-variation-swatches', sprintf( 'wp.apiFetch.use( window.createMiddlewareForExtraQueryParams(%s) )', wp_json_encode( $extra_params_for_rest_uri ) ) );
+                }
                 
                 wp_localize_script( 'woo-variation-swatches', 'woo_variation_swatches_options', $this->js_options() );
                 
@@ -355,24 +361,23 @@
                 $option_slug = $data[ 'option_slug' ];
                 $slug        = $data[ 'slug' ];
                 
-                
                 $is_term = wc_string_to_bool( $data[ 'is_term' ] );
                 
-                $css_class = implode( ' ', array_unique( array_values( apply_filters( 'woo_variation_swatches_variable_item_css_class', $this->get_item_css_classes( $data ), $data ) ) ) );
+                $css_class = implode( ' ', array_unique( array_values( apply_filters( 'woo_variation_swatches_variable_item_css_class', $this->get_item_css_classes( $data, $attribute_type, $variation_data ), $data, $attribute_type, $variation_data ) ) ) );
                 
                 $html_attributes = array(
                     'aria-checked' => ( $is_selected ? 'true' : 'false' ),
                     'tabindex'     => ( wp_is_mobile() ? '2' : '0' ),
                 );
                 
-                $html_attributes = wp_parse_args( $this->get_item_tooltip_attribute( $data ), $html_attributes );
+                $html_attributes = wp_parse_args( $this->get_item_tooltip_attribute( $data, $attribute_type, $variation_data ), $html_attributes );
                 
-                $html_attributes = apply_filters( 'woo_variation_swatches_variable_item_custom_attributes', $html_attributes, $attribute_type, $data );
+                $html_attributes = apply_filters( 'woo_variation_swatches_variable_item_custom_attributes', $html_attributes, $data, $attribute_type, $variation_data );
                 
                 return sprintf( '<li %1$s class="variable-item %2$s-variable-item %2$s-variable-item-%3$s %4$s" title="%5$s" data-title="%5$s" data-value="%6$s" role="radio" tabindex="0"><div class="variable-item-contents">', wc_implode_html_attributes( $html_attributes ), esc_attr( $attribute_type ), esc_attr( $option_slug ), esc_attr( $css_class ), esc_html( $option_name ), esc_attr( $slug ) );
             }
             
-            public function get_item_css_classes( $data ) {
+            public function get_item_css_classes( $data, $attribute_type, $variation_data = array() ) {
                 
                 $css_classes = array();
                 
@@ -385,7 +390,7 @@
                 return $css_classes;
             }
             
-            public function get_item_tooltip_attribute( $data ) {
+            public function get_item_tooltip_attribute( $data, $attribute_type, $variation_data = array() ) {
                 
                 $html_attributes = array();
                 
@@ -442,35 +447,41 @@
             
             public function get_available_variation_images( $product ) {
                 
-                $variation_ids        = $product->get_children();
-                $available_variations = array();
+                $cache_key   = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'variation_images_of__%s', $product->get_id() ) );
+                $cache_group = 'woo_variation_swatches';
                 
-                if ( is_callable( '_prime_post_caches' ) ) {
-                    _prime_post_caches( $variation_ids );
+                if ( false === ( $variations = wp_cache_get( $cache_key, $cache_group ) ) ) {
+                    
+                    $variation_ids        = $product->get_children();
+                    $available_variations = array();
+                    
+                    foreach ( $variation_ids as $variation_id ) {
+                        
+                        $variation = wc_get_product( $variation_id );
+                        
+                        // Hide out of stock variations if 'Hide out of stock items from the catalog' is checked.
+                        if ( ! $variation || ! $variation->exists() || ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) && ! $variation->is_in_stock() ) ) {
+                            continue;
+                        }
+                        
+                        // Filter 'woocommerce_hide_invisible_variations' to optionally hide invisible variations (disabled variations and variations with empty price).
+                        if ( apply_filters( 'woocommerce_hide_invisible_variations', true, $product->get_id(), $variation ) && ! $variation->variation_is_visible() ) {
+                            continue;
+                        }
+                        
+                        if ( ! $variation->get_image_id( 'edit' ) > 0 ) {
+                            //  continue;
+                        }
+                        
+                        $available_variations[] = $this->get_available_variation_image( $variation, $product );
+                    }
+                    
+                    $variations = array_values( array_filter( $available_variations ) );
+                    
+                    wp_cache_set( $cache_key, $variations, $cache_group );
                 }
                 
-                foreach ( $variation_ids as $variation_id ) {
-                    
-                    $variation = wc_get_product( $variation_id );
-                    
-                    // Hide out of stock variations if 'Hide out of stock items from the catalog' is checked.
-                    if ( ! $variation || ! $variation->exists() || ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) && ! $variation->is_in_stock() ) ) {
-                        continue;
-                    }
-                    
-                    // Filter 'woocommerce_hide_invisible_variations' to optionally hide invisible variations (disabled variations and variations with empty price).
-                    if ( apply_filters( 'woocommerce_hide_invisible_variations', true, $product->get_id(), $variation ) && ! $variation->variation_is_visible() ) {
-                        continue;
-                    }
-                    
-                    if ( ! $variation->get_image_id( 'edit' ) > 0 ) {
-                        //  continue;
-                    }
-                    
-                    $available_variations[] = $this->get_available_variation_image( $variation, $product );
-                }
-                
-                return array_values( array_filter( $available_variations ) );
+                return $variations;
             }
             
             public function get_variation_by_attribute_name_value( $available_variations, $attribute_name, $attribute_value ) {
@@ -503,6 +514,19 @@
                 }
                 
                 return $assigned;
+            }
+            
+            public function get_image_attribute_id( $data, $attribute_type, $variation_data = array() ) {
+                if ( 'image' === $attribute_type ) {
+                    
+                    $term = $data[ 'item' ];
+                    
+                    // Global
+                    return apply_filters( 'woo_variation_swatches_global_product_attribute_image_id', absint( woo_variation_swatches()->get_frontend()->get_product_attribute_image( $term, $data ) ), $data );
+                    
+                }
+                
+                return 0;
             }
             
             public function get_image_attribute( $data, $attribute_type, $variation_data = array() ) {
@@ -557,13 +581,13 @@
                 
                 if ( 'radio' === $attribute_type ) {
                     
-                    
                     $attribute_name = $data[ 'attribute_name' ];
                     $product        = $data[ 'product' ];
                     $attributes     = $product->get_variation_attributes();
-                    $slug           = $data[ 'slug' ];
-                    $is_selected    = wc_string_to_bool( $data[ 'is_selected' ] );
-                    $option_name    = $data[ 'option_name' ];
+                    // $attributes  = $this->get_cached_variation_attributes( $product );
+                    $slug        = $data[ 'slug' ];
+                    $is_selected = wc_string_to_bool( $data[ 'is_selected' ] );
+                    $option_name = $data[ 'option_name' ];
                     
                     /*
                      * $get_variations       = count( $product->get_children() ) <= apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );
@@ -653,6 +677,24 @@
                 return empty( $variation[ 'image_id' ] ) ? $placeholder_image : $variation[ 'image_id' ];
             }
             
+            // Cached version of $product->get_variation_attributes()
+            public function get_cached_variation_attributes( $product ) {
+                
+                $product_id = $product->get_id();
+                
+                $cache_key   = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'variation_attributes_of__%s', $product_id ) );
+                $cache_group = 'woo_variation_swatches';
+                
+                if ( false === ( $attributes = wp_cache_get( $cache_key, $cache_group ) ) ) {
+                    $attributes = $product->get_variation_attributes();
+                    
+                    wp_cache_set( $cache_key, $attributes, $cache_group );
+                }
+                
+                return $attributes;
+                
+            }
+            
             public function get_swatch_data( $args, $term_or_option ) {
                 
                 $options   = $args[ 'options' ];
@@ -733,7 +775,8 @@
                 
                 if ( empty( $options ) && ! empty( $product ) && ! empty( $attribute ) ) {
                     $attributes = $product->get_variation_attributes();
-                    $options    = $attributes[ $attribute ];
+                    // $attributes = $this->get_cached_variation_attributes( $product );
+                    $options = $attributes[ $attribute ];
                 }
                 
                 

@@ -41,10 +41,13 @@ if (!class_exists('offCanvas_Widget')) {
 
             $shortcode_content = Helper::doShortcode(
                 'off_canvas_button',
-                [
-                    'title' => '',
-                    'hide_if_desktop'  => $hide_if_desktop,
-                ]
+                apply_filters(
+                    'off_canvas_widget_shortcode_args',
+                    [
+                        'title'           => '',
+                        'hide_if_desktop' => $hide_if_desktop,
+                    ]
+                )
             );
 
             echo $this->cache_widget($args, $shortcode_content); // WPCS: XSS ok.

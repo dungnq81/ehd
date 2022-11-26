@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Emran Ahmed <emran.bd.08@gmail.com>\n"
-"POT-Creation-Date: 2022-09-29 11:01+0000\n"
+"POT-Creation-Date: 2022-11-17 13:31+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "(Unavailable)"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-archive-page.php:619, ../includes/class-woo-variation-swatches-pro-product-page.php:613, ../includes/class-woo-variation-swatches-pro-product-page.php:808
+#: ../includes/class-woo-variation-swatches-pro-archive-page.php:639, ../includes/class-woo-variation-swatches-pro-product-page.php:701, ../includes/class-woo-variation-swatches-pro-product-page.php:902
 msgid "Choose an option"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Make dual color"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-backend.php:125, ../includes/class-woo-variation-swatches-pro-backend.php:171, ../includes/html-product-attribute-term-settings-panel.php:121, ../includes/html-product-attribute-term-settings-panel.php:206, ../includes/html-product-settings-panel.php:57, ../includes/html-product-settings-panel.php:84
+#: ../includes/class-woo-variation-swatches-pro-backend.php:125, ../includes/html-product-attribute-term-settings-panel.php:121, ../includes/html-product-attribute-term-settings-panel.php:206, ../includes/html-product-settings-panel.php:57, ../includes/html-product-settings-panel.php:84
 msgid "No"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Add another color"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-backend.php:142, ../includes/class-woo-variation-swatches-pro-backend.php:170, ../includes/html-product-attribute-term-settings-panel.php:168, ../includes/html-product-attribute-term-settings-panel.php:205
+#: ../includes/class-woo-variation-swatches-pro-backend.php:142, ../includes/html-product-attribute-term-settings-panel.php:168, ../includes/html-product-attribute-term-settings-panel.php:205
 msgid "Image"
 msgstr ""
 
@@ -119,12 +119,20 @@ msgstr ""
 msgid "Individually show or hide tooltip."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-backend.php:169, ../includes/html-product-attribute-term-settings-panel.php:204
-msgid "Text"
+#: ../includes/class-woo-variation-swatches-pro-backend.php:169
+msgid "Custom Text"
+msgstr ""
+
+#: ../includes/class-woo-variation-swatches-pro-backend.php:170
+msgid "Custom Image"
+msgstr ""
+
+#: ../includes/class-woo-variation-swatches-pro-backend.php:171
+msgid "No Tooltip"
 msgstr ""
 
 #: ../includes/class-woo-variation-swatches-pro-backend.php:175
-msgid "Tooltip text"
+msgid "Custom Tooltip text"
 msgstr ""
 
 #: ../includes/class-woo-variation-swatches-pro-backend.php:176
@@ -132,11 +140,11 @@ msgid "Tooltip text. Default tooltip text will be term name."
 msgstr ""
 
 #: ../includes/class-woo-variation-swatches-pro-backend.php:184
-msgid "Tooltip image"
+msgid "Custom Tooltip image"
 msgstr ""
 
 #: ../includes/class-woo-variation-swatches-pro-backend.php:185
-msgid "Tooltip image. Default tooltip text will be term name."
+msgid "Tooltip image. Default tooltip image will be term image."
 msgstr ""
 
 #: ../includes/class-woo-variation-swatches-pro-backend.php:199
@@ -155,15 +163,15 @@ msgstr ""
 msgid "Swatches Settings"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:244
+#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:247
 msgid "Upload / Add image"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:245
+#: ../includes/class-woo-variation-swatches-pro-product-edit-panel.php:248
 msgid "Remove image"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-pro-product-page.php:521
+#: ../includes/class-woo-variation-swatches-pro-product-page.php:610
 msgid "+%s More"
 msgstr ""
 
@@ -952,6 +960,10 @@ msgstr ""
 msgid "Is dual color?"
 msgstr ""
 
+#: ../includes/html-product-attribute-term-settings-panel.php:204
+msgid "Text"
+msgstr ""
+
 #: ../includes/html-product-attribute-term-settings-panel.php:228
 msgid "Tooltip Text"
 msgstr ""
@@ -1080,6 +1092,22 @@ msgstr ""
 msgid "Please add license key to get automatic updates."
 msgstr ""
 
+#: ../includes/migration/class-woo-variation-swatches-pro-migration.php:48
+msgid "\"Variation Swatches for WooCommerce\" Migrator"
+msgstr ""
+
+#: ../includes/migration/class-woo-variation-swatches-pro-migration.php:49
+msgid "Run Migration"
+msgstr ""
+
+#: ../includes/migration/class-woo-variation-swatches-pro-migration.php:50
+msgid "This will migrate from old version to new version of \"Variation Swatches for WooCommerce\"."
+msgstr ""
+
+#: ../includes/migration/class-woo-variation-swatches-pro-migration.php:60
+msgid "Variation Swatches for WooCommerce migration has been re scheduled to run in the background."
+msgstr ""
+
 #: ../includes/migration/html-notice-updating.php:8
 msgid "You should manually run queued updates here."
 msgstr ""
@@ -1100,11 +1128,11 @@ msgstr ""
 msgid "Note: WP CRON has been disabled on your install which may prevent this migration from completing."
 msgstr ""
 
-#: ../templates/variable.php:110, ../templates/variable.php:116
+#: ../templates/variable.php:106, ../templates/variable.php:112
 msgid "Clear"
 msgstr ""
 
-#: ../templates/variable.php:81
+#: ../templates/variable.php:78
 msgid "This product is currently out of stock and unavailable."
 msgstr ""
 

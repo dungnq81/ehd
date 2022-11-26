@@ -1,6 +1,6 @@
 {
 	"name": "wordpress/ehd",
-	"description": "eHD Wordpress Theme",
+	"description": "EHD Wordpress Theme",
 	"authors": [
 		{
 			"name": "WEBHD Team"
@@ -10,16 +10,15 @@
 		"files": [
 			"inc/helpers.php",
 			"inc/image-sizes.php",
-			"inc/ins.php",
+			"inc/plugins.php",
 			"inc/template-hooks.php"
 		],
 		"psr-4": {
-			"EHD\\Ins\\": "inc/Ins",
-			"EHD\\Themes\\": "inc/Themes",
-			"EHD\\Walkers\\": "inc/Walkers"
+			"EHD\\Sites\\Plugins\\": "inc/Plugins",
+			"EHD\\Sites\\Themes\\": "inc/Themes"
 		},
 		"exclude-from-classmap": [
-			"**/Ins/ACF/_/**"
+			"**/Plugins/ACF/_/**"
 		]
 	},
 	"require": {

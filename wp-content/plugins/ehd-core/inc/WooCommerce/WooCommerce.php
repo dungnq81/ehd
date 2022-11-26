@@ -6,7 +6,7 @@ use EHD\Plugins\Core\Helper;
 
 use EHD\Plugins\Widgets\MiniCart_Widget;
 use EHD\Plugins\Widgets\Products_Widget;
-use EHD\Plugins\Widgets\ProductsCarousel_Widget;
+use EHD\Plugins\Widgets\Recent_Products_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -32,7 +32,7 @@ final class WooCommerce
     {
         class_exists(MiniCart_Widget::class) && register_widget(new MiniCart_Widget());
         class_exists(Products_Widget::class) && register_widget(new Products_Widget());
-        class_exists(ProductsCarousel_Widget::class) && register_widget(new ProductsCarousel_Widget());
+        class_exists(Recent_Products_Widget::class) && register_widget(new Recent_Products_Widget());
     }
 
     /**
@@ -51,7 +51,7 @@ final class WooCommerce
      */
     public function enqueue_scripts() : void
     {
-        wp_enqueue_style('ehd-woocommerce-style', EHD_PLUGIN_URL . "assets/css/woocommerce.css", ["ehd-core-style"], EHD_PLUGIN_VERSION);
+        wp_enqueue_style('ehd-core-woocommerce-style', EHD_PLUGIN_URL . "assets/css/woocommerce.css", ["ehd-core-style"], EHD_PLUGIN_VERSION);
 
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
         $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');

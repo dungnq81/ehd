@@ -460,7 +460,7 @@ if ( ! function_exists( 'storefront_popular_products' ) ) {
 		/**
 		 * Only display the section if the shortcode returns products
 		 */
-		if (str_contains($shortcode_content, 'product')) {
+		if ( false !== strpos( $shortcode_content, 'product' ) ) {
 			echo '<section class="storefront-product-section storefront-popular-products" aria-label="' . esc_attr__( 'Popular Products', 'storefront' ) . '">';
 
 			do_action( 'storefront_homepage_before_popular_products' );
@@ -758,7 +758,9 @@ if ( ! function_exists( 'storefront_single_product_pagination' ) ) {
 			return;
 		}
 
-		// Show only products in the same category?
+		/**
+		 * Show only products in the same category?
+		 */
 		$in_same_term   = apply_filters( 'storefront_single_product_pagination_same_category', true );
 		$excluded_terms = apply_filters( 'storefront_single_product_pagination_excluded_terms', '' );
 		$taxonomy       = apply_filters( 'storefront_single_product_pagination_taxonomy', 'product_cat' );

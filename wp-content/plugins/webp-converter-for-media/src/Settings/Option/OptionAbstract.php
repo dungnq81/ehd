@@ -36,6 +36,13 @@ abstract class OptionAbstract implements OptionInterface {
 	/**
 	 * {@inheritdoc}
 	 */
+	public function get_placeholder() {
+		return '';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_debug_value( array $settings ) {
 		return $this->get_default_value( $settings );
 	}

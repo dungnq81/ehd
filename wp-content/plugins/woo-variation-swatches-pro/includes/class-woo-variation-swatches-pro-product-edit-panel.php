@@ -118,6 +118,7 @@
                 $new_data = map_deep( $data, 'sanitize_text_field' );
                 $old_data = $this->get_product_options( $product_id );
                 $data     = $this->array_merge_recursive( $new_data, $old_data );
+                do_action( 'woo_variation_swatches_product_settings_update', $product_id, $data );
                 
                 return update_post_meta( $product_id, '_woo_variation_swatches_product_settings', $data );
             }
@@ -132,6 +133,9 @@
             }
             
             public function delete( $product_id ) {
+                
+                do_action( 'woo_variation_swatches_product_settings_delete', $product_id );
+                
                 delete_post_meta( $product_id, '_wvs_product_attributes' );
                 
                 return delete_post_meta( $product_id, '_woo_variation_swatches_product_settings' );
@@ -163,7 +167,6 @@
                     $terms = $this->get_sliced_terms( $attribute[ 'terms' ], $offset, $limit );
                     
                     include dirname( __FILE__ ) . '/html-product-attribute-term-settings-panel.php';
-                    
                 }
             }
             

@@ -88,9 +88,12 @@ class GeneralSettingsPage extends PageAbstract {
 			'nonce_input_value'        => ( new NonceManager() )->generate_nonce( SettingsSave::NONCE_PARAM_VALUE ),
 			'token_valid_status'       => $token->get_valid_status(),
 			'token_active_status'      => $token->is_active(),
-			'api_paths_url'            => ( new PathsEndpoint( $this->plugin_data, $this->token_repository ) )->get_route_url(),
-			'api_regenerate_url'       => ( new RegenerateEndpoint( $this->plugin_data ) )->get_route_url(),
-			'api_stats_url'            => ( new FilesStatsEndpoint( $this->plugin_data ) )->get_route_url(),
+			'api_paths_url'            => PathsEndpoint::get_route_url(),
+			'api_paths_nonce'          => PathsEndpoint::get_route_nonce(),
+			'api_regenerate_url'       => RegenerateEndpoint::get_route_url(),
+			'api_regenerate_nonce'     => RegenerateEndpoint::get_route_nonce(),
+			'api_stats_url'            => FilesStatsEndpoint::get_route_url(),
+			'api_stats_nonce'          => FilesStatsEndpoint::get_route_nonce(),
 			'url_debug_page'           => PageIntegration::get_settings_page_url( DebugPage::PAGE_SLUG ),
 			'output_formats'           => [
 				'webp' => [

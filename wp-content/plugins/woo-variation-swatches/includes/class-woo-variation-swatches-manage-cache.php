@@ -28,45 +28,179 @@
             protected function hooks() {
                 
                 // Attributes
-                add_action( 'woocommerce_attribute_added', array( $this, 'clear_cache' ) );
-                add_action( 'woocommerce_attribute_updated', array( $this, 'clear_cache' ) );
-                add_action( 'woocommerce_attribute_deleted', array( $this, 'clear_cache' ) );
+                add_action( 'woocommerce_attribute_added', array( $this, 'clear_cache_on_attribute_added' ), 10, 2 );
+                add_action( 'woocommerce_attribute_updated', array( $this, 'clear_cache_on_attribute_updated' ), 10, 3 );
+                add_action( 'woocommerce_attribute_deleted', array( $this, 'clear_cache_on_attribute_deleted' ), 10, 3 );
+                
                 // Products
-                add_action( 'woocommerce_save_product_variation', array( $this, 'clear_cache' ) );
-                add_action( 'woocommerce_update_product_variation', array( $this, 'clear_cache' ) );
-                add_action( 'woocommerce_delete_product_variation', array( $this, 'clear_cache' ) );
-                add_action( 'woocommerce_trash_product_variation', array( $this, 'clear_cache' ) );
+                add_action( 'woocommerce_save_product_variation', array( $this, 'clear_cache_on_product_modify' ) );
+                add_action( 'woocommerce_update_product_variation', array( $this, 'clear_cache_on_product_modify' ) );
+                add_action( 'woocommerce_delete_product_variation', array( $this, 'clear_cache_on_product_modify' ) );
+                add_action( 'woocommerce_trash_product_variation', array( $this, 'clear_cache_on_product_modify' ) );
                 
                 // WooCommerce -> Status -> Tools -> Clear transients
-                add_action( 'woocommerce_delete_product_transients', array( $this, 'clear_cache' ) );
-                add_action( 'getwooplugins_settings_saved', array( $this, 'clear_cache' ) );
-                add_action( 'getwooplugins_after_delete_options', array( $this, 'clear_cache' ) );
+                add_action( 'woocommerce_delete_product_transients', array( $this, 'clear_cache_on_delete_product_transients' ) );
+                
+                // Options
+                add_action( 'getwooplugins_settings_saved', array( $this, 'clear_cache_on_settings_modify' ) );
+                add_action( 'getwooplugins_after_delete_options', array( $this, 'clear_cache_on_settings_modify' ) );
+                
+                // Product label settings
+                
+                add_action( 'woo_variation_swatches_product_settings_update', array( $this, 'clear_cache_on_product_settings_modify' ) );
+                add_action( 'woo_variation_swatches_product_settings_delete', array( $this, 'clear_cache_on_product_settings_modify' ) );
             }
             
             protected function init() {
+                if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+                    wp_cache_add_global_groups( array( 'woo_variation_swatches' ) );
+                }
             }
             
             // Start
             
-            public function clear_cache() {
+            public function get_key_with_language_suffix( $key ) {
+                
+                $default_language = apply_filters( 'wpml_default_language', null );
+                $current_language = apply_filters( 'wpml_current_language', null );
+                
+                if ( $current_language === $default_language ) {
+                    return $key;
+                }
+                
+                return sprintf( '%s_%s', $key, $current_language );
+            }
+            
+            // Clear Settings Cache
+            public function clear_cache_on_settings_modify() {
                 
                 do_action( 'litespeed_purge_all', 'Woo Variation Swatches: purge all' );
                 
-                // Increments the transient version to invalidate cache.
-                if ( method_exists( 'WC_Cache_Helper', 'get_transient_version' ) ) {
-                    WC_Cache_Helper::get_transient_version( 'wvs_template', true );
-                    WC_Cache_Helper::get_transient_version( 'wvs_attribute_taxonomy', true );
-                    WC_Cache_Helper::get_transient_version( 'wvs_archive_template', true );
-                    WC_Cache_Helper::get_transient_version( 'wvs_variation_attribute_options_html', true );
+                wp_cache_flush();
+                
+                wp_cache_delete( 'global_settings', 'woo_variation_swatches' );
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            // Clear transients Cache
+            public function clear_cache_on_delete_product_transients( $post_id ) {
+                if ( $post_id > 0 ) {
+                    
+                    $cache_group = 'woo_variation_swatches';
+                    
+                    $cache_keys = array(
+                        'variation_images_of__%s',
+                        'product_settings_of__%s',
+                        'variation_attributes_of__%s',
+                        'available_variations__%s'
+                    );
+                    
+                    foreach ( $cache_keys as $key_template ) {
+                        $cache_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( $key_template, $post_id ) );
+                        wp_cache_delete( $cache_key, $cache_group );
+                    }
+                    
+                    $cache_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'available_preview_variation__%s', $post_id ) );
+                    wp_cache_delete( $cache_key, $cache_group );
                 }
                 
-                if ( method_exists( 'WC_Cache_Helper', 'invalidate_cache_group' ) ) {
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_template' );
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_attribute_taxonomy' );
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_archive_template' );
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_variation_attribute_options_html' );
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_rest_single_product' );
-                    WC_Cache_Helper::invalidate_cache_group( 'wvs_rest_archive_product' );
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+                // Clear any cached data that has been removed.
+                wp_cache_flush();
+            }
+            
+            // Clear Attributes Cache
+            public function clear_cache_on_attribute_added( $id, $data ) {
+                
+                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $data[ 'attribute_name' ] ) );
+                
+                delete_transient( $transient_key );
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            public function clear_cache_on_attribute_updated( $id, $data, $old_slug ) {
+                
+                $transient_key     = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $data[ 'attribute_name' ] ) );
+                $transient_key_old = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $old_slug ) );
+                
+                delete_transient( $transient_key );
+                delete_transient( $transient_key_old );
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            public function clear_cache_on_attribute_deleted( $id, $name, $taxonomy ) {
+                
+                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $taxonomy ) );
+                delete_transient( $transient_key );
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            // Clear Product Cache
+            
+            public function clear_cache_on_product_modify( $variation_id ) {
+                
+                $variation_product = wc_get_product( $variation_id );
+                $product_id        = $variation_product->get_parent_id();
+                $cache_group       = 'woo_variation_swatches';
+                
+                $cache_keys = array(
+                    'variation_images_of__%s',
+                    'product_settings_of__%s',
+                    'variation_attributes_of__%s',
+                    'available_variations__%s'
+                );
+                
+                foreach ( $cache_keys as $key_template ) {
+                    $cache_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( $key_template, $product_id ) );
+                    wp_cache_delete( $cache_key, $cache_group );
+                }
+                
+                $cache_key_1 = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'available_preview_variation__%s', $variation_id ) );
+                wp_cache_delete( $cache_key_1, $cache_group );
+                
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            public function clear_cache_on_product_settings_modify( $product_id ) {
+                
+                $cache_key   = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'product_settings_of__%s', $product_id ) );
+                $cache_group = 'woo_variation_swatches';
+                
+                wp_cache_delete( $cache_key, $cache_group );
+                
+                $cache_key_2 = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'available_variations__%s', $product_id ) );
+                wp_cache_delete( $cache_key_2, $cache_group );
+                
+                $cache_key_3 = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'available_preview_variation__%s', $product_id ) );
+                wp_cache_delete( $cache_key_3, $cache_group );
+                
+                $this->delete_last_changed();
+                $this->clear_cache_by_group();
+            }
+            
+            public function get_last_changed() {
+                return wp_cache_get_last_changed( 'woo_variation_swatches' );
+            }
+            
+            public function delete_last_changed() {
+                wp_cache_delete( 'last_changed', 'woo_variation_swatches' );
+            }
+            
+            public function update_last_changed() {
+                wp_cache_set( 'last_changed', microtime(), 'woo_variation_swatches' );
+            }
+            
+            public function clear_cache_by_group() {
+                if ( function_exists( 'wp_cache_flush_group' ) ) {
+                    if ( wp_cache_supports( 'flush_group' ) ) {
+                        wp_cache_flush_group( 'woo_variation_swatches' );
+                    }
                 }
             }
         }

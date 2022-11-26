@@ -158,6 +158,8 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 					'Move field group to trash?'    => __( 'Move field group to trash?', 'acf' ),
 					'No toggle fields available'    => __( 'No toggle fields available', 'acf' ),
 					'Move Custom Field'             => __( 'Move Custom Field', 'acf' ),
+					'Close modal'                   => __( 'Close modal', 'acf' ),
+					'Field moved to other group'    => __( 'Field moved to other group', 'acf' ),
 					'Checked'                       => __( 'Checked', 'acf' ),
 					'(no label)'                    => __( '(no label)', 'acf' ),
 					'(this field)'                  => __( '(this field)', 'acf' ),
@@ -404,7 +406,7 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 			if ( ! empty( $_POST['acf_fields'] ) ) {
 
 				// loop.
-				foreach ( $_POST['acf_fields'] as $field ) {
+				foreach ( $_POST['acf_fields'] as $field ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized when saved.
 
 					if ( ! isset( $field['key'] ) ) {
 						continue;
@@ -433,10 +435,10 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 			}
 
 			// delete fields.
-			if ( $_POST['_acf_delete_fields'] ) {
+			if ( $_POST['_acf_delete_fields'] ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized below.
 
 				// clean.
-				$ids = explode( '|', $_POST['_acf_delete_fields'] );
+				$ids = explode( '|', $_POST['_acf_delete_fields'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized below.
 				$ids = array_map( 'intval', $ids );
 
 				// loop.
@@ -454,13 +456,14 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 			}
 
 			// add args.
-			$_POST['acf_field_group']['ID']    = $post_id;
+			$_POST['acf_field_group']['ID'] = $post_id;
+			// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized when saved.
 			$_POST['acf_field_group']['title'] = $_POST['post_title'];
 
 			// save field group.
 			acf_update_field_group( $_POST['acf_field_group'] );
+			// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-			// return.
 			return $post_id;
 		}
 
@@ -547,7 +550,7 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 			}
 
 			// validate rule.
-			$rule = acf_validate_location_rule( $_POST['rule'] );
+			$rule = acf_validate_location_rule( acf_sanitize_request_args( $_POST['rule'] ) );
 
 			// view.
 			acf_get_view(
@@ -666,7 +669,7 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 						esc_html( $field['label'] ),
 						$link  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					) . '</p>' .
-					'<a href="#" class="button button-primary acf-close-popup">' . __( 'Close Window', 'acf' ) . '</a>';
+					'<a href="#" class="button button-primary acf-close-popup">' . __( 'Close Modal', 'acf' ) . '</a>';
 				die();
 			}
 
@@ -698,9 +701,10 @@ if ( ! class_exists( 'acf_admin_field_group' ) ) {
 			// render options.
 			$field = acf_get_valid_field(
 				array(
-					'type'    => 'select',
-					'name'    => 'acf_field_group',
-					'choices' => $choices,
+					'type'       => 'select',
+					'name'       => 'acf_field_group',
+					'choices'    => $choices,
+					'aria-label' => __( 'Please select the destination for this field', 'acf' ),
 				)
 			);
 

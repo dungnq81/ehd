@@ -6,6 +6,22 @@ namespace EHD\Plugins\Core\Traits;
 
 trait WooCommerce
 {
+    /**
+     * Default loop columns on product archives
+     *
+     * @return integer products per row
+     */
+    public static function wc_loop_columns()
+    {
+        $columns = 4; // 4 products per row
+
+        if (function_exists('wc_get_default_products_per_row')) {
+            $columns = wc_get_default_products_per_row();
+        }
+
+        return apply_filters('wc_loop_columns', $columns);
+    }
+
     // -------------------------------------------------------------
 
     /**

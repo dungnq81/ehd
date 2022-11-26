@@ -16,8 +16,11 @@
  * @var bool         $token_valid_status       Status of access token.
  * @var bool         $token_active_status      Status of PRO version.
  * @var string       $api_paths_url            URL of REST API endpoint.
+ * @var string       $api_paths_nonce          Authorization code of REST API endpoint.
  * @var string       $api_regenerate_url       URL of REST API endpoint.
+ * @var string       $api_regenerate_nonce     Authorization code of REST API endpoint.
  * @var string       $api_stats_url            URL of REST API endpoint.
+ * @var string       $api_stats_nonce          Authorization code of REST API endpoint.
  * @var string       $url_debug_page           URL of debug tag in settings page.
  * @var string[][]   $output_formats           Data about output formats for regeneration.
  *
@@ -27,7 +30,7 @@
 ?>
 <div class="wrap">
 	<hr class="wp-header-end">
-	<div class="webpcPage" data-api-stats="<?php echo esc_url( $api_stats_url ); ?>">
+	<div class="webpcPage" data-api-stats="<?php echo esc_url( $api_stats_url ); ?>|<?php echo esc_attr( $api_stats_nonce ); ?>">
 		<div class="webpcPage__headline">
 			<img src="<?php echo esc_attr( $logo_url ); ?>" alt="<?php echo esc_attr( 'Converter for Media' ); ?>">
 		</div>

@@ -7,7 +7,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Emran Ahmed <emran.bd.08@gmail.com>\n"
-"POT-Creation-Date: 2022-09-29 11:01+0000\n"
+"POT-Creation-Date: 2022-11-17 13:31+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -197,11 +197,11 @@ msgstr ""
 msgid "Unable to use image \"%s\"."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-product-page.php:129
+#: ../includes/class-woo-variation-swatches-product-page.php:128
 msgid "%s left"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-product-page.php:706, ../includes/class-woo-variation-swatches-product-page.php:732
+#: ../includes/class-woo-variation-swatches-product-page.php:748, ../includes/class-woo-variation-swatches-product-page.php:774
 msgid "Choose an option"
 msgstr ""
 
@@ -333,7 +333,7 @@ msgstr ""
 msgid "Special Attributes"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-settings.php:299, ../includes/class-woo-variation-swatches-term-meta.php:103
+#: ../includes/class-woo-variation-swatches-settings.php:299, ../includes/class-woo-variation-swatches-term-meta.php:102
 msgid "Group"
 msgstr ""
 
@@ -701,15 +701,15 @@ msgstr ""
 msgid "Show Attribute taxonomies in large size."
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-term-meta.php:315
+#: ../includes/class-woo-variation-swatches-term-meta.php:313
 msgid "Upload / Add image"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches-term-meta.php:318
+#: ../includes/class-woo-variation-swatches-term-meta.php:316
 msgid "Remove image"
 msgstr ""
 
-#: ../includes/class-woo-variation-swatches.php:215
+#: ../includes/class-woo-variation-swatches.php:225
 msgid "\"Variation Swatches for WooCommerce\" Plugin try to load \"%s\" but template \"%s\" was not found."
 msgstr ""
 

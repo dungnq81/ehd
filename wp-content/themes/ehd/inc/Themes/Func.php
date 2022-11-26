@@ -1,8 +1,6 @@
 <?php
 
-namespace EHD\Themes;
-
-use EHD\Plugins\Core\Helper;
+namespace EHD\Sites\Themes;
 
 \defined('\WPINC') || die;
 

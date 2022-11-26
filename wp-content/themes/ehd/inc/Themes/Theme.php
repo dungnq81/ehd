@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Themes;
+namespace EHD\Sites\Themes;
 
 use EHD\Plugins\Core\Helper;
 
@@ -17,45 +17,109 @@ final class Theme
     {
         add_action('init', [&$this, 'init']);
 
-        //...
-        remove_action('after_setup_theme', 'hello_elementor_content_width', 0);
-
-        //...
-        add_filter('hello_elementor_add_woocommerce_support', '__return_false');
-        add_filter('hello_elementor_load_textdomain', '__return_false');
-        add_filter('hello_elementor_enqueue_style', '__return_false');
-        add_filter('hello_elementor_enqueue_theme_style', '__return_false');
-
-        //...
-        add_filter('hello_elementor_add_theme_support', [&$this, 'ehd_add_theme_support']);
-        add_filter('hello_elementor_register_menus', [&$this, 'ehd_register_menus']);
-
-        //...
-        add_action('wp_enqueue_scripts', [&$this, 'ehd_enqueue_scripts'], 99);
-        add_action('widgets_init', [&$this, 'ehd_register_sidebars'], 10);
+        add_action('after_setup_theme', [&$this, 'after_setup_theme']);
+        add_action('wp_enqueue_scripts', [&$this, 'wp_enqueue_scripts'], 99);
+        add_action('widgets_init', [&$this, 'register_sidebars'], 10);
     }
 
     /** ---------------------------------------- */
 
     /**
-     * @return void
+     * Sets up theme defaults and registers support for various WordPress features.
+     *
+     * Note that this function is hooked into the after_setup_theme hook, which
+     * runs before the init hook. The init hook is too late for some features, such
+     * as indicating support for post thumbnails.
      */
-    public function ehd_register_menus()
+    public function after_setup_theme() : void
     {
-        /**
-         * Register Menus
-         *
-         * @link http://codex.wordpress.org/Function_Reference/register_nav_menus#Examples
-         */
-        register_nav_menus(
-            [
-                'main-nav'   => __('Primary Menu', EHD_TEXT_DOMAIN),
-                'second-nav' => __('Secondary Menu', EHD_TEXT_DOMAIN),
-                'mobile-nav' => __('Handheld Menu', EHD_TEXT_DOMAIN),
-                'social-nav' => __('Social menu', EHD_TEXT_DOMAIN),
-                'policy-nav' => __('Terms menu', EHD_TEXT_DOMAIN),
-            ]
-        );
+        //...
+        if (apply_filters('ehd_load_textdomain', true)) {
+
+            /**
+             * Make theme available for translation.
+             * Translations can be filed at WordPress.org.
+             * See: https://translate.wordpress.org/projects/wp-themes/hello-elementor
+             */
+            load_theme_textdomain(EHD_TEXT_DOMAIN, trailingslashit(WP_LANG_DIR) . 'themes/');
+            load_theme_textdomain(EHD_TEXT_DOMAIN, get_template_directory() . '/languages');
+            load_theme_textdomain(EHD_TEXT_DOMAIN, get_stylesheet_directory() . '/languages');
+        }
+
+        //...
+        if (apply_filters('ehd_register_menus', true)) {
+
+            // @link http://codex.wordpress.org/Function_Reference/register_nav_menus#Examples
+            register_nav_menus(
+                [
+                    'main-nav'   => __('Primary Menu', EHD_TEXT_DOMAIN),
+                    'second-nav' => __('Secondary Menu', EHD_TEXT_DOMAIN),
+                    'mobile-nav' => __('Handheld Menu', EHD_TEXT_DOMAIN),
+                    'social-nav' => __('Social menu', EHD_TEXT_DOMAIN),
+                    'policy-nav' => __('Terms menu', EHD_TEXT_DOMAIN),
+                ]
+            );
+        }
+
+        //...
+        if (apply_filters('ehd_add_theme_support', true)) {
+
+            // Add theme support for various features.
+            add_theme_support('automatic-feed-links');
+            add_theme_support('post-thumbnails');
+            add_theme_support('title-tag');
+            add_theme_support('html5', [
+                'search-form',
+                'comment-form',
+                'comment-list',
+                'gallery',
+                'caption',
+                'script',
+            ]);
+
+            add_theme_support('customize-selective-refresh-widgets');
+
+            // Gutenberg wide images.
+            add_theme_support('align-wide');
+
+            // Add support for block styles.
+            add_theme_support('wp-block-styles');
+
+            // This theme styles the visual editor to resemble the theme style.
+            add_editor_style();
+
+            // Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
+            remove_theme_support('block-templates');
+
+            // Enable excerpt to page
+            add_post_type_support('page', 'excerpt');
+
+            // Set default values for the upload media box
+            update_option('image_default_align', 'center');
+            update_option('image_default_size', 'large');
+
+            /**
+             * Add support for core custom logo.
+             *
+             * @link https://codex.wordpress.org/Theme_Logo
+             */
+            $logo_height = 120;
+            $logo_width = 240;
+
+            add_theme_support(
+                'custom-logo',
+                apply_filters(
+                    'custom_logo_args',
+                    [
+                        'height'               => $logo_height,
+                        'width'                => $logo_width,
+                        'flex-height'          => true,
+                        'flex-width'           => true,
+                        'unlink-homepage-logo' => false,
+                    ]
+                )
+            );
+        }
     }
 
     /** ---------------------------------------- */
@@ -65,7 +129,7 @@ final class Theme
      *
      * @link https://codex.wordpress.org/Function_Reference/register_sidebar
      */
-    public function ehd_register_sidebars()
+    public function register_sidebars() : void
     {
         /** header sidebar */
         register_sidebar(
@@ -137,16 +201,16 @@ final class Theme
      *
      * @return void
      */
-    public function ehd_enqueue_scripts()
+    public function wp_enqueue_scripts()
     {
         // stylesheet.
-        wp_register_style("plugin-style", get_stylesheet_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION);
-        wp_register_style("layout-style", get_stylesheet_directory_uri() . '/assets/css/layout.css', ["plugin-style"], EHD_THEME_VERSION);
+        wp_register_style("plugin-style", get_template_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION);
+        wp_register_style("layout-style", get_template_directory_uri() . '/assets/css/layout.css', ["plugin-style"], EHD_THEME_VERSION);
 
-        wp_enqueue_style("app-style", get_stylesheet_directory_uri() . '/assets/css/app.css', ["layout-style"], EHD_THEME_VERSION);
+        wp_enqueue_style("app-style", get_template_directory_uri() . '/assets/css/app.css', ["layout-style"], EHD_THEME_VERSION);
 
         // scripts.
-        wp_enqueue_script("app", get_stylesheet_directory_uri() . "/assets/js/app.js", ["jquery", "hello-theme-frontend", "ehd-core"], EHD_THEME_VERSION, true);
+        wp_enqueue_script("app", get_template_directory_uri() . "/assets/js/app.js", ["jquery", "ehd-core"], EHD_THEME_VERSION, true);
         wp_script_add_data("app", "defer", true);
 
         // inline js
@@ -156,7 +220,6 @@ final class Theme
             'themeUrl' => trailingslashit(get_template_directory_uri()),
             'locale'   => get_locale(),
             'lang'     => Helper::getLang(),
-            //'domain'    => DOMAIN_CURRENT_SITE,
             'lg'       => [
                 'view_more'   => __('View more', EHD_TEXT_DOMAIN),
                 'view_detail' => __('Detail', EHD_TEXT_DOMAIN),
@@ -173,83 +236,6 @@ final class Theme
         // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
         $loader = new ScriptLoader();
         add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * Sets up theme defaults and registers support for various WordPress features.
-     *
-     * Note that this function is hooked into the after_setup_theme hook, which
-     * runs before the init hook. The init hook is too late for some features, such
-     * as indicating support for post thumbnails.
-     */
-    public function ehd_add_theme_support()
-    {
-        /**
-         * Make theme available for translation.
-         * Translations can be filed at WordPress.org.
-         * See: https://translate.wordpress.org/projects/wp-themes/hello-elementor
-         */
-        load_theme_textdomain('hello-elementor', get_template_directory() . '/languages');
-        load_theme_textdomain(EHD_TEXT_DOMAIN, trailingslashit(WP_LANG_DIR) . 'themes');
-        load_theme_textdomain(EHD_TEXT_DOMAIN, get_stylesheet_directory() . '/languages');
-
-        // Add theme support for various features.
-        add_theme_support('automatic-feed-links');
-        add_theme_support('post-thumbnails');
-        add_theme_support('title-tag');
-        add_theme_support('html5', [
-            'search-form',
-            'comment-form',
-            'comment-list',
-            'gallery',
-            'caption',
-            'script',
-        ]);
-
-        add_theme_support('customize-selective-refresh-widgets');
-
-        // Gutenberg wide images.
-        add_theme_support('align-wide');
-
-        // Add support for block styles.
-        add_theme_support('wp-block-styles');
-
-        // This theme styles the visual editor to resemble the theme style.
-        add_editor_style();
-
-        // Remove Template Editor support until WP 5.9 since more Theme Blocks are going to be introduced.
-        remove_theme_support('block-templates');
-
-        // Enable excerpt to page
-        add_post_type_support('page', 'excerpt');
-
-        // Set default values for the upload media box
-        update_option('image_default_align', 'center');
-        update_option('image_default_size', 'large');
-
-        /**
-         * Add support for core custom logo.
-         *
-         * @link https://codex.wordpress.org/Theme_Logo
-         */
-        $logo_height = 120;
-        $logo_width = 240;
-
-        add_theme_support(
-            'custom-logo',
-            apply_filters(
-                'custom_logo_args',
-                [
-                    'height'               => $logo_height,
-                    'width'                => $logo_width,
-                    'flex-height'          => true,
-                    'flex-width'           => true,
-                    'unlink-homepage-logo' => false,
-                ]
-            )
-        );
     }
 
     /** ---------------------------------------- */

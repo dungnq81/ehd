@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Themes;
+namespace EHD\Sites\Themes;
 
 use EHD\Plugins\Core\Helper;
 
@@ -101,24 +101,6 @@ final class Optimizer
         add_filter('wp_dropdown_cats', [&$this, 'dropdown_cats_multiple'], 10, 2);
 
         //...
-        // Prevent Specific Plugins from Deactivation
-        add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
-            if (array_key_exists('deactivate', $actions)
-                && in_array(
-                    $plugin_file,
-                    [
-                        'ehd-core/ehd-core.php',
-                        'advanced-custom-fields-pro/acf.php',
-                    ])
-            ) {
-                unset($actions['deactivate']);
-            }
-
-            return $actions;
-
-        }, 10, 4);
-
-        //...
         add_filter('admin_footer_text', function () {
             printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', EHD_TEXT_DOMAIN), EHD_AUTHOR);
         });
@@ -141,13 +123,13 @@ final class Optimizer
                 document.documentElement.classList.add('is-IE');
             }</script>
         <?php
-        if (file_exists($skip_link = get_stylesheet_directory() . '/assets/js/plugins/skip-link-focus-fix.js')) {
+        if (file_exists($skip_link = get_template_directory() . '/assets/js/plugins/skip-link-focus-fix.js')) {
             echo '<script>';
             include $skip_link;
             echo '</script>';
         }
 
-        if (file_exists($flex_gap = get_stylesheet_directory() . '/assets/js/plugins/flex-gap.js')) {
+        if (file_exists($flex_gap = get_template_directory() . '/assets/js/plugins/flex-gap.js')) {
             echo '<script>';
             include $flex_gap;
             echo '</script>';
@@ -187,9 +169,9 @@ final class Optimizer
     public function enqueue_scripts()
     {
         /*extra scripts*/
-        wp_enqueue_script("o-draggable", get_stylesheet_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
-        wp_enqueue_script("backtop", get_stylesheet_directory_uri() . "/assets/js/plugins/backtop.js", [], false, true);
-        wp_enqueue_script("shares", get_stylesheet_directory_uri() . "/assets/js/plugins/shares.min.js", ["jquery"], false, true);
+        wp_enqueue_script("o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
+        wp_enqueue_script("backtop", get_template_directory_uri() . "/assets/js/plugins/backtop.js", [], false, true);
+        wp_enqueue_script("shares", get_template_directory_uri() . "/assets/js/plugins/shares.min.js", ["jquery"], false, true);
 
         //$widgets_block_editor_off = Helper::getThemeMod('use_widgets_block_editor_setting');
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');

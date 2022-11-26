@@ -29,7 +29,7 @@ class RegenerateEndpoint extends EndpointAbstract {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_route_name(): string {
+	public static function get_route_name(): string {
 		return 'regenerate';
 	}
 
@@ -43,7 +43,7 @@ class RegenerateEndpoint extends EndpointAbstract {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_url_lifetime(): int {
+	public static function get_url_lifetime(): int {
 		return ( 7 * 24 * 60 * 60 );
 	}
 

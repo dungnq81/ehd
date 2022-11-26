@@ -34,6 +34,9 @@
             }
             
             public function includes() {
+                
+                // Deprecated file: class-woo-variation-swatches-cache.php
+                require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-cache.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-manage-cache.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-frontend.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-backend.php';
@@ -80,7 +83,14 @@
             }
             
             public function get_option( $option, $default = null ) {
-                $options = GetWooPlugins_Admin_Settings::get_option( 'woo_variation_swatches' );
+                
+                $cache_key   = $this->get_cache()->get_key_with_language_suffix( 'global_settings' );
+                $cache_group = 'woo_variation_swatches';
+                
+                if ( false === ( $options = wp_cache_get( $cache_key, $cache_group ) ) ) {
+                    $options = GetWooPlugins_Admin_Settings::get_option( 'woo_variation_swatches' );
+                    wp_cache_set( $cache_key, $options, $cache_group );
+                }
                 
                 if ( current_theme_supports( 'woo_variation_swatches' ) ) {
                     $theme_support = get_theme_support( 'woo_variation_swatches' );
@@ -97,7 +107,7 @@
             }
             
             public function get_cache() {
-                Woo_Variation_Swatches_Manage_Cache::instance();
+                return Woo_Variation_Swatches_Manage_Cache::instance();
             }
             
             public function language() {

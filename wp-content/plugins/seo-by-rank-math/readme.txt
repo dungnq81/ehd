@@ -2,10 +2,10 @@
 Contributors: rankmath
 Plugin link: https://rankmath.com/?utm_source=LP&utm_campaign=WP
 Tags: seo, sitemap, google search console, schema, redirection, WordPress SEO
-Tested up to: 6.0
+Tested up to: 6.1
 Requires at least: 5.6
 Requires PHP: 7.4
-Stable tag: 1.0.99
+Stable tag: 1.0.102.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -417,7 +417,10 @@ Rank Math® SEO is a registered trademark. Please use the following format when 
 
 **<a href="https://rankmath.com/kb/wordpress/seo-suite/?utm_source=LP&utm_campaign=WP" target="_blank">3. User Documentation:</a>** Although Rank Math is already easy to set up, we've put together tutorials, guides, and some knowledge bases to help you set up and get started with Rank Math.
 
-**<a href="https://translate.wordpress.org/projects/wp-plugins/seo-by-rank-math/?utm_campaign=Rank+Math" target="_blank">4. Contribute (Sharing is caring):</a>** If you are one of those caring hearts that want to help, go to our <a href="https://github.com/RankMath/seo-by-rank-math/?utm_campaign=Rank+Math" target="_blank">Rank Math's GitHub Repository</a> and see how you can contribute to the SEO community. You can also add a new language via <a href="https://translate.wordpress.org/projects/wp-plugins/seo-by-rank-math/?utm_campaign=Rank+Math" target="_blank">translate.wordpress.org.</a>
+**<a href="https://translate.wordpress.org/projects/wp-plugins/seo-by-rank-math/?utm_campaign=Rank+Math" target="_blank">4. Contribute (Sharing is caring):</a>** If you are one of those caring hearts that want to help, please check the following resources:
+* [Rank Math's GitHub repository](https://github.com/RankMath/seo-by-rank-math/) - Includes all the uncompressed files.
+* [Content Analyzer Code Files](https://github.com/rankmath/content-analyzer) - Includes all supplementary uncompressed files.
+* [Translation](https://translate.wordpress.org/projects/wp-plugins/seo-by-rank-math/) - If you are looking to translate the plugin into your local language.
 
 **<a href="https://mythemeshop.com/wordpress-errors-fixes/?utm_campaign=Rank+Math" target="_blank">5. Fixing Common Errors:</a>** Sometimes, avoidable or common issues can get you stuck. We’ve created a common guide where we discuss all the common issues and how to fix them.
 
@@ -580,15 +583,13 @@ Please drop us an email at support@rankmath.com and we would be more than happy 
 
 == Changelog ==
 
-= 1.0.99 [Oct 06, 2022] =
-* Improved: Remove all Action Scheduler tasks related to Rank Math after uninstalling the plugin
-* Updated: Description links in the [Webmaster Tools tab](https://rankmath.com/kb/general-settings/#webmaster-tools) of the General Settings
-* Fixed: Converting Yoast's HowTo & FAQ block was working only on the 'Posts', not on other post types
-* Fixed: PHP warning on some setups after importing the data from [SEOPress](https://rankmath.com/kb/seopress-migration/)
-* Fixed: PHP error after deleting the post when [Link Counter module](https://rankmath.com/kb/link-counter/) was enabled
-* Fixed: PHP error when invalid schema data is saved in the Database
-* Fixed: Copying [Schema shortcode](https://rankmath.com/kb/rich-snippets/#book-shortcode) using the Keyboard was not working in the Elementor editor
-* Fixed: [Index Now API key](https://rankmath.com/kb/how-to-use-indexnow/#managing-api-key) was changed every time the Settings are updated
-* Fixed: Missing Analytics table error on some setups
+= 1.0.102[Nov 14, 2022] =
+* Added: Easily access [Content AI](https://rankmath.com/kb/how-to-use-content-ai/) in the block editor
+* Improved: [Rank Math settings](https://rankmath.com/kb/general-settings/) can now be updated while editing textarea using a Keyboard shortcut `Ctrl/Cmd + Enter`
+* Fixed: Dropdown menus on [Rank Math Analytics tables](https://rankmath.com/kb/analytics/) were not accessible
+* Fixed: [Capitalize Titles](https://rankmath.com/kb/titles-and-meta/#capitalize-titles) option was not working well with the accented characters
+
+= 1.0.102.1[Nov 22, 2022] =
+* Removed: Unused JS files from the plugin
 
 Full changelog can be found here - **[Rank Math changelog](https://rankmath.com/changelog/?utm_source=Plugin&utm_medium=Changelog&utm_campaign=WP)**

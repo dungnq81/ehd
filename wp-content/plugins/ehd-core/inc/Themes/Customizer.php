@@ -50,8 +50,8 @@ class Customizer
                 $wp_customize,
                 'alternative_logo',
                 [
-                    'label' => __('Alternative Logo', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'title_tagline',
+                    'label'    => __('Alternative Logo', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'title_tagline',
                     'settings' => 'alternative_logo',
                     'priority' => 8,
                 ]
@@ -61,16 +61,16 @@ class Customizer
         // add control
         $wp_customize->add_setting('logo_title_setting', [
             'sanitize_callback' => 'sanitize_text_field',
-            'transport' => 'refresh'
+            'transport'         => 'refresh',
         ]);
 
         $wp_customize->add_control(
             'logo_title_control',
             [
-                'label' => __('The title of the logo', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'title_tagline',
+                'label'    => __('The title of the logo', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'  => 'title_tagline',
                 'settings' => 'logo_title_setting',
-                'type' => 'text',
+                'type'     => 'text',
                 'priority' => 9,
             ]
         );
@@ -82,10 +82,10 @@ class Customizer
         $wp_customize->add_panel(
             'addon_menu_panel',
             [
-                'priority' => 140,
+                'priority'       => 140,
                 'theme_supports' => '',
-                'title' => __('eHD', EHD_PLUGIN_TEXT_DOMAIN),
-                'description' => __('Controls the add-on menu', EHD_PLUGIN_TEXT_DOMAIN),
+                'title'          => __('eHD', EHD_PLUGIN_TEXT_DOMAIN),
+                'description'    => __('Controls the add-on menu', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
 
@@ -96,8 +96,8 @@ class Customizer
         $wp_customize->add_section(
             'offcanvas_menu_section',
             [
-                'title' => __('offCanvas', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('offCanvas', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1000,
             ]
         );
@@ -106,23 +106,23 @@ class Customizer
         $wp_customize->add_setting(
             'offcanvas_menu_setting',
             [
-                'default' => 'default',
+                'default'           => 'default',
                 'sanitize_callback' => 'sanitize_text_field',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
         $wp_customize->add_control(
             'offcanvas_menu_control',
             [
-                'label' => __('offCanvas position', EHD_PLUGIN_TEXT_DOMAIN),
-                'type' => 'radio',
-                'section' => 'offcanvas_menu_section',
+                'label'    => __('offCanvas position', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'     => 'radio',
+                'section'  => 'offcanvas_menu_section',
                 'settings' => 'offcanvas_menu_setting',
-                'choices' => [
-                    'left' => __('Left', EHD_PLUGIN_TEXT_DOMAIN),
-                    'right' => __('Right', EHD_PLUGIN_TEXT_DOMAIN),
-                    'top' => __('Top', EHD_PLUGIN_TEXT_DOMAIN),
-                    'bottom' => __('Bottom', EHD_PLUGIN_TEXT_DOMAIN),
+                'choices'  => [
+                    'left'    => __('Left', EHD_PLUGIN_TEXT_DOMAIN),
+                    'right'   => __('Right', EHD_PLUGIN_TEXT_DOMAIN),
+                    'top'     => __('Top', EHD_PLUGIN_TEXT_DOMAIN),
+                    'bottom'  => __('Bottom', EHD_PLUGIN_TEXT_DOMAIN),
                     'default' => __('Default (Right)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
             ]
@@ -135,8 +135,8 @@ class Customizer
         $wp_customize->add_section(
             'news_menu_section',
             [
-                'title' => __('News', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('News', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1001,
             ]
         );
@@ -145,23 +145,23 @@ class Customizer
         $wp_customize->add_setting(
             'news_menu_setting',
             [
-                'default' => 'default',
+                'default'           => 'default',
                 'sanitize_callback' => 'sanitize_text_field',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
         $wp_customize->add_control(
             'news_menu_control',
             [
-                'label' => __('News images', EHD_PLUGIN_TEXT_DOMAIN),
-                'type' => 'radio',
-                'section' => 'news_menu_section',
+                'label'    => __('News images', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'     => 'radio',
+                'section'  => 'news_menu_section',
                 'settings' => 'news_menu_setting',
-                'choices' => [
-                    '1-1' => __('1:1', EHD_PLUGIN_TEXT_DOMAIN),
-                    '3-2' => __('3:2', EHD_PLUGIN_TEXT_DOMAIN),
-                    '4-3' => __('4:3', EHD_PLUGIN_TEXT_DOMAIN),
-                    '16-9' => __('16:9', EHD_PLUGIN_TEXT_DOMAIN),
+                'choices'  => [
+                    '1-1'     => __('1:1', EHD_PLUGIN_TEXT_DOMAIN),
+                    '3-2'     => __('3:2', EHD_PLUGIN_TEXT_DOMAIN),
+                    '4-3'     => __('4:3', EHD_PLUGIN_TEXT_DOMAIN),
+                    '16-9'    => __('16:9', EHD_PLUGIN_TEXT_DOMAIN),
                     'default' => __('Ratio default (16:9)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
             ]
@@ -174,8 +174,8 @@ class Customizer
         $wp_customize->add_section(
             'product_menu_section',
             [
-                'title' => __('Products', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Products', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1002,
             ]
         );
@@ -184,23 +184,23 @@ class Customizer
         $wp_customize->add_setting(
             'product_menu_setting',
             [
-                'default' => 'default',
+                'default'           => 'default',
                 'sanitize_callback' => 'sanitize_text_field',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
         $wp_customize->add_control(
             'product_menu_control',
             [
-                'label' => __('Products images', EHD_PLUGIN_TEXT_DOMAIN),
-                'type' => 'radio',
-                'section' => 'product_menu_section',
+                'label'    => __('Products images', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'     => 'radio',
+                'section'  => 'product_menu_section',
                 'settings' => 'product_menu_setting',
-                'choices' => [
-                    '1-1' => __('1:1', EHD_PLUGIN_TEXT_DOMAIN),
-                    '3-2' => __('3:2', EHD_PLUGIN_TEXT_DOMAIN),
-                    '4-3' => __('4:3', EHD_PLUGIN_TEXT_DOMAIN),
-                    '16-9' => __('16:9', EHD_PLUGIN_TEXT_DOMAIN),
+                'choices'  => [
+                    '1-1'     => __('1:1', EHD_PLUGIN_TEXT_DOMAIN),
+                    '3-2'     => __('3:2', EHD_PLUGIN_TEXT_DOMAIN),
+                    '4-3'     => __('4:3', EHD_PLUGIN_TEXT_DOMAIN),
+                    '16-9'    => __('16:9', EHD_PLUGIN_TEXT_DOMAIN),
                     'default' => __('Ratio default (16:9)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
             ]
@@ -213,8 +213,8 @@ class Customizer
         $wp_customize->add_section(
             'socials_menu_section',
             [
-                'title' => __('Socials', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Socials', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1005,
             ]
         );
@@ -224,10 +224,10 @@ class Customizer
         $wp_customize->add_control(
             'fb_menu_control',
             [
-                'label' => __('Facebook AppID', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'socials_menu_section',
-                'settings' => 'fb_menu_setting',
-                'type' => 'text',
+                'label'       => __('Facebook AppID', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'socials_menu_section',
+                'settings'    => 'fb_menu_setting',
+                'type'        => 'text',
                 'description' => __("You can do this at <a href='https://developers.facebook.com/apps/'>developers.facebook.com/apps</a>", EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -237,10 +237,10 @@ class Customizer
         $wp_customize->add_control(
             'fbpage_menu_control',
             [
-                'label' => __('Facebook pageID', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'socials_menu_section',
-                'settings' => 'fbpage_menu_setting',
-                'type' => 'text',
+                'label'       => __('Facebook pageID', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'socials_menu_section',
+                'settings'    => 'fbpage_menu_setting',
+                'type'        => 'text',
                 'description' => __("How do I find my Facebook Page ID? <a href='https://www.facebook.com/help/1503421039731588'>facebook.com/help/1503421039731588</a>", EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -249,19 +249,19 @@ class Customizer
         $wp_customize->add_setting(
             'fb_chat_setting',
             [
-                'default' => false,
+                'default'           => false,
                 //'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_checkbox',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
         $wp_customize->add_control(
             'fb_chat_control',
             [
-                'type' => 'checkbox',
+                'type'     => 'checkbox',
                 'settings' => 'fb_chat_setting',
-                'section' => 'socials_menu_section',
-                'label' => __('Facebook Live Chat', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'  => 'socials_menu_section',
+                'label'    => __('Facebook Live Chat', EHD_PLUGIN_TEXT_DOMAIN),
                 //'description' => __( 'Thêm facebook messenger live chat', EHD_PLUGIN_TEXT_DOMAIN ),
             ]
         );
@@ -271,10 +271,10 @@ class Customizer
         $wp_customize->add_control(
             'zalo_menu_control',
             [
-                'label' => __('Zalo AppID', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'socials_menu_section',
-                'settings' => 'zalo_menu_setting',
-                'type' => 'text',
+                'label'       => __('Zalo AppID', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'socials_menu_section',
+                'settings'    => 'zalo_menu_setting',
+                'type'        => 'text',
                 'description' => __("You can do this at <a href='https://developers.zalo.me/docs/'>developers.zalo.me/docs/</a>", EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -284,10 +284,10 @@ class Customizer
         $wp_customize->add_control(
             'zalo_oa_menu_control',
             [
-                'label' => __('Zalo OAID', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'socials_menu_section',
-                'settings' => 'zalo_oa_menu_setting',
-                'type' => 'text',
+                'label'       => __('Zalo OAID', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'socials_menu_section',
+                'settings'    => 'zalo_oa_menu_setting',
+                'type'        => 'text',
                 'description' => __("You can do this at <a href='https://oa.zalo.me/manage/oa?option=create'>oa.zalo.me/manage/oa?option=create</a>", EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -296,19 +296,19 @@ class Customizer
         $wp_customize->add_setting(
             'zalo_chat_setting',
             [
-                'default' => false,
+                'default'           => false,
                 //'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_checkbox',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
         $wp_customize->add_control(
             'zalo_chat_control',
             [
-                'type' => 'checkbox',
+                'type'     => 'checkbox',
                 'settings' => 'zalo_chat_setting',
-                'section' => 'socials_menu_section',
-                'label' => __('Zalo Live Chat', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'  => 'socials_menu_section',
+                'label'    => __('Zalo Live Chat', EHD_PLUGIN_TEXT_DOMAIN),
                 //'description' => __( 'Thêm zalo live chat', EHD_PLUGIN_TEXT_DOMAIN ),
             ]
         );
@@ -320,8 +320,8 @@ class Customizer
         $wp_customize->add_section(
             'link_menu_section',
             [
-                'title' => __('Links', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Links', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1006,
             ]
         );
@@ -329,17 +329,17 @@ class Customizer
         // add control
         $wp_customize->add_setting('hotline_setting', [
             'sanitize_callback' => 'sanitize_text_field',
-            'transport' => 'refresh'
+            'transport'         => 'refresh',
         ]);
 
         $wp_customize->add_control(
             'hotline_control',
             [
-                'label' => __('Hotline', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'link_menu_section',
-                'settings' => 'hotline_setting',
+                'label'       => __('Hotline', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'link_menu_section',
+                'settings'    => 'hotline_setting',
                 'description' => __('Hotline number, support easier interaction on the phone', EHD_PLUGIN_TEXT_DOMAIN),
-                'type' => 'text',
+                'type'        => 'text',
             ]
         );
 
@@ -350,8 +350,8 @@ class Customizer
         $wp_customize->add_section(
             'breadcrumb_section',
             [
-                'title' => __('Breadcrumbs', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Breadcrumbs', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1007,
             ]
         );
@@ -363,8 +363,8 @@ class Customizer
                 $wp_customize,
                 'breadcrumb_bg_control',
                 [
-                    'label' => __('Breadcrumb background', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'breadcrumb_section',
+                    'label'    => __('Breadcrumb background', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'breadcrumb_section',
                     'settings' => 'breadcrumb_bg_setting',
                     'priority' => 9,
                 ]
@@ -379,8 +379,8 @@ class Customizer
         $wp_customize->add_section(
             'header_section',
             [
-                'title' => __('Header', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Header', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1008,
             ]
         );
@@ -392,8 +392,8 @@ class Customizer
                 $wp_customize,
                 'header_bg_control',
                 [
-                    'label' => __('Header background', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'header_section',
+                    'label'    => __('Header background', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'header_section',
                     'settings' => 'header_bg_setting',
                     'priority' => 9,
                 ]
@@ -406,8 +406,8 @@ class Customizer
             new WP_Customize_Color_Control($wp_customize,
                 'header_bgcolor_control',
                 [
-                    'label' => __('Header background Color', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'header_section',
+                    'label'    => __('Header background Color', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'header_section',
                     'settings' => 'header_bgcolor_setting',
                 ]
             )
@@ -421,8 +421,8 @@ class Customizer
         $wp_customize->add_section(
             'footer_section',
             [
-                'title' => __('Footer', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Footer', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1008,
             ]
         );
@@ -434,8 +434,8 @@ class Customizer
                 $wp_customize,
                 'footer_bg_control',
                 [
-                    'label' => __('Footer background', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'footer_section',
+                    'label'    => __('Footer background', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'footer_section',
                     'settings' => 'footer_bg_setting',
                     'priority' => 9,
                 ]
@@ -448,8 +448,8 @@ class Customizer
             new WP_Customize_Color_Control($wp_customize,
                 'footer_bgcolor_control',
                 [
-                    'label' => __('Footer background Color', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'footer_section',
+                    'label'    => __('Footer background Color', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'footer_section',
                     'settings' => 'footer_bgcolor_setting',
                 ]
             )
@@ -460,10 +460,10 @@ class Customizer
         $wp_customize->add_control(
             'footer_row_control',
             [
-                'label' => __('Footer row number', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'footer_section',
-                'settings' => 'footer_row_setting',
-                'type' => 'number',
+                'label'       => __('Footer row number', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'footer_section',
+                'settings'    => 'footer_row_setting',
+                'type'        => 'number',
                 'description' => __('Footer rows number', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -473,10 +473,10 @@ class Customizer
         $wp_customize->add_control(
             'footer_col_control',
             [
-                'label' => __('Footer columns number', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'footer_section',
-                'settings' => 'footer_col_setting',
-                'type' => 'number',
+                'label'       => __('Footer columns number', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'footer_section',
+                'settings'    => 'footer_col_setting',
+                'type'        => 'number',
                 'description' => __('Footer columns number', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -489,8 +489,8 @@ class Customizer
         $wp_customize->add_section(
             'block_editor_section',
             [
-                'title' => __('Block Editor', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Block Editor', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1010,
             ]
         );
@@ -499,20 +499,20 @@ class Customizer
         $wp_customize->add_setting(
             'use_widgets_block_editor_setting',
             [
-                'default' => false,
-                'capability' => 'edit_theme_options',
+                'default'           => false,
+                'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_checkbox',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
 
         $wp_customize->add_control(
             'use_widgets_block_editor_control',
             [
-                'type' => 'checkbox',
-                'settings' => 'use_widgets_block_editor_setting',
-                'section' => 'block_editor_section',
-                'label' => __('Disable block widgets', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'        => 'checkbox',
+                'settings'    => 'use_widgets_block_editor_setting',
+                'section'     => 'block_editor_section',
+                'label'       => __('Disable block widgets', EHD_PLUGIN_TEXT_DOMAIN),
                 'description' => __('Disables the block editor from managing widgets', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -521,20 +521,20 @@ class Customizer
         $wp_customize->add_setting(
             'gutenberg_use_widgets_block_editor_setting',
             [
-                'default' => false,
-                'capability' => 'edit_theme_options',
+                'default'           => false,
+                'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_checkbox',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
 
         $wp_customize->add_control(
             'gutenberg_use_widgets_block_editor_control',
             [
-                'type' => 'checkbox',
-                'settings' => 'gutenberg_use_widgets_block_editor_setting',
-                'section' => 'block_editor_section',
-                'label' => __('Disable Gutenberg widgets', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'        => 'checkbox',
+                'settings'    => 'gutenberg_use_widgets_block_editor_setting',
+                'section'     => 'block_editor_section',
+                'label'       => __('Disable Gutenberg widgets', EHD_PLUGIN_TEXT_DOMAIN),
                 'description' => __('Disables the block editor from managing widgets in the Gutenberg plugin', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -543,20 +543,20 @@ class Customizer
         $wp_customize->add_setting(
             'use_block_editor_for_post_type_setting',
             [
-                'default' => false,
-                'capability' => 'edit_theme_options',
+                'default'           => false,
+                'capability'        => 'edit_theme_options',
                 'sanitize_callback' => 'sanitize_checkbox',
-                'transport' => 'refresh',
+                'transport'         => 'refresh',
             ]
         );
 
         $wp_customize->add_control(
             'use_block_editor_for_post_type_control',
             [
-                'type' => 'checkbox',
-                'settings' => 'use_block_editor_for_post_type_setting',
-                'section' => 'block_editor_section',
-                'label' => __('Use Classic Editor', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'        => 'checkbox',
+                'settings'    => 'use_block_editor_for_post_type_setting',
+                'section'     => 'block_editor_section',
+                'label'       => __('Use Classic Editor', EHD_PLUGIN_TEXT_DOMAIN),
                 'description' => __('Use Classic Editor - Disable Gutenberg Editor', EHD_PLUGIN_TEXT_DOMAIN),
             ]
         );
@@ -568,8 +568,8 @@ class Customizer
         $wp_customize->add_section(
             'other_section',
             [
-                'title' => __('Other', EHD_PLUGIN_TEXT_DOMAIN),
-                'panel' => 'addon_menu_panel',
+                'title'    => __('Other', EHD_PLUGIN_TEXT_DOMAIN),
+                'panel'    => 'addon_menu_panel',
                 'priority' => 1011,
             ]
         );
@@ -581,8 +581,8 @@ class Customizer
             new WP_Customize_Color_Control($wp_customize,
                 'theme_color_control',
                 [
-                    'label' => __('Theme Color', EHD_PLUGIN_TEXT_DOMAIN),
-                    'section' => 'other_section',
+                    'label'    => __('Theme Color', EHD_PLUGIN_TEXT_DOMAIN),
+                    'section'  => 'other_section',
                     'settings' => 'theme_color_setting',
                 ]
             )
@@ -593,18 +593,18 @@ class Customizer
             'remove_menu_setting',
             [
                 'sanitize_callback' => 'sanitize_textarea_field',
-                'transport' => 'refresh'
+                'transport'         => 'refresh',
             ]
         );
 
         $wp_customize->add_control(
             'remove_menu_control',
             [
-                'label' => __('Remove Menu', EHD_PLUGIN_TEXT_DOMAIN),
-                'section' => 'other_section',
-                'settings' => 'remove_menu_setting',
+                'label'       => __('Remove Menu', EHD_PLUGIN_TEXT_DOMAIN),
+                'section'     => 'other_section',
+                'settings'    => 'remove_menu_setting',
                 'description' => __('The menu list will be hidden', EHD_PLUGIN_TEXT_DOMAIN),
-                'type' => 'textarea',
+                'type'        => 'textarea',
             ]
         );
     }

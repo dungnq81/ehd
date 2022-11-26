@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Rank Math\n"
 "Last-Translator: Rank Math\n"
-"POT-Creation-Date: 2022-10-06 06:31+0000\n"
+"POT-Creation-Date: 2022-11-22 15:49+0000\n"
 "Project-Id-Version: undefined\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -288,6 +288,9 @@ msgid "Insert Link in Content"
 msgstr ""
 
 msgid "You are not authorized to perform this action."
+msgstr ""
+
+msgid "Exclusive Offer!"
 msgstr ""
 
 #. translators: placeholder is the plugin name.
@@ -636,6 +639,9 @@ msgid "Get Rank Math PRO!"
 msgstr ""
 
 msgid "Click here to see all the exciting features."
+msgstr ""
+
+msgid "Ctrl/Cmd + Enter"
 msgstr ""
 
 msgid "Save Changes"
@@ -2220,6 +2226,10 @@ msgstr ""
 msgid "Please keep only one Sitemap plugin active, otherwise, you might lose your rankings and traffic. %s."
 msgstr ""
 
+#. translators: %1$s: general reading settings URL.
+msgid "<strong>SEO Notice</strong>: Your site is set to No Index and will not appear in search engines. You can change the Search engine visibility <a href=\"%1$s\">from here</a>."
+msgstr ""
+
 #. translators: Option Description
 msgid "Easy %s"
 msgstr ""
@@ -2425,7 +2435,22 @@ msgstr ""
 msgid "Select the type that best describes your business. If you can't find one that applies exactly, use the generic \"Organization\" or \"Local Business\" types."
 msgstr ""
 
-msgid "Company Name"
+msgid "Website Name"
+msgstr ""
+
+msgid "Enter the name of your site to appear in search results."
+msgstr ""
+
+msgid "Website Alternate Name"
+msgstr ""
+
+msgid "An alternate version of your site name (for example, an acronym or shorter name)."
+msgstr ""
+
+msgid "Person/Organization Name"
+msgstr ""
+
+msgid "Your name or company name intended to feature in Google's Knowledge Panel."
 msgstr ""
 
 msgid "Logo for Google"
@@ -4086,7 +4111,7 @@ msgid "Google Search Console"
 msgstr ""
 
 #. translators: Google Search Console Link
-msgid "Enter your Google Search Console verification HTML code or ID. Get it from here: %s"
+msgid "Enter your Google Search Console verification HTML code or ID. Learn how to get it: %s"
 msgstr ""
 
 msgid "Search Console Verification Page"
@@ -4106,14 +4131,14 @@ msgid "Baidu Webmaster Tools"
 msgstr ""
 
 #. translators: Baidu webmaster link
-msgid "Enter your Baidu Webmaster Tools verification HTML code or ID. Get it from here: %s"
+msgid "Enter your Baidu Webmaster Tools verification HTML code or ID. Learn how to get it: %s"
 msgstr ""
 
 msgid "Yandex Verification ID"
 msgstr ""
 
 #. translators: Yandex webmaster link
-msgid "Enter your Yandex verification HTML code or ID. Get it from here: %s"
+msgid "Enter your Yandex verification HTML code or ID. Learn how to get it: %s"
 msgstr ""
 
 msgid "Yandex.Webmaster Page"
@@ -4123,7 +4148,7 @@ msgid "Pinterest Verification ID"
 msgstr ""
 
 #. translators: Pinterest webmaster link
-msgid "Enter your Pinterest verification HTML code or ID. Get it from here: %s"
+msgid "Enter your Pinterest verification HTML code or ID. Learn how to get it: %s"
 msgstr ""
 
 msgid "Pinterest Account"
@@ -4133,7 +4158,7 @@ msgid "Norton Safe Web Verification ID"
 msgstr ""
 
 #. translators: Norton webmaster link
-msgid "Enter your Norton Safe Web verification HTML code or ID. Get it from here: %s"
+msgid "Enter your Norton Safe Web verification HTML code or ID. Learn how to get it: %s"
 msgstr ""
 
 msgid "Norton Ownership Verification Page"
@@ -4298,9 +4323,6 @@ msgid "Organization"
 msgstr ""
 
 msgid "Choose whether the site represents a person or an organization."
-msgstr ""
-
-msgid "Your name or company name"
 msgstr ""
 
 msgid "Logo"

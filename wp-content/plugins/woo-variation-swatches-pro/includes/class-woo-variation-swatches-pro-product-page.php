@@ -128,9 +128,9 @@
                 return empty( $product_attribute_type ) ? $attribute_type : $product_attribute_type;
             }
             
-            public function get_item_css_classes( $data ) {
+            public function get_item_css_classes( $data, $attribute_type, $variation_data = array() ) {
                 
-                $css_classes = parent::get_item_css_classes( $data );
+                $css_classes = parent::get_item_css_classes( $data, $attribute_type, $variation_data );
                 
                 $is_term        = wc_string_to_bool( $data[ 'is_term' ] );
                 $term_or_option = $data[ 'item' ];
@@ -144,11 +144,13 @@
                 
                 
                 // global
-                $global_tooltip_type     = sanitize_text_field( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_type( $term_or_option, $data ) );
-                $global_tooltip_image_id = absint( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_image_id( $term_or_option, $data ) );
+                $global_tooltip_type = sanitize_text_field( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_type( $term_or_option, $data ) );
+                // $global_tooltip_image_id = absint( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_image_id( $term_or_option, $data ) );
                 
-                $tooltip_type     = empty( $local_tooltip_type ) ? $global_tooltip_type : $local_tooltip_type;
-                $tooltip_image_id = empty( $local_tooltip_image_id ) ? $global_tooltip_image_id : $local_tooltip_image_id;
+                $tooltip_type = empty( $local_tooltip_type ) ? $global_tooltip_type : $local_tooltip_type;
+                // $tooltip_image_id = empty( $local_tooltip_image_id ) ? $global_tooltip_image_id : $local_tooltip_image_id;
+                
+                $tooltip_image_id = $this->get_tooltip_image_id( $data, $attribute_type, $variation_data );
                 
                 if ( 'image' === $tooltip_type && $tooltip_image_id > 0 ) {
                     $css_classes[] = 'wvs-has-image-tooltip';
@@ -157,7 +159,50 @@
                 return $css_classes;
             }
             
-            public function get_item_tooltip_attribute( $data ) {
+            public function get_tooltip_image_id( $data, $attribute_type, $variation_data = array() ) {
+                
+                $html_attributes = array();
+                $product         = $data[ 'product' ];
+                $attribute       = $data[ 'attribute_key' ];
+                $term_id         = $data[ 'term_id' ];
+                $option_name     = $data[ 'option_name' ];
+                $term            = $data[ 'item' ];
+                $is_term         = wc_string_to_bool( $data[ 'is_term' ] );
+                $enable_tooltip  = wc_string_to_bool( woo_variation_swatches()->get_option( 'enable_tooltip', 'yes' ) );
+                
+                if ( ! $enable_tooltip ) {
+                    return 0;
+                }
+                
+                if ( 'mixed' === $attribute_type ) {
+                    $attribute_type = $this->get_attribute_type( $data, $variation_data );
+                }
+                
+                $_attribute_image_id = 0;
+                if ( 'image' === $attribute_type ) {
+                    $_attribute_image_id = $this->get_image_attribute_id( $data, $attribute_type, $variation_data );
+                }
+                
+                // local
+                $local_tooltip_type     = woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'show_tooltip' );
+                $local_tooltip_image_id = absint( woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'tooltip_image_id' ) );
+                
+                // global
+                
+                $global_tooltip_type     = sanitize_text_field( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_type( $term, $data ) );
+                $global_tooltip_image_id = absint( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_image_id( $term, $data ) );
+                $tooltip_type            = empty( $local_tooltip_type ) ? $global_tooltip_type : $local_tooltip_type;
+                
+                if ( 'image' !== $tooltip_type ) {
+                    return 0;
+                }
+                
+                $_tooltip_image_id = empty( $local_tooltip_image_id ) ? $global_tooltip_image_id : $local_tooltip_image_id;
+                
+                return empty( $_tooltip_image_id ) ? $_attribute_image_id : $_tooltip_image_id;
+            }
+            
+            public function get_item_tooltip_attribute( $data, $attribute_type, $variation_data = array() ) {
                 
                 $html_attributes = array();
                 $product         = $data[ 'product' ];
@@ -172,32 +217,30 @@
                     return $html_attributes;
                 }
                 
-                
                 // local
-                $local_tooltip_type     = woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'show_tooltip' );
-                $local_tooltip_image_id = absint( woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'tooltip_image_id' ) );
+                $local_tooltip_type = woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'show_tooltip' );
+                // $local_tooltip_image_id = absint( woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'tooltip_image_id' ) );
                 
                 // global
                 
-                $global_tooltip_type     = sanitize_text_field( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_type( $term, $data ) );
-                $global_tooltip_image_id = absint( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_image_id( $term, $data ) );
-                $tooltip_type            = empty( $local_tooltip_type ) ? $global_tooltip_type : $local_tooltip_type;
-                
+                $global_tooltip_type = sanitize_text_field( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_type( $term, $data ) );
+                // $global_tooltip_image_id = absint( woo_variation_swatches()->get_frontend()->get_product_attribute_tooltip_image_id( $term, $data ) );
+                $tooltip_type = empty( $local_tooltip_type ) ? $global_tooltip_type : $local_tooltip_type;
                 
                 if ( 'no' === $tooltip_type ) {
                     return $html_attributes;
                 }
                 
-                $tooltip_image_id = empty( $local_tooltip_image_id ) ? $global_tooltip_image_id : $local_tooltip_image_id;
+                $tooltip_image_id = $this->get_tooltip_image_id( $data, $attribute_type, $variation_data );
                 
                 if ( 'image' === $tooltip_type && $tooltip_image_id > 0 ) {
+                    
                     $tooltip_image_size = sanitize_text_field( woo_variation_swatches()->get_option( 'tooltip_image_size', 'variation_swatches_tooltip_size' ) );
                     
                     $tooltip_image_src = wp_get_attachment_image_src( $tooltip_image_id, $tooltip_image_size );
                     
                     $html_attributes[ 'style' ] = sprintf( '--tooltip-background: url(\'%s\'); --tooltip-width: %spx; --tooltip-height: %spx;', $tooltip_image_src[ 0 ], $tooltip_image_src[ 1 ], $tooltip_image_src[ 2 ] );
                 }
-                
                 
                 // local
                 $local_tooltip_text = sanitize_text_field( woo_variation_swatches()->get_product_settings( $product, woo_variation_swatches()->sanitize_name( $attribute ), 'terms', $term_id, 'tooltip_text' ) );
@@ -209,7 +252,6 @@
                 
                 $tooltip = apply_filters( 'woo_variation_swatches_global_variable_item_tooltip_text', $tooltip_text, $data );
                 
-                
                 $tooltip = empty( $tooltip ) ? $option_name : $tooltip;
                 
                 $html_attributes[ 'data-wvstooltip' ] = $tooltip;
@@ -220,19 +262,27 @@
             public function find_matching_product_variation( $product, $match_attributes = array() ) {
                 global $wpdb;
                 
-                $meta_attribute_names = array();
+                $product_id = $product->get_id();
                 
-                // Get attributes to match in meta.
-                foreach ( $product->get_attributes() as $attribute ) {
-                    if ( ! $attribute->get_variation() ) {
-                        continue;
+                $uniq_key    = md5( $product_id . serialize( $match_attributes ) . woo_variation_swatches()->get_cache()->get_last_changed() );
+                $cache_key   = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'matching_variation_attributes__%s', $uniq_key ) );
+                $cache_group = 'woo_variation_swatches';
+                
+                if ( false === ( $attributes = wp_cache_get( $cache_key, $cache_group ) ) ) {
+                    
+                    $meta_attribute_names = array();
+                    
+                    // Get attributes to match in meta.
+                    foreach ( $product->get_attributes() as $attribute ) {
+                        if ( ! $attribute->get_variation() ) {
+                            continue;
+                        }
+                        // $meta_attribute_names[] = 'attribute_' . sanitize_title( $attribute->get_name() );
+                        $meta_attribute_names[] = wc_variation_attribute_name( $attribute->get_name() );
                     }
-                    // $meta_attribute_names[] = 'attribute_' . sanitize_title( $attribute->get_name() );
-                    $meta_attribute_names[] = wc_variation_attribute_name( $attribute->get_name() );
-                }
-                
-                // Get the attributes of the variations.
-                $query = $wpdb->prepare( "
+                    
+                    // Get the attributes of the variations.
+                    $query = $wpdb->prepare( "
 			SELECT postmeta.post_id, postmeta.meta_key, postmeta.meta_value, posts.menu_order FROM {$wpdb->postmeta} as postmeta
 			LEFT JOIN {$wpdb->posts} as posts ON postmeta.post_id=posts.ID
 			WHERE postmeta.post_id IN (
@@ -242,12 +292,16 @@
 				AND {$wpdb->posts}.post_type = 'product_variation'
 			)
 			", $product->get_id() );
+                    
+                    $query .= " AND postmeta.meta_key IN ( '" . implode( "','", array_map( 'esc_sql', $meta_attribute_names ) ) . "' )";
+                    
+                    $query .= ' ORDER BY posts.menu_order ASC, postmeta.post_id ASC;';
+                    
+                    $attributes = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+                    
+                    wp_cache_set( $cache_key, $attributes, $cache_group );
+                }
                 
-                $query .= " AND postmeta.meta_key IN ( '" . implode( "','", array_map( 'esc_sql', $meta_attribute_names ) ) . "' )";
-                
-                $query .= ' ORDER BY posts.menu_order ASC, postmeta.post_id ASC;';
-                
-                $attributes = $wpdb->get_results( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                 if ( ! $attributes ) {
                     return 0;
                 }
@@ -303,7 +357,7 @@
                 $option_slug = $data[ 'option_slug' ];
                 $slug        = $data[ 'slug' ];
                 
-                $css_class = implode( ' ', array_unique( array_values( apply_filters( 'woo_variation_swatches_variable_item_css_class', $this->get_item_css_classes( $data ), $data, $attribute_type ) ) ) );
+                $css_class = implode( ' ', array_unique( array_values( apply_filters( 'woo_variation_swatches_variable_item_css_class', $this->get_item_css_classes( $data, $attribute_type, $variation_data ), $data, $attribute_type, $variation_data ) ) ) );
                 
                 $html_attributes = array(
                     'aria-checked' => ( $is_selected ? 'true' : 'false' ),
@@ -331,9 +385,9 @@
                     $html_attributes[ 'data-url' ] = esc_url( $url );
                 }
                 
-                $html_attributes = wp_parse_args( $this->get_item_tooltip_attribute( $data ), $html_attributes );
+                $html_attributes = wp_parse_args( $this->get_item_tooltip_attribute( $data, $attribute_type, $variation_data ), $html_attributes );
                 
-                $html_attributes = apply_filters( 'woo_variation_swatches_variable_item_custom_attributes', $html_attributes, $data, $attribute_type );
+                $html_attributes = apply_filters( 'woo_variation_swatches_variable_item_custom_attributes', $html_attributes, $data, $attribute_type, $variation_data );
                 
                 if ( 'mixed' === $attribute_type ) {
                     $attribute_type = $this->get_attribute_type( $data, $variation_data );
@@ -382,6 +436,39 @@
                     } else {
                         return sprintf( '<span class="variable-item-span variable-item-span-color" style="background-color:%s;"></span>', esc_attr( $primary_color ) );
                     }
+                }
+            }
+            
+            public function get_image_attribute_id( $data, $attribute_type, $variation_data = array() ) {
+                if ( 'image' === $attribute_type ) {
+                    
+                    $term           = $data[ 'item' ];
+                    $attribute_name = $data[ 'attribute_name' ];
+                    $product        = $data[ 'product' ];
+                    
+                    // Product
+                    $product_label_attachment_id = woo_variation_swatches()->get_product_settings( $product, $data[ 'attribute_key' ], 'terms', $data[ 'term_id' ], 'image_id' );
+                    
+                    // Global
+                    $global_attachment_id = apply_filters( 'woo_variation_swatches_global_product_attribute_image_id', woo_variation_swatches()->get_frontend()->get_product_attribute_image( $term, $data ), $data );
+                    
+                    // Options
+                    $attachment_id = empty( $product_label_attachment_id ) ? $global_attachment_id : $product_label_attachment_id;
+                    
+                    $slug = $data[ 'slug' ];
+                    
+                    if ( ! empty( $variation_data ) ) {
+                        
+                        $attribute_type = $variation_data[ $attribute_name ][ $slug ][ 'type' ];
+                        if ( 'image' !== $attribute_type ) {
+                            return false;
+                        }
+                        $attachment_id = $variation_data[ $attribute_name ][ $slug ][ 'image_id' ];
+                    }
+                    
+                    //$image_size = apply_filters( 'woo_variation_swatches_global_product_attribute_image_size', sanitize_text_field( woo_variation_swatches()->get_option( 'attribute_image_size', 'variation_swatches_image_size' ) ), $data );
+                    
+                    return $attachment_id;
                 }
             }
             
@@ -454,10 +541,12 @@
                     
                     $attribute_name = $data[ 'attribute_name' ];
                     $product        = $data[ 'product' ];
-                    $attributes     = $product->get_variation_attributes();
-                    $slug           = $data[ 'slug' ];
-                    $is_selected    = wc_string_to_bool( $data[ 'is_selected' ] );
-                    $option_name    = $data[ 'option_name' ];
+                    
+                    $attributes = $product->get_variation_attributes();
+                    // $attributes  = $this->get_cached_variation_attributes( $product );
+                    $slug        = $data[ 'slug' ];
+                    $is_selected = wc_string_to_bool( $data[ 'is_selected' ] );
+                    $option_name = $data[ 'option_name' ];
                     // $get_variations       = count( $product->get_children() ) <= apply_filters( 'woocommerce_ajax_variation_threshold', 30, $product );
                     // $available_variations = $get_variations ? $product->get_available_variations() : false;
                     
@@ -591,7 +680,6 @@
                     return $html;
                 }
                 
-                
                 // Get selected value.
                 if ( empty( $args[ 'selected' ] ) && $args[ 'attribute' ] && $args[ 'product' ] instanceof WC_Product ) {
                     $selected_key = wc_variation_attribute_name( $args[ 'attribute' ] );
@@ -613,9 +701,13 @@
                 $show_option_none_text = $args[ 'show_option_none' ] ? $args[ 'show_option_none' ] : esc_html__( 'Choose an option', 'woo-variation-swatches-pro' ); // We'll do our best to hide the placeholder, but we'll need to show something when resetting options.
                 
                 if ( empty( $options ) && ! empty( $product ) && ! empty( $attribute ) ) {
+                    
+                    // Variable Product Attribute from WC_Product_Variable
                     $attributes = $product->get_variation_attributes();
-                    $options    = $attributes[ $attribute ];
+                    // $attributes = $this->get_cached_variation_attributes( $product );
+                    $options = $attributes[ $attribute ];
                 }
+                
                 
                 // Product Settings
                 $product_default_to_button    = woo_variation_swatches()->get_product_settings( $product, 'default_to_button' );
@@ -660,7 +752,8 @@
                 
                 if ( $convert_to_image && $attribute_type === 'select' ) {
                     
-                    $attributes           = $product->get_variation_attributes();
+                    $attributes = $product->get_variation_attributes();
+                    // $attributes           = $this->get_cached_variation_attributes( $product );
                     $first_attribute      = array_key_first( $attributes );
                     $image_type_attribute = empty( $product_image_type_attribute ) ? $first_attribute : sanitize_text_field( $product_image_type_attribute );
                     
@@ -730,7 +823,8 @@
                 }
                 
                 // Start Swatches
-                $attributes      = $product->get_variation_attributes();
+                $attributes = $product->get_variation_attributes();
+                // $attributes      = $this->get_cached_variation_attributes( $product );
                 $first_attribute = array_key_first( $attributes );
                 
                 $item        = '';

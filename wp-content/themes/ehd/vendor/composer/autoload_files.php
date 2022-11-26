@@ -11,6 +11,6 @@ return array(
     '667aeda72477189d0494fecd327c3641' => $vendorDir . '/symfony/var-dumper/Resources/functions/dump.php',
     '15a24e14812a947eb0b080b5e42d8e48' => $baseDir . '/inc/helpers.php',
     '844ebf298fed0f1076c0950eea19aae3' => $baseDir . '/inc/image-sizes.php',
-    '42297ec638874c95bc93e4e7a25b4a49' => $baseDir . '/inc/ins.php',
+    '7220d6be3e886e6de8571b42887ca8fb' => $baseDir . '/inc/plugins.php',
     'bfea11ae2d4ffd753983e5d485ab7c98' => $baseDir . '/inc/template-hooks.php',
 );

@@ -24,7 +24,6 @@
             
             protected function includes() {
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-compatibility.php';
-                require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-cache.php';
                 require_once dirname( __FILE__ ) . '/class-woo-variation-swatches-product-page.php';
             }
             
@@ -49,13 +48,7 @@
             
             public function get_attribute_taxonomy_by_name( $attribute_name ) {
                 
-                $cache_name = sprintf( 'wvs_attribute_taxonomy_%s', $attribute_name );
-                
-                $cache = new Woo_Variation_Swatches_Cache( $cache_name, 'wvs_attribute_taxonomy' );
-                
-                if ( isset( $_GET[ 'wvs_clear_transient' ] ) ) {
-                    $cache->delete_transient();
-                }
+                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $attribute_name ) );
                 
                 if ( ! taxonomy_exists( $attribute_name ) ) {
                     return false;
@@ -67,13 +60,13 @@
                     return false;
                 }
                 
-                if ( false === ( $attribute_taxonomy = $cache->get_transient() ) ) {
+                if ( false === ( $attribute_taxonomy = get_transient( $transient_key ) ) ) {
                     
                     global $wpdb;
                     
                     $attribute_taxonomy = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "woocommerce_attribute_taxonomies WHERE attribute_name='{$attribute_name}'" );
                     
-                    $cache->set_transient( $attribute_taxonomy );
+                    set_transient( $transient_key, $attribute_taxonomy );
                 }
                 
                 return apply_filters( 'woo_variation_swatches_get_wc_attribute_taxonomy', $attribute_taxonomy, $attribute_name );
@@ -196,10 +189,6 @@
                 
                 $variation_ids        = $product->get_children();
                 $available_variations = array();
-                
-                if ( is_callable( '_prime_post_caches' ) ) {
-                    _prime_post_caches( $variation_ids );
-                }
                 
                 foreach ( $variation_ids as $variation_id ) {
                     

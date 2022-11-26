@@ -2,7 +2,7 @@
  * Variation Swatches for WooCommerce - PRO
  *
  * Author: Emran Ahmed ( emran.bd.08@gmail.com )
- * Date: 9/29/2022, 5:01:14 PM
+ * Date: 11/17/2022, 7:31:14 PM
  * Released under the GPLv3 license.
  */
 /******/ (function() { // webpackBootstrap
@@ -43,7 +43,7 @@ var __webpack_exports__ = {};
     if (woo_variation_swatches_pro_options.enable_single_variation_preview) {
       var name = self.$firstUL.data('preview_attribute_name') ? self.$firstUL.data('preview_attribute_name') : self.$attributeFields.first().data('attribute_name');
       single_variation_preview_selector = ".variations select[data-attribute_name='".concat(name, "']");
-      self.single_variation_preview_selected = ".variations select[data-attribute_name='".concat(name, "'] :selected");
+      self.single_variation_preview_selected = ".variations select[data-attribute_name='".concat(name, "']");
     } // Initial state.
 
 
@@ -91,12 +91,15 @@ var __webpack_exports__ = {};
     }, self.onUpdateAttributes);
 
     if (woo_variation_swatches_pro_options.enable_single_variation_preview) {
+      $form.on('woo_variation_swatches_add-to-cart-variation_start.wc-variation-form', {
+        variationForm: self
+      }, self.initPreviewChange);
       $form.on('change.wc-variation-form', single_variation_preview_selector, {
         variationForm: self
       }, self.onPreviewChange);
       $form.on('click.wc-variation-form', '.reset_variations', {
         variationForm: self
-      }, self.onResetDisplayedVariation);
+      }, self.onResetPreview);
     } // $form.on('woo_variation_swatches_add-to-cart-variation_init.wc-variation-form', {variationForm : self}, self.init);
 
 
@@ -111,6 +114,7 @@ var __webpack_exports__ = {};
     setTimeout(function () {
       form.$form.trigger('check_variations');
       form.$form.trigger('wc_variation_form', self);
+      form.$form.trigger('woo_variation_swatches_add-to-cart-variation_start', self);
       form.loading = false;
     }, 100);
   };
@@ -257,15 +261,78 @@ var __webpack_exports__ = {};
   */
 
 
-  VariationForm.prototype.onPreviewChange = function (event) {
-    var _this = this;
+  VariationForm.prototype.onResetPreview = function (event) {
+    var form = event.data.variationForm;
+    form.$form.on('reset_image.wc-variation-form', {
+      variationForm: form
+    }, form.onResetImage).trigger('reset_image');
+  };
 
+  VariationForm.prototype.showPreviewFetch = function (form, attribute_name, value) {
+    var attributes = form.getChosenAttributes();
+    var currentAttributes = {};
+
+    if (value && attributes.count && attributes.count > attributes.chosenCount) {
+      currentAttributes['product_id'] = form.product_id;
+      currentAttributes[attribute_name] = value;
+      var $gallery = $('.woocommerce-product-gallery');
+
+      if ($gallery.length > 0) {
+        $gallery.block({
+          message: null,
+          overlayCSS: {
+            background: '#FFFFFF',
+            opacity: 0.6
+          }
+        });
+      }
+
+      wp.apiFetch({
+        path: wp.url.addQueryArgs("/woo-variation-swatches/v1/single-product-preview", currentAttributes)
+      }).then(function (variation) {
+        form.$form.off('reset_image.wc-variation-form');
+        form.$form.wc_variations_image_update(variation);
+        form.$form.trigger('show_variation', [variation, false]);
+
+        if ($gallery.length > 0) {
+          $gallery.unblock();
+        }
+      })["catch"](function (error) {
+        console.error("single product variation preview fetching failed: ".concat(form.product_id, "."), error);
+      })["finally"](function () {
+        if ($gallery.length > 0) {
+          $gallery.unblock();
+        }
+      });
+    }
+
+    if (!value && woo_variation_swatches_pro_options.clear_on_reselect) {
+      form.$form.on('reset_image.wc-variation-form', {
+        variationForm: form
+      }, form.onResetImage).trigger('reset_image');
+    }
+  };
+
+  VariationForm.prototype.initPreviewChange = function (event) {
+    var form = event.data.variationForm;
+    var attribute_name = $(form.single_variation_preview_selected).data('attribute_name') || $(form.single_variation_preview_selected).attr('name');
+    var value = $(form.single_variation_preview_selected).val() || '';
+    form.showPreviewFetch(form, attribute_name, value);
+  };
+
+  VariationForm.prototype.onPreviewChange = function (event) {
     event.preventDefault();
     var form = event.data.variationForm;
     var attribute_name = $(this).data('attribute_name') || $(this).attr('name');
     var value = $(this).val() || '';
-    var currentAttributes = {};
+    form.showPreviewFetch(form, attribute_name, value);
+  };
+
+  VariationForm.prototype.__showPreview = function (form, attribute_name, value) {
+    var _this = this;
+
     var attributes = form.getChosenAttributes();
+    var currentAttributes = {};
 
     if (value && attributes.count && attributes.count > attributes.chosenCount) {
       currentAttributes['product_id'] = form.product_id;
@@ -289,6 +356,61 @@ var __webpack_exports__ = {};
       });
       form.previewXhr.fail(function (jqXHR, textStatus) {
         console.error("product preview not available on ".concat(_this.product_id, "."), attribute_name, textStatus);
+      });
+      form.previewXhr.done(function (variation) {
+        // reset off
+        // @TODO: Issue clear on reselect with Variation Image Preview
+        //form.$form.off('reset_data.wc-variation-form');
+        form.$form.off('reset_image.wc-variation-form'); // woocommerce-product-gallery
+
+        form.$form.wc_variations_image_update(variation);
+        form.$form.trigger('show_variation', [variation, false]);
+
+        if ($('.woocommerce-product-gallery').length > 0) {
+          $('.woocommerce-product-gallery').unblock();
+        }
+      });
+    }
+
+    if (!value && woo_variation_swatches_pro_options.clear_on_reselect) {
+      form.$form.on('reset_image.wc-variation-form', {
+        variationForm: form
+      }, form.onResetImage).trigger('reset_image');
+    }
+  };
+
+  VariationForm.prototype.__onPreviewChange = function (event) {
+    var _this2 = this;
+
+    event.preventDefault();
+    var form = event.data.variationForm;
+    var attribute_name = $(this).data('attribute_name') || $(this).attr('name');
+    var value = $(this).val() || '';
+    var attributes = form.getChosenAttributes();
+    var currentAttributes = {};
+
+    if (value && attributes.count && attributes.count > attributes.chosenCount) {
+      currentAttributes['product_id'] = form.product_id;
+      currentAttributes[attribute_name] = value;
+
+      if ($('.woocommerce-product-gallery').length > 0) {
+        $('.woocommerce-product-gallery').block({
+          message: null,
+          overlayCSS: {
+            background: '#FFFFFF',
+            opacity: 0.6
+          }
+        });
+      }
+
+      form.previewXhr = $.ajax({
+        global: false,
+        url: woo_variation_swatches_pro_params.wc_ajax_url.toString().replace('%%endpoint%%', 'woo_get_preview_variation'),
+        method: 'POST',
+        data: currentAttributes
+      });
+      form.previewXhr.fail(function (jqXHR, textStatus) {
+        console.error("product preview not available on ".concat(_this2.product_id, "."), attribute_name, textStatus);
       });
       form.previewXhr.done(function (variation) {
         // reset off

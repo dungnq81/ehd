@@ -13,9 +13,6 @@
     
     global $product, $woocommerce_loop;
     
-    // $initial_loop = absint( $woocommerce_loop[ 'loop' ] <= 3 );
-    
-    
     // Exclude Category
     $global_exclude_categories = map_deep( woo_variation_swatches()->get_option( 'exclude_categories', array() ), 'absint' );
     $product_cats_ids          = wc_get_product_term_ids( $product->get_id(), 'product_cat' );
@@ -94,7 +91,6 @@
                         ?>
                         <li class="woo-variation-items-wrapper">
                             <?php
-                                
                                 wc_dropdown_variation_attribute_options( array(
                                                                              'options'    => $options,
                                                                              'attribute'  => $attribute,

@@ -47,12 +47,6 @@ final class Admin
             // Use Classic Editor - Disable Gutenberg Editor
             add_filter('use_block_editor_for_post_type', '__return_false');
         }
-
-        // Remove admin bar
-        add_action('wp_before_admin_bar_render', function () {
-            global $wp_admin_bar;
-            $wp_admin_bar->remove_menu('wp-logo');
-        });
     }
 
     /** ---------------------------------------- */

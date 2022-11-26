@@ -31,7 +31,7 @@
                 add_filter( "manage_edit-{$this->taxonomy}_columns", array( $this, 'taxonomy_columns' ) );
                 add_filter( "manage_{$this->taxonomy}_custom_column", array( $this, 'taxonomy_column_preview' ), 10, 3 );
                 add_filter( "manage_{$this->taxonomy}_custom_column", array( $this, 'taxonomy_column_group' ), 10, 3 );
-    
+                
                 do_action( 'woo_variation_swatches_term_meta_loaded', $this );
             }
             
@@ -73,7 +73,6 @@
                 
                 return '';
             }
-            
             
             public function image_preview( $attribute_type, $term_id, $key ) {
                 if ( 'image' == $attribute_type ) {
@@ -135,7 +134,6 @@
                 
                 return $columns;
             }
-            
             
             public function delete_term( $term_id, $tt_id, $taxonomy, $deleted_term ) {
                 global $wpdb;
@@ -230,7 +228,7 @@
                     
                     $field[ 'size' ]        = isset( $field[ 'size' ] ) ? $field[ 'size' ] : '40';
                     $field[ 'required' ]    = ( isset( $field[ 'required' ] ) and $field[ 'required' ] == true ) ? ' aria-required="true"' : '';
-                    $field[ 'placeholder' ] = ( isset( $field[ 'placeholder' ] ) ) ? ' placeholder="' . $field[ 'placeholder' ] . '" data-placeholder="' . $field[ 'placeholder' ] . '"' : '';
+                    $field[ 'placeholder' ] = ( isset( $field[ 'placeholder' ] ) ) ? ' placeholder="' . esc_attr( $field[ 'placeholder' ] ) . '" data-placeholder="' . esc_attr( $field[ 'placeholder' ] ) . '"' : '';
                     $field[ 'desc' ]        = ( isset( $field[ 'desc' ] ) ) ? $field[ 'desc' ] : '';
                     
                     $field[ 'dependency' ]       = ( isset( $field[ 'dependency' ] ) ) ? $field[ 'dependency' ] : array();
@@ -241,20 +239,20 @@
                         case 'url':
                             ob_start();
                             ?>
-                            <input name="<?php echo $field[ 'id' ] ?>" id="<?php echo $field[ 'id' ] ?>"
-                                   type="<?php echo $field[ 'type' ] ?>"
-                                   value="<?php echo $field[ 'value' ] ?>"
-                                   size="<?php echo $field[ 'size' ] ?>" <?php echo $field[ 'required' ] . $field[ 'placeholder' ] ?>>
+                            <input name="<?php echo esc_attr( $field[ 'id' ] ) ?>" id="<?php echo esc_attr( $field[ 'id' ] ) ?>"
+                                   type="<?php echo esc_attr( $field[ 'type' ] ) ?>"
+                                   value="<?php echo esc_attr( $field[ 'value' ] ) ?>"
+                                   size="<?php echo esc_attr( $field[ 'size' ] ) ?>" <?php echo $field[ 'required' ] . $field[ 'placeholder' ] ?>>
                             <?php
                             echo ob_get_clean();
                             break;
                         case 'color':
                             ob_start();
                             ?>
-                            <input name="<?php echo $field[ 'id' ] ?>" id="<?php echo $field[ 'id' ] ?>" type="text"
-                                   class="wvs-color-picker" value="<?php echo $field[ 'value' ] ?>"
-                                   data-default-color="<?php echo $field[ 'value' ] ?>"
-                                   size="<?php echo $field[ 'size' ] ?>" <?php echo $field[ 'required' ] . $field[ 'placeholder' ] ?>>
+                            <input name="<?php echo esc_attr( $field[ 'id' ] ) ?>" id="<?php echo esc_attr( $field[ 'id' ] ) ?>" type="text"
+                                   class="wvs-color-picker" value="<?php echo esc_attr( $field[ 'value' ] ) ?>"
+                                   data-default-color="<?php echo esc_attr( $field[ 'value' ] ) ?>"
+                                   size="<?php echo esc_attr( $field[ 'size' ] ) ?>" <?php echo $field[ 'required' ] . $field[ 'placeholder' ] ?>>
                             <?php
                             echo ob_get_clean();
                             break;
@@ -287,11 +285,11 @@
                             
                             ob_start();
                             ?>
-                            <select name="<?php echo $field[ 'id' ] ?>" id="<?php echo $field[ 'id' ] ?>"
-                                    class="<?php echo $css_class ?>" <?php echo $field[ 'multiple' ] ?>>
+                            <select name="<?php echo esc_attr( $field[ 'id' ] ) ?>" id="<?php echo esc_attr( $field[ 'id' ] ) ?>"
+                                    class="<?php echo esc_attr( $css_class ) ?>" <?php echo $field[ 'multiple' ] ?>>
                                 <?php
                                     foreach ( $field[ 'options' ] as $key => $option ) {
-                                        echo '<option' . selected( $field[ 'value' ], $key, false ) . ' value="' . $key . '">' . $option . '</option>';
+                                        echo '<option' . selected( $field[ 'value' ], $key, false ) . ' value="' . esc_attr( $key ) . '">' . esc_html( $option ) . '</option>';
                                     }
                                 ?>
                             </select>
@@ -308,8 +306,8 @@
                                          width="60px" height="60px"/>
                                 </div>
                                 <div class="button-wrapper">
-                                    <input type="hidden" id="<?php echo $field[ 'id' ] ?>"
-                                           name="<?php echo $field[ 'id' ] ?>"
+                                    <input type="hidden" id="<?php echo esc_attr( $field[ 'id' ] ) ?>"
+                                           name="<?php echo esc_attr( $field[ 'id' ] ) ?>"
                                            value="<?php echo esc_attr( $field[ 'value' ] ) ?>"/>
                                     <button type="button"
                                             class="wvs_upload_image_button button button-primary button-small"><?php esc_html_e( 'Upload / Add image', 'woo-variation-swatches' ); ?></button>
@@ -327,12 +325,12 @@
                             ?>
                             <label for="<?php echo esc_attr( $field[ 'id' ] ) ?>">
 
-                                <input name="<?php echo $field[ 'id' ] ?>" id="<?php echo $field[ 'id' ] ?>"
+                                <input name="<?php echo esc_attr( $field[ 'id' ] ) ?>" id="<?php echo esc_attr( $field[ 'id' ] ) ?>"
                                     <?php checked( $field[ 'value' ], 'yes' ) ?>
-                                       type="<?php echo $field[ 'type' ] ?>"
+                                       type="<?php echo esc_attr( $field[ 'type' ] ) ?>"
                                        value="yes" <?php echo $field[ 'required' ] . $field[ 'placeholder' ] ?>>
                                 
-                                <?php echo $field[ 'label' ] ?></label>
+                                <?php echo esc_html( $field[ 'label' ] ) ?></label>
                             <?php
                             echo ob_get_clean();
                             break;
@@ -394,12 +392,12 @@
                 ob_start();
                 if ( ! $term ) {
                     ?>
-                    <p><?php echo $field[ 'desc' ] ?></p>
+                    <p><?php echo wp_kses_post( $field[ 'desc' ] ) ?></p>
                     </div>
                     <?php
                 } else {
                     ?>
-                    <p class="description"><?php echo $field[ 'desc' ] ?></p></td>
+                    <p class="description"><?php echo wp_kses_post( $field[ 'desc' ] ) ?></p></td>
                     </tr>
                     <?php
                 }
@@ -407,8 +405,6 @@
             }
             
             public function edit( $term ) {
-                
-                
                 $this->generate_fields( $term );
             }
         }

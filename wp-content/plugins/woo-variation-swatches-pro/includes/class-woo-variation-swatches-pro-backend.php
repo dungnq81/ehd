@@ -166,13 +166,13 @@
                         'id'      => 'show_tooltip',
                         'type'    => 'select2',
                         'options' => array(
-                            'text'  => esc_html__( 'Text', 'woo-variation-swatches-pro' ),
-                            'image' => esc_html__( 'Image', 'woo-variation-swatches-pro' ),
-                            'no'    => esc_html__( 'No', 'woo-variation-swatches-pro' ),
+                            'text'  => esc_html__( 'Custom Text', 'woo-variation-swatches-pro' ),
+                            'image' => esc_html__( 'Custom Image', 'woo-variation-swatches-pro' ),
+                            'no'    => esc_html__( 'No Tooltip', 'woo-variation-swatches-pro' ),
                         )
                     ),
                     array(
-                        'label'      => esc_html__( 'Tooltip text', 'woo-variation-swatches-pro' ),
+                        'label'      => esc_html__( 'Custom Tooltip text', 'woo-variation-swatches-pro' ),
                         'desc'       => esc_html__( 'Tooltip text. Default tooltip text will be term name.', 'woo-variation-swatches-pro' ),
                         'id'         => 'tooltip_text',
                         'type'       => 'text',
@@ -181,8 +181,8 @@
                         )
                     ),
                     array(
-                        'label'      => esc_html__( 'Tooltip image', 'woo-variation-swatches-pro' ),
-                        'desc'       => esc_html__( 'Tooltip image. Default tooltip text will be term name.', 'woo-variation-swatches-pro' ),
+                        'label'      => esc_html__( 'Custom Tooltip image', 'woo-variation-swatches-pro' ),
+                        'desc'       => esc_html__( 'Tooltip image. Default tooltip image will be term image.', 'woo-variation-swatches-pro' ),
                         'id'         => 'tooltip_image_id',
                         'type'       => 'image',
                         'dependency' => array(
@@ -211,13 +211,12 @@
                 }
                 
                 foreach ( $all_types as $type ) {
-                    foreach ( $common_fields as $field ) {
+                    foreach ( $common_fields as $index => $field ) {
                         array_push( $fields[ $type ], $field );
                     }
                 }
                 
                 return $fields;
             }
-    
         }
     }

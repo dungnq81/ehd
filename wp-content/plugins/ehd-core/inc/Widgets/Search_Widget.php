@@ -47,11 +47,14 @@ if (!class_exists('Search_Widget')) {
 
             $shortcode_content = Helper::doShortcode(
                 'inline_search',
-                [
-                    'title' => $title,
-                    'class' => $this->widget_classname . ' ' . $css_class,
-                    'id'    => '',
-                ]
+                apply_filters(
+                    'inline_search_widget_shortcode_args',
+                    [
+                        'title' => $title,
+                        'class' => $this->widget_classname . ' ' . $css_class,
+                        'id'    => '',
+                    ]
+                )
             );
 
             echo $this->cache_widget($args, $shortcode_content); // WPCS: XSS ok.

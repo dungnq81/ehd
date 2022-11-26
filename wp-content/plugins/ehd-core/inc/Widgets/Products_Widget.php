@@ -2,6 +2,7 @@
 
 namespace EHD\Plugins\Widgets;
 
+use EHD\Plugins\Core\Helper;
 use EHD\Plugins\Core\Widget;
 
 \defined('ABSPATH') || die;
@@ -12,7 +13,7 @@ if (!class_exists('Products_Widget')) {
         public function __construct()
         {
             $this->widget_description = __("A list of your store's products.", 'woocommerce');
-            $this->widget_name = __('Products list', 'woocommerce');
+            $this->widget_name = __('Products', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title'                 => [
                     'type'  => 'text',
@@ -35,42 +36,83 @@ if (!class_exists('Products_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Products per row', 'woocommerce'),
                 ],
-                'show'                  => [
-                    'type'    => 'select',
-                    'std'     => '',
-                    'label'   => __('Show', 'woocommerce'),
-                    'options' => [
-                        ''         => __('All products', 'woocommerce'),
-                        'featured' => __('Featured products', 'woocommerce'),
-                        'onsale'   => __('On-sale products', 'woocommerce'),
-                    ],
-                ],
                 'orderby'               => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Order by', 'woocommerce'),
                     'options' => [
-                        ''      => __('Default', 'woocommerce'),
-                        'date'  => __('Date', 'woocommerce'),
-                        'price' => __('Price', 'woocommerce'),
-                        'rand'  => __('Random', 'woocommerce'),
-                        'sales' => __('Sales', 'woocommerce'),
+                        ''           => __('Default', 'woocommerce'),
+                        'menu_order' => __('Menu Order', EHD_PLUGIN_TEXT_DOMAIN),
+                        'date'       => __('Date', 'woocommerce'),
+                        'rand'       => __('Random', 'woocommerce'),
+                        'price'      => __('Price', 'woocommerce'),
+                        'popularity' => __('Popularity', EHD_PLUGIN_TEXT_DOMAIN),
+                        'rating'     => __('Rating', EHD_PLUGIN_TEXT_DOMAIN),
+                        'id'         => __('ID', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
-                'hide_free'             => [
-                    'type'  => 'checkbox',
-                    'std'   => 0,
-                    'label' => __('Hide free products', 'woocommerce'),
+                'order'                 => [
+                    'type'    => 'select',
+                    'std'     => 'desc',
+                    'label'   => __('Order', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        'asc'  => __('ASC', EHD_PLUGIN_TEXT_DOMAIN),
+                        'desc' => __('DESC', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
                 ],
-                'product_cat_ids'       => [
+                'product_attributes'    => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Display Product Attributes', 'woocommerce'),
+                    'options' => [
+                        ''             => __('Default', 'woocommerce'),
+                        'on_sale'      => __('On-sale products', 'woocommerce'),
+                        'best_selling' => __('Best-selling products', EHD_PLUGIN_TEXT_DOMAIN),
+                        'top_rated'    => __('Top-rated products', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
+                'visibility'            => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Visibility', 'woocommerce'),
+                    'options' => [
+                        ''         => __('Default', 'woocommerce'),
+                        'catalog'  => __('Catalog', EHD_PLUGIN_TEXT_DOMAIN),
+                        'search'   => __('Search', EHD_PLUGIN_TEXT_DOMAIN),
+                        'hidden'   => __('Hidden', EHD_PLUGIN_TEXT_DOMAIN),
+                        'featured' => __('Featured Products', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
+                'category'              => [
                     'type'  => 'text',
                     'std'   => '',
-                    'label' => __('Product cat Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
+                    'label' => __('Product Categories (Id or Slug), separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'include_children'      => [
+                'cat_operator'          => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Cat Operator', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        ''       => __('Default', 'woocommerce'),
+                        'AND'    => __('AND', EHD_PLUGIN_TEXT_DOMAIN),
+                        'IN'     => __('IN', EHD_PLUGIN_TEXT_DOMAIN),
+                        'NOT IN' => __('NOT IN', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
+                'ids'                   => [
+                    'type'  => 'text',
+                    'std'   => '',
+                    'label' => __('Product IDs, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'paginate'              => [
                     'type'  => 'checkbox',
                     'std'   => 0,
-                    'label' => __('Includes products of children cat', EHD_PLUGIN_TEXT_DOMAIN),
+                    'label' => __('Pagination', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'full_width'            => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Full Width', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'show_viewmore_button'  => [
                     'type'  => 'checkbox',
@@ -111,19 +153,103 @@ if (!class_exists('Products_Widget')) {
 
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
             $number = !empty($instance['number']) ? absint($instance['number']) : 0;
+            $columns = !empty($instance['columns']) ? absint($instance['columns']) : 1;
+            $order = !empty($instance['order']) ? sanitize_title($instance['order']) : $this->settings['order']['std'];;
+
+            $args = [
+                'limit'   => $number,
+                'columns' => $columns,
+                'order'   => $order,
+                'title'   => wp_kses_post($title),
+            ];
+
+            // Orderby
+            $orderby = !empty($instance['orderby']) ? sanitize_title($instance['orderby']) : $this->settings['orderby']['std'];
+            if ($orderby) {
+                $args['orderby'] = $orderby;
+            }
+
+            // Display Product Attributes
+            $product_attributes = !empty($instance['product_attributes']) ? sanitize_title($instance['product_attributes']) : $this->settings['product_attributes']['std'];
+            if ($product_attributes) {
+                $args[$product_attributes] = 'true';
+            }
+
+            // Visibility
+            $visibility = !empty($instance['visibility']) ? sanitize_title($instance['visibility']) : $this->settings['visibility']['std'];
+            if ($visibility) {
+                $args['visibility '] = $visibility;
+            }
+
+            // Product Categories
+            $category = !empty($instance['category']) ? sanitize_title($instance['category']) : $this->settings['category']['std'];
+            if ($category) {
+                $args['category '] = $category;
+            }
+
+            // Cat Operator
+            $cat_operator = !empty($instance['cat_operator']) ? sanitize_title($instance['cat_operator']) : $this->settings['cat_operator']['std'];
+            if ($cat_operator) {
+                $args['cat_operator'] = $cat_operator;
+            }
+
+            // Product IDs
+            $ids = !empty($instance['ids']) ? sanitize_title($instance['ids']) : $this->settings['ids']['std'];
+            if ($ids) {
+                $args['ids'] = $ids;
+            }
+
+            // Toggle Pagination
+            $paginate = empty($instance['paginate']) ? 'false' : 'true';
+            if ('true' == $paginate) {
+                $args['paginate'] = $paginate;
+            }
+
+            $shortcode_content = Helper::doShortcode(
+                'products',
+                apply_filters(
+                    'products_widget_shortcode_args',
+                    $args
+                )
+            );
+
+            //...
+
+            $full_width = !empty($instance['full_width']);
+            $show_viewmore_button = !empty($instance['show_viewmore_button']);
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
-            $args = apply_filters(
-                'widget_products_args',
-                [
-                    'limit'   => $number,
-                    'columns' => 4,
-                    'orderby' => 'date',
-                    'order'   => 'desc',
-                    'on_sale' => 'true',
-                    'title'   => __('On Sale', 'storefront'),
-                ]
-            );
+            $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
+
+            ob_start();
+
+            ?>
+            <section class="section products-section <?= $css_class ?>" id="<?= $uniqid ?>">
+
+                <?php if (!$full_width) echo '<div class="grid-container">'; ?>
+
+                <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
+
+                <div class="<?= $uniqid ?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                    <?php echo $shortcode_content; ?>
+                </div>
+
+                <?php
+                if ($show_viewmore_button) {
+                    $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
+                    $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
+                    if ($viewmore_button_title) {
+                        echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
+                    }
+                }
+                ?>
+
+                <?php if (!$full_width) echo '</div>'; ?>
+
+            </section>
+            <?php
+
+            echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
 }

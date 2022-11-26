@@ -36,10 +36,28 @@
         }
         
         protected function hooks() {
+            add_filter( 'woocommerce_debug_tools', array( $this, 'add_to_debug_tool' ) );
             add_action( 'admin_init', array( $this, 'init' ) );
             add_action( 'admin_init', array( $this, 'migrate_notice' ) );
             add_action( 'woo_variation_swatches_pro_run_migration', array( $this, 'run_migration' ) );
             add_action( 'woo_variation_swatches_pro_update_to_current_version', array( $this, 'update_version' ) );
+        }
+        
+        public function add_to_debug_tool( $tools = array() ) {
+            $tools[ 'woo_variation_swatches_run_migrator' ] = array(
+                'name'     => esc_html__( '"Variation Swatches for WooCommerce" Migrator', 'woo-variation-swatches-pro' ),
+                'button'   => esc_html__( 'Run Migration', 'woo-variation-swatches-pro' ),
+                'desc'     => esc_html__( 'This will migrate from old version to new version of "Variation Swatches for WooCommerce".', 'woo-variation-swatches-pro' ),
+                'callback' => array( $this, 'rerun_migration' )
+            );
+            
+            return $tools;
+        }
+        
+        public function rerun_migration() {
+            delete_option( 'woo_variation_swatches_pro_version' );
+            
+            return esc_html__( 'Variation Swatches for WooCommerce migration has been re scheduled to run in the background.', 'woo-variation-swatches-pro' );
         }
         
         public function get_migration_callbacks() {
@@ -64,7 +82,6 @@
             
             
             // delete_option( 'woo_variation_swatches_pro_version' );
-            
             // return false;
             
             if ( ! $this->needs_migration() ) {

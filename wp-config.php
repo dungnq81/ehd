@@ -19,8 +19,8 @@
  */
 
 /** PHP Memory */
-const WP_MEMORY_LIMIT     = '512';
-const WP_MAX_MEMORY_LIMIT = '512';
+const WP_MEMORY_LIMIT     = '512M';
+const WP_MAX_MEMORY_LIMIT = '512M';
 
 const DISALLOW_FILE_EDIT = false;
 const DISALLOW_FILE_MODS = false;

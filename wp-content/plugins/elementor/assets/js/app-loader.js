@@ -1,4 +1,4 @@
-/*! elementor - v3.7.8 - 02-10-2022 */
+/*! elementor - v3.8.1 - 13-11-2022 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1839,6 +1839,325 @@ function createListenerMiddleware(middlewareOptions) {
 
 /***/ }),
 
+/***/ "../app/assets/js/loader/commands/close.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/loader/commands/close.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Close = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Close);
+
+  function Close() {
+    (0, _classCallCheck2.default)(this, Close);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Close, [{
+    key: "apply",
+    value: function apply() {
+      if (!this.component.close()) {
+        return false;
+      }
+
+      this.component.iframe.remove();
+      this.component.iframe = null;
+      return true;
+    }
+  }]);
+  return Close;
+}($e.modules.CommandBase);
+
+exports.Close = Close;
+var _default = Close;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/index.js":
+/*!*************************************************!*\
+  !*** ../app/assets/js/loader/commands/index.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+Object.defineProperty(exports, "Close", ({
+  enumerable: true,
+  get: function get() {
+    return _close.Close;
+  }
+}));
+Object.defineProperty(exports, "Load", ({
+  enumerable: true,
+  get: function get() {
+    return _load.Load;
+  }
+}));
+Object.defineProperty(exports, "Open", ({
+  enumerable: true,
+  get: function get() {
+    return _open.Open;
+  }
+}));
+
+var _close = __webpack_require__(/*! ./close */ "../app/assets/js/loader/commands/close.js");
+
+var _load = __webpack_require__(/*! ./load */ "../app/assets/js/loader/commands/load.js");
+
+var _open = __webpack_require__(/*! ./open */ "../app/assets/js/loader/commands/open.js");
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/load.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/loader/commands/load.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Load = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Load = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Load, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Load);
+
+  function Load() {
+    (0, _classCallCheck2.default)(this, Load);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Load, [{
+    key: "apply",
+    value: function apply(args) {
+      var component = this.component;
+
+      if (!component.iframe) {
+        component.iframe = document.createElement('iframe');
+        component.iframe.className = 'elementor-app-iframe';
+        component.iframe.style.cssText = '' + 'display: none;' + 'width: 100%;' + 'height: 100%;' + 'position: fixed;' + 'top: 0;' + 'left: 0;' + 'z-index: 99999; /* Over WP Admin Bar */' + 'background-color: rgba(0, 0, 0, 0.8);';
+        document.body.appendChild(component.iframe);
+      }
+
+      if (args.url === component.iframe.src) {
+        return;
+      }
+
+      component.iframe.src = args.url;
+    }
+  }]);
+  return Load;
+}($e.modules.CommandBase);
+
+exports.Load = Load;
+var _default = Load;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/commands/open.js":
+/*!************************************************!*\
+  !*** ../app/assets/js/loader/commands/open.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = exports.Open = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
+
+  var _super = _createSuper(Open);
+
+  function Open() {
+    (0, _classCallCheck2.default)(this, Open);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Open, [{
+    key: "apply",
+    value: function apply(args) {
+      $e.route('app', args);
+      return true;
+    }
+  }]);
+  return Open;
+}($e.modules.CommandBase);
+
+exports.Open = Open;
+var _default = Open;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../app/assets/js/loader/component.js":
+/*!********************************************!*\
+  !*** ../app/assets/js/loader/component.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+
+var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
+
+var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../app/assets/js/loader/commands/index.js"));
+
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+var Component = /*#__PURE__*/function (_ComponentModalBase) {
+  (0, _inherits2.default)(Component, _ComponentModalBase);
+
+  var _super = _createSuper(Component);
+
+  function Component() {
+    (0, _classCallCheck2.default)(this, Component);
+    return _super.apply(this, arguments);
+  }
+
+  (0, _createClass2.default)(Component, [{
+    key: "getNamespace",
+    value: function getNamespace() {
+      return 'app';
+    }
+  }, {
+    key: "defaultRoutes",
+    value: function defaultRoutes() {
+      var _this = this;
+
+      return {
+        '': function _(args) {
+          args.url = args.url || elementorAppConfig.menu_url;
+          $e.run('app/load', args);
+          _this.iframe.style.display = '';
+          document.body.style.overflow = 'hidden';
+        }
+      };
+    }
+  }, {
+    key: "defaultCommands",
+    value: function defaultCommands() {
+      return this.importCommands(commands);
+    }
+  }, {
+    key: "defaultShortcuts",
+    value: function defaultShortcuts() {
+      return {
+        '': {
+          keys: 'ctrl+shift+e'
+        },
+        close: {
+          keys: 'esc',
+          scopes: [this.getNamespace()]
+        }
+      };
+    }
+  }]);
+  return Component;
+}(_componentBase.default);
+
+exports["default"] = Component;
+
+/***/ }),
+
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
 /*!******************************************************!*\
   !*** ../assets/dev/js/editor/utils/is-instanceof.js ***!
@@ -2363,325 +2682,6 @@ Module.extend = function (properties) {
 };
 
 module.exports = Module;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/close.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/close.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Close = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Close = /*#__PURE__*/function (_$e$modules$CommandBa) {
-  (0, _inherits2.default)(Close, _$e$modules$CommandBa);
-
-  var _super = _createSuper(Close);
-
-  function Close() {
-    (0, _classCallCheck2.default)(this, Close);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Close, [{
-    key: "apply",
-    value: function apply() {
-      if (!this.component.close()) {
-        return false;
-      }
-
-      this.component.iframe.remove();
-      this.component.iframe = null;
-      return true;
-    }
-  }]);
-  return Close;
-}($e.modules.CommandBase);
-
-exports.Close = Close;
-var _default = Close;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/index.js":
-/*!******************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/index.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-Object.defineProperty(exports, "Close", ({
-  enumerable: true,
-  get: function get() {
-    return _close.Close;
-  }
-}));
-Object.defineProperty(exports, "Load", ({
-  enumerable: true,
-  get: function get() {
-    return _load.Load;
-  }
-}));
-Object.defineProperty(exports, "Open", ({
-  enumerable: true,
-  get: function get() {
-    return _open.Open;
-  }
-}));
-
-var _close = __webpack_require__(/*! ./close */ "../core/app/assets/js/loader/commands/close.js");
-
-var _load = __webpack_require__(/*! ./load */ "../core/app/assets/js/loader/commands/load.js");
-
-var _open = __webpack_require__(/*! ./open */ "../core/app/assets/js/loader/commands/open.js");
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/load.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/load.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Load = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Load = /*#__PURE__*/function (_$e$modules$CommandBa) {
-  (0, _inherits2.default)(Load, _$e$modules$CommandBa);
-
-  var _super = _createSuper(Load);
-
-  function Load() {
-    (0, _classCallCheck2.default)(this, Load);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Load, [{
-    key: "apply",
-    value: function apply(args) {
-      var component = this.component;
-
-      if (!component.iframe) {
-        component.iframe = document.createElement('iframe');
-        component.iframe.className = 'elementor-app-iframe';
-        component.iframe.style.cssText = '' + 'display: none;' + 'width: 100%;' + 'height: 100%;' + 'position: fixed;' + 'top: 0;' + 'left: 0;' + 'z-index: 99999; /* Over WP Admin Bar */' + 'background-color: rgba(0, 0, 0, 0.8);';
-        document.body.appendChild(component.iframe);
-      }
-
-      if (args.url === component.iframe.src) {
-        return;
-      }
-
-      component.iframe.src = args.url;
-    }
-  }]);
-  return Load;
-}($e.modules.CommandBase);
-
-exports.Load = Load;
-var _default = Load;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/commands/open.js":
-/*!*****************************************************!*\
-  !*** ../core/app/assets/js/loader/commands/open.js ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.Open = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Open = /*#__PURE__*/function (_$e$modules$CommandBa) {
-  (0, _inherits2.default)(Open, _$e$modules$CommandBa);
-
-  var _super = _createSuper(Open);
-
-  function Open() {
-    (0, _classCallCheck2.default)(this, Open);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Open, [{
-    key: "apply",
-    value: function apply(args) {
-      $e.route('app', args);
-      return true;
-    }
-  }]);
-  return Open;
-}($e.modules.CommandBase);
-
-exports.Open = Open;
-var _default = Open;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ "../core/app/assets/js/loader/component.js":
-/*!*************************************************!*\
-  !*** ../core/app/assets/js/loader/component.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-
-var _typeof = __webpack_require__(/*! @babel/runtime/helpers/typeof */ "../node_modules/@babel/runtime/helpers/typeof.js");
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
-
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-
-var _componentBase = _interopRequireDefault(__webpack_require__(/*! elementor-api/modules/component-base */ "../modules/web-cli/assets/js/modules/component-base.js"));
-
-var commands = _interopRequireWildcard(__webpack_require__(/*! ./commands/ */ "../core/app/assets/js/loader/commands/index.js"));
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-var Component = /*#__PURE__*/function (_ComponentModalBase) {
-  (0, _inherits2.default)(Component, _ComponentModalBase);
-
-  var _super = _createSuper(Component);
-
-  function Component() {
-    (0, _classCallCheck2.default)(this, Component);
-    return _super.apply(this, arguments);
-  }
-
-  (0, _createClass2.default)(Component, [{
-    key: "getNamespace",
-    value: function getNamespace() {
-      return 'app';
-    }
-  }, {
-    key: "defaultRoutes",
-    value: function defaultRoutes() {
-      var _this = this;
-
-      return {
-        '': function _(args) {
-          args.url = args.url || elementorAppConfig.menu_url;
-          $e.run('app/load', args);
-          _this.iframe.style.display = '';
-          document.body.style.overflow = 'hidden';
-        }
-      };
-    }
-  }, {
-    key: "defaultCommands",
-    value: function defaultCommands() {
-      return this.importCommands(commands);
-    }
-  }, {
-    key: "defaultShortcuts",
-    value: function defaultShortcuts() {
-      return {
-        '': {
-          keys: 'ctrl+shift+e'
-        },
-        close: {
-          keys: 'esc',
-          scopes: [this.getNamespace()]
-        }
-      };
-    }
-  }]);
-  return Component;
-}(_componentBase.default);
-
-exports["default"] = Component;
 
 /***/ }),
 
@@ -5902,9 +5902,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!*******************************************!*\
-  !*** ../core/app/assets/js/app-loader.js ***!
-  \*******************************************/
+/*!**************************************!*\
+  !*** ../app/assets/js/app-loader.js ***!
+  \**************************************/
 
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
@@ -5915,7 +5915,7 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtim
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 
-var _component = _interopRequireDefault(__webpack_require__(/*! ./loader/component */ "../core/app/assets/js/loader/component.js"));
+var _component = _interopRequireDefault(__webpack_require__(/*! ./loader/component */ "../app/assets/js/loader/component.js"));
 
 var AppLoader = /*#__PURE__*/function () {
   function AppLoader() {

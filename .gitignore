@@ -158,3 +158,5 @@ fabric.properties
 /wp-content/themes/ehd/assets/
 /wp-content/plugins/ehd-core/assets/
 /wp-content/themes/storefront/
+/wp-content/mu-plugins/composer.lock
+/wp-content/mu-plugins/vendor/

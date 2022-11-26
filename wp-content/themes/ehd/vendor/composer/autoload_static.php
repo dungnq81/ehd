@@ -12,7 +12,7 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '15a24e14812a947eb0b080b5e42d8e48' => __DIR__ . '/../..' . '/inc/helpers.php',
         '844ebf298fed0f1076c0950eea19aae3' => __DIR__ . '/../..' . '/inc/image-sizes.php',
-        '42297ec638874c95bc93e4e7a25b4a49' => __DIR__ . '/../..' . '/inc/ins.php',
+        '7220d6be3e886e6de8571b42887ca8fb' => __DIR__ . '/../..' . '/inc/plugins.php',
         'bfea11ae2d4ffd753983e5d485ab7c98' => __DIR__ . '/../..' . '/inc/template-hooks.php',
     );
 
@@ -33,9 +33,8 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         ),
         'E' => 
         array (
-            'EHD\\Walkers\\' => 12,
-            'EHD\\Themes\\' => 11,
-            'EHD\\Ins\\' => 8,
+            'EHD\\Sites\\Themes\\' => 17,
+            'EHD\\Sites\\Plugins\\' => 18,
         ),
     );
 
@@ -60,17 +59,13 @@ class ComposerStaticInitcc01f79ee216ad0910a2203bad5e7131
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'EHD\\Walkers\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/Walkers',
-        ),
-        'EHD\\Themes\\' => 
+        'EHD\\Sites\\Themes\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Themes',
         ),
-        'EHD\\Ins\\' => 
+        'EHD\\Sites\\Plugins\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/inc/Ins',
+            0 => __DIR__ . '/../..' . '/inc/Plugins',
         ),
     );
 

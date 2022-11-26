@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: eHD Core
  * Plugin URI: https://webhd.vn

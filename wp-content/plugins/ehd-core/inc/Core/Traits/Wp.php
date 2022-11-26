@@ -12,6 +12,7 @@ use WP_Term;
 
 trait Wp
 {
+    use Arr;
     use Base;
     use Str;
     use Url;
@@ -35,7 +36,7 @@ trait Wp
                 'theme_location' => '',
                 'depth'          => 4,
                 'fallback_cb'    => false,
-                'walker'         => new Vertical_Nav_Walker,
+                'walker'         => new Vertical_Nav_Walker(),
                 'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-accordion-menu data-submenu-toggle="true">%3$s</ul>',
                 'echo'           => false,
             ]
@@ -68,7 +69,7 @@ trait Wp
                 'theme_location' => '',
                 'depth'          => 4,
                 'fallback_cb'    => false,
-                'walker'         => new Horizontal_Nav_Walker,
+                'walker'         => new Horizontal_Nav_Walker(),
                 'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-dropdown-menu>%3$s</ul>',
                 'echo'           => false,
             ]
@@ -84,7 +85,6 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * (storefront_do_shortcode)
      * Call a shortcode function by tag name.
      *
      * @param string     $tag     The shortcode whose function to call.
@@ -282,25 +282,31 @@ trait Wp
      * @param bool        $include_children
      *
      * @param int         $posts_per_page
-     * @param int|bool    $paged
      * @param array       $orderby
      * @param bool|string $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
-    public static function queryByTerm($term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $paged = false, $orderby = [], $strtotime_recent = false)
+    public static function queryByTerm($term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $orderby = [], $strtotime_recent = false)
     {
-        if (!$term || !$post_type) {
+        if (!$term) {
             return false;
         }
 
         $_args = [
+            'post_type' => $post_type ?: 'post',
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
             'ignore_sticky_posts'    => true,
             'no_found_rows'          => true,
             'post_status'            => 'publish',
+            'posts_per_page'         => $posts_per_page ?: 10,
             'tax_query'              => ['relation' => 'AND'],
         ];
+
+        $include_children = (bool) $include_children;
+        if ($include_children) {
+            $_args['tax_query']['relation'] = 'IN';
+        }
 
         //...
         $term = self::toObject($term);
@@ -308,7 +314,7 @@ trait Wp
             $_args['tax_query'][] = [
                 'taxonomy'         => $term->taxonomy,
                 'terms'            => [$term->term_id],
-                'include_children' => (bool) $include_children,
+                'include_children' => $include_children,
             ];
         }
 
@@ -319,18 +325,6 @@ trait Wp
         }
 
         $_args['orderby'] = $orderby;
-
-        if ($post_type) {
-            $_args['post_type'] = $post_type;
-        }
-
-        if ($posts_per_page) {
-            $_args['posts_per_page'] = $posts_per_page;
-        }
-
-        if ($paged !== false && self::toInt($paged) >= 0) {
-            $_args['paged'] = $paged;
-        }
 
         // ...
         if ($strtotime_recent) {
@@ -374,11 +368,13 @@ trait Wp
         }
 
         $_args = [
+            'post_type' => $post_type ?: 'post',
             'post_status'         => 'publish',
             'orderby'             => ['date' => 'DESC'],
             'tax_query'           => ['relation' => 'AND'],
             'no_found_rows'       => true,
             'ignore_sticky_posts' => true,
+            'posts_per_page'      => $posts_per_page ?: 10,
 
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
@@ -392,19 +388,16 @@ trait Wp
             $taxonomy = 'category';
         }
 
+        $include_children = (bool) $include_children;
+        if ($include_children) {
+            $_args['tax_query']['relation'] = 'IN';
+        }
+
         $_args['tax_query'][] = [
             'taxonomy'         => $taxonomy,
             'terms'            => $term_ids,
             'include_children' => (bool) $include_children,
         ];
-
-        if ($post_type) {
-            $_args['post_type'] = $post_type;
-        }
-
-        if ($posts_per_page) {
-            $_args['posts_per_page'] = $posts_per_page;
-        }
 
         // ...
         if ($strtotime_str) {

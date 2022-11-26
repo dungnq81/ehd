@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Themes;
+namespace EHD\Sites\Themes;
 
 \defined('\WPINC') || die;
 
@@ -32,7 +32,7 @@ class Fonts
 
     public function enqueue_scripts()
     {
-        wp_enqueue_style("fonts-style", get_stylesheet_directory_uri() . '/assets/css/fonts.css', [], EHD_THEME_VERSION);
+        wp_enqueue_style("fonts-style", get_template_directory_uri() . '/assets/css/fonts.css', [], EHD_THEME_VERSION);
 
         //wp_register_script("fontawesome-kit", "https://kit.fontawesome.com/870d5b0bdf.js", [], false, true);
         //wp_script_add_data("fontawesome-kit", "defer", true);
