@@ -250,8 +250,7 @@ class Customizer
             'fb_chat_setting',
             [
                 'default'           => false,
-                //'capability'        => 'edit_theme_options',
-                'sanitize_callback' => 'sanitize_checkbox',
+                //'sanitize_callback' => 'sanitize_checkbox',
                 'transport'         => 'refresh',
             ]
         );
@@ -297,8 +296,7 @@ class Customizer
             'zalo_chat_setting',
             [
                 'default'           => false,
-                //'capability'        => 'edit_theme_options',
-                'sanitize_callback' => 'sanitize_checkbox',
+                //'sanitize_callback' => 'sanitize_checkbox',
                 'transport'         => 'refresh',
             ]
         );
@@ -500,8 +498,7 @@ class Customizer
             'use_widgets_block_editor_setting',
             [
                 'default'           => false,
-                'capability'        => 'edit_theme_options',
-                'sanitize_callback' => 'sanitize_checkbox',
+                //'sanitize_callback' => 'sanitize_checkbox',
                 'transport'         => 'refresh',
             ]
         );
@@ -522,8 +519,7 @@ class Customizer
             'gutenberg_use_widgets_block_editor_setting',
             [
                 'default'           => false,
-                'capability'        => 'edit_theme_options',
-                'sanitize_callback' => 'sanitize_checkbox',
+                //'sanitize_callback' => 'sanitize_checkbox',
                 'transport'         => 'refresh',
             ]
         );
@@ -544,8 +540,7 @@ class Customizer
             'use_block_editor_for_post_type_setting',
             [
                 'default'           => false,
-                'capability'        => 'edit_theme_options',
-                'sanitize_callback' => 'sanitize_checkbox',
+                //'sanitize_callback' => 'sanitize_checkbox',
                 'transport'         => 'refresh',
             ]
         );
@@ -600,11 +595,11 @@ class Customizer
         $wp_customize->add_control(
             'remove_menu_control',
             [
-                'label'       => __('Remove Menu', EHD_PLUGIN_TEXT_DOMAIN),
+                'type'        => 'textarea',
                 'section'     => 'other_section',
                 'settings'    => 'remove_menu_setting',
+                'label'       => __('Remove Menu', EHD_PLUGIN_TEXT_DOMAIN),
                 'description' => __('The menu list will be hidden', EHD_PLUGIN_TEXT_DOMAIN),
-                'type'        => 'textarea',
             ]
         );
     }

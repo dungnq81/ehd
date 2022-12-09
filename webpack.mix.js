@@ -13,6 +13,7 @@ mix
         postCss: [
             require('autoprefixer')({
                 //browsers: ['last 3 major versions', '>= 0.5%', 'iOS >= 12', 'Firefox ESR', 'not dead'],
+                //browsers: ['last 40 versions', '> 0.5%', 'iOS >= 7', 'Firefox ESR', 'not dead'],
                 grid: true
             })
         ]
