@@ -48,6 +48,26 @@ class Loop_Grid extends Base {
 			]
 		);
 
+		$this->add_control(
+			'equal_height',
+			[
+				'label' => esc_html__( 'Equal height', 'elementor-pro' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_off' => esc_html__( 'Off', 'elementor-pro' ),
+				'label_on' => esc_html__( 'On', 'elementor-pro' ),
+				'condition' => [
+					'columns!' => 1,
+					'template_id!' => '',
+					'masonry' => '',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .elementor-loop-container' => 'grid-auto-rows: 1fr',
+					// `.elementor-section-wrap` exists only when editing the loop template.
+					'{{WRAPPER}} .e-loop-item > .e-con, .e-loop-item .elementor-section-wrap  > .e-con' => 'height: 100%',
+				],
+			]
+		);
+
 		$this->end_injection();
 	}
 }

@@ -66,7 +66,7 @@ class Updater {
 		// include an unmodified $wp_version
 		include( ABSPATH . WPINC . '/version.php' );
 
-		if ( isset($version_info['requires']) && version_compare( $wp_version, $version_info['requires'], '<' ) ) {
+		if ( version_compare( $wp_version, $version_info['requires'], '<' ) ) {
 			return $_transient_data;
 		}
 
@@ -81,7 +81,7 @@ class Updater {
 
 		$plugin_info->plugin = $this->plugin_name;
 
-		if ( isset($version_info['new_version']) && version_compare( $this->plugin_version, $version_info['new_version'], '<' ) ) {
+		if ( version_compare( $this->plugin_version, $version_info['new_version'], '<' ) ) {
 			$_transient_data->response[ $this->plugin_name ] = $plugin_info;
 			$_transient_data->checked[ $this->plugin_name ] = $version_info['new_version'];
 		} else {

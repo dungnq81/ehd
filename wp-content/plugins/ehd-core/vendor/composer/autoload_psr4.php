@@ -6,9 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
-    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'EHD\\Plugins\\WooCommerce\\' => array($baseDir . '/inc/WooCommerce'),
     'EHD\\Plugins\\Widgets\\' => array($baseDir . '/inc/Widgets'),
     'EHD\\Plugins\\Themes\\' => array($baseDir . '/inc/Themes'),

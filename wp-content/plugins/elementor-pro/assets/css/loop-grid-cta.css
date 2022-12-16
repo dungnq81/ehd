@@ -1,22 +1,13 @@
-/*! elementor-pro - v3.8.1 - 07-11-2022 */
+/*! elementor-pro - v3.9.0 - 06-12-2022 */
 .e-loop-empty-view__container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
   width: 100%;
 }
 .e-loop-empty-view__box {
   min-height: 413px;
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 .e-loop-empty-view__box-inner {
@@ -26,20 +17,11 @@
   padding: 10px;
   font-size: 12px;
   color: #a4afb7;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   text-align: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   font-family: Roboto, sans-serif;
 }
 .e-loop-empty-view__box-inner img {
@@ -59,14 +41,9 @@
   background-color: #a4afb7;
   padding: 6px 8px;
   border-radius: 3px;
-  -webkit-transition-property: background, color, opacity, -webkit-box-shadow;
-  transition-property: background, color, opacity, -webkit-box-shadow;
-  -o-transition-property: background, color, box-shadow, opacity;
+  text-decoration: none;
   transition-property: background, color, box-shadow, opacity;
-  transition-property: background, color, box-shadow, opacity, -webkit-box-shadow;
-  -webkit-transition-duration: 0.3s;
-       -o-transition-duration: 0.3s;
-          transition-duration: 0.3s;
+  transition-duration: 0.3s;
 }
 .e-loop-empty-view__box-cta:hover {
   background-color: #6d7882;

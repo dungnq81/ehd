@@ -585,7 +585,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-cart-section',
 			]
 		);
@@ -709,7 +708,6 @@ class Cart extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'sections_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .cart_totals h2',
 			]
 		);
@@ -924,7 +922,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_fields_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .coupon .input-text, {{WRAPPER}} .e-cart-totals .input-text, {{WRAPPER}} select, {{WRAPPER}} .select2-selection--single',
 			]
 		);
@@ -957,7 +954,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_fields_focus_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .coupon .input-text:focus, {{WRAPPER}} .e-cart-totals .input-text:focus, {{WRAPPER}} select:focus, {{WRAPPER}} .select2-selection--single:focus',
 			]
 		);
@@ -981,14 +977,14 @@ class Cart extends Base_Widget {
 			[
 				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ) . ' (ms)',
 				'type' => Controls_Manager::SLIDER,
-				'selectors' => [
-					'{{WRAPPER}}' => '--forms-fields-focus-transition-duration: {{SIZE}}ms',
-				],
 				'range' => [
 					'px' => [
 						'min' => 0,
 						'max' => 3000,
 					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => '--forms-fields-focus-transition-duration: {{SIZE}}ms',
 				],
 			]
 		);
@@ -1055,7 +1051,6 @@ class Cart extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'forms_button_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .shop_table .button',
 			]
 		);
@@ -1087,7 +1082,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_buttons_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .shop_table .button',
 			]
 		);
@@ -1119,7 +1113,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'forms_buttons_focus_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .shop_table .button:hover',
 			]
 		);
@@ -1296,7 +1289,6 @@ class Cart extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'order_summary_title_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-shop-table .cart th, {{WRAPPER}} .e-shop-table .cart td:before',
 			]
 		);
@@ -1633,7 +1625,6 @@ class Cart extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'checkout_button_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .checkout-button',
 			]
 		);
@@ -1665,7 +1656,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'checkout_button_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .checkout-button',
 			]
 		);
@@ -1697,7 +1687,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'checkout_button_hover_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .checkout-button:hover',
 			]
 		);
@@ -1854,7 +1843,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'order_summary_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-shop-table',
 				'separator' => 'after',
 			]
@@ -1878,7 +1866,7 @@ class Cart extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-shop-table' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -1975,7 +1963,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'totals_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .e-cart-totals',
 			]
 		);
@@ -1998,7 +1985,7 @@ class Cart extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Width', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
+				'size_units' => [ 'px', '%', 'em' ],
 				'selectors' => [
 					'{{WRAPPER}} .e-cart-totals' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
@@ -2090,7 +2077,6 @@ class Cart extends Base_Widget {
 			Group_Control_Text_Shadow::get_type(),
 			[
 				'name' => 'totals_section_titles_text_shadow',
-				'label' => esc_html__( 'Text Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .cart_totals h2',
 				'separator' => 'after',
 			]
@@ -2201,7 +2187,6 @@ class Cart extends Base_Widget {
 			Group_Control_Box_Shadow::get_type(),
 			[
 				'name' => 'customize_coupon_section_normal_box_shadow',
-				'label' => esc_html__( 'Box Shadow', 'elementor-pro' ),
 				'selector' => '{{WRAPPER}} .coupon',
 			]
 		);

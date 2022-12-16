@@ -32,4 +32,8 @@ $(function () {
     //...
     //const wpbody_content = $("#wpbody-content");
     //wpbody_content.find('a[href*="page=addons&post_type=site-review"]').remove();
+
+    //...
+    $("input[value=\"advanced-custom-fields-pro/acf.php\"]").remove();
+    $("input[value=\"ehd-core/ehd-core.php\"]").remove();
 });

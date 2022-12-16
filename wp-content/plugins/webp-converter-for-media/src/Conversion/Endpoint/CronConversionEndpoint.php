@@ -12,6 +12,8 @@ use WebpConverter\Repository\TokenRepository;
  */
 class CronConversionEndpoint extends EndpointAbstract {
 
+	const ROUTE_NONCE_HEADER = 'Webpc-Nonce';
+
 	/**
 	 * @var CronInitiator
 	 */
@@ -82,8 +84,15 @@ class CronConversionEndpoint extends EndpointAbstract {
 	/**
 	 * {@inheritdoc}
 	 */
+	public function get_route_nonce_header(): string {
+		return self::ROUTE_NONCE_HEADER;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_route_response( \WP_REST_Request $request ) {
-		$request_id = $request->get_header( EndpointIntegration::ROUTE_NONCE_HEADER ) ?: '';
+		$request_id = $request->get_header( $this->get_route_nonce_header() ) ?: '';
 		$this->cron_initiator->init_conversion( $request_id );
 
 		return new \WP_REST_Response( null, 200 );

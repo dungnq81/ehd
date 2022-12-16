@@ -582,24 +582,26 @@ trait Wp
      * @param string|null $taxonomy
      * @return array|false|mixed|WP_Error|WP_Term
      */
-    public static function primaryTerm($post = null, ?string $taxonomy = '')
+    public static function primaryTerm($post = null, ?string $taxonomy = 'category')
     {
         //$post = get_post( $post );
         //$ID   = $post->ID ?? null;
 
         if (!$taxonomy) {
             $post_type = get_post_type($post);
-            if ('product' == $post_type) {
-                $taxonomy = 'product_cat';
-            } elseif ('banner' == $post_type) {
-                $taxonomy = 'product_cat';
-            } elseif ('service' == $post_type) {
-                $taxonomy = 'service_cat';
-            }
-        }
+            $taxonomy = $post_type . '_cat';
 
-        if (!$taxonomy) {
-            $taxonomy = 'category';
+            if ('post' == $post_type) {
+                $taxonomy = 'category';
+            }
+
+//            if ('product' == $post_type) {
+//                $taxonomy = 'product_cat';
+//            } elseif ('banner' == $post_type) {
+//                $taxonomy = 'banner_cat';
+//            } elseif ('service' == $post_type) {
+//                $taxonomy = 'service_cat';
+//            }
         }
 
         // Rank Math SEO
@@ -672,7 +674,12 @@ trait Wp
     public static function postTerms($post, ?string $taxonomy = 'category', ?string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
     {
         if (!$taxonomy) {
-            $taxonomy = 'category';
+            $post_type = get_post_type($post);
+            $taxonomy = $post_type . '_cat';
+
+            if ('post' == $post_type) {
+                $taxonomy = 'category';
+            }
         }
 
         $link = '';
@@ -719,7 +726,7 @@ trait Wp
             /* translators: 1: SVG icon. 2: posted in label, only visible to screen readers. 3: list of tags. */
                 '<div class="hashtag-links links">%1$s<span class="screen-reader-text">%2$s</span>%3$s</div>',
                 '<i data-glyph="#"></i>',
-                __('Tags', 'ehd'),
+                __('Tags', EHD_PLUGIN_TEXT_DOMAIN),
                 $hashtag_list
             ); // WPCS: XSS OK.
 
@@ -1009,6 +1016,7 @@ trait Wp
                 return self::getUserLink($obj->ID);
             }
         }
+
         return $fallback;
     }
 
@@ -1059,10 +1067,10 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $url
+     * @param string $url
      * @return int
      */
-    public static function getPostIdFromUrl($url = '')
+    public static function getPostIdFromUrl(string $url = '')
     {
         if (!$url) {
             global $wp;

@@ -3,7 +3,6 @@
 namespace WebpConverter\Conversion\Cron;
 
 use WebpConverter\Conversion\Endpoint\CronConversionEndpoint;
-use WebpConverter\Conversion\Endpoint\EndpointIntegration;
 use WebpConverter\Conversion\PathsFinder;
 use WebpConverter\PluginData;
 use WebpConverter\Repository\TokenRepository;
@@ -103,7 +102,7 @@ class CronInitiator {
 	 */
 	public function init_async_conversion() {
 		$headers = [
-			EndpointIntegration::ROUTE_NONCE_HEADER => CronConversionEndpoint::get_route_nonce(),
+			CronConversionEndpoint::ROUTE_NONCE_HEADER => CronConversionEndpoint::get_route_nonce(),
 		];
 		if ( isset( $_SERVER['PHP_AUTH_USER'] ) && isset( $_SERVER['PHP_AUTH_PW'] ) ) {
 			$headers['Authorization'] = 'Basic ' . base64_encode( $_SERVER['PHP_AUTH_USER'] . ':' . $_SERVER['PHP_AUTH_PW'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput

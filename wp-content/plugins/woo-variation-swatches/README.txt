@@ -6,7 +6,7 @@ Requires at least: 5.6
 Tested up to: 6.1
 WC requires at least: 5.6
 WC tested up to: 7.1
-Stable tag: 2.0.13
+Stable tag: 2.0.16
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -613,6 +613,18 @@ And your are ready to go.
 12. Global Variation Color Swatches Attribute List Preview
 
 == Changelog ==
+
+= 2.0.16 - 13-12-2022 =
+
+* Fix: litespeed-cache plugin trigger error to use WP_Object_Cache::flush_group method
+
+= 2.0.15 - 12-12-2022 =
+
+* Fix: Object cache issue
+
+= 2.0.14 - 06-12-2022 =
+
+* Fix: Variation delete error
 
 = 2.0.13 - 17-11-2022 =
 

@@ -8,6 +8,7 @@ use ElementorPro\Modules\LoopBuilder\Files\Css\Loop_Preview;
 use ElementorPro\Modules\ThemeBuilder\Documents\Theme_Document;
 use ElementorPro\Core\Utils;
 use ElementorPro\Plugin;
+use ElementorPro\Modules\LoopBuilder\Module as LoopBuilderModule;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -79,7 +80,9 @@ class Loop extends Theme_Document {
 	public function get_initial_config() {
 		$config = parent::get_initial_config();
 
-		if ( 'post' === $this->get_source_type_from_post_meta() ) {
+		$loop_builder_module = new LoopBuilderModule();
+
+		if ( 'post' === $loop_builder_module->get_source_type_from_post_meta( $this->get_main_id() ) ) {
 			foreach ( static::RECOMMENDED_POSTS_WIDGET_NAMES as $recommended_posts_widget_name ) {
 				$config['panel']['widgets_settings'][ $recommended_posts_widget_name ] = [
 					'categories' => [ 'recommended' ],
@@ -92,9 +95,13 @@ class Loop extends Theme_Document {
 			'categories' => [ 'layout' ],
 		];
 
-		$config['panel']['widgets_settings']['loop-grid'] = [
-			'show_in_panel' => false,
-		];
+		foreach ( [ 'loop-grid', 'woocommerce-product-data-tabs' ] as $widget_to_hide ) {
+			$config['panel']['widgets_settings'][ $widget_to_hide ] = [
+				'show_in_panel' => false,
+			];
+		}
+
+		$config['container_attributes'] = $this->get_container_attributes();
 
 		return $config;
 	}
@@ -224,7 +231,7 @@ class Loop extends Theme_Document {
 	 * @since 3.8.0
 	 */
 	public function get_content( $with_css = false ) {
-		$edit_mode = Plugin::elementor()->editor->is_edit_mode( $this->post->ID );
+		$preview_mode = Plugin::elementor()->preview->is_preview_mode( $this->post->ID );
 
 		add_filter( 'elementor/frontend/builder_content/before_print_css', [ $this, 'prevent_inline_css_printing' ] );
 
@@ -236,7 +243,7 @@ class Loop extends Theme_Document {
 
 		remove_filter( 'elementor/frontend/builder_content/before_print_css', [ $this, 'prevent_inline_css_printing' ] );
 
-		Plugin::elementor()->editor->set_edit_mode( $edit_mode );
+		Plugin::elementor()->editor->set_edit_mode( $preview_mode );
 
 		return $content;
 	}
@@ -288,7 +295,8 @@ class Loop extends Theme_Document {
 			]
 		);
 
-		$source_type = $this->get_source_type_from_post_meta();
+		$loop_builder_module = new LoopBuilderModule();
+		$source_type = $loop_builder_module->get_source_type_from_post_meta( $this->get_main_id() );
 
 		$this->add_control(
 			'source',
@@ -303,7 +311,7 @@ class Loop extends Theme_Document {
 			]
 		);
 
-		do_action( 'elementor/modules/loop-builder/documents/loop/query_settings', $this );
+		do_action( 'elementor-pro/modules/loop-builder/documents/loop/query_settings', $this );
 
 		$this->add_control(
 			'apply_query_source',
@@ -365,7 +373,8 @@ class Loop extends Theme_Document {
 	 * @return void
 	 */
 	protected function update_preview_control() {
-		$source_type = $this->get_source_type_from_post_meta();
+		$loop_builder_module = new LoopBuilderModule();
+		$source_type = $loop_builder_module->get_source_type_from_post_meta( $this->get_main_id() );
 
 		$this->update_control(
 			'preview_type',
@@ -399,10 +408,5 @@ class Loop extends Theme_Document {
 		$category_keys = array_keys( $existing_categories );
 		$index = array_search( 'favorites', $category_keys, true );
 		return array_splice( $existing_categories, 0, $index + 1 ) + $new_categories + array_splice( $existing_categories, $index + 1 );
-	}
-
-	private function get_source_type_from_post_meta() {
-		$source_type = get_post_meta( $this->get_main_id(), '_elementor_source', true );
-		return empty( $source_type ) ? 'post' : $source_type;
 	}
 }

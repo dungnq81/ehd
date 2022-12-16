@@ -25,16 +25,22 @@ $headers = [
 
 $plugin_data = get_file_data(__FILE__, $headers, 'plugin');
 
-const EHD_PLUGIN_TEXT_DOMAIN = 'ehd-core';
-
-define('EHD_PLUGIN_VERSION', $plugin_data['Version']);
 define('EHD_PLUGIN_URL', plugin_dir_url(__FILE__));       // https://**/wp-content/plugins/ehd-core/
 define('EHD_PLUGIN_PATH', plugin_dir_path(__FILE__));     // **\wp-content\plugins\ehd-core/
 define('EHD_PLUGIN_BASENAME', plugin_basename(__FILE__)); // ehd-core/ehd-core.php
 
-if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
-    require_once $composer;
+define('EHD_PLUGIN_VERSION', $plugin_data['Version']);
+define('EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain']);
+
+//...
+defined('EHD_MU_PLUGIN_VERSION') || wp_die(__('eHD Core requires "eHD mu-core" plugin to work properly', EHD_PLUGIN_TEXT_DOMAIN));
+
+//...
+if (!file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
+    wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', EHD_PLUGIN_TEXT_DOMAIN));
 }
+
+require_once $composer;
 
 // require_once EHD_PLUGIN_PATH . 'inc/Plugin.php';
 (new Plugin());

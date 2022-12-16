@@ -23,8 +23,8 @@ final class Admin
 
         add_action('admin_enqueue_scripts', [&$this, 'admin_enqueue_scripts'], 31);
 
-        add_action('admin_init', [&$this, 'ehd_admin_init'], 10);
-        add_action('admin_menu', [&$this, 'ehd_dashboard_meta_box'], 11);
+        add_action('admin_init', [&$this, 'admin_init'], 10);
+        add_action('admin_menu', [&$this, 'dashboard_meta_box'], 11);
 
         $widgets_block_off = Helper::getThemeMod('use_widgets_block_editor_setting');
         $gutenberg_widgets_block_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
@@ -76,7 +76,7 @@ final class Admin
     /**
      * Add admin column
      */
-    public function ehd_admin_init()
+    public function admin_init()
     {
         $this->_remove_menu();
 
@@ -296,10 +296,10 @@ final class Admin
      *
      * @return void
      */
-    public function ehd_dashboard_meta_box()
+    public function dashboard_meta_box()
     {
         /*Incoming Links Widget*/
-        //remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
+        remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
 
         /*Remove WordPress Events and News*/
         remove_meta_box('dashboard_primary', 'dashboard', 'normal');

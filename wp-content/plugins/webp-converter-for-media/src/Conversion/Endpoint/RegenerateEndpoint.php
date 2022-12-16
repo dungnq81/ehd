@@ -43,13 +43,6 @@ class RegenerateEndpoint extends EndpointAbstract {
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function get_url_lifetime(): int {
-		return ( 7 * 24 * 60 * 60 );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function get_route_args(): array {
 		return array_merge(
 			parent::get_route_args(),

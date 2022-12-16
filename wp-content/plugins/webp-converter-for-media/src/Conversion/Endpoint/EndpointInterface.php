@@ -22,13 +22,6 @@ interface EndpointInterface {
 	public function get_http_methods(): string;
 
 	/**
-	 * Returns expiration time in seconds of endpoint URL.
-	 *
-	 * @return int
-	 */
-	public static function get_url_lifetime(): int;
-
-	/**
 	 * Returns whether request can be executed.
 	 *
 	 * @param string $request_nonce .
@@ -57,6 +50,13 @@ interface EndpointInterface {
 	 * @return string
 	 */
 	public static function get_route_nonce(): string;
+
+	/**
+	 * Returns header name with nonce value.
+	 *
+	 * @return string
+	 */
+	public function get_route_nonce_header(): string;
 
 	/**
 	 * Returns response to endpoint.

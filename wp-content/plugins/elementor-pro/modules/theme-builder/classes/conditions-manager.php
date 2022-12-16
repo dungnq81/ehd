@@ -320,9 +320,10 @@ class Conditions_Manager {
 			 *
 			 * Filters the template ID for theme location templates.
 			 *
-			 * @param int $theme_template_id Template ID.
+			 * @param int    $theme_template_id Template ID.
+			 * @param string $location          Theme location.
 			 */
-			$theme_template_id = apply_filters( 'elementor/theme/get_location_templates/template_id', $theme_template_id );
+			$theme_template_id = apply_filters( 'elementor/theme/get_location_templates/template_id', $theme_template_id, $location );
 
 			foreach ( $conditions as $condition ) {
 				$parsed_condition = $this->parse_condition( $condition );

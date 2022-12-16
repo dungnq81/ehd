@@ -2,6 +2,7 @@
 namespace ElementorPro\Modules\Woocommerce;
 
 use Elementor\Widget_Base;
+use ElementorPro\Modules\Woocommerce\Skins\Skin_Loop_Product;
 use ElementorPro\Plugin;
 use ElementorPro\Base\Module_Base;
 use ElementorPro\Modules\ThemeBuilder\Classes\Conditions_Manager;
@@ -85,7 +86,7 @@ class Module extends Module_Base {
 	const RECOMMENDED_POSTS_WIDGET_NAMES = [
 		'theme-post-featured-image',
 		'woocommerce-product-title',
-		'wc-add-to-cart',
+		'woocommerce-product-add-to-cart',
 		'woocommerce-product-price',
 		'woocommerce-product-rating',
 		'woocommerce-product-stock',
@@ -174,13 +175,13 @@ class Module extends Module_Base {
 		}
 		$product_count = WC()->cart->get_cart_contents_count();
 		$sub_total = WC()->cart->get_cart_subtotal();
-		$counter_attr = 'data-counter="' . $product_count . '"';
 		$icon = ! empty( $settings['icon'] ) ? $settings['icon'] : 'cart-medium';
 		?>
 		<div class="elementor-menu-cart__toggle elementor-button-wrapper">
 			<a id="elementor-menu-cart__toggle_button" href="#" class="elementor-menu-cart__toggle_button elementor-button elementor-size-sm" aria-expanded="false">
 				<span class="elementor-button-text"><?php echo $sub_total; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-				<span class="elementor-button-icon" <?php echo $counter_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+				<span class="elementor-button-icon">
+					<span class="elementor-button-icon-qty" data-counter="<?php echo esc_attr( $product_count ); ?>"><?php echo $product_count; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					<?php
 					Icons_Manager::render_icon( [
 						'library' => 'eicons',
@@ -741,6 +742,15 @@ class Module extends Module_Base {
 		$this->add_products_to_options( $form, 'source' );
 	}
 
+	public function e_cart_count_fragments( $fragments ) {
+		$product_count = WC()->cart->get_cart_contents_count();
+
+		$fragments['.elementor-menu-cart__toggle_button span.elementor-button-text'] = '<span class="elementor-button-text">' . WC()->cart->get_cart_subtotal() . '</span>';
+		$fragments['.elementor-menu-cart__toggle_button span.elementor-button-icon-qty'] = '<span class="elementor-button-icon-qty" data-counter=' . $product_count . '>' . $product_count . '</span>';
+
+		return $fragments;
+	}
+
 	/**
 	 * @param $form
 	 * @param $control_name
@@ -1157,12 +1167,13 @@ class Module extends Module_Base {
 	 */
 	private static function parse_product_widget_args( $settings, $type = 'related_products' ) {
 		$limit_key = 'related_products' === $type ? 'posts_per_page' : 'limit';
+		$query_name = Products_Renderer::QUERY_CONTROL_NAME;
 
 		$args = [
 			$limit_key => '-1',
 			'columns' => ! empty( $settings['columns'] ) ? $settings['columns'] : 4,
-			'orderby' => ! empty( $settings['orderby'] ) ? $settings['orderby'] : 'rand',
-			'order' => ! empty( $settings['order'] ) ? $settings['order'] : 'desc',
+			'orderby' => ! empty( $settings[ "{$query_name}_orderby" ] ) ? $settings[ "{$query_name}_orderby" ] : 'rand',
+			'order' => ! empty( $settings[ "{$query_name}_order" ] ) ? $settings[ "{$query_name}_order" ] : 'desc',
 		];
 
 		if ( ! empty( $settings['rows'] ) ) {
@@ -1219,6 +1230,9 @@ class Module extends Module_Base {
 		add_action( 'elementor/kit/register_tabs', [ $this, 'init_site_settings' ], 1, 40 );
 		$this->add_update_kit_settings_hooks();
 
+		add_action( 'elementor/template-library/create_new_dialog_fields', [ $this, 'add_products_type_to_template_popup' ], 11 );
+		add_action( 'elementor-pro/modules/loop-builder/documents/loop/query_settings', [ $this, 'add_products_type_to_loop_settings_query' ], 11 );
+
 		$this->use_mini_cart_template = 'yes' === get_option( 'elementor_' . self::OPTION_NAME_USE_MINI_CART, 'no' );
 
 		if ( is_admin() ) {
@@ -1235,6 +1249,8 @@ class Module extends Module_Base {
 
 		add_action( 'wp_ajax_elementor_menu_cart_fragments', [ $this, 'menu_cart_fragments' ] );
 		add_action( 'wp_ajax_nopriv_elementor_menu_cart_fragments', [ $this, 'menu_cart_fragments' ] );
+
+		add_filter( 'woocommerce_add_to_cart_fragments', [ $this, 'e_cart_count_fragments' ] );
 
 		add_filter( 'elementor/theme/need_override_location', [ $this, 'theme_template_include' ], 10, 2 );
 
@@ -1313,6 +1329,10 @@ class Module extends Module_Base {
 		}, 10, 1 );
 
 		add_action( 'woocommerce_add_to_cart', [ $this, 'localize_added_to_cart_on_product_single' ] );
+
+		add_action( 'elementor/widget/loop-grid/skins_init', function( Widget_Base $widget ) {
+			$widget->add_skin( new Skin_Loop_Product( $widget ) );
+		} );
 
 		// WooCommerce Notice Site Settings
 		add_filter( 'body_class', [ $this, 'e_notices_body_classes' ] );

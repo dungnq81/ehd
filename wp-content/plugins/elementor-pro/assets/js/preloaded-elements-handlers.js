@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.8.1 - 07-11-2022 */
+/*! elementor-pro - v3.9.0 - 06-12-2022 */
 "use strict";
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["preloaded-elements-handlers"],{
 
@@ -3034,8 +3034,10 @@ var _loadMore = _interopRequireDefault(__webpack_require__(/*! ./handlers/load-m
 class _default extends elementorModules.Module {
   constructor() {
     super();
-    elementorFrontend.elementsHandler.attachHandler('loop-grid', _loadMore.default, 'post');
-    elementorFrontend.elementsHandler.attachHandler('loop-grid', _loopGrid.default, 'post');
+    ['post', 'product'].forEach(skinName => {
+      elementorFrontend.elementsHandler.attachHandler('loop-grid', _loadMore.default, skinName);
+      elementorFrontend.elementsHandler.attachHandler('loop-grid', _loopGrid.default, skinName);
+    });
   }
 
 }
@@ -3068,6 +3070,15 @@ class LoopLoadMore extends _loadMore.default {
     defaultSettings.selectors.postWrapperTag = '.e-loop-item';
     defaultSettings.selectors.loadMoreButton = '.e-loop__load-more .elementor-button';
     return defaultSettings;
+  }
+
+  afterInsertPosts(postsElements) {
+    super.afterInsertPosts(postsElements);
+    this.runElementHandlers(postsElements);
+  }
+
+  runElementHandlers(postsElements) {
+    [...postsElements].flatMap(el => [...el.querySelectorAll('.elementor-element')]).forEach(el => elementorFrontend.elementsHandler.runReadyTrigger(el));
   }
 
 }
@@ -3163,11 +3174,20 @@ class LoopGrid extends _posts.default {
       elementorPro.modules.loopBuilder.createTemplate();
     });
   }
+  /**
+   * Allows 3rd party add-ons to run code on the Loop Grid handler when the handler is initialized in the Editor.
+   */
+
+
+  doEditorInitAction() {
+    elementor.hooks.doAction('editor/widgets/loop-grid/on-init', this);
+  }
 
   onInit() {
     super.onInit(...arguments);
 
     if (elementorFrontend.isEditMode()) {
+      this.doEditorInitAction();
       this.attachEditDocumentHandle();
       this.handleCTA();
     }
@@ -4308,8 +4328,6 @@ class _default extends elementorModules.frontend.Document {
               id = this.getSettings('id'),
               triggerPopupEvent = eventType => {
           const event = 'elementor/popup/' + eventType;
-          elementorFrontend.elements.$document.trigger(event, [id, this]); // TODO: Use `elementorFrontend.utils.events.dispatch` when it's in master.
-
           window.dispatchEvent(new CustomEvent(event, {
             detail: {
               id,
@@ -4951,6 +4969,110 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ "../modules/popup/assets/js/frontend/timing/times-utils.js":
+/*!*****************************************************************!*\
+  !*** ../modules/popup/assets/js/frontend/timing/times-utils.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+class TimesUtils {
+  constructor(args) {
+    this.uniqueId = args.uniqueId;
+    this.settings = args.settings;
+    this.storage = args.storage;
+  }
+
+  getTimeFramesInSecounds(timeFrame) {
+    const timeFrames = {
+      day: 86400,
+      // Day in seconds
+      week: 604800,
+      // Week in seconds
+      month: 2628288 // Month in seconds
+
+    };
+    return timeFrames[timeFrame];
+  }
+
+  setExpiration(name, value, timeFrame) {
+    const data = this.storage.get(name);
+
+    if (!data) {
+      const options = {
+        lifetimeInSeconds: this.getTimeFramesInSecounds(timeFrame)
+      };
+      this.storage.set(name, value, options);
+      return;
+    }
+
+    this.storage.set(name, value);
+  }
+
+  getImpressionsCount() {
+    const impressionCount = this.storage.get(this.uniqueId) ?? 0;
+    return parseInt(impressionCount);
+  }
+
+  incrementImpressionsCount() {
+    if (!this.settings.period) {
+      this.storage.set('times', (this.storage.get('times') ?? 0) + 1);
+    } else if ('session' !== this.settings.period) {
+      const impressionCount = this.getImpressionsCount();
+      this.setExpiration(this.uniqueId, impressionCount + 1, this.settings.period);
+    } else {
+      sessionStorage.setItem(this.uniqueId, parseInt(sessionStorage.getItem(this.uniqueId) ?? 0) + 1);
+    }
+  }
+
+  shouldCountOnOpen() {
+    if (this.settings.countOnOpen) {
+      this.incrementImpressionsCount();
+    }
+  }
+
+  shouldDisplayPerTimeFrame() {
+    const impressionCount = this.getImpressionsCount();
+
+    if (impressionCount < this.settings.showsLimit) {
+      this.shouldCountOnOpen();
+      return true;
+    }
+
+    return false;
+  }
+
+  shouldDisplayPerSession() {
+    const impressionCount = sessionStorage.getItem(this.uniqueId) ?? 0;
+
+    if (parseInt(impressionCount) < this.settings.showsLimit) {
+      this.shouldCountOnOpen();
+      return true;
+    }
+
+    return false;
+  }
+
+  shouldDisplayBackwordCompatible() {
+    let impressionCount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    let showsLimit = arguments.length > 1 ? arguments[1] : undefined;
+    const shouldDisplay = parseInt(impressionCount) < parseInt(showsLimit);
+    this.shouldCountOnOpen();
+    return shouldDisplay;
+  }
+
+}
+
+exports["default"] = TimesUtils;
+
+/***/ }),
+
 /***/ "../modules/popup/assets/js/frontend/timing/times.js":
 /*!***********************************************************!*\
   !*** ../modules/popup/assets/js/frontend/timing/times.js ***!
@@ -4968,14 +5090,67 @@ exports["default"] = void 0;
 
 var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/popup/assets/js/frontend/timing/base.js"));
 
+var _timesUtils = _interopRequireDefault(__webpack_require__(/*! ./times-utils.js */ "../modules/popup/assets/js/frontend/timing/times-utils.js"));
+
 class _default extends _base.default {
+  constructor() {
+    super(...arguments);
+    this.uniqueId = `popup-${this.document.getSettings('id')}-impressions-count`;
+    const {
+      times_count: countOnOpen,
+      times_period: period,
+      times_times: showsLimit
+    } = this.getSettings();
+    this.settings = {
+      countOnOpen,
+      period,
+      showsLimit: parseInt(showsLimit)
+    };
+
+    if ('' === this.settings.period) {
+      this.settings.period = false;
+    }
+
+    if (['', 'close'].includes(this.settings.countOnOpen)) {
+      this.settings.countOnOpen = false;
+      this.onPopupHide();
+    } else {
+      this.settings.countOnOpen = true;
+    }
+
+    this.utils = new _timesUtils.default({
+      uniqueId: this.uniqueId,
+      settings: this.settings,
+      storage: elementorFrontend.storage
+    });
+  }
+
   getName() {
     return 'times';
   }
 
   check() {
-    const displayTimes = this.document.getStorage('times') || 0;
-    return this.getTimingSetting('times') > displayTimes;
+    if (!this.settings.period) {
+      const impressionCount = this.document.getStorage('times') || 0;
+      const showsLimit = this.getTimingSetting('times');
+      return this.utils.shouldDisplayBackwordCompatible(impressionCount, showsLimit);
+    }
+
+    if ('session' !== this.settings.period) {
+      if (!this.utils.shouldDisplayPerTimeFrame()) {
+        return false;
+      }
+    } else if (!this.utils.shouldDisplayPerSession()) {
+      return false;
+    }
+
+    return true;
+  }
+
+  onPopupHide() {
+    elementorFrontend.elements.$window.on('elementor/popup/hide', () => {
+      this.utils.incrementImpressionsCount();
+    });
   }
 
 }
@@ -5653,25 +5828,26 @@ class LoadMore extends elementorModules.frontend.handlers.Base {
 
   handleUiWhenNoPosts() {
     this.elements.postsWidgetWrapper.classList.add(this.classes.loadMorePaginationEnd);
-  }
+  } // eslint-disable-next-line no-unused-vars
+
+
+  afterInsertPosts(postsElements) {}
 
   handleSuccessFetch(result) {
     this.handleUiAfterLoading();
-    const selectors = this.getSettings('selectors'); // Grabbing only the new articles from the response without the existing once (prevent posts duplication).
+    const selectors = this.getSettings('selectors'); // Grabbing only the new articles from the response without the existing ones (prevent posts duplication).
 
-    const posts = result.querySelectorAll(`[data-id="${this.elementId}"] ${selectors.postsContainer} > ${selectors.postWrapperTag}`);
-    const nextPageUrl = result.querySelector('.e-load-more-anchor').getAttribute('data-next-page'); // Converting HTMLCollection to an Array and iterate it.
-
-    const postsHTML = [...posts].reduce((accumulator, post) => {
-      return accumulator + post.outerHTML;
-    }, '');
-    this.elements.postsContainer.insertAdjacentHTML('beforeend', postsHTML);
+    const postsElements = result.querySelectorAll(`[data-id="${this.elementId}"] ${selectors.postsContainer} > ${selectors.postWrapperTag}`);
+    const nextPageUrl = result.querySelector('.e-load-more-anchor').getAttribute('data-next-page');
+    postsElements.forEach(element => this.elements.postsContainer.append(element));
     this.elements.loadMoreAnchor.setAttribute('data-page', this.currentPage);
     this.elements.loadMoreAnchor.setAttribute('data-next-page', nextPageUrl);
 
     if (this.currentPage === this.maxPage) {
       this.handleUiWhenNoPosts();
     }
+
+    this.afterInsertPosts(postsElements);
   }
 
   handlePostsQuery() {
@@ -6504,6 +6680,7 @@ class SlidesHandler extends elementorModules.frontend.handlers.SwiperBase {
 
     if (Object.prototype.hasOwnProperty.call(changeableProperties, propertyName)) {
       this.updateSwiperOption(propertyName);
+      this.swiper.autoplay.start();
     }
   }
 
@@ -6514,6 +6691,7 @@ class SlidesHandler extends elementorModules.frontend.handlers.SwiperBase {
 
     if ('activeItemIndex' === propertyName) {
       this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
+      this.swiper.autoplay.stop();
     }
   }
 
@@ -7391,6 +7569,8 @@ var _myAccount = _interopRequireDefault(__webpack_require__(/*! ./handlers/my-ac
 
 var _notices = _interopRequireDefault(__webpack_require__(/*! ./handlers/notices */ "../modules/woocommerce/assets/js/frontend/handlers/notices.js"));
 
+var _productAddToCart = _interopRequireDefault(__webpack_require__(/*! ./handlers/product-add-to-cart */ "../modules/woocommerce/assets/js/frontend/handlers/product-add-to-cart.js"));
+
 class _default extends elementorModules.Module {
   constructor() {
     super();
@@ -7400,6 +7580,7 @@ class _default extends elementorModules.Module {
     elementorFrontend.elementsHandler.attachHandler('woocommerce-cart', _cart.default);
     elementorFrontend.elementsHandler.attachHandler('woocommerce-my-account', _myAccount.default);
     elementorFrontend.elementsHandler.attachHandler('woocommerce-notices', _notices.default);
+    elementorFrontend.elementsHandler.attachHandler('woocommerce-product-add-to-cart', _productAddToCart.default);
     /**
      * `wc-cart` script is enqueued in the Editor by the widget `get_script_depends()`. As a result WooCommerce
      * triggers its cart related event callbacks. One of the callbacks requires `.woocommerce-cart-form` to be in
@@ -8456,6 +8637,72 @@ class _default extends elementorModules.frontend.handlers.Base {
 }
 
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../modules/woocommerce/assets/js/frontend/handlers/product-add-to-cart.js":
+/*!*********************************************************************************!*\
+  !*** ../modules/woocommerce/assets/js/frontend/handlers/product-add-to-cart.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+
+var _base = _interopRequireDefault(__webpack_require__(/*! ./base */ "../modules/woocommerce/assets/js/frontend/handlers/base.js"));
+
+class ProductAddToCart extends _base.default {
+  getDefaultSettings() {
+    return {
+      selectors: {
+        quantityInput: '.e-loop-add-to-cart-form input.qty',
+        addToCartButton: '.e-loop-add-to-cart-form .ajax_add_to_cart',
+        addedToCartButton: '.added_to_cart',
+        loopFormContainer: '.e-loop-add-to-cart-form-container'
+      }
+    };
+  }
+
+  getDefaultElements() {
+    const selectors = this.getSettings('selectors');
+    return {
+      $quantityInput: this.$element.find(selectors.quantityInput),
+      $addToCartButton: this.$element.find(selectors.addToCartButton)
+    };
+  }
+
+  updateAddToCartButtonQuantity() {
+    this.elements.$addToCartButton.attr('data-quantity', this.elements.$quantityInput.val());
+  }
+
+  handleAddedToCart($button) {
+    const selectors = this.getSettings('selectors'),
+          $addToCartButton = $button.siblings(selectors.addedToCartButton),
+          $loopFormContainer = $addToCartButton.parents(selectors.loopFormContainer);
+    $loopFormContainer.children(selectors.addedToCartButton).remove();
+    $loopFormContainer.append($addToCartButton);
+  }
+
+  bindEvents() {
+    super.bindEvents(...arguments);
+    this.elements.$quantityInput.on('change', () => {
+      this.updateAddToCartButtonQuantity();
+    });
+    elementorFrontend.elements.$body.off('added_to_cart.elementor-woocommerce-product-add-to-cart');
+    elementorFrontend.elements.$body.on('added_to_cart.elementor-woocommerce-product-add-to-cart', (e, fragments, cartHash, $button) => {
+      this.handleAddedToCart($button);
+    });
+  }
+
+}
+
+exports["default"] = ProductAddToCart;
 
 /***/ }),
 

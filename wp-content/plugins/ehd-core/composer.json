@@ -18,7 +18,5 @@
 		"exclude-from-classmap": [],
 		"files": []
 	},
-	"require": {
-		"symfony/var-dumper": "^v5.4.13"
-	}
+	"require": {}
 }

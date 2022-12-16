@@ -7,9 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Vectorface\\Whip\\' => array($vendorDir . '/vectorface/whip/src'),
-    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
-    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'EHD\\Sites\\Themes\\' => array($baseDir . '/inc/Themes'),
     'EHD\\Sites\\Plugins\\' => array($baseDir . '/inc/Plugins'),

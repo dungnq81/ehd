@@ -5,7 +5,7 @@ Tags: convert webp, webp, optimize images, image optimization, compress images
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 5.5.0
+Stable tag: 5.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -282,6 +282,10 @@ If only your images are on another CDN server, unfortunately correct operation i
 
 For Nginx server that does not support .htaccess rules, additional Nginx server configuration is required for the plugin to function properly.
 
+Follow the 4 steps below **(please do all of them)**:
+
+**Step 1**
+
 Find the configuration file in one of the paths *(remember to select configuration file used by your vhost)*:
 - `/etc/nginx/sites-available/` or `/etc/nginx/sites-enabled/`
 - `/etc/nginx/conf.d/`
@@ -309,20 +313,35 @@ and add this code *(add these lines at the beginning of the `server { ... }` blo
 `}`
 `# END Converter for Media`
 
+**Step 2**
+
 Look in the configuration file for other rules affecting images, e.g.:
+
 `location ~* ^.+\.(css|js|jpg|jpeg|png|gif|webp|ico|eot|otf|woff|woff2|ttf)$ {`
-`	expires max;
+`	expires max;`
 `}`
 
 If you find such rules, remove the following formats from them: jpg, jpeg, png, gif and webp.
 
-**Then add support for the required MIME types**, if they are not supported. Edit the configuration file:
+**Step 3**
+
+Then add support for the required MIME types, if they are not supported. Edit the configuration file:
 - `/etc/nginx/mime.types`
 
 and add this code *(add these lines inside the `types { ... }` block)*:
 
 `image/webp webp;`
 `image/avif avif;`
+
+If you cannot perform this step, go back to the configuration file from Step 1 and add the following code there before the added rules from Step 1:
+
+`include mime.types;`
+`types {`
+`	image/webp webp;`
+`	image/avif avif;`
+`}`
+
+**Step 4**
 
 After making changes, remember to restart the machine:
 
@@ -338,6 +357,10 @@ In case of problems, please contact us in [the support forum](https://url.mattpl
 4. Optimization statistics of Media Library
 
 == Changelog ==
+
+= 5.5.1 (2022-11-29) =
+* `[Fixed]` Cache for REST API responses using LiteSpeed Cache plugin
+* `[Changed]` Authorization method for REST API endpoints
 
 = 5.5.0 (2022-11-22) =
 * `[Removed]` Error logging to debug.log file

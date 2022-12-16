@@ -17,6 +17,20 @@ class Optimizer
     {
         $this->_cleanup();
 
+        //...
+        if (!WP_DEBUG) {
+
+            // Remove WP version from RSS.
+            add_filter('the_generator', '__return_empty_string');
+
+            add_filter('style_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
+            add_filter('script_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
+        }
+
+        // fixed canonical
+        add_action( 'wp_head', [&$th, 'fixed_archive_canonical'], 10 );
+        add_action( 'wp_head', [&$th, 'rel_next_prev'], 10 );
+
         // filter post search only by title
         add_filter("posts_search", [&$this, 'post_search_by_title'], 500, 2);
 
@@ -33,9 +47,9 @@ class Optimizer
         // Hooks the wp action to insert some cache control max-age headers.
         add_action('wp', function ($wp) {
             if (is_feed()) {
-
-                // Set the max age for feeds to 5 minutes.
                 if (!is_user_logged_in()) {
+
+                    // Set the max age for feeds to 5 minutes.
                     header('Cache-Control: max-age=' . (5 * MINUTE_IN_SECONDS));
                 }
             }
@@ -70,30 +84,25 @@ class Optimizer
 
         // Prevent Specific Plugins from Deactivation
         add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
-            if (array_key_exists('deactivate', $actions)
-                && in_array(
-                    $plugin_file,
-                    [
-                        'ehd-core/ehd-core.php',
-                        'advanced-custom-fields-pro/acf.php',
-                    ])
-            ) {
-                unset($actions['deactivate']);
+
+            $keys = [ 'deactivate', 'delete' ];
+            foreach ($keys as $key) {
+
+                if ( array_key_exists($key, $actions)
+                    && in_array(
+                        $plugin_file,
+                        [
+                            'ehd-core/ehd-core.php',
+                            'advanced-custom-fields-pro/acf.php',
+                        ])
+                ) {
+                    unset($actions[$key]);
+                }
             }
 
             return $actions;
 
         }, 10, 4);
-
-        //...
-        if (!WP_DEBUG) {
-
-            // Remove WP version from RSS.
-            add_filter('the_generator', '__return_empty_string');
-
-            add_filter('style_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
-            add_filter('script_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
-        }
     }
 
     /** ---------------------------------------- */
@@ -140,6 +149,37 @@ class Optimizer
         remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
         remove_filter('the_content_feed', 'wp_staticize_emoji');
         remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    }
+
+    // ------------------------------------------------------
+
+    /**
+     * @return void
+     */
+    public function fixed_archive_canonical()
+    {
+        if (is_archive()) {
+            echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
+        }
+    }
+
+    // ------------------------------------------------------
+
+    /**
+     * Add rel="next" and rel="prev" to paginated page
+     *
+     * @return void
+     */
+    public function rel_next_prev()
+    {
+        global $paged;
+        if ( get_previous_posts_link() ) { ?>
+            <link rel="prev" href="<?php echo get_pagenum_link( $paged - 1 ); ?>" /><?php
+        }
+
+        if ( get_next_posts_link() ) { ?>
+            <link rel="next" href="<?php echo get_pagenum_link( $paged +1 ); ?>" /><?php
+        }
     }
 
     // ------------------------------------------------------

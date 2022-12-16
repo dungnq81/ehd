@@ -68,6 +68,10 @@ class Module extends Module_Base {
 	public function filter_body_class( $classes ) {
 		$classes[] = 'e-loop-template-canvas';
 
+		if ( 'product' === $this->get_source_type_from_post_meta( $_GET['elementor-preview'] ) ) {
+			$classes[] = 'woocommerce';
+		}
+
 		return $classes;
 	}
 
@@ -92,7 +96,6 @@ class Module extends Module_Base {
 				'default_active' => true,
 				'minimum_installation_version' => '3.8.0',
 			],
-			'dependencies' => [ 'container' ],
 		];
 	}
 
@@ -156,6 +159,11 @@ class Module extends Module_Base {
 				'template-type' => self::TEMPLATE_LIBRARY_TYPE_SLUG,
 			],
 		] );
+	}
+
+	public function get_source_type_from_post_meta( $post_id ) {
+		$source_type = get_post_meta( intval( $post_id ), '_elementor_source', true );
+		return empty( $source_type ) ? 'post' : $source_type;
 	}
 
 	private function is_editing_existing_loop_item() {

@@ -27,7 +27,7 @@ import { Fancybox } from "@fancyapps/ui";
 
 /** jquery */
 $(() => {
-
+    //...
 });
 
 /** vars */

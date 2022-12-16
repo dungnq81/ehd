@@ -9,9 +9,7 @@ use WebpConverter\HookableInterface;
  */
 class EndpointIntegration implements HookableInterface {
 
-	const ROUTE_NAMESPACE    = 'webp-converter/v1';
-	const ROUTE_NONCE_HEADER = 'Webpc-Nonce';
-	const ROUTE_NONCE_ACTION = 'webpc_rest-%s';
+	const ROUTE_NAMESPACE = 'webp-converter/v1';
 
 	/**
 	 * Objects of supported REST API endpoints.
@@ -44,7 +42,7 @@ class EndpointIntegration implements HookableInterface {
 			[
 				'methods'             => $this->endpoint_object->get_http_methods(),
 				'permission_callback' => function ( \WP_REST_Request $request ) {
-					$header_value = $request->get_header( EndpointIntegration::ROUTE_NONCE_HEADER );
+					$header_value = $request->get_header( $this->endpoint_object->get_route_nonce_header() );
 					if ( $header_value === null ) {
 						return false;
 					}
@@ -74,6 +72,9 @@ class EndpointIntegration implements HookableInterface {
 		}
 		/* Disable URLs replacement by Hide My WP (WPPlugins) plugin */
 		add_filter( 'hmwp_start_buffer', '__return_false' );
+
+		nocache_headers();
+		do_action( 'litespeed_control_set_nocache', 'Converter for Media' );
 
 		return $this->endpoint_object->get_route_response( $request );
 	}

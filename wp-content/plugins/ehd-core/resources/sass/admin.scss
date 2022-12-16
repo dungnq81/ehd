@@ -182,6 +182,7 @@ body.post-type-site-review {
 }
 
 /** plugin */
+
 #elementor-editor-wrapper {
     #elementor-preview {
         #elementor-notice-bar {
@@ -290,5 +291,11 @@ table.wp-list-table .column-price {
 
 .acf-postbox > .hndle:hover .acf-hndle-cog,
 .acf-postbox > .postbox-header:hover .acf-hndle-cog {
+    display: none !important;
+}
+
+/** */
+input[value="advanced-custom-fields-pro/acf.php"],
+input[value="ehd-core/ehd-core.php"] {
     display: none !important;
 }

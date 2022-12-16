@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 5.5.1 (2022-11-29) =
+* `[Fixed]` Cache for REST API responses using LiteSpeed Cache plugin
+* `[Changed]` Authorization method for REST API endpoints
+
 = 5.5.0 (2022-11-22) =
 * `[Removed]` Error logging to debug.log file
 * `[Changed]` Content of welcome notice after plugin installation

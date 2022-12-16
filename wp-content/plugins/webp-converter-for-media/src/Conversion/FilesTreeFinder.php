@@ -68,7 +68,7 @@ class FilesTreeFinder {
 	 * @type int[]     $files_converted   .
 	 * @type int[]     $files_unconverted .
 	 * @type mixed[]   $files_tree        .
-	 * }
+	 *                                    }
 	 * @internal
 	 */
 	public function get_tree( array $output_formats ): array {

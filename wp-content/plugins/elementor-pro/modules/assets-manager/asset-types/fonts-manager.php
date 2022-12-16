@@ -39,6 +39,8 @@ class Fonts_Manager {
 
 	protected $font_types = [];
 
+	private $has_fonts = null;
+
 	/**
 	 * get a font type object for a given type
 	 *
@@ -198,12 +200,18 @@ class Fonts_Manager {
 	}
 
 	private function has_fonts() {
-		$fonts = get_posts( [
+		if ( null !== $this->has_fonts ) {
+			return $this->has_fonts;
+		}
+
+		$existing_fonts = new \WP_Query( [
 			'post_type' => static::CPT,
-			'posts_per_page' => 1, // Avoid fetching too much data
+			'posts_per_page' => 1,
 		] );
 
-		return ! empty( $fonts );
+		$this->has_fonts = $existing_fonts->post_count > 0;
+
+		return $this->has_fonts;
 	}
 
 	public function redirect_admin_old_page_to_new() {

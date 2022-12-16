@@ -68,7 +68,7 @@ class PathsFinder {
 	 * @return mixed[] {
 	 * @type string         $path                   Directory path.
 	 * @type string[]       $files                  Files paths.
-	 * }
+	 *                                              }
 	 */
 	public function get_paths_by_chunks( bool $skip_converted = false, array $allowed_output_formats = null ): array {
 		$allowed_output_formats = $allowed_output_formats
@@ -195,7 +195,7 @@ class PathsFinder {
 	 * @return mixed[] {
 	 * @type string   $path  Directory path.
 	 * @type string[] $files Files paths.
-	 * }
+	 *                       }
 	 */
 	private function find_source_paths(): array {
 		$settings = $this->plugin_data->get_plugin_settings();

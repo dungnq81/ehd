@@ -109,6 +109,17 @@
   color: #39b54a;
 }
 
+#e-kit-elements-defaults-create-dialog .dialog-ok {
+  color: #39b54a;
+}
+#e-kit-elements-defaults-create-dialog label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 .dialog-prevent-scroll {
   overflow: hidden;
   max-height: 100vh;
@@ -1855,7 +1866,6 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --position: relative;
   --z-index: revert;
   --overflow: visible;
-  --transition: 0;
   --gap: var( --widgets-spacing, 20px );
   --overlay-mix-blend-mode: initial;
   --overlay-opacity: 1;
@@ -1872,7 +1882,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   padding-right: var(--padding-right);
   z-index: var(--z-index);
   overflow: var(--overflow);
-  transition: var(--transition);
+  transition: background var(--background-transition, 0.3s), border var(--border-transition, 0.3s), box-shadow var(--border-transition, 0.3s), transform var(--e-con-transform-transition-duration, 0.4s);
 }
 .e-con-full, .e-con > .e-con-inner {
   flex-direction: var(--flex-direction);
@@ -1930,8 +1940,11 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   top: 0;
   mix-blend-mode: var(--overlay-mix-blend-mode);
   opacity: var(--overlay-opacity);
-  transition: var(--overlay-transition);
+  transition: var(--overlay-transition, 0.3s);
   border-radius: var(--border-radius);
+}
+.e-con::before {
+  transition: background var(--overlay-transition, 0.3s), border-radius var(--border-transition, 0.3s), opacity var(--overlay-transition, 0.3s);
 }
 .e-con > .elementor-background-video-container:before,
 .e-con > .e-con-inner > .elementor-background-video-container:before {
@@ -2027,8 +2040,6 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 }
 .elementor-field-group .elementor-select-wrapper select {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
@@ -2275,7 +2286,7 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 }
 
 .elementor-element .elementor-widget-container {
-  transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+  transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s, transform var(--e-transform-transition-duration, 400ms);
 }
 
 .elementor-button {
@@ -2422,7 +2433,11 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
 .e-transform .elementor-widget-container {
   transform: perspective(var(--e-transform-perspective, 0)) rotateZ(var(--e-transform-rotateZ, 0)) rotateX(var(--e-transform-rotateX, 0)) rotateY(var(--e-transform-rotateY, 0)) translate(var(--e-transform-translate, 0)) translateX(var(--e-transform-translateX, 0)) translateY(var(--e-transform-translateY, 0)) scaleX(calc(var(--e-transform-flipX, 1) * var(--e-transform-scaleX, var(--e-transform-scale, 1)))) scaleY(calc(var(--e-transform-flipY, 1) * var(--e-transform-scaleY, var(--e-transform-scale, 1)))) skewX(var(--e-transform-skewX, 0)) skewY(var(--e-transform-skewY, 0));
   transform-origin: var(--e-transform-origin-y) var(--e-transform-origin-x);
-  transition: transform var(--e-transform-transition-duration, 400ms);
+}
+
+.e-con.e-transform {
+  transform: perspective(var(--e-con-transform-perspective, 0)) rotateZ(var(--e-con-transform-rotateZ, 0)) rotateX(var(--e-con-transform-rotateX, 0)) rotateY(var(--e-con-transform-rotateY, 0)) translate(var(--e-con-transform-translate, 0)) translateX(var(--e-con-transform-translateX, 0)) translateY(var(--e-con-transform-translateY, 0)) scaleX(calc(var(--e-con-transform-flipX, 1) * var(--e-con-transform-scaleX, var(--e-con-transform-scale, 1)))) scaleY(calc(var(--e-con-transform-flipY, 1) * var(--e-con-transform-scaleY, var(--e-con-transform-scale, 1)))) skewX(var(--e-con-transform-skewX, 0)) skewY(var(--e-con-transform-skewY, 0));
+  transform-origin: var(--e-con-transform-origin-y) var(--e-con-transform-origin-x);
 }
 
 /**
@@ -2599,8 +2614,6 @@ button.swiper-pagination-bullet {
   padding: 0;
   box-shadow: none;
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
 .swiper-pagination-clickable .swiper-pagination-bullet {
@@ -3603,7 +3616,8 @@ button.swiper-pagination-bullet {
 }
 .e-con > .elementor-widget-accordion,
 .e-con-inner > .elementor-widget-accordion {
-  width: var(--container-widget-width, 100%);
+  width: var(--container-widget-width);
+  --flex-grow: var( --container-widget-flex-grow );
 }
 
 .elementor-alert {
@@ -3788,7 +3802,8 @@ button.swiper-pagination-bullet {
 
 .e-con > .elementor-widget-divider,
 .e-con-inner > .elementor-widget-divider {
-  width: var(--container-widget-width, 100%);
+  width: var(--container-widget-width);
+  --flex-grow: var( --container-widget-flex-grow );
 }
 
 .elementor-image-gallery .gallery-item {
@@ -4846,8 +4861,8 @@ body.elementor-page .elementor-widget-menu-anchor {
 .e-con > .elementor-widget-spacer,
 .e-con-inner > .elementor-widget-spacer {
   width: var(--container-widget-width, var(--spacer-size));
-  align-self: stretch;
-  flex-shrink: 0;
+  --align-self: var( --container-widget-align-self, initial );
+  --flex-shrink: 0;
 }
 .e-con > .elementor-widget-spacer > .elementor-widget-container,
 .e-con-inner > .elementor-widget-spacer > .elementor-widget-container {
@@ -5251,7 +5266,8 @@ body.elementor-page .elementor-widget-menu-anchor {
 }
 .e-con > .elementor-widget-toggle,
 .e-con-inner > .elementor-widget-toggle {
-  width: var(--container-widget-width, 100%);
+  width: var(--container-widget-width);
+  --flex-grow: var( --container-widget-flex-grow );
 }
 
 .elementor-widget-video .elementor-widget-container {
@@ -5284,7 +5300,8 @@ body.elementor-page .elementor-widget-menu-anchor {
 
 .e-con > .elementor-widget-video,
 .e-con-inner > .elementor-widget-video {
-  width: var(--container-widget-width, 100%);
+  width: var(--container-widget-width);
+  --flex-grow: var( --container-widget-flex-grow );
 }
 
 /*# sourceMappingURL=frontend-rtl.css.map */

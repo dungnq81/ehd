@@ -1,5 +1,3 @@
-import {nanoid} from 'nanoid';
-
 /** DOMContentLoaded */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -12,13 +10,34 @@ document.addEventListener('DOMContentLoaded', () => {
             el.setAttribute('rel', 'noopener noreferrer nofollow');
         }
     });
+
+    // javascript disable right click
+    //document.addEventListener('contextmenu', event => event.preventDefault());
+    /*document.addEventListener("contextmenu", function(e){
+        if (e.target.nodeName === "IMG") {
+            e.preventDefault();
+        }
+    }, false);*/
+
+    /**remove style img tag*/
+    const _img = document.querySelectorAll('img');
+    Array.prototype.forEach.call(_img, (el) => {
+        el.removeAttribute('style');
+    });
 });
 
-/** import Swiper bundle with all modules installed */
-import {Swiper} from 'swiper/bundle';
+/** jquery */
+$(() => {
 
-/** wc product gallery */
-const spg_swiper = [...document.querySelectorAll('.swiper-product-gallery')];
+    /** Remove empty P tags created by WP inside of Accordion and Orbit */
+    $('.accordion p:empty, .orbit p:empty').remove();
 
-/** swiper container */
-const w_swiper = [...document.querySelectorAll('.w-swiper')];
+    /** Adds Flex Video to YouTube and Vimeo Embeds */
+    $('iframe[src*="youtube.com"], iframe[src*="vimeo.com"]').each(() => {
+        if ($(this).innerWidth() / $(this).innerHeight() > 1.5) {
+            $(this).wrap("<div class='widescreen responsive-embed'/>");
+        } else {
+            $(this).wrap("<div class='responsive-embed'/>");
+        }
+    });
+});

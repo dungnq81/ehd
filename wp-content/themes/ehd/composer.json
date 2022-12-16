@@ -22,7 +22,6 @@
 		]
 	},
 	"require": {
-		"symfony/var-dumper": "^v5.4.9",
 		"vectorface/whip": "^v0.4.0"
 	}
 }
