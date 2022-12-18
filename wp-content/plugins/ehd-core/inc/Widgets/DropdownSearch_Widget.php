@@ -13,7 +13,7 @@ if (!class_exists('DropdownSearch_Widget')) {
         public function __construct()
         {
             $this->widget_description = __('Display the dropdown search box', EHD_PLUGIN_TEXT_DOMAIN);
-            $this->widget_name = __('Dropdown Search', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_name = __('W - Dropdown Search', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title'     => [
                     'type'  => 'text',

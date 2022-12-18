@@ -8,13 +8,13 @@ use WP_Query;
 
 \defined('ABSPATH') || die;
 
-if (!class_exists('Recent_Posts_Widget')) {
-    class Recent_Posts_Widget extends Widget
+if (!class_exists('RecentPosts_Widget')) {
+    class RecentPosts_Widget extends Widget
     {
         public function __construct()
         {
             $this->widget_description = __('Your site&#8217;s most recent Posts.');
-            $this->widget_name = __('Recent Posts');
+            $this->widget_name = __('W - Recent Posts', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title' => [
                     'type' => 'text',

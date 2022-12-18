@@ -12,8 +12,8 @@ if (!class_exists('Search_Widget')) {
     {
         public function __construct()
         {
-            $this->widget_description = __('A search form for your site.');
-            $this->widget_name = __('Search');
+            $this->widget_description = __('A search form for your site.', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_name = __('W - Search', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title'     => [
                     'type'  => 'text',

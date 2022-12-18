@@ -13,7 +13,7 @@ if (!class_exists('Products_Widget')) {
         public function __construct()
         {
             $this->widget_description = __("A list of your store's products.", 'woocommerce');
-            $this->widget_name = __('Products', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_name = __('W - Products', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title'                 => [
                     'type'  => 'text',
@@ -172,7 +172,7 @@ if (!class_exists('Products_Widget')) {
             // Display Product Attributes
             $product_attributes = !empty($instance['product_attributes']) ? sanitize_title($instance['product_attributes']) : $this->settings['product_attributes']['std'];
             if ($product_attributes) {
-                $args[$product_attributes] = 'true';
+                $args[$product_attributes] = $product_attributes;
             }
 
             // Visibility
@@ -220,6 +220,9 @@ if (!class_exists('Products_Widget')) {
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
+
+            // has products
+            wc_set_loop_prop( 'name', 'products_widget' );
 
             ob_start();
 

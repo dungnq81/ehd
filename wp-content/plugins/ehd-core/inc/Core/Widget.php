@@ -35,11 +35,14 @@ abstract class Widget extends WP_Widget
      */
     protected function acfFields($id)
     {
-        if (!class_exists('\ACF')) {
-            return null;
+        if (class_exists('\ACF')) {
+            $fields = get_fields($id);
+            if ($fields) {
+                return Helper::toObject($fields);
+            }
         }
 
-        return Helper::toObject(get_fields($id));
+        return null;
     }
 
     /**

@@ -13,7 +13,7 @@ if (!class_exists('offCanvas_Widget')) {
         public function __construct()
         {
             $this->widget_description = __('Display offCanvas Button', EHD_PLUGIN_TEXT_DOMAIN);
-            $this->widget_name = __('OffCanvas Button', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_name = __('W - OffCanvas Button', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'hide_if_desktop' => [
                     'type' => 'checkbox',

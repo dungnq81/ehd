@@ -7,13 +7,13 @@ use WP_Query;
 
 \defined('ABSPATH') || die;
 
-if (!class_exists('Recent_Products_Widget')) {
-    class Recent_Products_Widget extends Widget
+if (!class_exists('RecentProducts_Widget')) {
+    class RecentProducts_Widget extends Widget
     {
         public function __construct()
         {
             $this->widget_description = __("Display a list of recent products from your store.", EHD_PLUGIN_TEXT_DOMAIN);
-            $this->widget_name = __('Recent Products', EHD_PLUGIN_TEXT_DOMAIN);
+            $this->widget_name = __('W - Recent Products', EHD_PLUGIN_TEXT_DOMAIN);
             $this->settings = [
                 'title'     => [
                     'type'  => 'text',
@@ -172,13 +172,12 @@ if (!class_exists('Recent_Products_Widget')) {
          */
         public function widget($args, $instance)
         {
-            // title
+            if ($this->get_cached_widget($args)) {
+                return;
+            }
+
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
-
-            // number
             $number = !empty($instance['number']) ? absint($instance['number']) : 0;
-
-            // class
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             $products = $this->get_products( $args, $instance );
@@ -189,7 +188,7 @@ if (!class_exists('Recent_Products_Widget')) {
             $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
             // has products
-            wc_set_loop_prop( 'name', 'products_widget' );
+            wc_set_loop_prop( 'name', 'recent_products_widget' );
 
             ob_start();
 

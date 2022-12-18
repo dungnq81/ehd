@@ -8,6 +8,7 @@ use EHD\Plugins\Themes\Optimizer;
 use EHD\Plugins\Core\Shortcode;
 
 use EHD\Plugins\Elementor\Elementor;
+use EHD\Plugins\Widgets\RecentPosts_Widget;
 use EHD\Plugins\WooCommerce\WooCommerce;
 
 use EHD\Plugins\Widgets\offCanvas_Widget;
@@ -73,6 +74,7 @@ final class Plugin
         class_exists(offCanvas_Widget::class) && register_widget(new offCanvas_Widget());
         class_exists(Search_Widget::class) && register_widget(new Search_Widget());
         class_exists(DropdownSearch_Widget::class) && register_widget(new DropdownSearch_Widget());
+        class_exists(RecentPosts_Widget::class) && register_widget(new RecentPosts_Widget());
     }
 
     /**
