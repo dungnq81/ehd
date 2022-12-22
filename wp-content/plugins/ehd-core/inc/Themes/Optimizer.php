@@ -28,8 +28,8 @@ class Optimizer
         }
 
         // fixed canonical
-        add_action( 'wp_head', [&$th, 'fixed_archive_canonical'], 10 );
-        add_action( 'wp_head', [&$th, 'rel_next_prev'], 10 );
+        add_action( 'wp_head', [&$this, 'fixed_archive_canonical'], 10 );
+        add_action( 'wp_head', [&$this, 'rel_next_prev'], 10 );
 
         // filter post search only by title
         add_filter("posts_search", [&$this, 'post_search_by_title'], 500, 2);
