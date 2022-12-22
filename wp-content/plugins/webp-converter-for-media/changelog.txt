@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 5.6.0 (2022-12-21) =
+* `[Added]` Ability to convert images from /cache directory
+* `[Added]` Automatic cleaning of LiteSpeed Cache
+* `[Added]` Exception for blocked REST API endpoints by Disable REST API plugin
+* `[Added]` Exception for blocked REST API endpoints by Disable WP REST API plugin
+* `[Added]` Exception for blocked REST API endpoints by WordPress REST API Authentication plugin
+
 = 5.5.1 (2022-11-29) =
 * `[Fixed]` Cache for REST API responses using LiteSpeed Cache plugin
 * `[Changed]` Authorization method for REST API endpoints
@@ -117,9 +124,9 @@
 * `[Added]` Filter `webpc_option_quality_levels` to change conversion quality levels
 
 = 4.3.2 (2022-04-20) =
-* `[Added]` Added conversion skip for animated GIF images
-* `[Added]` Added new information about status of image conversion
-* `[Added]` Added ability to convert only to AVIF format
+* `[Added]` Conversion skip for animated GIF images
+* `[Added]` New information about status of image conversion
+* `[Added]` Ability to convert only to AVIF format
 
 = 4.3.1 (2022-04-05) =
 * `[Fixed]` Generating rewrite rules for via .htaccess loading mode

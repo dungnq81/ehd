@@ -73,6 +73,12 @@ use WebpConverter\Service\StatsManager;
 		</td>
 	</tr>
 	<tr>
+		<td class="e"><?php echo esc_html( CronStatusManager::CRON_REQUEST_RESPONSE_TRANSIENT ); ?></td>
+		<td class="v">
+			<?php echo json_encode( get_site_transient( CronStatusManager::CRON_REQUEST_RESPONSE_TRANSIENT ) ); ?>
+		</td>
+	</tr>
+	<tr>
 		<td class="e"><?php echo esc_html( StatsManager::STATS_REGENERATION_IMAGES_OPTION ); ?></td>
 		<td class="v">
 			<?php echo esc_html( OptionsAccessManager::get_option( StatsManager::STATS_REGENERATION_IMAGES_OPTION, '-' ) ); ?>

@@ -15,13 +15,13 @@ $pl_shortcodes[$i]=function($atts,$content=null) use ($i, $shortcode_class){
     ), $atts));
     if($id!==""){
         if($content){
-            return '<div id="'.$id.'" data-ps2id-target="'.sanitize_text_field($target).'">'.do_shortcode($content).'</div>';
+            return '<div id="'.esc_attr($id).'" data-ps2id-target="'.sanitize_text_field($target).'">'.do_shortcode($content).'</div>';
         }else{
-            return '<a id="'.$id.'" data-ps2id-target="'.sanitize_text_field($target).'"></a>';
+            return '<a id="'.esc_attr($id).'" data-ps2id-target="'.sanitize_text_field($target).'"></a>';
         }
     }else{
         $element_classes=$class!=='' ? $shortcode_class.' '.$class : $shortcode_class;
-        return '<a href="'.esc_url_raw($url).'" class="'.$element_classes.'" data-ps2id-offset="'.sanitize_text_field($offset).'">'.do_shortcode($content).'</a>';
+        return '<a href="'.esc_url_raw($url).'" class="'.esc_attr($element_classes).'" data-ps2id-offset="'.sanitize_text_field($offset).'">'.do_shortcode($content).'</a>';
     }
 };
 add_shortcode($tag, $pl_shortcodes[$i]);
@@ -32,7 +32,7 @@ $pl_shortcodes_b[$i]=function($atts,$content=null) use ($i){
         'target' => '',
     ), $atts));
     if($id!==''){
-        return '<div id="'.$id.'" data-ps2id-target="'.sanitize_text_field($target).'">'.do_shortcode($content).'</div>';
+        return '<div id="'.esc_attr($id).'" data-ps2id-target="'.sanitize_text_field($target).'">'.do_shortcode($content).'</div>';
     }
 };
 add_shortcode($tag_b, $pl_shortcodes_b[$i]);

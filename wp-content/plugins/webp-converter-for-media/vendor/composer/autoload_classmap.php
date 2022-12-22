@@ -150,6 +150,7 @@ return array(
     'WebpConverter\\Service\\MediaStatusViewer' => $baseDir . '/src/Service/MediaStatusViewer.php',
     'WebpConverter\\Service\\OptionsAccessManager' => $baseDir . '/src/Service/OptionsAccessManager.php',
     'WebpConverter\\Service\\PathsGenerator' => $baseDir . '/src/Service/PathsGenerator.php',
+    'WebpConverter\\Service\\RestApiUnlocker' => $baseDir . '/src/Service/RestApiUnlocker.php',
     'WebpConverter\\Service\\ServerConfigurator' => $baseDir . '/src/Service/ServerConfigurator.php',
     'WebpConverter\\Service\\StatsManager' => $baseDir . '/src/Service/StatsManager.php',
     'WebpConverter\\Service\\TokenValidator' => $baseDir . '/src/Service/TokenValidator.php',

@@ -4,13 +4,13 @@
 				var handler=evt.click[i];
 				if(handler && handler.namespace != "mPS2id"){
 					if(handler.selector==='a[href*=#]'){
-						handler.selector='a[href*=#]:not(._mPS2id-h)';
+						handler.selector='a[href*=#]:not(._mPS2id-h), a[href*=#]:not(.__mPS2id)';
 					}else if(handler.selector==='a[href*="#"]'){
-						handler.selector='a[href*="#"]:not(._mPS2id-h)';
+						handler.selector='a[href*="#"]:not(._mPS2id-h), a[href*="#"]:not(.__mPS2id)';
 					}else if(handler.selector==='a[href*=#]:not([href=#])'){
-						handler.selector='a[href*=#]:not([href=#]):not(._mPS2id-h)';
+						handler.selector='a[href*=#]:not([href=#]):not(._mPS2id-h), a[href*=#]:not([href=#]):not(.__mPS2id)';
 					}else if(handler.selector==='a[href*="#"]:not([href="#"])'){
-						handler.selector='a[href*="#"]:not([href="#"]):not(._mPS2id-h)';
+						handler.selector='a[href*="#"]:not([href="#"]):not(._mPS2id-h), a[href*="#"]:not([href="#"]):not(.__mPS2id)';
 					}else if(handler.selector && handler.selector.indexOf("mobmenu")!==-1){
 						//special cases
 						s.off("click");

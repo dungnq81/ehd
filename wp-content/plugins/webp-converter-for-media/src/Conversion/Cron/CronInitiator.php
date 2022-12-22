@@ -98,9 +98,14 @@ class CronInitiator {
 	}
 
 	/**
+	 * @param bool $upload_request .
+	 *
 	 * @return void
 	 */
-	public function init_async_conversion() {
+	public function init_async_conversion( bool $upload_request = false ) {
+		$plugin_settings = $this->plugin_data->get_plugin_settings();
+		$service_mode    = in_array( ExtraFeaturesOption::OPTION_VALUE_SERVICE_MODE, $plugin_settings[ ExtraFeaturesOption::OPTION_NAME ] );
+
 		$headers = [
 			CronConversionEndpoint::ROUTE_NONCE_HEADER => CronConversionEndpoint::get_route_nonce(),
 		];
@@ -108,15 +113,21 @@ class CronInitiator {
 			$headers['Authorization'] = 'Basic ' . base64_encode( $_SERVER['PHP_AUTH_USER'] . ':' . $_SERVER['PHP_AUTH_PW'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 		}
 
-		wp_remote_post(
-			CronConversionEndpoint::get_route_url(),
-			[
-				'timeout'   => 0.01,
-				'blocking'  => false,
-				'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
-				'headers'   => $headers,
-			]
-		);
+		$args = [
+			'timeout'   => 0.01,
+			'blocking'  => false,
+			'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
+			'headers'   => $headers,
+		];
+		if ( $service_mode && $upload_request ) {
+			unset( $args['timeout'] );
+			unset( $args['blocking'] );
+		}
+
+		$response = wp_remote_post( CronConversionEndpoint::get_route_url(), $args );
+		if ( $service_mode && $upload_request ) {
+			$this->cron_status_manager->set_conversion_request_response( $response );
+		}
 	}
 
 	/**

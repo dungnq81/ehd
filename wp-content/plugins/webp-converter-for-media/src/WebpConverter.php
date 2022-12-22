@@ -59,6 +59,7 @@ class WebpConverter {
 		( new Service\BackupExcluder() )->init_hooks();
 		( new Service\DeactivationModalGenerator( $plugin_info, $plugin_data ) )->load_modal();
 		( new Service\MediaStatusViewer( $plugin_data, $token_repository ) )->init_hooks();
+		( new Service\RestApiUnlocker() )->init_hooks();
 		( new Service\WpCliManager( $plugin_data, $token_repository ) )->init_hooks();
 		( new Settings\AdminAssets( $plugin_info ) )->init_hooks();
 	}
