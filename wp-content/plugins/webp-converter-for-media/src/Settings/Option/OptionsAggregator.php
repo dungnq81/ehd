@@ -34,6 +34,9 @@ class OptionsAggregator {
 		$this->set_option( new ExcludedDirectoriesOption() );
 		$this->set_option( new ExtraFeaturesOption() );
 		$this->set_option( new MediaStatsOption() );
+
+		$this->set_option( new CloudflareZoneIdOption() );
+		$this->set_option( new CloudflareApiTokenOption() );
 	}
 
 	/**

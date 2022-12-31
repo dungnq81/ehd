@@ -75,9 +75,7 @@ class PathsFinder {
 			?: $this->plugin_data->get_plugin_settings()[ OutputFormatsOption::OPTION_NAME ];
 
 		$paths_chunks = $this->find_source_paths();
-		if ( $skip_converted ) {
-			$paths_chunks = $this->skip_converted_paths_chunks( $paths_chunks, $allowed_output_formats );
-		}
+		$paths_chunks = $this->skip_converted_paths_chunks( $paths_chunks, $skip_converted, $allowed_output_formats );
 
 		$count = 0;
 		foreach ( $paths_chunks as $dir_data ) {
@@ -105,9 +103,7 @@ class PathsFinder {
 			?: $this->plugin_data->get_plugin_settings()[ OutputFormatsOption::OPTION_NAME ];
 
 		$paths_chunks = $this->find_source_paths();
-		if ( $skip_converted ) {
-			$paths_chunks = $this->skip_converted_paths_chunks( $paths_chunks, $allowed_output_formats );
-		}
+		$paths_chunks = $this->skip_converted_paths_chunks( $paths_chunks, $skip_converted, $allowed_output_formats );
 
 		$paths = [];
 		foreach ( $paths_chunks as $dir_data ) {
@@ -155,12 +151,14 @@ class PathsFinder {
 
 	/**
 	 * @param mixed[]       $source_dirs            Server paths of source images.
+	 * @param bool          $skip_converted         Skip converted images?
 	 * @param string[]|null $allowed_output_formats List of extensions or use selected in plugin settings.
 	 *
 	 * @return mixed[] Server paths of source images.
 	 */
 	private function skip_converted_paths_chunks(
 		array $source_dirs,
+		bool $skip_converted,
 		array $allowed_output_formats = null
 	): array {
 		$plugin_settings        = $this->plugin_data->get_plugin_settings();
@@ -175,7 +173,7 @@ class PathsFinder {
 				foreach ( $allowed_output_formats as $output_format ) {
 					$output_path = $this->output_path->get_path( $source_path, false, $output_format );
 
-					if ( $output_path && ! $this->is_converted_file( $source_path, $output_path, $force_convert_deleted, $force_convert_crashed ) ) {
+					if ( $output_path && ( ! $skip_converted || ! $this->is_converted_file( $source_path, $output_path, $force_convert_deleted, $force_convert_crashed ) ) ) {
 						$is_converted = false;
 						break;
 					}

@@ -94,6 +94,7 @@ if (!class_exists('RecentProducts_Widget')) {
             $query_args = [
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
+
                 'posts_per_page'         => $number,
                 'post_status'            => 'publish',
                 'post_type'              => 'product',

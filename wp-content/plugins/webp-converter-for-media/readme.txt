@@ -5,7 +5,7 @@ Tags: convert webp, webp, optimize images, image optimization, compress images
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 5.6.0
+Stable tag: 5.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,10 @@ In case of problems, please contact us in [the support forum](https://url.mattpl
 4. Optimization statistics of Media Library
 
 == Changelog ==
+
+= 5.6.1 (2022-12-28) =
+* `[Fixed]` No support for .jpeg files in default plugin settings
+* `[Added]` Ability to auto clear Cloudflare CDN cache (beta version)
 
 = 5.6.0 (2022-12-21) =
 * `[Added]` Ability to convert images from /cache directory

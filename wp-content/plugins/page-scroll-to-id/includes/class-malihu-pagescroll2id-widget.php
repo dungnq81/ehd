@@ -22,7 +22,7 @@ class malihuPageScroll2idWidget extends WP_Widget {
 	public function widget($args, $instance){
 		if(!empty($instance['id_value'])){
 			$target_value=!empty($instance['target_value']) ? $instance['target_value'] : '';
-			echo '<a id="'.$instance['id_value'].'" data-ps2id-target="'.$target_value.'"></a>';
+			echo '<a id="'.esc_attr($instance['id_value']).'" data-ps2id-target="'.esc_attr($target_value).'"></a>';
 		}
 	}
 	
@@ -32,14 +32,14 @@ class malihuPageScroll2idWidget extends WP_Widget {
 		$target_value=!empty($instance['target_value']) ? $instance['target_value'] : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('id_value'); ?>"><?php _e( 'id:' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id('id_value'); ?>" name="<?php echo $this->get_field_name('id_value'); ?>" type="text" value="<?php echo esc_attr($id_value); ?>">
-			<small class="description ps2id-admin-widgets-row-field-desc"><em><?php _e( 'Unique identifier without spaces (e.g. my-id)' ); ?></em></small>
+			<label for="<?php echo esc_attr($this->get_field_id('id_value')); ?>"><?php esc_html_e( 'id:' ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id('id_value')); ?>" name="<?php echo esc_attr($this->get_field_name('id_value')); ?>" type="text" value="<?php echo esc_attr($id_value); ?>">
+			<small class="description ps2id-admin-widgets-row-field-desc"><em><?php esc_html_e( 'Unique identifier without spaces (e.g. my-id)' ); ?></em></small>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('target_value'); ?>"><?php _e( 'Highlight target selector:' ); ?></label> 
-			<input class="widefat" id="<?php echo $this->get_field_id('target_value'); ?>" name="<?php echo $this->get_field_name('target_value'); ?>" type="text" value="<?php echo esc_attr($target_value); ?>">
-			<small class="description ps2id-admin-widgets-row-field-desc"><em><?php _e( 'Optional element selector to use for highlighting (e.g. #another-id)' ); ?></em></small>
+			<label for="<?php echo esc_attr($this->get_field_id('target_value')); ?>"><?php esc_html_e( 'Highlight target selector:' ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr($this->get_field_id('target_value')); ?>" name="<?php echo esc_attr($this->get_field_name('target_value')); ?>" type="text" value="<?php echo esc_attr($target_value); ?>">
+			<small class="description ps2id-admin-widgets-row-field-desc"><em><?php esc_html_e( 'Optional element selector to use for highlighting (e.g. #another-id)' ); ?></em></small>
 		</p>
 		<?php 
 	}

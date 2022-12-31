@@ -213,11 +213,17 @@ if (!class_exists('Products_Widget')) {
                 )
             );
 
-            //...
+            // class
+            $_class = $this->id;
+            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
+            if ($css_class) {
+                $_class = $_class . ' ' . $css_class;
+            }
+
+            //...
             $full_width = !empty($instance['full_width']);
             $show_viewmore_button = !empty($instance['show_viewmore_button']);
-            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
@@ -227,7 +233,7 @@ if (!class_exists('Products_Widget')) {
             ob_start();
 
             ?>
-            <section class="section products-section <?= $css_class ?>" id="<?= $uniqid ?>">
+            <section class="section products-section <?= $_class ?>" id="<?= $uniqid ?>">
 
                 <?php if (!$full_width) echo '<div class="grid-container">'; ?>
 

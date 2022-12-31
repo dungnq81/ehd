@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.9.0 - 06-12-2022 */
+/*! elementor-pro - v3.9.2 - 21-12-2022 */
 "use strict";
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["portfolio"],{
 

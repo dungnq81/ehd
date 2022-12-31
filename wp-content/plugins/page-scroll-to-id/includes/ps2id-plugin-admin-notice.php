@@ -16,7 +16,7 @@ if (!class_exists('ps2id_Plugin_Admin_Notice')) {
             $url = admin_url();
             update_option('ps2id_plugin_admin_notice_dismiss_notice', 'true');
 
-            wp_redirect($url);
+            wp_safe_redirect($url);
             exit;
         }
 
@@ -44,10 +44,10 @@ if (!class_exists('ps2id_Plugin_Admin_Notice')) {
                     <span class="br"></span>
                     If you like the plugin and want to support my effort to provide it for free, please consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UYJ5G65M6ZA28" target="_blank">making a donation</a> <span class="smile">:-)</span>
                     <span class="br"></span>
-                    <a href="<?php echo $dismiss_url; ?>"><?php _e('Dismiss this notice'); ?></a>
+                    <a href="<?php echo esc_attr($dismiss_url); ?>"><?php esc_html_e('Dismiss this notice'); ?></a>
                 </p>
-                <a href="<?php echo $dismiss_url; ?>" class="notice-dismiss ps2id-plugin-admin-notice-dismiss" title="<?php _e('Dismiss this notice'); ?>">
-                   <span class="screen-reader-text"><?php _e('Dismiss this notice'); ?>.</span>
+                <a href="<?php echo esc_attr($dismiss_url); ?>" class="notice-dismiss ps2id-plugin-admin-notice-dismiss" title="<?php esc_attr_e('Dismiss this notice'); ?>">
+                   <span class="screen-reader-text"><?php esc_html_e('Dismiss this notice'); ?>.</span>
                 </a>
             </div>
             <?php

@@ -1,4 +1,4 @@
-/*! elementor-pro - v3.9.0 - 06-12-2022 */
+/*! elementor-pro - v3.9.2 - 21-12-2022 */
 "use strict";
 (self["webpackChunkelementor_pro"] = self["webpackChunkelementor_pro"] || []).push([["preloaded-elements-handlers"],{
 
@@ -4328,6 +4328,8 @@ class _default extends elementorModules.frontend.Document {
               id = this.getSettings('id'),
               triggerPopupEvent = eventType => {
           const event = 'elementor/popup/' + eventType;
+          elementorFrontend.elements.$document.trigger(event, [id, this]); // TODO: Use `elementorFrontend.utils.events.dispatch` when it's in master.
+
           window.dispatchEvent(new CustomEvent(event, {
             detail: {
               id,
@@ -5148,7 +5150,7 @@ class _default extends _base.default {
   }
 
   onPopupHide() {
-    elementorFrontend.elements.$window.on('elementor/popup/hide', () => {
+    window.addEventListener('elementor/popup/hide', () => {
       this.utils.incrementImpressionsCount();
     });
   }

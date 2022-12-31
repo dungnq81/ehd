@@ -3,7 +3,7 @@
 Plugin Name: Page scroll to id
 Plugin URI: http://manos.malihu.gr/page-scroll-to-id
 Description: Page scroll to id is an easy-to-use jQuery plugin that enables animated (smooth) page scrolling to specific id within the document. 
-Version: 1.7.6
+Version: 1.7.7
 Author: malihu
 Author URI: http://manos.malihu.gr
 License: MIT License (MIT)
@@ -47,7 +47,7 @@ if(!class_exists('malihuPageScroll2id')){ // --edit--
 	
 	class malihuPageScroll2id{ // --edit--
 		
-		protected $version='1.7.6'; // Plugin version --edit--
+		protected $version='1.7.7'; // Plugin version --edit--
 		protected $update_option=null;
 		
 		protected $plugin_name='Page scroll to id'; // Plugin name --edit--
@@ -346,7 +346,41 @@ if(!class_exists('malihuPageScroll2id')){ // --edit--
 			$html.=(!empty($args['wrapper'])) ? '</'.$args['wrapper'].'>' : '';
 			(!empty($args['field_info'])) ? $html.='<span>'.$args['field_info'].'</span> ' : $html.='';
 			(!empty($args['description'])) ? $html.='<p class="description">'.$args['description'].'</p>' : $html.='';
-			echo $html;
+			echo wp_kses($html, array(
+				'input'     => array(
+					'type'  	=> array(),
+					'id' 		=> array(),
+					'name' 		=> array(),
+					'value' 	=> array(),
+					'class'		=> array(),
+					'checked'	=> array(),
+				),
+				'textarea'  => array(
+					'id' 		=> array(),
+					'name' 		=> array(),
+					'rows' 		=> array(),
+					'cols'		=> array(),
+					'class'		=> array(),
+				),
+				'label'     => array(
+					'for'	  	=> array(),
+					'title'	  	=> array(),
+				),
+				'select'     => array(
+					'id' 		=> array(),
+					'name' 		=> array(),
+				),
+				'option'     => array(
+					'value' 	=> array(),
+					'selected'	=> array(),
+				),
+				'span'     	=> array(),
+				'p'		    => array(
+					'class' 	=> array(),
+				),
+				'fieldset' 	=> array(),
+				'br'     	=> array(),
+			));
 		}
 		
 		public function display_plugin_admin_page(){
@@ -399,7 +433,7 @@ if(!class_exists('malihuPageScroll2id')){ // --edit--
 		}
 		
 		public function validate_plugin_settings(){
-			if(!empty($_POST)){
+			if(!empty($_POST) || !wp_verify_nonce($_POST)){
 				if(isset($_POST[$this->db_prefix.'reset']) && $_POST[$this->db_prefix.'reset']==='true'){ 
 					// Reset all to default
 					$_POST[$this->db_prefix.'instances']=$this->default; 
@@ -612,7 +646,16 @@ if(!class_exists('malihuPageScroll2id')){ // --edit--
 				$row = '<p class="ps2id-admin-widgets-row-help">';
 				$row .= '<span class="description"><em>Page scroll to id target: <b>'.$widget->id.'</b></em></span>';
 				$row .= '</p>';
-				echo $row;
+				echo wp_kses($row, array(
+					'p'     	=> array(
+						'class'		=> array(),
+					),
+					'span'     	=> array(
+						'class'		=> array(),
+					),
+					'em'     	=> array(),
+					'b'     	=> array(),
+				));
 			}
 			return $instance;
 		}
@@ -623,7 +666,14 @@ if(!class_exists('malihuPageScroll2id')){ // --edit--
 			if ( is_admin_bar_showing() ) {
 				$dummy_offset_class .= ' class="admin-bar-visible"';
 			}
-			echo '<div class="ps2id-dummy-offset-wrapper" style="overflow:hidden;height:0;visibility:hidden;z-index:-1;"><div id="ps2id-dummy-offset"'.$dummy_offset_class.' style="width:100%;visibility:hidden;"></div></div>';
+			$dummy_offset_markup = '<div class="ps2id-dummy-offset-wrapper" style="overflow:hidden;height:0;visibility:hidden;z-index:-1;"><div id="ps2id-dummy-offset"'.$dummy_offset_class.' style="width:100%;visibility:hidden;"></div></div>';
+			echo wp_kses( $dummy_offset_markup, array(
+				'div'    	=> array(
+					'class'		=> array(),
+					'id'		=> array(),
+					'style'		=> array(),
+				),
+			));
 		}
 		
 		public function plugin_options_array($action, $i, $j, $old){

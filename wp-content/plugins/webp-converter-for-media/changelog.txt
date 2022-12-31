@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 5.6.1 (2022-12-28) =
+* `[Fixed]` No support for .jpeg files in default plugin settings
+* `[Added]` Ability to auto clear Cloudflare CDN cache (beta version)
+
 = 5.6.0 (2022-12-21) =
 * `[Added]` Ability to convert images from /cache directory
 * `[Added]` Automatic cleaning of LiteSpeed Cache

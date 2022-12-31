@@ -90,7 +90,7 @@ class SupportedExtensionsOption extends OptionAbstract {
 	 * @return string[]
 	 */
 	public function get_default_value( array $settings = null ): array {
-		return [ 'jpg', 'png', 'webp' ];
+		return [ 'jpg', 'jpeg', 'png', 'webp' ];
 	}
 
 	/**

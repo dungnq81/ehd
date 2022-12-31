@@ -247,7 +247,6 @@ class Stripe_Button extends Payment_Button {
 		<form class="elementor-stripe-form">
 			<input type="hidden" name="url" value="<?php echo esc_attr( admin_url( 'admin-ajax.php' ) ); ?>">
 			<input type="hidden" name="action" value="submit_stripe_form"/>
-			<input type="hidden" name="post_id" value="<?php echo get_the_ID(); ?>"/>
 			<input type="hidden" name="widget_id" value="<?php echo esc_attr( $this->get_id() ); ?>"/>
 			<input type="hidden" name="current_url" value="<?php echo esc_attr( $_SERVER['PHP_SELF'] ); ?>"/>
 			<input type="hidden" name="custom_error_msg" value="<?php echo esc_attr( $settings['custom_messages'] ); ?>" />
@@ -531,6 +530,3 @@ class Stripe_Button extends Payment_Button {
 		$this->remove_control( 'sandbox_email' );
 	}
 }
-
-
-

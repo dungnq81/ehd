@@ -1386,20 +1386,6 @@ class Nav_Menu extends Base_Widget {
 			return;
 		}
 
-		$this->add_render_attribute( 'menu-toggle', [
-			'class' => 'elementor-menu-toggle',
-			'role' => 'button',
-			'tabindex' => '0',
-			'aria-label' => esc_html__( 'Menu Toggle', 'elementor-pro' ),
-			'aria-expanded' => 'false',
-		] );
-
-		if ( Plugin::elementor()->editor->is_edit_mode() ) {
-			$this->add_render_attribute( 'menu-toggle', [
-				'class' => 'elementor-clickable',
-			] );
-		}
-
 		$is_migrated = isset( $settings['__fa4_migrated']['submenu_icon'] );
 
 		$this->add_render_attribute( 'main-menu', [
@@ -1433,66 +1419,8 @@ class Nav_Menu extends Base_Widget {
 			</nav>
 			<?php
 		endif;
+		$this->render_menu_toggle( $settings );
 		?>
-		<div <?php $this->print_render_attribute_string( 'menu-toggle' ); ?>>
-			<?php
-			$toggle_icon_hover_animation = ! empty( $settings['toggle_icon_hover_animation'] )
-			? ' elementor-animation-' . $settings['toggle_icon_hover_animation']
-			: '';
-
-			$open_class = 'elementor-menu-toggle__icon--open' . $toggle_icon_hover_animation;
-			$close_class = 'elementor-menu-toggle__icon--close' . $toggle_icon_hover_animation;
-
-			$normal_icon = ! empty( $settings['toggle_icon_normal']['value'] )
-				? $settings['toggle_icon_normal']
-				: [
-					'library' => 'eicons',
-					'value' => 'eicon-menu-bar',
-				];
-
-			if ( 'svg' === $settings['toggle_icon_normal']['library'] ) {
-				echo '<span class="' . esc_attr( $open_class ) . '">';
-			}
-
-			Icons_Manager::render_icon(
-				$normal_icon,
-				[
-					'aria-hidden' => 'true',
-					'role' => 'presentation',
-					'class' => $open_class,
-				]
-			);
-
-			if ( 'svg' === $settings['toggle_icon_normal']['library'] ) {
-				echo '</span>';
-			}
-
-			$active_icon = ! empty( $settings['toggle_icon_active']['value'] )
-				? $settings['toggle_icon_active']
-				: [
-					'library' => 'eicons',
-					'value' => 'eicon-close',
-				];
-
-			if ( 'svg' === $settings['toggle_icon_active']['library'] ) {
-				echo '<span class="' . esc_attr( $close_class ) . '">';
-			}
-
-			Icons_Manager::render_icon(
-				$active_icon,
-				[
-					'aria-hidden' => 'true',
-					'role' => 'presentation',
-					'class' => $close_class,
-				]
-			);
-
-			if ( 'svg' === $settings['toggle_icon_active']['library'] ) {
-				echo '</span>';
-			}
-			?>
-			<span class="elementor-screen-only"><?php echo esc_html__( 'Menu', 'elementor-pro' ); ?></span>
-		</div>
 			<nav class="elementor-nav-menu--dropdown elementor-nav-menu__container" aria-hidden="true">
 				<?php
 					// PHPCS - escaped by WordPress with "wp_nav_menu"
@@ -1541,6 +1469,92 @@ class Nav_Menu extends Base_Widget {
 		$classes[] = 'elementor-nav-menu--dropdown';
 
 		return $classes;
+	}
+
+	private function render_menu_toggle( $settings ) {
+		if ( ! isset( $settings['toggle'] ) || 'burger' !== $settings['toggle'] ) {
+			return;
+		}
+
+		$this->add_render_attribute( 'menu-toggle', [
+			'class' => 'elementor-menu-toggle',
+			'role' => 'button',
+			'tabindex' => '0',
+			'aria-label' => esc_html__( 'Menu Toggle', 'elementor-pro' ),
+			'aria-expanded' => 'false',
+		] );
+
+		if ( Plugin::elementor()->editor->is_edit_mode() ) {
+			$this->add_render_attribute( 'menu-toggle', [
+				'class' => 'elementor-clickable',
+			] );
+		}
+
+		?>
+		<div <?php $this->print_render_attribute_string( 'menu-toggle' ); ?>>
+			<?php
+			$toggle_icon_hover_animation = ! empty( $settings['toggle_icon_hover_animation'] )
+			? ' elementor-animation-' . $settings['toggle_icon_hover_animation']
+			: '';
+
+			$open_class = 'elementor-menu-toggle__icon--open' . $toggle_icon_hover_animation;
+			$close_class = 'elementor-menu-toggle__icon--close' . $toggle_icon_hover_animation;
+
+			$normal_icon = ! empty( $settings['toggle_icon_normal']['value'] )
+				? $settings['toggle_icon_normal']
+				: [
+					'library' => 'eicons',
+					'value' => 'eicon-menu-bar',
+				];
+
+			$is_normal_icon_svg = 'svg' === $normal_icon['library'];
+
+			if ( $is_normal_icon_svg ) {
+				echo '<span class="' . esc_attr( $open_class ) . '">';
+			}
+
+			Icons_Manager::render_icon(
+				$normal_icon,
+				[
+					'aria-hidden' => 'true',
+					'role' => 'presentation',
+					'class' => $open_class,
+				]
+			);
+
+			if ( $is_normal_icon_svg ) {
+				echo '</span>';
+			}
+
+			$active_icon = ! empty( $settings['toggle_icon_active']['value'] )
+				? $settings['toggle_icon_active']
+				: [
+					'library' => 'eicons',
+					'value' => 'eicon-close',
+				];
+
+			$is_active_icon_svg = 'svg' === $active_icon['library'];
+
+			if ( $is_active_icon_svg ) {
+				echo '<span class="' . esc_attr( $close_class ) . '">';
+			}
+
+			Icons_Manager::render_icon(
+				$active_icon,
+				[
+					'aria-hidden' => 'true',
+					'role' => 'presentation',
+					'class' => $close_class,
+				]
+			);
+
+			if ( $is_active_icon_svg ) {
+				echo '</span>';
+			}
+			?>
+			<span class="elementor-screen-only"><?php echo esc_html__( 'Menu', 'elementor-pro' ); ?></span>
+		</div>
+		<?php
 	}
 
 	public function render_plain_content() {}

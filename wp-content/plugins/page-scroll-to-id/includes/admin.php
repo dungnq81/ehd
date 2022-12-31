@@ -2,7 +2,7 @@
 // --edit--
 $repeatables=false; 
 $shortcodes=false;
-$plugin_info=__('<span><span class="dashicons dashicons-editor-help"></span> Plugin help &amp; resources:</span> <a href="#" class="mPS2id-open-help mPS2id-open-help-overview">Overview</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-get-started">Get started</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-plugin-settings">Plugin settings</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-shortcodes">Shortcodes</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/" class="mPS2id-external-link" target="_blank">Plugin homepage &amp; documentation</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/2/" class="mPS2id-external-link" target="_blank">Knowledge Base – FAQ</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress-tutorial/" class="mPS2id-external-link" target="_blank">Basic tutorial</a>', $this->plugin_slug);
+//$plugin_info=__('<span><span class="dashicons dashicons-editor-help"></span> Plugin help &amp; resources:</span> <a href="#" class="mPS2id-open-help mPS2id-open-help-overview">Overview</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-get-started">Get started</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-plugin-settings">Plugin settings</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-shortcodes">Shortcodes</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/" class="mPS2id-external-link" target="_blank">Plugin homepage &amp; documentation</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/2/" class="mPS2id-external-link" target="_blank">Knowledge Base – FAQ</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress-tutorial/" class="mPS2id-external-link" target="_blank">Basic tutorial</a>', $this->plugin_slug);
 $btn_add=__('Add instance', $this->plugin_slug);
 $btn_more_actions=__('More actions', $this->plugin_slug);
 $btn_reset=($repeatables) ? __('Delete all and reset to default', $this->plugin_slug) : __('Reset to default', $this->plugin_slug);
@@ -16,18 +16,21 @@ $toggle_instance_title=__('Click to toggle', $this->plugin_slug);
 	$plugin_admin_page_title=esc_html(get_admin_page_title());
 	if( version_compare(get_bloginfo('version'), '4.3', '<') ){
 	?>
-		<h2><?php echo $plugin_admin_page_title; ?></h2>
+		<h2><?php echo esc_html($plugin_admin_page_title); ?></h2>
 	<?php
 	}else{
 	?>
-		<h1><?php echo $plugin_admin_page_title; ?></h1>
+		<h1><?php echo esc_html($plugin_admin_page_title); ?></h1>
 	<?php
 	}
 	?>
 	
 	<div class="plugin-header">
-		<p class="plugin-info"><?php echo $plugin_info; ?></p>
-		<p class="plugin-version">Version <?php echo $this->version; ?></p>
+		<p class="plugin-info">
+			<?php //echo $plugin_info; ?>
+			<span><span class="dashicons dashicons-editor-help"></span> Plugin help &amp; resources:</span> <a href="#" class="mPS2id-open-help mPS2id-open-help-overview">Overview</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-get-started">Get started</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-plugin-settings">Plugin settings</a> <a href="#" class="mPS2id-open-help mPS2id-open-help-shortcodes">Shortcodes</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/" class="mPS2id-external-link" target="_blank">Plugin homepage &amp; documentation</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress/2/" class="mPS2id-external-link" target="_blank">Knowledge Base – FAQ</a> <a href="http://manos.malihu.gr/page-scroll-to-id-for-wordpress-tutorial/" class="mPS2id-external-link" target="_blank">Basic tutorial</a>
+		</p>
+		<p class="plugin-version">Version <?php echo esc_html($this->version); ?></p>
 		
 		<?php if(version_compare(get_bloginfo('version'), '3.6', '<')) : ?>
 			<div class="oldwp-plugin-help">
@@ -57,21 +60,21 @@ $toggle_instance_title=__('Click to toggle', $this->plugin_slug);
 
 			<div class="plugin-body-section-1">
 
-				<form id="<?php echo $this->pl_pfx; ?>form" method="post" action="options.php">
+				<form id="<?php echo esc_attr($this->pl_pfx); ?>form" method="post" action="options.php">
 					
 					<?php settings_fields($this->plugin_slug); ?>
 					
-					<?php echo '<input type="hidden" id="'.$this->db_prefix.'total_instances'.'" name="'.$this->db_prefix.'total_instances'.'" value="'.$this->index.'" /> '; ?>
-					<?php echo '<input type="hidden" id="'.$this->db_prefix.'instances'.'" name="'.$this->db_prefix.'instances'.'" value="" /> '; ?>
-					<?php echo '<input type="hidden" id="'.$this->db_prefix.'reset'.'" name="'.$this->db_prefix.'reset'.'" value="false" /> '; ?>
+					<?php echo '<input type="hidden" id="'.esc_attr($this->db_prefix).'total_instances'.'" name="'.esc_attr($this->db_prefix).'total_instances'.'" value="'.esc_attr($this->index).'" /> '; ?>
+					<?php echo '<input type="hidden" id="'.esc_attr($this->db_prefix).'instances'.'" name="'.esc_attr($this->db_prefix).'instances'.'" value="" /> '; ?>
+					<?php echo '<input type="hidden" id="'.esc_attr($this->db_prefix).'reset'.'" name="'.esc_attr($this->db_prefix).'reset'.'" value="false" /> '; ?>
 					
 					<?php do_settings_sections($this->plugin_slug); ?>
 					
 					<div class="other-buttons">
 						<?php if($repeatables) : ?>
-							<a class="button button-small repeatable-add" href="#"><?php echo $btn_add; ?></a> 
+							<a class="button button-small repeatable-add" href="#"><?php echo esc_html($btn_add); ?></a> 
 						<?php endif; ?>
-						<a class="button button-small reset-to-default" href="#"><?php echo $btn_reset; ?></a>
+						<a class="button button-small reset-to-default" href="#"><?php echo esc_html($btn_reset); ?></a>
 					</div>
 					
 					<?php submit_button(); ?> 
@@ -83,7 +86,7 @@ $toggle_instance_title=__('Click to toggle', $this->plugin_slug);
 			<div class="plugin-body-section-2">
 				<span>Help me support the plugin <b>:-)</b></span>
 				<?php // Elegant themes banner --edit-- ?>
-				<a href="https://www.elegantthemes.com/affiliates/idevaffiliate.php?id=36986_1_1_14" target="_blank" rel="nofollow"><img src="<?php echo plugins_url('elegant-themes-160x600.gif', __FILE__); ?>" style="border:0px" /></a>
+				<a href="https://www.elegantthemes.com/affiliates/idevaffiliate.php?id=36986_1_1_14" target="_blank" rel="nofollow"><img src="<?php echo esc_url(plugins_url('elegant-themes-160x600.gif', __FILE__)); ?>" style="border:0px" /></a>
 			</div>
 
 		</div>
@@ -106,8 +109,8 @@ $toggle_instance_title=__('Click to toggle', $this->plugin_slug);
 </div>
 
 <script>
-	var wpVersion="<?php echo get_bloginfo('version'); ?>",
-		repeatables="<?php echo $repeatables; ?>",
-		shortcodes="<?php echo $shortcodes; ?>",
-		toggle_instance_title="<?php echo $toggle_instance_title; ?>";
+	var wpVersion="<?php echo esc_attr(get_bloginfo('version')); ?>",
+		repeatables="<?php echo esc_attr($repeatables); ?>",
+		shortcodes="<?php echo esc_attr($shortcodes); ?>",
+		toggle_instance_title="<?php echo esc_attr($toggle_instance_title); ?>";
 </script>
