@@ -29,7 +29,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Number of products to show', 'woocommerce'),
                 ],
-                'columns_dektop' => [
+                'columns_dektop'        => [
                     'type'  => 'number',
                     'min'   => 0,
                     'max'   => '',
@@ -37,7 +37,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Products per row (desktop)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'columns_tablet' => [
+                'columns_tablet'        => [
                     'type'  => 'number',
                     'min'   => 0,
                     'max'   => '',
@@ -45,7 +45,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Products per row (tablet)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'columns_mobile' => [
+                'columns_mobile'        => [
                     'type'  => 'number',
                     'min'   => 0,
                     'max'   => '',
@@ -53,7 +53,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Products per row (mobile)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'rows' => [
+                'rows'                  => [
                     'type'  => 'number',
                     'min'   => 1,
                     'max'   => '',
@@ -64,14 +64,30 @@ if (!class_exists('ProductsCarousel_Widget')) {
                 'category'              => [
                     'type'  => 'text',
                     'std'   => '',
-                    'label' => __('Product Categories (Id or Slug), separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
+                    'label' => __('Product Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'include_children'            => [
+                'include_children'      => [
                     'type'  => 'checkbox',
                     'std'   => 0,
-                    'label' => __('Full Width', EHD_PLUGIN_TEXT_DOMAIN),
+                    'label' => __('Include Children', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'show'      => [
+                'desktop_gap'                => [
+                    'type'  => 'number',
+                    'min'   => 0,
+                    'max'   => '',
+                    'std'   => 0,
+                    'class' => 'tiny-text',
+                    'label' => __('Desktop Gap', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'mobile_gap'                => [
+                    'type'  => 'number',
+                    'min'   => 0,
+                    'max'   => '',
+                    'std'   => 0,
+                    'class' => 'tiny-text',
+                    'label' => __('Mobile Gap', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'show'                  => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Show', 'woocommerce'),
@@ -81,7 +97,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                         'onsale'   => __('On-sale products', 'woocommerce'),
                     ],
                 ],
-                'orderby'   => [
+                'orderby'               => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Order by', 'woocommerce'),
@@ -93,7 +109,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                         'sales' => __('Sales', 'woocommerce'),
                     ],
                 ],
-                'order'     => [
+                'order'                 => [
                     'type'    => 'select',
                     'std'     => 'desc',
                     'label'   => __('Sorting order', EHD_PLUGIN_TEXT_DOMAIN),
@@ -102,7 +118,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                         'desc' => __('DESC', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
-                'hide_free' => [
+                'hide_free'             => [
                     'type'  => 'checkbox',
                     'std'   => 0,
                     'label' => __('Hide free products', 'woocommerce'),
@@ -127,7 +143,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'std'   => '#',
                     'label' => __('View more link', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'css_class' => [
+                'css_class'             => [
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Css class', EHD_PLUGIN_TEXT_DOMAIN),
@@ -157,7 +173,6 @@ if (!class_exists('ProductsCarousel_Widget')) {
             $query_args = [
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
-
                 'posts_per_page'         => $number,
                 'post_status'            => 'publish',
                 'post_type'              => 'product',
@@ -225,16 +240,15 @@ if (!class_exists('ProductsCarousel_Widget')) {
 
             // Product Categories
             $include_children = empty($instance['include_children']) ? 'false' : 'true';
+
             $term_ids = !empty($instance['category']) ? sanitize_title($instance['category']) : $this->settings['category']['std'];
-            $term_ids = Helper::toArray($term_ids);
+            $term_ids = explode(',', Helper::stripSpace($term_ids));
 
-            if ('true' == $include_children) {
-                $query_args['tax_query']['relation'] = 'IN';
-            }
-
+            //...
             if ($term_ids) {
                 $query_args['tax_query'][] = [
                     'taxonomy'         => 'product_cat',
+                    'field'            => 'term_id',
                     'terms'            => $term_ids,
                     'include_children' => (bool) $include_children,
                 ];
@@ -259,10 +273,16 @@ if (!class_exists('ProductsCarousel_Widget')) {
             // title
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
 
-            $products = $this->get_products( $args, $instance );
+            $products = $this->get_products($args, $instance);
             if (!$products || !$products->have_posts()) {
                 return;
             }
+
+            //...
+            $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
+            $desktop_gap = !empty($instance['desktop_gap']) ? absint($instance['desktop_gap']) : $this->settings['desktop_gap']['std'];
+            $mobile_gap = !empty($instance['mobile_gap']) ? absint($instance['mobile_gap']) : $this->settings['mobile_gap']['std'];
+
 
             // class
             $_class = $this->id;
@@ -277,7 +297,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
             $show_viewmore_button = !empty($instance['show_viewmore_button']);
 
             // has products
-            wc_set_loop_prop( 'name', 'products_carousel_widget' );
+            wc_set_loop_prop('name', 'products_carousel_widget');
 
             ob_start();
 
@@ -289,7 +309,40 @@ if (!class_exists('ProductsCarousel_Widget')) {
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
                 <div class="<?= $uniqid ?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                    <div class="swiper-section carousel-products grid-products">
+                        <?php
+                        $swiper_class = '';
+                        $_data = [];
 
+
+
+                        $_data = json_encode($_data, JSON_FORCE_OBJECT|JSON_UNESCAPED_UNICODE);
+                        ?>
+                        <div class="w-swiper swiper">
+                            <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $_data;?>'>
+                                <?php
+                                $i = 0;
+
+                                // Load slides loop
+                                while ($products->have_posts() && $i < $number) : $products->the_post();
+                                    global $product;
+
+                                    if (empty($product) || FALSE === wc_get_loop_product_visibility($product->get_id()) || !$product->is_visible()) {
+                                        continue;
+                                    }
+
+                                    echo '<div class="swiper-slide">';
+                                    wc_get_template_part('content', 'product');
+                                    echo '</div>';
+                                    ++$i;
+
+                                endwhile;
+                                wp_reset_postdata();
+
+                                ?>
+                            </div>
+                        </div>
+                    </div>
                     <?php
                     if ($show_viewmore_button) {
 

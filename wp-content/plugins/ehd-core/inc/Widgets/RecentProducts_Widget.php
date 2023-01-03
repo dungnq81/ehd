@@ -95,13 +95,13 @@ if (!class_exists('RecentProducts_Widget')) {
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
 
-                'posts_per_page'         => $number,
-                'post_status'            => 'publish',
-                'post_type'              => 'product',
-                'no_found_rows'          => true,
-                'ignore_sticky_posts'    => true,
-                'order'                  => $order,
-                'tax_query'              => ['relation' => 'AND'],
+                'posts_per_page'      => $number,
+                'post_status'         => 'publish',
+                'post_type'           => 'product',
+                'no_found_rows'       => true,
+                'ignore_sticky_posts' => true,
+                'order'               => $order,
+                'tax_query'           => ['relation' => 'AND'],
             ]; // WPCS: slow query ok.
 
             // hide_free
@@ -181,7 +181,7 @@ if (!class_exists('RecentProducts_Widget')) {
             $number = !empty($instance['number']) ? absint($instance['number']) : 0;
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
-            $products = $this->get_products( $args, $instance );
+            $products = $this->get_products($args, $instance);
             if (!$products || !$products->have_posts()) {
                 return;
             }
@@ -189,7 +189,7 @@ if (!class_exists('RecentProducts_Widget')) {
             $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
             // has products
-            wc_set_loop_prop( 'name', 'recent_products_widget' );
+            wc_set_loop_prop('name', 'recent_products_widget');
 
             ob_start();
 
@@ -203,13 +203,13 @@ if (!class_exists('RecentProducts_Widget')) {
                         <?php
                         $i = 0;
 
-                        $template_args = array(
+                        $template_args = [
                             'widget_id'   => $args['widget_id'] ?? $this->widget_id,
                             'show_rating' => true,
-                        );
+                        ];
 
                         // Load slides loop
-                        while ( $products->have_posts() && $i < $number) : $products->the_post();
+                        while ($products->have_posts() && $i < $number) : $products->the_post();
                             global $product;
 
                             if (empty($product) || FALSE === wc_get_loop_product_visibility($product->get_id()) || !$product->is_visible()) {
@@ -217,7 +217,7 @@ if (!class_exists('RecentProducts_Widget')) {
                             }
 
                             echo '<div class="cell cell-' . $i . '">';
-                            wc_get_template( 'content-widget-product.php', $template_args );
+                            wc_get_template('content-widget-product.php', $template_args);
                             echo '</div>';
 
                             ++$i;

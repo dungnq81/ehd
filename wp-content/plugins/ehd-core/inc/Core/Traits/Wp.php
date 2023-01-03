@@ -277,23 +277,23 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param object      $term
-     * @param string      $post_type
-     * @param bool        $include_children
+     * @param object|array $term
+     * @param string       $post_type
+     * @param bool         $include_children
      *
-     * @param int         $posts_per_page
-     * @param array       $orderby
-     * @param bool|string $strtotime_recent - strtotime( 'last week' );
+     * @param int          $posts_per_page
+     * @param array        $orderby
+     * @param bool|string  $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
-    public static function queryByTerm($term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $orderby = [], bool|string $strtotime_recent = false)
+    public static function queryByTerm(object|array $term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $orderby = [], bool|string $strtotime_recent = false)
     {
         if (!$term) {
             return false;
         }
 
         $_args = [
-            'post_type' => $post_type ?: 'post',
+            'post_type'              => $post_type ?: 'post',
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
             'ignore_sticky_posts'    => true,
@@ -303,18 +303,18 @@ trait Wp
             'tax_query'              => ['relation' => 'AND'],
         ];
 
-        $include_children = (bool) $include_children;
-        if ($include_children) {
-            $_args['tax_query']['relation'] = 'IN';
+        //...
+        if (!is_object($term)) {
+            $term = self::toObject($term);
         }
 
-        //...
-        $term = self::toObject($term);
+        //
         if (isset($term->taxonomy) && isset($term->term_id)) {
             $_args['tax_query'][] = [
                 'taxonomy'         => $term->taxonomy,
                 'terms'            => [$term->term_id],
-                'include_children' => $include_children,
+                'include_children' => (bool) $include_children,
+                'operator'         => 'IN',
             ];
         }
 
@@ -368,29 +368,28 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param array       $term_ids
-     * @param string      $taxonomy
-     * @param string      $post_type
-     * @param bool        $include_children
-     * @param int         $posts_per_page
-     * @param bool|string $strtotime_str
+     * @param array|string $term_ids
+     * @param string       $taxonomy
+     * @param string       $post_type
+     * @param bool         $include_children
+     * @param int          $posts_per_page
+     * @param bool|string  $strtotime_str
      * @return bool|WP_Query
      */
-    public static function queryByTerms($term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
+    public static function queryByTerms(array|string $term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
     {
         if (!$term_ids) {
             return false;
         }
 
         $_args = [
-            'post_type' => $post_type ?: 'post',
-            'post_status'         => 'publish',
-            'orderby'             => ['date' => 'DESC'],
-            'tax_query'           => ['relation' => 'AND'],
-            'no_found_rows'       => true,
-            'ignore_sticky_posts' => true,
-            'posts_per_page'      => $posts_per_page ?: 10,
-
+            'post_type'              => $post_type ?: 'post',
+            'post_status'            => 'publish',
+            'orderby'                => ['date' => 'DESC'],
+            'tax_query'              => ['relation' => 'AND'],
+            'no_found_rows'          => true,
+            'ignore_sticky_posts'    => true,
+            'posts_per_page'         => $posts_per_page ?: 10,
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
         ];
@@ -403,15 +402,12 @@ trait Wp
             $taxonomy = 'category';
         }
 
-        $include_children = (bool) $include_children;
-        if ($include_children) {
-            $_args['tax_query']['relation'] = 'IN';
-        }
-
+        //...
         $_args['tax_query'][] = [
             'taxonomy'         => $taxonomy,
             'terms'            => $term_ids,
             'include_children' => (bool) $include_children,
+            'operator'         => 'IN',
         ];
 
         // ...

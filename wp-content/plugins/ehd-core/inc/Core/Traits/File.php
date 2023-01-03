@@ -109,6 +109,7 @@ trait File
                 }
             }
         }
+
         return $result;
     }
 
@@ -122,6 +123,7 @@ trait File
                 return false;
             }
         }
+
         return true;
     }
 }
