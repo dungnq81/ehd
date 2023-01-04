@@ -66,6 +66,11 @@ body.login {
 }
 
 /** */
+input[type=number].tiny-text {
+    width: 50px;
+}
+
+/** */
 body.post-type-banner {
     .wp-list-table {
         .column-post_thumb {
@@ -88,6 +93,7 @@ body.wp-admin {
             display: none;
         }
     }
+
     .acf-editor-wrap {
         &.html-active {
             textarea {
@@ -182,11 +188,10 @@ body.post-type-site-review {
 }
 
 /** plugin */
-
 #elementor-editor-wrapper {
     #elementor-preview {
         #elementor-notice-bar {
-            display: none;
+            display: none !important;
             height: 0 !important;
         }
     }

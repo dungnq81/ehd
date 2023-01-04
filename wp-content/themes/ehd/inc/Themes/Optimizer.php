@@ -123,6 +123,12 @@ final class Optimizer
                 document.documentElement.classList.add('is-IE');
             }</script>
         <?php
+        if (file_exists($passive_events = get_template_directory() . '/assets/js/plugins/passive-events-fix.js')) {
+            echo '<script>';
+            include $passive_events;
+            echo '</script>';
+        }
+
         if (file_exists($skip_link = get_template_directory() . '/assets/js/plugins/skip-link-focus-fix.js')) {
             echo '<script>';
             include $skip_link;
