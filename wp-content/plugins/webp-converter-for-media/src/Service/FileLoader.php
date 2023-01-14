@@ -84,11 +84,11 @@ class FileLoader {
 			curl_setopt( $ch, CURLOPT_USERPWD, sprintf( '%1$s:%2$s', $_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 		}
 
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
-		curl_setopt( $ch, CURLOPT_FRESH_CONNECT, 1 );
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt( $ch, CURLOPT_FRESH_CONNECT, true );
 		curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
 		$response = curl_exec( $ch );

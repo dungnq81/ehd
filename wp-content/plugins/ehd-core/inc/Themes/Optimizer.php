@@ -1,8 +1,8 @@
 <?php
 
-namespace EHD\Plugins\Themes;
+namespace EHD\Themes;
 
-use EHD\Plugins\Core\Helper;
+use EHD\Cores\Helper;
 
 \defined('ABSPATH') || die;
 

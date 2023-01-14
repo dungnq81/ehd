@@ -1,4 +1,4 @@
-/*! elementor - v3.9.2 - 21-12-2022 */
+/*! elementor - v3.10.0 - 09-01-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -1611,6 +1611,9 @@ var _templateControls = _interopRequireDefault(__webpack_require__(/*! ./new-tem
         var $descriptions = $('.elementor-css-print-method-description');
         $descriptions.hide();
         $descriptions.filter('[data-value="' + $(this).val() + '"]').show();
+      }).trigger('change');
+      $('.elementor_google_font select').on('change', function () {
+        $('.elementor_font_display').toggle('1' === $(this).val());
       }).trigger('change');
     },
     onInit: function onInit() {

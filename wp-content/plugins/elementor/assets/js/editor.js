@@ -1,4 +1,4 @@
-/*! elementor - v3.9.2 - 21-12-2022 */
+/*! elementor - v3.10.0 - 09-01-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -12,10 +12,12 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "MiddlewareArray": () => (/* binding */ MiddlewareArray),
+/* harmony export */   "SHOULD_AUTOBATCH": () => (/* binding */ SHOULD_AUTOBATCH),
 /* harmony export */   "TaskAbortError": () => (/* binding */ TaskAbortError),
 /* harmony export */   "__DO_NOT_USE__ActionTypes": () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.__DO_NOT_USE__ActionTypes),
 /* harmony export */   "addListener": () => (/* binding */ addListener),
 /* harmony export */   "applyMiddleware": () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.applyMiddleware),
+/* harmony export */   "autoBatchEnhancer": () => (/* binding */ autoBatchEnhancer),
 /* harmony export */   "bindActionCreators": () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.bindActionCreators),
 /* harmony export */   "clearAllListeners": () => (/* binding */ clearAllListeners),
 /* harmony export */   "combineReducers": () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.combineReducers),
@@ -53,6 +55,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "miniSerializeError": () => (/* binding */ miniSerializeError),
 /* harmony export */   "nanoid": () => (/* binding */ nanoid),
 /* harmony export */   "original": () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.original),
+/* harmony export */   "prepareAutoBatched": () => (/* binding */ prepareAutoBatched),
 /* harmony export */   "removeListener": () => (/* binding */ removeListener),
 /* harmony export */   "unwrapResult": () => (/* binding */ unwrapResult)
 /* harmony export */ });
@@ -627,8 +630,17 @@ function executeReducerBuilderCallback(builderCallback) {
 function isStateFunction(x) {
     return typeof x === "function";
 }
+var hasWarnedAboutObjectNotation = false;
 function createReducer(initialState, mapOrBuilderCallback, actionMatchers, defaultCaseReducer) {
     if (actionMatchers === void 0) { actionMatchers = []; }
+    if (true) {
+        if (typeof mapOrBuilderCallback === "object") {
+            if (!hasWarnedAboutObjectNotation) {
+                hasWarnedAboutObjectNotation = true;
+                console.warn("The object notation for `createReducer` is deprecated, and will be removed in RTK 2.0. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createReducer");
+            }
+        }
+    }
     var _c = typeof mapOrBuilderCallback === "function" ? executeReducerBuilderCallback(mapOrBuilderCallback) : [mapOrBuilderCallback, actionMatchers, defaultCaseReducer], actionsMap = _c[0], finalActionMatchers = _c[1], finalDefaultCaseReducer = _c[2];
     var getInitialState;
     if (isStateFunction(initialState)) {
@@ -685,6 +697,7 @@ function createReducer(initialState, mapOrBuilderCallback, actionMatchers, defau
     return reducer;
 }
 // src/createSlice.ts
+var hasWarnedAboutObjectNotation2 = false;
 function getType2(slice, actionKey) {
     return slice + "/" + actionKey;
 }
@@ -721,9 +734,28 @@ function createSlice(options) {
         actionCreators[reducerName] = prepareCallback ? createAction(type, prepareCallback) : createAction(type);
     });
     function buildReducer() {
+        if (true) {
+            if (typeof options.extraReducers === "object") {
+                if (!hasWarnedAboutObjectNotation2) {
+                    hasWarnedAboutObjectNotation2 = true;
+                    console.warn("The object notation for `createSlice.extraReducers` is deprecated, and will be removed in RTK 2.0. Please use the 'builder callback' notation instead: https://redux-toolkit.js.org/api/createSlice");
+                }
+            }
+        }
         var _c = typeof options.extraReducers === "function" ? executeReducerBuilderCallback(options.extraReducers) : [options.extraReducers], _d = _c[0], extraReducers = _d === void 0 ? {} : _d, _e = _c[1], actionMatchers = _e === void 0 ? [] : _e, _f = _c[2], defaultCaseReducer = _f === void 0 ? void 0 : _f;
         var finalCaseReducers = __spreadValues(__spreadValues({}, extraReducers), sliceCaseReducersByType);
-        return createReducer(initialState, finalCaseReducers, actionMatchers, defaultCaseReducer);
+        return createReducer(initialState, function (builder) {
+            for (var key in finalCaseReducers) {
+                builder.addCase(key, finalCaseReducers[key]);
+            }
+            for (var _i = 0, actionMatchers_1 = actionMatchers; _i < actionMatchers_1.length; _i++) {
+                var m = actionMatchers_1[_i];
+                builder.addMatcher(m.matcher, m.reducer);
+            }
+            if (defaultCaseReducer) {
+                builder.addDefaultCase(defaultCaseReducer);
+            }
+        });
     }
     var _reducer;
     return {
@@ -1122,157 +1154,162 @@ var miniSerializeError = function (value) {
     }
     return { message: String(value) };
 };
-function createAsyncThunk(typePrefix, payloadCreator, options) {
-    var fulfilled = createAction(typePrefix + "/fulfilled", function (payload, requestId, arg, meta) { return ({
-        payload: payload,
-        meta: __spreadProps(__spreadValues({}, meta || {}), {
-            arg: arg,
-            requestId: requestId,
-            requestStatus: "fulfilled"
-        })
-    }); });
-    var pending = createAction(typePrefix + "/pending", function (requestId, arg, meta) { return ({
-        payload: void 0,
-        meta: __spreadProps(__spreadValues({}, meta || {}), {
-            arg: arg,
-            requestId: requestId,
-            requestStatus: "pending"
-        })
-    }); });
-    var rejected = createAction(typePrefix + "/rejected", function (error, requestId, arg, payload, meta) { return ({
-        payload: payload,
-        error: (options && options.serializeError || miniSerializeError)(error || "Rejected"),
-        meta: __spreadProps(__spreadValues({}, meta || {}), {
-            arg: arg,
-            requestId: requestId,
-            rejectedWithValue: !!payload,
-            requestStatus: "rejected",
-            aborted: (error == null ? void 0 : error.name) === "AbortError",
-            condition: (error == null ? void 0 : error.name) === "ConditionError"
-        })
-    }); });
-    var displayedWarning = false;
-    var AC = typeof AbortController !== "undefined" ? AbortController : /** @class */ (function () {
-        function class_1() {
-            this.signal = {
-                aborted: false,
-                addEventListener: function () {
-                },
-                dispatchEvent: function () {
-                    return false;
-                },
-                onabort: function () {
-                },
-                removeEventListener: function () {
-                },
-                reason: void 0,
-                throwIfAborted: function () {
+var createAsyncThunk = (function () {
+    function createAsyncThunk2(typePrefix, payloadCreator, options) {
+        var fulfilled = createAction(typePrefix + "/fulfilled", function (payload, requestId, arg, meta) { return ({
+            payload: payload,
+            meta: __spreadProps(__spreadValues({}, meta || {}), {
+                arg: arg,
+                requestId: requestId,
+                requestStatus: "fulfilled"
+            })
+        }); });
+        var pending = createAction(typePrefix + "/pending", function (requestId, arg, meta) { return ({
+            payload: void 0,
+            meta: __spreadProps(__spreadValues({}, meta || {}), {
+                arg: arg,
+                requestId: requestId,
+                requestStatus: "pending"
+            })
+        }); });
+        var rejected = createAction(typePrefix + "/rejected", function (error, requestId, arg, payload, meta) { return ({
+            payload: payload,
+            error: (options && options.serializeError || miniSerializeError)(error || "Rejected"),
+            meta: __spreadProps(__spreadValues({}, meta || {}), {
+                arg: arg,
+                requestId: requestId,
+                rejectedWithValue: !!payload,
+                requestStatus: "rejected",
+                aborted: (error == null ? void 0 : error.name) === "AbortError",
+                condition: (error == null ? void 0 : error.name) === "ConditionError"
+            })
+        }); });
+        var displayedWarning = false;
+        var AC = typeof AbortController !== "undefined" ? AbortController : /** @class */ (function () {
+            function class_1() {
+                this.signal = {
+                    aborted: false,
+                    addEventListener: function () {
+                    },
+                    dispatchEvent: function () {
+                        return false;
+                    },
+                    onabort: function () {
+                    },
+                    removeEventListener: function () {
+                    },
+                    reason: void 0,
+                    throwIfAborted: function () {
+                    }
+                };
+            }
+            class_1.prototype.abort = function () {
+                if (true) {
+                    if (!displayedWarning) {
+                        displayedWarning = true;
+                        console.info("This platform does not implement AbortController. \nIf you want to use the AbortController to react to `abort` events, please consider importing a polyfill like 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'.");
+                    }
                 }
             };
-        }
-        class_1.prototype.abort = function () {
-            if (true) {
-                if (!displayedWarning) {
-                    displayedWarning = true;
-                    console.info("This platform does not implement AbortController. \nIf you want to use the AbortController to react to `abort` events, please consider importing a polyfill like 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'.");
+            return class_1;
+        }());
+        function actionCreator(arg) {
+            return function (dispatch, getState, extra) {
+                var requestId = (options == null ? void 0 : options.idGenerator) ? options.idGenerator(arg) : nanoid();
+                var abortController = new AC();
+                var abortReason;
+                var abortedPromise = new Promise(function (_, reject) { return abortController.signal.addEventListener("abort", function () { return reject({ name: "AbortError", message: abortReason || "Aborted" }); }); });
+                var started = false;
+                function abort(reason) {
+                    if (started) {
+                        abortReason = reason;
+                        abortController.abort();
+                    }
                 }
-            }
-        };
-        return class_1;
-    }());
-    function actionCreator(arg) {
-        return function (dispatch, getState, extra) {
-            var requestId = (options == null ? void 0 : options.idGenerator) ? options.idGenerator(arg) : nanoid();
-            var abortController = new AC();
-            var abortReason;
-            var abortedPromise = new Promise(function (_, reject) { return abortController.signal.addEventListener("abort", function () { return reject({ name: "AbortError", message: abortReason || "Aborted" }); }); });
-            var started = false;
-            function abort(reason) {
-                if (started) {
-                    abortReason = reason;
-                    abortController.abort();
-                }
-            }
-            var promise = function () {
-                return __async(this, null, function () {
-                    var _a, _b, finalAction, conditionResult, err_1, skipDispatch;
-                    return __generator(this, function (_c) {
-                        switch (_c.label) {
-                            case 0:
-                                _c.trys.push([0, 4, , 5]);
-                                conditionResult = (_a = options == null ? void 0 : options.condition) == null ? void 0 : _a.call(options, arg, { getState: getState, extra: extra });
-                                if (!isThenable(conditionResult)) return [3 /*break*/, 2];
-                                return [4 /*yield*/, conditionResult];
-                            case 1:
-                                conditionResult = _c.sent();
-                                _c.label = 2;
-                            case 2:
-                                if (conditionResult === false) {
-                                    throw {
-                                        name: "ConditionError",
-                                        message: "Aborted due to condition callback returning false."
-                                    };
-                                }
-                                started = true;
-                                dispatch(pending(requestId, arg, (_b = options == null ? void 0 : options.getPendingMeta) == null ? void 0 : _b.call(options, { requestId: requestId, arg: arg }, { getState: getState, extra: extra })));
-                                return [4 /*yield*/, Promise.race([
-                                        abortedPromise,
-                                        Promise.resolve(payloadCreator(arg, {
-                                            dispatch: dispatch,
-                                            getState: getState,
-                                            extra: extra,
-                                            requestId: requestId,
-                                            signal: abortController.signal,
-                                            rejectWithValue: function (value, meta) {
-                                                return new RejectWithValue(value, meta);
-                                            },
-                                            fulfillWithValue: function (value, meta) {
-                                                return new FulfillWithMeta(value, meta);
-                                            }
-                                        })).then(function (result) {
-                                            if (result instanceof RejectWithValue) {
-                                                throw result;
-                                            }
-                                            if (result instanceof FulfillWithMeta) {
-                                                return fulfilled(result.payload, requestId, arg, result.meta);
-                                            }
-                                            return fulfilled(result, requestId, arg);
-                                        })
-                                    ])];
-                            case 3:
-                                finalAction = _c.sent();
-                                return [3 /*break*/, 5];
-                            case 4:
-                                err_1 = _c.sent();
-                                finalAction = err_1 instanceof RejectWithValue ? rejected(null, requestId, arg, err_1.payload, err_1.meta) : rejected(err_1, requestId, arg);
-                                return [3 /*break*/, 5];
-                            case 5:
-                                skipDispatch = options && !options.dispatchConditionRejection && rejected.match(finalAction) && finalAction.meta.condition;
-                                if (!skipDispatch) {
-                                    dispatch(finalAction);
-                                }
-                                return [2 /*return*/, finalAction];
-                        }
+                var promise2 = function () {
+                    return __async(this, null, function () {
+                        var _a, _b, finalAction, conditionResult, err_1, skipDispatch;
+                        return __generator(this, function (_c) {
+                            switch (_c.label) {
+                                case 0:
+                                    _c.trys.push([0, 4, , 5]);
+                                    conditionResult = (_a = options == null ? void 0 : options.condition) == null ? void 0 : _a.call(options, arg, { getState: getState, extra: extra });
+                                    if (!isThenable(conditionResult)) return [3 /*break*/, 2];
+                                    return [4 /*yield*/, conditionResult];
+                                case 1:
+                                    conditionResult = _c.sent();
+                                    _c.label = 2;
+                                case 2:
+                                    if (conditionResult === false) {
+                                        throw {
+                                            name: "ConditionError",
+                                            message: "Aborted due to condition callback returning false."
+                                        };
+                                    }
+                                    started = true;
+                                    dispatch(pending(requestId, arg, (_b = options == null ? void 0 : options.getPendingMeta) == null ? void 0 : _b.call(options, { requestId: requestId, arg: arg }, { getState: getState, extra: extra })));
+                                    return [4 /*yield*/, Promise.race([
+                                            abortedPromise,
+                                            Promise.resolve(payloadCreator(arg, {
+                                                dispatch: dispatch,
+                                                getState: getState,
+                                                extra: extra,
+                                                requestId: requestId,
+                                                signal: abortController.signal,
+                                                abort: abort,
+                                                rejectWithValue: function (value, meta) {
+                                                    return new RejectWithValue(value, meta);
+                                                },
+                                                fulfillWithValue: function (value, meta) {
+                                                    return new FulfillWithMeta(value, meta);
+                                                }
+                                            })).then(function (result) {
+                                                if (result instanceof RejectWithValue) {
+                                                    throw result;
+                                                }
+                                                if (result instanceof FulfillWithMeta) {
+                                                    return fulfilled(result.payload, requestId, arg, result.meta);
+                                                }
+                                                return fulfilled(result, requestId, arg);
+                                            })
+                                        ])];
+                                case 3:
+                                    finalAction = _c.sent();
+                                    return [3 /*break*/, 5];
+                                case 4:
+                                    err_1 = _c.sent();
+                                    finalAction = err_1 instanceof RejectWithValue ? rejected(null, requestId, arg, err_1.payload, err_1.meta) : rejected(err_1, requestId, arg);
+                                    return [3 /*break*/, 5];
+                                case 5:
+                                    skipDispatch = options && !options.dispatchConditionRejection && rejected.match(finalAction) && finalAction.meta.condition;
+                                    if (!skipDispatch) {
+                                        dispatch(finalAction);
+                                    }
+                                    return [2 /*return*/, finalAction];
+                            }
+                        });
                     });
+                }();
+                return Object.assign(promise2, {
+                    abort: abort,
+                    requestId: requestId,
+                    arg: arg,
+                    unwrap: function () {
+                        return promise2.then(unwrapResult);
+                    }
                 });
-            }();
-            return Object.assign(promise, {
-                abort: abort,
-                requestId: requestId,
-                arg: arg,
-                unwrap: function () {
-                    return promise.then(unwrapResult);
-                }
-            });
-        };
+            };
+        }
+        return Object.assign(actionCreator, {
+            pending: pending,
+            rejected: rejected,
+            fulfilled: fulfilled,
+            typePrefix: typePrefix
+        });
     }
-    return Object.assign(actionCreator, {
-        pending: pending,
-        rejected: rejected,
-        fulfilled: fulfilled,
-        typePrefix: typePrefix
-    });
-}
+    createAsyncThunk2.withTypes = createAsyncThunk2;
+    return createAsyncThunk2;
+})();
 function unwrapResult(action) {
     if (action.meta && action.meta.rejectedWithValue) {
         throw action.payload;
@@ -1428,10 +1465,10 @@ var assertFunction = function (func, expected) {
 };
 var noop = function () {
 };
-var catchRejection = function (promise, onError) {
+var catchRejection = function (promise2, onError) {
     if (onError === void 0) { onError = noop; }
-    promise.catch(onError);
-    return promise;
+    promise2.catch(onError);
+    return promise2;
 };
 var addAbortSignalListener = function (abortSignal, callback) {
     abortSignal.addEventListener("abort", callback, { once: true });
@@ -1516,8 +1553,8 @@ var runTask = function (task2, cleanUp) { return __async(void 0, null, function 
     });
 }); };
 var createPause = function (signal) {
-    return function (promise) {
-        return catchRejection(Promise.race([promisifyAbortSignal(signal), promise]).then(function (output) {
+    return function (promise2) {
+        return catchRejection(Promise.race([promisifyAbortSignal(signal), promise2]).then(function (output) {
             validateActive(signal);
             return output;
         }));
@@ -1832,6 +1869,74 @@ function createListenerMiddleware(middlewareOptions) {
         clearListeners: clearListenerMiddleware
     };
 }
+// src/autoBatchEnhancer.ts
+var SHOULD_AUTOBATCH = "RTK_autoBatch";
+var prepareAutoBatched = function () { return function (payload) {
+    var _c;
+    return ({
+        payload: payload,
+        meta: (_c = {}, _c[SHOULD_AUTOBATCH] = true, _c)
+    });
+}; };
+var promise;
+var queueMicrotaskShim = typeof queueMicrotask === "function" ? queueMicrotask.bind(typeof window !== "undefined" ? window : __webpack_require__.g) : function (cb) { return (promise || (promise = Promise.resolve())).then(cb).catch(function (err) { return setTimeout(function () {
+    throw err;
+}, 0); }); };
+var createQueueWithTimer = function (timeout) {
+    return function (notify) {
+        setTimeout(notify, timeout);
+    };
+};
+var autoBatchEnhancer = function (options) {
+    if (options === void 0) { options = { type: "raf" }; }
+    return function (next) { return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var store = next.apply(void 0, args);
+        var notifying = true;
+        var shouldNotifyAtEndOfTick = false;
+        var notificationQueued = false;
+        var listeners = new Set();
+        var queueCallback = options.type === "tick" ? queueMicrotaskShim : options.type === "raf" ? requestAnimationFrame : options.type === "callback" ? options.queueNotification : createQueueWithTimer(options.timeout);
+        var notifyListeners = function () {
+            notificationQueued = false;
+            if (shouldNotifyAtEndOfTick) {
+                shouldNotifyAtEndOfTick = false;
+                listeners.forEach(function (l) { return l(); });
+            }
+        };
+        return Object.assign({}, store, {
+            subscribe: function (listener2) {
+                var wrappedListener = function () { return notifying && listener2(); };
+                var unsubscribe = store.subscribe(wrappedListener);
+                listeners.add(listener2);
+                return function () {
+                    unsubscribe();
+                    listeners.delete(listener2);
+                };
+            },
+            dispatch: function (action) {
+                var _a;
+                try {
+                    notifying = !((_a = action == null ? void 0 : action.meta) == null ? void 0 : _a[SHOULD_AUTOBATCH]);
+                    shouldNotifyAtEndOfTick = !notifying;
+                    if (shouldNotifyAtEndOfTick) {
+                        if (!notificationQueued) {
+                            notificationQueued = true;
+                            queueCallback(notifyListeners);
+                        }
+                    }
+                    return store.dispatch(action);
+                }
+                finally {
+                    notifying = true;
+                }
+            }
+        });
+    }; };
+};
 // src/index.ts
 (0,immer__WEBPACK_IMPORTED_MODULE_2__.enableES5)();
 
@@ -5078,7 +5183,8 @@ var Load = /*#__PURE__*/function (_$e$modules$CommandIn) {
         // The issue is that the css-parser is depends upon cache and cache is not available during this time.
         return $e.data.get('globals/index').then(function () {
           return $e.internal('editor/documents/attach-preview', {
-            shouldScroll: shouldScroll
+            shouldScroll: shouldScroll,
+            selector: args.selector
           });
         });
       }
@@ -5357,11 +5463,13 @@ var Switch = /*#__PURE__*/function (_$e$modules$CommandBa) {
       return $e.run('editor/documents/close', {
         id: elementor.documents.getCurrentId(),
         mode: mode,
-        onClose: onClose
+        onClose: onClose,
+        selector: args.selector
       }).then(function () {
         return $e.run('editor/documents/open', {
           id: id,
-          shouldScroll: shouldScroll
+          shouldScroll: shouldScroll,
+          selector: args.selector
         });
       }).then(function () {
         elementor.getPanelView().getPages('menu').view.addExitItem();
@@ -11682,19 +11790,24 @@ var ControlBaseMultipleItemView = __webpack_require__(/*! elementor-controls/bas
 ControlBaseUnitsItemView = ControlBaseMultipleItemView.extend({
   ui: function ui() {
     return Object.assign(ControlBaseMultipleItemView.prototype.ui.apply(this, arguments), {
-      units: '.elementor-units-choices>input'
+      units: '.e-units-choices>input',
+      unitSwitcher: '.e-units-switcher',
+      unitChoices: '.e-units-choices'
     });
   },
   events: function events() {
     return Object.assign(ControlBaseMultipleItemView.prototype.events.apply(this, arguments), {
-      'change @ui.units': 'onUnitChange'
+      'change @ui.units': 'onUnitChange',
+      'click @ui.units': 'onUnitClick',
+      'click @ui.unitSwitcher': 'onUnitLabelClick'
     });
   },
   updatePlaceholder: function updatePlaceholder() {
     var _this$getControlPlace;
     var placeholder = (_this$getControlPlace = this.getControlPlaceholder()) === null || _this$getControlPlace === void 0 ? void 0 : _this$getControlPlace.unit;
     this.ui.units.removeClass('e-units-placeholder');
-    if (placeholder !== this.getControlValue('unit')) {
+    var currentUnitSelected = this.getControlValue('unit');
+    if (placeholder !== currentUnitSelected) {
       this.ui.units.filter("[value=\"".concat(placeholder, "\"]")).addClass('e-units-placeholder');
     }
   },
@@ -11730,10 +11843,28 @@ ControlBaseUnitsItemView = ControlBaseMultipleItemView.extend({
   onRender: function onRender() {
     ControlBaseMultipleItemView.prototype.onRender.apply(this, arguments);
     this.updatePlaceholder();
+    this.updateUnitChoices();
   },
   onUnitChange: function onUnitChange() {
+    this.toggleUnitChoices(false);
     this.recursiveUnitChange(false);
     this.updatePlaceholder();
+    this.updateUnitChoices();
+  },
+  toggleUnitChoices: function toggleUnitChoices(stateVal) {
+    this.ui.unitChoices.toggleClass('e-units-choices-open', stateVal);
+  },
+  updateUnitChoices: function updateUnitChoices() {
+    var unit = this.getControlValue('unit');
+    this.ui.unitSwitcher.attr('data-selected', unit).find('span').html(unit);
+    this.$el.toggleClass('e-units-custom', this.isCustomUnit());
+  },
+  onUnitClick: function onUnitClick() {
+    this.toggleUnitChoices(false);
+  },
+  onUnitLabelClick: function onUnitLabelClick(event) {
+    event.preventDefault();
+    this.toggleUnitChoices();
   },
   getCurrentRange: function getCurrentRange() {
     return this.getUnitRange(this.getControlValue('unit'));
@@ -11747,6 +11878,18 @@ ControlBaseUnitsItemView = ControlBaseMultipleItemView.extend({
       ranges[unit] = Object.values(ranges)[0];
     }
     return ranges[unit];
+  },
+  isCustomUnit: function isCustomUnit() {
+    return 'custom' === this.getControlValue('unit');
+  }
+}, {
+  // Static methods
+  getStyleValue: function getStyleValue(placeholder, controlValue) {
+    var returnValue = ControlBaseMultipleItemView.getStyleValue(placeholder, controlValue);
+    if ('UNIT' === placeholder && 'custom' === returnValue) {
+      returnValue = '__EMPTY__';
+    }
+    return returnValue;
   }
 });
 module.exports = ControlBaseUnitsItemView;
@@ -12496,9 +12639,6 @@ var _default = /*#__PURE__*/function (_ControlBaseDataView) {
     key: "addEyedropper",
     value: function addEyedropper() {
       var _this3 = this;
-      if (!elementorCommon.config.experimentalFeatures['elements-color-picker']) {
-        return;
-      }
       var $colorPicker = jQuery(Marionette.Renderer.render('#tmpl-elementor-control-element-color-picker')),
         $colorPickerToolsContainer = this.colorPicker.$pickerToolsContainer,
         container = this.getOption('container');
@@ -12920,6 +13060,14 @@ ControlDimensionsItemView = ControlBaseUnitsItemView.extend({
   },
   isLinkedDimensions: function isLinkedDimensions() {
     return this.getControlValue('isLinked');
+  },
+  updateUnitChoices: function updateUnitChoices() {
+    ControlBaseUnitsItemView.prototype.updateUnitChoices.apply(this, arguments);
+    var inputType = 'number';
+    if (this.isCustomUnit()) {
+      inputType = 'text';
+    }
+    this.ui.controls.attr('type', inputType);
   }
 });
 module.exports = ControlDimensionsItemView;
@@ -14800,6 +14948,9 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend({
     if (!this.ui.slider[0]) {
       return;
     }
+    if (this.isCustomUnit()) {
+      return;
+    }
     this.destroySlider();
     var isMultiple = this.isMultiple(),
       unitRange = elementorCommon.helpers.cloneObject(this.getCurrentRange()),
@@ -14809,6 +14960,9 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend({
       sizes = Object.values(sizes);
     } else {
       sizes = [sizes];
+
+      // Make sure the value is a number, because the slider can't handle strings.
+      sizes[0] = parseFloat(sizes[0]) || 0;
       this.ui.input.attr(unitRange);
     }
     delete unitRange.step;
@@ -14844,9 +14998,12 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend({
   applySavedValue: function applySavedValue() {
     ControlBaseUnitsItemView.prototype.applySavedValue.apply(this, arguments);
     // Slider does not exist in tests.
-    if (this.ui.slider[0] && this.ui.slider[0].noUiSlider) {
+    if (this.isSliderInitialized()) {
       this.ui.slider[0].noUiSlider.set(this.getSize());
     }
+  },
+  isSliderInitialized: function isSliderInitialized() {
+    return this.ui.slider[0] && this.ui.slider[0].noUiSlider;
   },
   getSize: function getSize() {
     var _this$getControlPlace, _this$model$get;
@@ -14887,10 +15044,23 @@ ControlSliderItemView = ControlBaseUnitsItemView.extend({
   },
   onInputChange: function onInputChange(event) {
     var dataChanged = event.currentTarget.dataset.setting;
-    if ('size' === dataChanged) {
+    if ('size' === dataChanged && this.isSliderInitialized()) {
       this.ui.slider[0].noUiSlider.set(this.getSize());
     } else if ('unit' === dataChanged) {
       this.resetSize();
+    }
+  },
+  updateUnitChoices: function updateUnitChoices() {
+    ControlBaseUnitsItemView.prototype.updateUnitChoices.apply(this, arguments);
+    var inputType = 'number';
+    if (this.isCustomUnit()) {
+      inputType = 'text';
+      this.destroySlider();
+    } else {
+      this.initSlider();
+    }
+    if (!this.isMultiple()) {
+      this.ui.input.attr('type', inputType);
     }
   },
   onBeforeDestroy: function onBeforeDestroy() {
@@ -17323,11 +17493,14 @@ Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports["default"] = exports.Duplicate = void 0;
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var Duplicate = /*#__PURE__*/function (_$e$modules$editor$do) {
@@ -17357,6 +17530,8 @@ var Duplicate = /*#__PURE__*/function (_$e$modules$editor$do) {
     value: function apply(args) {
       var _args$containers2 = args.containers,
         containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+        _args$options = args.options,
+        options = _args$options === void 0 ? {} : _args$options,
         result = [];
       var at = containers[containers.length - 1].view._index;
       if (!elementor.selection.isSameType()) {
@@ -17374,10 +17549,10 @@ var Duplicate = /*#__PURE__*/function (_$e$modules$editor$do) {
         result.push($e.run('document/elements/create', {
           container: parent,
           model: container.model.toJSON(),
-          options: {
+          options: _objectSpread(_objectSpread({}, options), {}, {
             at: ++at,
             clone: true
-          }
+          })
         }));
       });
       if (1 === result.length) {
@@ -20753,6 +20928,7 @@ var IsValidChild = /*#__PURE__*/function (_Dependency) {
         containers = _args$containers === void 0 ? [args.container] : _args$containers,
         _args$model = args.model,
         model = _args$model === void 0 ? {} : _args$model,
+        options = args.options,
         modelToCreate = new Backbone.Model(model);
       return containers.some(function ( /* Container */container) {
         return container.model.isValidChild(modelToCreate);
@@ -25971,6 +26147,12 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
           $elementsToHide.removeClass('elementor-responsive-switchers-open');
         }
       },
+      panelUnitControlSwitchers: {
+        element: '.e-units-choices',
+        callback: function callback($elementsToHide) {
+          $elementsToHide.removeClass('e-units-choices-open');
+        }
+      },
       promotion: {
         ignore: '.elementor-responsive-panel',
         callback: function callback() {
@@ -26218,9 +26400,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       this.hotkeysScreen = new _hotkeys.default();
       this.iconManager = new _iconsManager.default();
       this.noticeBar = new _noticeBar.default();
-      if (elementorCommon.config.experimentalFeatures['favorite-widgets']) {
-        this.favorites = new _module.default();
-      }
+      this.favorites = new _module.default();
       this.history = new _module2.default();
       this.promotion = new _promotion.default();
       this.browserImport = new _manager2.default();
@@ -26230,9 +26410,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
       if (elementorCommon.config.experimentalFeatures['landing-pages']) {
         this.modules.landingLibraryPageModule = new _module3.default();
       }
-      if (elementorCommon.config.experimentalFeatures['elements-color-picker']) {
-        this.modules.elementsColorPicker = new _module4.default();
-      }
+      this.modules.elementsColorPicker = new _module4.default();
 
       // TODO: Move to elementor:init-data-components
       $e.components.register(new _component4.default());
@@ -26900,6 +27078,7 @@ var EditorBase = /*#__PURE__*/function (_Marionette$Applicati) {
         // Duplicate responsive controls for section and column default configs.
         this.generateResponsiveControlsForElements();
       }
+      this.elementsManager = new _manager.default();
       this.initComponents();
       if (!this.checkEnvCompatibility()) {
         this.onEnvNotCompatible();
@@ -27752,6 +27931,7 @@ ElementModel = _baseElementModel.default.extend({
     id: '',
     elType: '',
     isInner: false,
+    isLocked: false,
     settings: {},
     defaultEditSettings: {
       defaultEditRoute: 'content'
@@ -28523,6 +28703,13 @@ var BaseWidgetView = /*#__PURE__*/function (_BaseElementView) {
       return baseClasses + ' elementor-widget ' + elementor.getElementData(this.getEditModel()).html_wrapper_class;
     }
   }, {
+    key: "normalizeAttributes",
+    value: function normalizeAttributes() {
+      var editModel = this.getEditModel(),
+        skinType = editModel.getSetting('_skin') || 'default';
+      this.$el.attr('data-widget_type', editModel.get('widgetType') + '.' + skinType).removeClass('elementor-widget-empty').children('.elementor-widget-empty-icon').remove();
+    }
+  }, {
     key: "getTemplate",
     value: function getTemplate() {
       var editModel = this.getEditModel();
@@ -28741,7 +28928,7 @@ BaseElementView = BaseContainer.extend({
         title: __('Duplicate', 'elementor'),
         shortcut: controlSign + '+D',
         isEnabled: function isEnabled() {
-          return elementor.selection.isSameType();
+          return elementor.selection.isSameType() && !_this.getContainer().isLocked();
         },
         callback: function callback() {
           return $e.run('document/elements/duplicate', {
@@ -28756,7 +28943,7 @@ BaseElementView = BaseContainer.extend({
         title: __('Copy', 'elementor'),
         shortcut: controlSign + '+C',
         isEnabled: function isEnabled() {
-          return elementor.selection.isSameType();
+          return elementor.selection.isSameType() && !_this.getContainer().isLocked();
         },
         callback: function callback() {
           return $e.run('document/elements/copy', {
@@ -28828,6 +29015,9 @@ BaseElementView = BaseContainer.extend({
           return $e.run('document/elements/delete', {
             containers: elementor.selection.getElements(_this.getContainer())
           });
+        },
+        isEnabled: function isEnabled() {
+          return !_this.getContainer().isLocked();
         }
       }]
     });
@@ -29444,6 +29634,10 @@ BaseElementView = BaseContainer.extend({
       onDragStart: function onDragStart(e) {
         var _this4$options$dragga;
         e.stopPropagation();
+        if (_this4.getContainer().isLocked()) {
+          e.originalEvent.preventDefault();
+          return;
+        }
 
         // Need to stop this event when the element is absolute since it clashes with this one.
         // See `behaviors/widget-draggable.js`.
@@ -30931,19 +31125,24 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/run
 var _inline = _interopRequireDefault(__webpack_require__(/*! elementor-views/add-section/inline */ "../assets/dev/js/editor/views/add-section/inline.js"));
 var _widgetResizeable = _interopRequireDefault(__webpack_require__(/*! ./behaviors/widget-resizeable */ "../assets/dev/js/editor/elements/views/behaviors/widget-resizeable.js"));
 var _containerHelper = _interopRequireDefault(__webpack_require__(/*! elementor-editor-utils/container-helper */ "../assets/dev/js/editor/utils/container-helper.js"));
+var _emptyView = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/container/empty-view */ "../assets/dev/js/editor/elements/views/container/empty-view.js"));
 // Most of the code has been copied from `section.js`.
 
-var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js"),
-  ColumnEmptyView = __webpack_require__(/*! elementor-elements/views/column-empty */ "../assets/dev/js/editor/elements/views/column-empty.js");
+var BaseElementView = __webpack_require__(/*! elementor-elements/views/base */ "../assets/dev/js/editor/elements/views/base.js");
 var ContainerView = BaseElementView.extend({
   template: Marionette.TemplateCache.get('#tmpl-elementor-container-content'),
-  emptyView: ColumnEmptyView,
+  emptyView: _emptyView.default,
   getChildViewContainer: function getChildViewContainer() {
     this.childViewContainer = 'boxed' === this.getContainer().settings.get('content_width') ? '> .e-con-inner' : '';
     return Marionette.CompositeView.prototype.getChildViewContainer.apply(this, arguments);
   },
   className: function className() {
     return "".concat(BaseElementView.prototype.className.apply(this), " e-con");
+  },
+  childViewOptions: function childViewOptions() {
+    return {
+      emptyViewOwner: this
+    };
   },
   tagName: function tagName() {
     return this.model.getSetting('html_tag') || 'div';
@@ -31181,18 +31380,20 @@ var ContainerView = BaseElementView.extend({
       title: sprintf(__('Edit %s', 'elementor'), elementData.title),
       icon: 'handle'
     };
-    if (elementor.getPreferences('edit_buttons')) {
-      editTools.duplicate = {
+    if (!this.getContainer().isLocked()) {
+      if (elementor.getPreferences('edit_buttons')) {
+        editTools.duplicate = {
+          /* Translators: %s: Element Name. */
+          title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
+          icon: 'clone'
+        };
+      }
+      editTools.remove = {
         /* Translators: %s: Element Name. */
-        title: sprintf(__('Duplicate %s', 'elementor'), elementData.title),
-        icon: 'clone'
+        title: sprintf(__('Delete %s', 'elementor'), elementData.title),
+        icon: 'close'
       };
     }
-    editTools.remove = {
-      /* Translators: %s: Element Name. */
-      title: sprintf(__('Delete %s', 'elementor'), elementData.title),
-      icon: 'close'
-    };
     return editTools;
   },
   /**
@@ -31326,6 +31527,97 @@ function EmptyComponent() {
     }
   }));
 }
+
+/***/ }),
+
+/***/ "../assets/dev/js/editor/elements/views/container/empty-view.js":
+/*!**********************************************************************!*\
+  !*** ../assets/dev/js/editor/elements/views/container/empty-view.js ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var ReactDOM = __webpack_require__(/*! react-dom */ "react-dom");
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "react"));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "../node_modules/@babel/runtime/helpers/assertThisInitialized.js"));
+var _get2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/get */ "../node_modules/@babel/runtime/helpers/get.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
+var _emptyComponent = _interopRequireDefault(__webpack_require__(/*! elementor-elements/views/container/empty-component */ "../assets/dev/js/editor/elements/views/container/empty-component.js"));
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+/**
+ * This empty view used when the container is empty, then it writes React component into the view.
+ * In case of rendering different/custom React component, the switch in 'renderReactDefaultElement' method,
+ * can be used to print custom React component in case it registered in `elementsManager`.
+ */
+var EmptyView = /*#__PURE__*/function (_Marionette$ItemView) {
+  (0, _inherits2.default)(EmptyView, _Marionette$ItemView);
+  var _super = _createSuper(EmptyView);
+  function EmptyView() {
+    var _this;
+    (0, _classCallCheck2.default)(this, EmptyView);
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _super.call.apply(_super, [this].concat(args));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "template", '<div></div>');
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "className", 'elementor-empty-view');
+    return _this;
+  }
+  (0, _createClass2.default)(EmptyView, [{
+    key: "initialize",
+    value: function initialize(options) {
+      (0, _get2.default)((0, _getPrototypeOf2.default)(EmptyView.prototype), "initialize", this).call(this, options);
+      this.ownerView = options.emptyViewOwner;
+    }
+  }, {
+    key: "renderReactDefaultElement",
+    value: function renderReactDefaultElement(container) {
+      var parent = container.parent;
+      var defaultElement;
+
+      // If the emptyView is parent of widget. then the emptyView can be searched for in `elementor.elementsManager`,
+      // according to the `widgetType`.
+      if ('widget' === parent.model.get('elType')) {
+        var elementType = elementor.elementsManager.getElementTypeClass(parent.model.get('widgetType'));
+        if (elementType) {
+          var Type = elementType.getEmptyView();
+          defaultElement = /*#__PURE__*/_react.default.createElement(Type, {
+            container: container
+          });
+        }
+      } else {
+        defaultElement = /*#__PURE__*/_react.default.createElement(_emptyComponent.default, {
+          container: container
+        });
+      }
+      ReactDOM.render(defaultElement, this.el);
+    }
+  }, {
+    key: "attachElContent",
+    value: function attachElContent() {
+      var _this2 = this;
+      this.$el.addClass(this.className);
+      setTimeout(function () {
+        _this2.renderReactDefaultElement(_this2.ownerView.container);
+      });
+    }
+  }]);
+  return EmptyView;
+}(Marionette.ItemView);
+exports["default"] = EmptyView;
 
 /***/ }),
 
@@ -31720,9 +32012,7 @@ var WidgetView = _baseWidget.default.extend({
   onRender: function onRender() {
     var self = this;
     _baseWidget.default.prototype.onRender.apply(self, arguments);
-    var editModel = self.getEditModel(),
-      skinType = editModel.getSetting('_skin') || 'default';
-    self.$el.attr('data-widget_type', editModel.get('widgetType') + '.' + skinType).removeClass('elementor-widget-empty').children('.elementor-widget-empty-icon').remove();
+    this.normalizeAttributes();
 
     // TODO: Find a better way to detect if all the images have been loaded
     self.$el.imagesLoaded().always(function () {
@@ -32404,7 +32694,7 @@ var _default = /*#__PURE__*/function (_Marionette$Composite) {
         axis: 'y',
         forcePlaceholderSize: true,
         connectWith: '.elementor-navigator__element-' + this.model.get('elType') + ' > .elementor-navigator__elements',
-        cancel: '[contenteditable="true"]'
+        cancel: '[contenteditable="true"], [data-locked="true"]'
       });
     }
   }, {
@@ -34580,6 +34870,8 @@ exports["default"] = Component;
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
 var PanelElementsCategoriesCollection = __webpack_require__(/*! ./collections/categories */ "../assets/dev/js/editor/regions/panel/pages/elements/collections/categories.js"),
   PanelElementsElementsCollection = __webpack_require__(/*! ./collections/elements */ "../assets/dev/js/editor/regions/panel/pages/elements/collections/elements.js"),
   PanelElementsCategoriesView = __webpack_require__(/*! ./views/categories */ "../assets/dev/js/editor/regions/panel/pages/elements/views/categories.js"),
@@ -34636,6 +34928,17 @@ PanelElementsLayoutView = Marionette.LayoutView.extend({
   initElementsCollection: function initElementsCollection() {
     var elementsCollection = new PanelElementsElementsCollection(),
       isContainerActive = elementorCommon.config.experimentalFeatures.container;
+
+    // Deprecated widget handling.
+    Object.entries(elementor.widgetsCache).forEach(function (_ref) {
+      var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+        widgetName = _ref2[0],
+        widgetData = _ref2[1];
+      if (widgetData.deprecation && elementor.widgetsCache[widgetData.deprecation.replacement]) {
+        // Hide the old version.
+        elementor.widgetsCache[widgetName].show_in_panel = false;
+      }
+    });
 
     // TODO: Change the array from server syntax, and no need each loop for initialize
     _.each(elementor.widgetsCache, function (widget) {
@@ -37426,6 +37729,9 @@ ControlsCSSParser = elementorModules.ViewModule.extend({
             if ('font' === control.type) {
               elementor.helpers.enqueueFont(parsedValue);
             }
+            if ('__EMPTY__' === parsedValue) {
+              parsedValue = '';
+            }
             return parsedValue;
           });
         } catch (e) {
@@ -38792,8 +39098,6 @@ module.exports = elementorModules.Module.extend({
       options.buttons.forEach(function (button) {
         toast.addButton(button);
       });
-    } else {
-      toast.getElements('buttonsWrapper').remove();
     }
     if (options.classes) {
       toast.getElements('widget').addClass(options.classes);
@@ -39772,6 +40076,10 @@ var AddSectionBase = /*#__PURE__*/function (_Marionette$ItemView) {
     value: function getDroppableOptions() {
       var _this2 = this;
       return {
+        isDroppingAllowed: function isDroppingAllowed() {
+          var _elementor$channels$e, _elementor$channels$e2, _elementor$channels$e3;
+          return !((_elementor$channels$e = elementor.channels.editor.request('element:dragged')) !== null && _elementor$channels$e !== void 0 && (_elementor$channels$e2 = _elementor$channels$e.el) !== null && _elementor$channels$e2 !== void 0 && (_elementor$channels$e3 = _elementor$channels$e2.dataset) !== null && _elementor$channels$e3 !== void 0 && _elementor$channels$e3.id);
+        },
         onDropping: function onDropping(side, event) {
           elementor.getPreviewView().onDrop(event, {
             side: side,
@@ -41561,8 +41869,8 @@ var EventManager = function EventManager() {
    * Performs an action if it exists. You can pass as many arguments as you want to this function; the only rule is
    * that the first argument must always be the action.
    */
-  function /* Action, arg1, arg2, ... */
-  doAction() {
+  function doAction( /* Action, arg1, arg2, ... */
+  ) {
     var args = slice.call(arguments);
     var action = args.shift();
     if ('string' === typeof action) {
@@ -41604,8 +41912,8 @@ var EventManager = function EventManager() {
    * Performs a filter if it exists. You should only ever pass 1 argument to be filtered. The only rule is that
    * the first argument must always be the filter.
    */
-  function /* Filter, filtered arg, arg2, ... */
-  applyFilters() {
+  function applyFilters( /* Filter, filtered arg, arg2, ... */
+  ) {
     var args = slice.call(arguments);
     var filter = args.shift();
     if ('string' === typeof filter) {
@@ -53689,6 +53997,9 @@ function _regeneratorRuntime() {
   var exports = {},
     Op = Object.prototype,
     hasOwn = Op.hasOwnProperty,
+    defineProperty = Object.defineProperty || function (obj, key, desc) {
+      obj[key] = desc.value;
+    },
     $Symbol = "function" == typeof Symbol ? Symbol : {},
     iteratorSymbol = $Symbol.iterator || "@@iterator",
     asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
@@ -53712,40 +54023,9 @@ function _regeneratorRuntime() {
     var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
       generator = Object.create(protoGenerator.prototype),
       context = new Context(tryLocsList || []);
-    return generator._invoke = function (innerFn, self, context) {
-      var state = "suspendedStart";
-      return function (method, arg) {
-        if ("executing" === state) throw new Error("Generator is already running");
-        if ("completed" === state) {
-          if ("throw" === method) throw arg;
-          return doneResult();
-        }
-        for (context.method = method, context.arg = arg;;) {
-          var delegate = context.delegate;
-          if (delegate) {
-            var delegateResult = maybeInvokeDelegate(delegate, context);
-            if (delegateResult) {
-              if (delegateResult === ContinueSentinel) continue;
-              return delegateResult;
-            }
-          }
-          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-            if ("suspendedStart" === state) throw state = "completed", context.arg;
-            context.dispatchException(context.arg);
-          } else "return" === context.method && context.abrupt("return", context.arg);
-          state = "executing";
-          var record = tryCatch(innerFn, self, context);
-          if ("normal" === record.type) {
-            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-            return {
-              value: record.arg,
-              done: context.done
-            };
-          }
-          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-        }
-      };
-    }(innerFn, self, context), generator;
+    return defineProperty(generator, "_invoke", {
+      value: makeInvokeMethod(innerFn, self, context)
+    }), generator;
   }
   function tryCatch(fn, obj, arg) {
     try {
@@ -53799,13 +54079,49 @@ function _regeneratorRuntime() {
       reject(record.arg);
     }
     var previousPromise;
-    this._invoke = function (method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
+    defineProperty(this, "_invoke", {
+      value: function value(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function (resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+        return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
       }
-      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    });
+  }
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = "suspendedStart";
+    return function (method, arg) {
+      if ("executing" === state) throw new Error("Generator is already running");
+      if ("completed" === state) {
+        if ("throw" === method) throw arg;
+        return doneResult();
+      }
+      for (context.method = method, context.arg = arg;;) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+        if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
+          if ("suspendedStart" === state) throw state = "completed", context.arg;
+          context.dispatchException(context.arg);
+        } else "return" === context.method && context.abrupt("return", context.arg);
+        state = "executing";
+        var record = tryCatch(innerFn, self, context);
+        if ("normal" === record.type) {
+          if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        }
+        "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+      }
     };
   }
   function maybeInvokeDelegate(delegate, context) {
@@ -53863,7 +54179,13 @@ function _regeneratorRuntime() {
       done: !0
     };
   }
-  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), defineProperty(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
     var ctor = "function" == typeof genFun && genFun.constructor;
     return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
   }, exports.mark = function (genFun) {
@@ -53884,8 +54206,9 @@ function _regeneratorRuntime() {
     return this;
   }), define(Gp, "toString", function () {
     return "[object Generator]";
-  }), exports.keys = function (object) {
-    var keys = [];
+  }), exports.keys = function (val) {
+    var object = Object(val),
+      keys = [];
     for (var key in object) {
       keys.push(key);
     }
@@ -54294,6 +54617,18 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 				}
 /******/ 			}
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */

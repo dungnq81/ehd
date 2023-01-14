@@ -2,6 +2,7 @@
 
 namespace WebpConverter\Error;
 
+use WebpConverter\Error\Detector\CloudflareStatusDetector;
 use WebpConverter\Error\Detector\LibsNotInstalledDetector;
 use WebpConverter\Error\Detector\LibsWithoutWebpSupportDetector;
 use WebpConverter\Error\Detector\PassthruExecutionDetector;
@@ -171,6 +172,9 @@ class ErrorDetectorAggregator implements HookableInterface {
 		}
 
 		if ( $new_error = ( new SettingsIncorrectDetector( $this->plugin_data ) )->get_error() ) {
+			$this->cached_errors[] = $new_error;
+		}
+		if ( $new_error = ( new CloudflareStatusDetector( $this->plugin_data ) )->get_error() ) {
 			$this->cached_errors[] = $new_error;
 		}
 

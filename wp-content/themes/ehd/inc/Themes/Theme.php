@@ -2,7 +2,7 @@
 
 namespace EHD\Sites\Themes;
 
-use EHD\Plugins\Core\Helper;
+use EHD\Cores\Helper;
 
 \defined('\WPINC') || die;
 

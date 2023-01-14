@@ -259,12 +259,19 @@
                 
                 $taxonomy_attributes = wc_get_attribute_taxonomies();
                 
-                $attribute_name = str_ireplace( 'pa_', '', wc_sanitize_taxonomy_name( $attribute_name ) );
+                // $attribute_name = str_ireplace( 'pa_', '', wc_sanitize_taxonomy_name( $attribute_name ) );
+                if ( 'pa_' === substr( $attribute_name, 0, 3 ) ) {
+                    $attribute_name = str_replace( 'pa_', '', wc_sanitize_taxonomy_name( $attribute_name ) );
+                }
                 
                 foreach ( $taxonomy_attributes as $attribute ) {
                     
                     // Skip taxonomy attributes that didn't match the query.
-                    if ( false === stripos( $attribute->attribute_name, $attribute_name ) ) {
+                    /*if ( false === stripos( $attribute->attribute_name, $attribute_name ) ) {
+                        continue;
+                    }*/
+                    
+                    if ( $attribute->attribute_name !== $attribute_name ) {
                         continue;
                     }
                     

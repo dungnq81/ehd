@@ -226,14 +226,14 @@ class RewritesErrorsDetector implements ErrorDetector {
 		$uploads_url = apply_filters( 'webpc_dir_url', '', 'uploads' );
 		$ver_param   = time();
 
-		$file_webp     = $this->file_loader->get_file_size_by_url(
-			$uploads_url . self::PATH_OUTPUT_FILE_PNG,
-			true,
-			$ver_param
-		);
 		$file_original = $this->file_loader->get_file_size_by_url(
 			$uploads_url . self::PATH_OUTPUT_FILE_PNG,
 			false,
+			$ver_param
+		);
+		$file_webp     = $this->file_loader->get_file_size_by_url(
+			$uploads_url . self::PATH_OUTPUT_FILE_PNG,
+			true,
 			$ver_param
 		);
 

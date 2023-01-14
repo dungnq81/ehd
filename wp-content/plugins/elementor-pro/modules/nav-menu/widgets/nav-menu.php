@@ -43,12 +43,6 @@ class Nav_Menu extends Base_Widget {
 		return [ 'smartmenus' ];
 	}
 
-	public function on_export( $element ) {
-		unset( $element['settings']['menu'] );
-
-		return $element;
-	}
-
 	protected function get_nav_menu_index() {
 		return $this->nav_menu_index++;
 	}
@@ -1558,4 +1552,53 @@ class Nav_Menu extends Base_Widget {
 	}
 
 	public function render_plain_content() {}
+
+	public function on_export( $element ) {
+		$slug = $element['settings']['menu'] ?? '';
+		$menu_object = wp_get_nav_menu_object( $slug );
+
+		if ( ! $menu_object instanceof \WP_Term ) {
+			unset( $element['settings']['menu'] );
+			return $element;
+		}
+
+		$menu_id = $menu_object->term_id ?? 0;
+
+		if ( ! empty( $menu_id ) ) {
+			$element['settings']['menu_id'] = $menu_id;
+		}
+
+		return $element;
+	}
+
+	/**
+	 * When importing a menu, if the menu has a slug that already exists, we add "-duplicate" to the slug of the imported menu.
+	 * Upon importing a menu widget, we replace the slug to the correct one by fetching it from the correct ID in the $data array.
+	 *
+	 * Please take note that this function overrides On_Import_Trait::on_import_update_dynamic_content().
+	 *
+	 * @param array $element_config
+	 * @param array $data
+	 * @param $controls
+	 *
+	 * @return array
+	 */
+	public static function on_import_update_dynamic_content( array $element_config, array $data, $controls = null ) : array {
+		$old_menu_id = $element_config['settings']['menu_id'] ?? 0;
+
+		if ( empty( $old_menu_id ) ) {
+			return $element_config;
+		}
+
+		$new_menu_id = $data['term_ids'][ $old_menu_id ] ?? 0;
+		$new_slug = wp_get_nav_menu_object( $new_menu_id )->slug ?? '';
+
+		if ( ! empty( $new_slug ) ) {
+			$element_config['settings']['menu'] = $new_slug;
+		}
+
+		unset( $element_config['settings']['menu_id'] );
+
+		return $element_config;
+	}
 }

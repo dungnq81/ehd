@@ -1,19 +1,17 @@
 <?php
 
-namespace EHD\Plugins;
+namespace EHD;
 
-use EHD\Plugins\Themes\Admin;
-use EHD\Plugins\Themes\Customizer;
-use EHD\Plugins\Themes\Optimizer;
-use EHD\Plugins\Core\Shortcode;
-
+use EHD\Cores\Shortcode;
 use EHD\Plugins\Elementor\Elementor;
-use EHD\Plugins\Widgets\RecentPosts_Widget;
 use EHD\Plugins\WooCommerce\WooCommerce;
-
-use EHD\Plugins\Widgets\offCanvas_Widget;
-use EHD\Plugins\Widgets\Search_Widget;
-use EHD\Plugins\Widgets\DropdownSearch_Widget;
+use EHD\Themes\Admin;
+use EHD\Themes\Customizer;
+use EHD\Themes\Optimizer;
+use EHD\Widgets\DropdownSearch_Widget;
+use EHD\Widgets\offCanvas_Widget;
+use EHD\Widgets\RecentPosts_Widget;
+use EHD\Widgets\Search_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -33,23 +31,22 @@ final class Plugin
      */
     public function plugins_loaded(): void
     {
-        /** WooCommerce */
-        class_exists('\WooCommerce') && (new WooCommerce());
-
         // Widgets wordpress
         add_action('widgets_init', [&$this, 'unregister_default_widgets'], 11);
         add_action('widgets_init', [&$this, 'register_widgets'], 11);
 
-        /**
-         * Elementor
-         * Notice if the Elementor is not active
-         */
+        /** WooCommerce */
+        class_exists('\WooCommerce') && (new WooCommerce());
+
+        /** ACF */
+
+
+        /** Elementor */
         if (!did_action('elementor/loaded')) {
             add_action('admin_notices', [$this, 'admin_notice_missing_elementor']);
             return;
         }
 
-        /** Elementor */
         (new Elementor());
     }
 

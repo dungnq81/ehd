@@ -20,7 +20,7 @@ class HtaccessLoader extends LoaderAbstract {
 	 * {@inheritdoc}
 	 */
 	public function init_hooks() {
-		add_action( 'webpc_htaccess_rewrite_root', [ $this, 'modify_document_root_path' ] );
+		add_filter( 'webpc_htaccess_rewrite_root', [ $this, 'modify_document_root_path' ] );
 	}
 
 	/**

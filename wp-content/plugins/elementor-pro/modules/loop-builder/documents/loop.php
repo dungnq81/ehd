@@ -26,6 +26,12 @@ class Loop extends Theme_Document {
 		'post-info',
 	];
 
+	const WIDGETS_TO_HIDE = [
+		'loop-grid',
+		'woocommerce-product-data-tabs',
+		'loop-carousel',
+	];
+
 	public static function get_type() {
 		return static::DOCUMENT_TYPE;
 	}
@@ -95,7 +101,7 @@ class Loop extends Theme_Document {
 			'categories' => [ 'layout' ],
 		];
 
-		foreach ( [ 'loop-grid', 'woocommerce-product-data-tabs' ] as $widget_to_hide ) {
+		foreach ( static::WIDGETS_TO_HIDE as $widget_to_hide ) {
 			$config['panel']['widgets_settings'][ $widget_to_hide ] = [
 				'show_in_panel' => false,
 			];
@@ -231,7 +237,7 @@ class Loop extends Theme_Document {
 	 * @since 3.8.0
 	 */
 	public function get_content( $with_css = false ) {
-		$preview_mode = Plugin::elementor()->preview->is_preview_mode( $this->post->ID );
+		$preview_mode = Plugin::elementor()->preview->is_preview_mode();
 
 		add_filter( 'elementor/frontend/builder_content/before_print_css', [ $this, 'prevent_inline_css_printing' ] );
 

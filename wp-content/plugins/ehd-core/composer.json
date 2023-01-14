@@ -8,12 +8,12 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"EHD\\Plugins\\": "inc",
-			"EHD\\Plugins\\Core\\": "inc/Core",
-			"EHD\\Plugins\\Elementor\\": "inc/Elementor",
-			"EHD\\Plugins\\Themes\\": "inc/Themes",
-			"EHD\\Plugins\\Widgets\\": "inc/Widgets",
-			"EHD\\Plugins\\WooCommerce\\": "inc/WooCommerce"
+			"EHD\\": "inc",
+			"EHD\\Cores\\": "inc/Cores",
+			"EHD\\Plugins\\": "inc/Plugins",
+			"EHD\\Themes\\": "inc/Themes",
+			"EHD\\Walkers\\": "inc/Walkers",
+			"EHD\\Widgets\\": "inc/Widgets"
 		},
 		"exclude-from-classmap": [],
 		"files": []

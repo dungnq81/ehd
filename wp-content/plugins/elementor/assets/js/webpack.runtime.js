@@ -1,4 +1,4 @@
-/*! elementor - v3.9.2 - 21-12-2022 */
+/*! elementor - v3.10.0 - 09-01-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({});
@@ -124,7 +124,7 @@
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
 /******/ 			if (chunkId === "lightbox") return "" + chunkId + ".7d480a6e916905e5fb93.bundle.js";
-/******/ 			if (chunkId === "text-path") return "" + chunkId + ".9b80ff9318a4cb25e3b8.bundle.js";
+/******/ 			if (chunkId === "text-path") return "" + chunkId + ".2d22c4c6bb5b646b2a49.bundle.js";
 /******/ 			if (chunkId === "accordion") return "" + chunkId + ".2e5c3409e658db9d3c3a.bundle.js";
 /******/ 			if (chunkId === "alert") return "" + chunkId + ".fab41b1ce9a2329c8779.bundle.js";
 /******/ 			if (chunkId === "counter") return "" + chunkId + ".76b7d2e97fab58558ee8.bundle.js";
@@ -135,6 +135,7 @@
 /******/ 			if (chunkId === "image-carousel") return "" + chunkId + ".68bbb96593f8c6ecf166.bundle.js";
 /******/ 			if (chunkId === "text-editor") return "" + chunkId + ".26e9c597fc0c1765a519.bundle.js";
 /******/ 			if (chunkId === "wp-audio") return "" + chunkId + ".c312891b47caa5e1facb.bundle.js";
+/******/ 			if (chunkId === "nested-tabs") return "" + chunkId + ".5d3cad2561ee4d93a1ce.bundle.js";
 /******/ 			if (chunkId === "container") return "" + chunkId + ".1defadbf74ae3af5a41b.bundle.js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
@@ -195,8 +196,7 @@
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
-/******/ 			}
-/******/ 			;
+/******/ 			};
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);

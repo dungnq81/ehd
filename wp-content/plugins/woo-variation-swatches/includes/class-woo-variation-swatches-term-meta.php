@@ -45,6 +45,7 @@
             }
             
             public function color_preview( $attribute_type, $term_id, $key ) {
+                
                 if ( 'color' === $attribute_type ) {
                     $primary_color = sanitize_hex_color( get_term_meta( $term_id, $key, true ) );
                     
@@ -112,9 +113,7 @@
                 }
                 
                 $attribute = woo_variation_swatches()->get_backend()->get_attribute_taxonomy( $this->taxonomy );
-                
                 $attribute_type = $attribute->attribute_type;
-                
                 $this->preview( $attribute_type, $term_id, $this->fields );
                 
                 return $columns;

@@ -112,7 +112,7 @@
             // Clear Attributes Cache
             public function clear_cache_on_attribute_added( $id, $data ) {
                 
-                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $data[ 'attribute_name' ] ) );
+                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', wc_attribute_taxonomy_name( $data[ 'attribute_name' ] ) ) );
                 
                 delete_transient( $transient_key );
                 $this->delete_last_changed();
@@ -121,8 +121,8 @@
             
             public function clear_cache_on_attribute_updated( $id, $data, $old_slug ) {
                 
-                $transient_key     = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $data[ 'attribute_name' ] ) );
-                $transient_key_old = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $old_slug ) );
+                $transient_key     = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', wc_attribute_taxonomy_name( $data[ 'attribute_name' ] ) ) );
+                $transient_key_old = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', wc_attribute_taxonomy_name( $old_slug ) ) );
                 
                 delete_transient( $transient_key );
                 delete_transient( $transient_key_old );
@@ -132,7 +132,7 @@
             
             public function clear_cache_on_attribute_deleted( $id, $name, $taxonomy ) {
                 
-                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $taxonomy ) );
+                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', wc_attribute_taxonomy_name( $name ) ) );
                 delete_transient( $transient_key );
                 $this->delete_last_changed();
                 $this->clear_cache_by_group();

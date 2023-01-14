@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Plugins\Walkers;
+namespace EHD\Walkers;
 
 use stdClass;
 use Walker_Nav_Menu;

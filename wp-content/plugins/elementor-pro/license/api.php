@@ -146,7 +146,6 @@ class API {
 	}
 
 	public static function set_license_data( $license_data, $expiration = null ) {
-		$expiration = 'lifetime';
 		if ( null === $expiration ) {
 			$expiration = '+12 hours';
 
@@ -179,13 +178,12 @@ class API {
 
 	public static function get_license_data( $force_request = false ) {
 		$license_data_error = [
-			'license' => 'valid',
-			'payment_id' => '140',
-			'license_limit' => null,
-			'site_count' => '1',
-			'activations_left' => null,
-			'expires' => 'lifetime',
-			'success' => true,
+			'success' => false,
+			'error' => static::STATUS_HTTP_ERROR,
+			'payment_id' => '0',
+			'license_limit' => '0',
+			'site_count' => '0',
+			'activations_left' => '0',
 		];
 
 		$license_key = Admin::get_license_key();
@@ -266,7 +264,7 @@ class API {
 
 			$info_data = self::remote_post( 'pro/info', $body_args );
 
-			if ( empty( $info_data['new_version'] ) ) {
+			if ( is_wp_error( $info_data ) || empty( $info_data['new_version'] ) ) {
 				return new \WP_Error( esc_html__( 'HTTP Error', 'elementor-pro' ) );
 			}
 
@@ -383,20 +381,25 @@ class API {
 	public static function get_error_message( $error ) {
 		$errors = self::get_errors();
 
-		
-		return '';
+		if ( isset( $errors[ $error ] ) ) {
+			$error_msg = $errors[ $error ];
+		} else {
+			$error_msg = esc_html__( 'An error occurred. Please check your internet connection and try again. If the problem persists, contact our support.', 'elementor-pro' ) . ' (' . $error . ')';
+		}
+
+		return $error_msg;
 	}
 
 	public static function is_license_active() {
 		$license_data = self::get_license_data();
 
-		return true;
+		return (bool) $license_data['success'];
 	}
 
 	public static function is_license_expired() {
 		$license_data = self::get_license_data();
 
-		return self::STATUS_EXPIRED === $license_data['license'];
+		return ! empty( $license_data['error'] ) && self::STATUS_EXPIRED === $license_data['error'];
 	}
 
 	public static function is_licence_pro_trial() {
@@ -405,10 +408,18 @@ class API {
 
 	public static function is_licence_has_feature( $feature_name ) {
 		$license_data = self::get_license_data();
+
+		return ! empty( $license_data['features'] )
+			&& in_array( $feature_name, $license_data['features'], true );
 	}
 
 	public static function is_license_about_to_expire() {
-		return false;
+		$license_data = self::get_license_data();
+
+		if ( ! empty( $license_data['recurring'] ) ) {
+			return false;
+		}
+
 		if ( 'lifetime' === $license_data['expires'] ) {
 			return false;
 		}
@@ -424,7 +435,7 @@ class API {
 	public static function get_library_access_level( $library_type = 'template' ) {
 		$license_data = static::get_license_data();
 
-		$access_level = ConnectModule::ACCESS_LEVEL_PRO;
+		$access_level = ConnectModule::ACCESS_LEVEL_CORE;
 
 		if ( static::is_license_active() ) {
 			$access_level = ConnectModule::ACCESS_LEVEL_PRO;

@@ -9,37 +9,37 @@ class ComposerStaticInit6cef821f1336fb207d3ff45c9f00b4e9
     public static $prefixLengthsPsr4 = array (
         'E' => 
         array (
-            'EHD\\Plugins\\WooCommerce\\' => 24,
-            'EHD\\Plugins\\Widgets\\' => 20,
-            'EHD\\Plugins\\Themes\\' => 19,
-            'EHD\\Plugins\\Elementor\\' => 22,
-            'EHD\\Plugins\\Core\\' => 17,
+            'EHD\\Widgets\\' => 12,
+            'EHD\\Walkers\\' => 12,
+            'EHD\\Themes\\' => 11,
             'EHD\\Plugins\\' => 12,
+            'EHD\\Cores\\' => 10,
+            'EHD\\' => 4,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'EHD\\Plugins\\WooCommerce\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/WooCommerce',
-        ),
-        'EHD\\Plugins\\Widgets\\' => 
+        'EHD\\Widgets\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Widgets',
         ),
-        'EHD\\Plugins\\Themes\\' => 
+        'EHD\\Walkers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/Walkers',
+        ),
+        'EHD\\Themes\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/Themes',
         ),
-        'EHD\\Plugins\\Elementor\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/Elementor',
-        ),
-        'EHD\\Plugins\\Core\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/inc/Core',
-        ),
         'EHD\\Plugins\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/Plugins',
+        ),
+        'EHD\\Cores\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/Cores',
+        ),
+        'EHD\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc',
         ),

@@ -6,10 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'EHD\\Plugins\\WooCommerce\\' => array($baseDir . '/inc/WooCommerce'),
-    'EHD\\Plugins\\Widgets\\' => array($baseDir . '/inc/Widgets'),
-    'EHD\\Plugins\\Themes\\' => array($baseDir . '/inc/Themes'),
-    'EHD\\Plugins\\Elementor\\' => array($baseDir . '/inc/Elementor'),
-    'EHD\\Plugins\\Core\\' => array($baseDir . '/inc/Core'),
-    'EHD\\Plugins\\' => array($baseDir . '/inc'),
+    'EHD\\Widgets\\' => array($baseDir . '/inc/Widgets'),
+    'EHD\\Walkers\\' => array($baseDir . '/inc/Walkers'),
+    'EHD\\Themes\\' => array($baseDir . '/inc/Themes'),
+    'EHD\\Plugins\\' => array($baseDir . '/inc/Plugins'),
+    'EHD\\Cores\\' => array($baseDir . '/inc/Cores'),
+    'EHD\\' => array($baseDir . '/inc'),
 );

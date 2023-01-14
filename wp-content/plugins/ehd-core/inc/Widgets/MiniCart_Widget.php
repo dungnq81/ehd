@@ -1,8 +1,8 @@
 <?php
 
-namespace EHD\Plugins\Widgets;
+namespace EHD\Widgets;
 
-use EHD\Plugins\Core\Helper;
+use EHD\Cores\Helper;
 use WC_Widget_Cart;
 
 \defined('ABSPATH') || die;

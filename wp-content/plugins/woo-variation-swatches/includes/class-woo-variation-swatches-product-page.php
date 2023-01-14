@@ -538,6 +538,10 @@
                     $attachment_id = apply_filters( 'woo_variation_swatches_global_product_attribute_image_id', absint( woo_variation_swatches()->get_frontend()->get_product_attribute_image( $term, $data ) ), $data );
                     $image_size    = apply_filters( 'woo_variation_swatches_global_product_attribute_image_size', sanitize_text_field( woo_variation_swatches()->get_option( 'attribute_image_size', 'variation_swatches_image_size' ) ), $data );
                     
+                    if ( empty( $attachment_id ) && $data[ 'total_attributes' ] === 1 && $data[ 'variation_image_id' ] > 0 ) {
+                        $attachment_id = $data[ 'variation_image_id' ];
+                    }
+                    
                     return wp_get_attachment_image_src( $attachment_id, $image_size );
                 }
             }
@@ -697,9 +701,11 @@
             
             public function get_swatch_data( $args, $term_or_option ) {
                 
-                $options   = $args[ 'options' ];
-                $product   = $args[ 'product' ];
-                $attribute = $args[ 'attribute' ];
+                $options          = $args[ 'options' ];
+                $product          = $args[ 'product' ];
+                $attribute        = $args[ 'attribute' ];
+                $attributes       = $product->get_variation_attributes();
+                $count_attributes = count( array_keys( $attributes ) );
                 
                 $is_term = is_object( $term_or_option );
                 
@@ -716,22 +722,36 @@
                     $option_name = apply_filters( 'woocommerce_variation_option_name', $option, null, $attribute, $product );
                 }
                 
+                $attribute_name  = wc_variation_attribute_name( $attribute );
+                $attribute_value = $slug;
+                
+                $single_attribute_variation_image_id = 0;
+                if ( count( array_keys( $attributes ) ) === 1 ) {
+                    $available_variations = $this->get_available_variation_images( $product );
+                    
+                    $variation = $this->get_variation_by_attribute_name_value( $available_variations, $attribute_name, $attribute_value );
+                    
+                    $single_attribute_variation_image_id = $variation[ 'variation_image_id' ];
+                }
+                
                 return array(
-                    'is_archive'      => isset( $args[ 'is_archive' ] ) ? $args[ 'is_archive' ] : false,
-                    'is_selected'     => $is_selected,
-                    'is_term'         => $is_term,
-                    'term_id'         => $is_term ? $term->term_id : woo_variation_swatches()->sanitize_name( $option ),
-                    'slug'            => $slug,
-                    'option_slug'     => woo_variation_swatches()->sanitize_name( $slug ),
-                    'item'            => $term_or_option,
-                    'options'         => $options,
-                    'option_name'     => $option_name,
-                    'attribute'       => $attribute,
-                    'attribute_key'   => sanitize_title( $attribute ),
-                    'attribute_name'  => wc_variation_attribute_name( $attribute ),
-                    'attribute_label' => wc_attribute_label( $attribute, $product ),
-                    'args'            => $args,
-                    'product'         => $product,
+                    'is_archive'         => isset( $args[ 'is_archive' ] ) ? $args[ 'is_archive' ] : false,
+                    'is_selected'        => $is_selected,
+                    'is_term'            => $is_term,
+                    'term_id'            => $is_term ? $term->term_id : woo_variation_swatches()->sanitize_name( $option ),
+                    'slug'               => $slug,
+                    'variation_image_id' => absint( $single_attribute_variation_image_id ),
+                    'total_attributes'   => absint( $count_attributes ),
+                    'option_slug'        => woo_variation_swatches()->sanitize_name( $slug ),
+                    'item'               => $term_or_option,
+                    'options'            => $options,
+                    'option_name'        => $option_name,
+                    'attribute'          => $attribute,
+                    'attribute_key'      => sanitize_title( $attribute ),
+                    'attribute_name'     => wc_variation_attribute_name( $attribute ),
+                    'attribute_label'    => wc_attribute_label( $attribute, $product ),
+                    'args'               => $args,
+                    'product'            => $product,
                 );
             }
             

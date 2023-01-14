@@ -1,4 +1,4 @@
-/*! elementor - v3.9.2 - 21-12-2022 */
+/*! elementor - v3.10.0 - 09-01-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -226,20 +226,30 @@ var Create = /*#__PURE__*/function (_$e$modules$editor$Co) {
     key: "apply",
     value: function () {
       var _apply = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
-        var container, settings;
+        var container, type, previousDefaults, newDefaults;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 container = _ref.container;
                 $e.internal('panel/state-loading');
-                settings = (0, _extractContainerSettings.default)(container);
+                type = (0, _utils.extractElementType)(container.model), previousDefaults = (0, _api.getElementDefaults)(type), newDefaults = (0, _extractContainerSettings.default)(container);
                 _context.prev = 3;
                 _context.next = 6;
-                return (0, _api.updateElementDefaults)((0, _utils.extractElementType)(container.model), settings);
+                return (0, _api.updateElementDefaults)(type, newDefaults);
               case 6:
                 elementor.notifications.showToast({
-                  message: __('Default settings changed.', 'elementor')
+                  message: __('Default settings changed.', 'elementor'),
+                  buttons: [{
+                    name: 'undo',
+                    text: __('Undo', 'elementor'),
+                    callback: function callback() {
+                      $e.run('kit-elements-defaults/restore', {
+                        type: type,
+                        settings: previousDefaults
+                      });
+                    }
+                  }]
                 });
                 _context.next = 13;
                 break;
@@ -331,7 +341,7 @@ var Delete = /*#__PURE__*/function (_$e$modules$CommandBa) {
                 elementor.notifications.showToast({
                   message: __('An error occurred.', 'elementor')
                 });
-                throw error;
+                throw _context.t0;
               case 12:
                 _context.prev = 12;
                 $e.internal('panel/state-ready');
@@ -386,9 +396,98 @@ Object.defineProperty(exports, "Delete", ({
     return _delete.default;
   }
 }));
+Object.defineProperty(exports, "Restore", ({
+  enumerable: true,
+  get: function get() {
+    return _restore.default;
+  }
+}));
 var _confirmCreation = _interopRequireDefault(__webpack_require__(/*! ./confirm-creation */ "../modules/kit-elements-defaults/assets/js/editor/commands/confirm-creation.js"));
 var _create = _interopRequireDefault(__webpack_require__(/*! ./create */ "../modules/kit-elements-defaults/assets/js/editor/commands/create.js"));
 var _delete = _interopRequireDefault(__webpack_require__(/*! ./delete */ "../modules/kit-elements-defaults/assets/js/editor/commands/delete.js"));
+var _restore = _interopRequireDefault(__webpack_require__(/*! ./restore */ "../modules/kit-elements-defaults/assets/js/editor/commands/restore.js"));
+
+/***/ }),
+
+/***/ "../modules/kit-elements-defaults/assets/js/editor/commands/restore.js":
+/*!*****************************************************************************!*\
+  !*** ../modules/kit-elements-defaults/assets/js/editor/commands/restore.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "../node_modules/@babel/runtime/regenerator/index.js"));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "../node_modules/@babel/runtime/helpers/asyncToGenerator.js"));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
+var _api = __webpack_require__(/*! ../api */ "../modules/kit-elements-defaults/assets/js/editor/api.js");
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+var Restore = /*#__PURE__*/function (_$e$modules$CommandBa) {
+  (0, _inherits2.default)(Restore, _$e$modules$CommandBa);
+  var _super = _createSuper(Restore);
+  function Restore() {
+    (0, _classCallCheck2.default)(this, Restore);
+    return _super.apply(this, arguments);
+  }
+  (0, _createClass2.default)(Restore, [{
+    key: "apply",
+    value: function () {
+      var _apply = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
+        var type, settings;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                type = _ref.type, settings = _ref.settings;
+                $e.internal('panel/state-loading');
+                _context.prev = 2;
+                _context.next = 5;
+                return (0, _api.updateElementDefaults)(type, settings);
+              case 5:
+                elementor.notifications.showToast({
+                  message: __('Previous settings restored.', 'elementor')
+                });
+                _context.next = 12;
+                break;
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](2);
+                elementor.notifications.showToast({
+                  message: __('An error occurred.', 'elementor')
+                });
+                throw _context.t0;
+              case 12:
+                _context.prev = 12;
+                $e.internal('panel/state-ready');
+                return _context.finish(12);
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[2, 8, 12, 15]]);
+      }));
+      function apply(_x) {
+        return _apply.apply(this, arguments);
+      }
+      return apply;
+    }()
+  }]);
+  return Restore;
+}($e.modules.CommandBase);
+exports["default"] = Restore;
 
 /***/ }),
 
@@ -1218,6 +1317,9 @@ function _regeneratorRuntime() {
   var exports = {},
     Op = Object.prototype,
     hasOwn = Op.hasOwnProperty,
+    defineProperty = Object.defineProperty || function (obj, key, desc) {
+      obj[key] = desc.value;
+    },
     $Symbol = "function" == typeof Symbol ? Symbol : {},
     iteratorSymbol = $Symbol.iterator || "@@iterator",
     asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
@@ -1241,40 +1343,9 @@ function _regeneratorRuntime() {
     var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
       generator = Object.create(protoGenerator.prototype),
       context = new Context(tryLocsList || []);
-    return generator._invoke = function (innerFn, self, context) {
-      var state = "suspendedStart";
-      return function (method, arg) {
-        if ("executing" === state) throw new Error("Generator is already running");
-        if ("completed" === state) {
-          if ("throw" === method) throw arg;
-          return doneResult();
-        }
-        for (context.method = method, context.arg = arg;;) {
-          var delegate = context.delegate;
-          if (delegate) {
-            var delegateResult = maybeInvokeDelegate(delegate, context);
-            if (delegateResult) {
-              if (delegateResult === ContinueSentinel) continue;
-              return delegateResult;
-            }
-          }
-          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-            if ("suspendedStart" === state) throw state = "completed", context.arg;
-            context.dispatchException(context.arg);
-          } else "return" === context.method && context.abrupt("return", context.arg);
-          state = "executing";
-          var record = tryCatch(innerFn, self, context);
-          if ("normal" === record.type) {
-            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-            return {
-              value: record.arg,
-              done: context.done
-            };
-          }
-          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-        }
-      };
-    }(innerFn, self, context), generator;
+    return defineProperty(generator, "_invoke", {
+      value: makeInvokeMethod(innerFn, self, context)
+    }), generator;
   }
   function tryCatch(fn, obj, arg) {
     try {
@@ -1328,13 +1399,49 @@ function _regeneratorRuntime() {
       reject(record.arg);
     }
     var previousPromise;
-    this._invoke = function (method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
+    defineProperty(this, "_invoke", {
+      value: function value(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new PromiseImpl(function (resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+        return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
       }
-      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    });
+  }
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = "suspendedStart";
+    return function (method, arg) {
+      if ("executing" === state) throw new Error("Generator is already running");
+      if ("completed" === state) {
+        if ("throw" === method) throw arg;
+        return doneResult();
+      }
+      for (context.method = method, context.arg = arg;;) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+        if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
+          if ("suspendedStart" === state) throw state = "completed", context.arg;
+          context.dispatchException(context.arg);
+        } else "return" === context.method && context.abrupt("return", context.arg);
+        state = "executing";
+        var record = tryCatch(innerFn, self, context);
+        if ("normal" === record.type) {
+          if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        }
+        "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
+      }
     };
   }
   function maybeInvokeDelegate(delegate, context) {
@@ -1392,7 +1499,13 @@ function _regeneratorRuntime() {
       done: !0
     };
   }
-  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), defineProperty(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
     var ctor = "function" == typeof genFun && genFun.constructor;
     return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
   }, exports.mark = function (genFun) {
@@ -1413,8 +1526,9 @@ function _regeneratorRuntime() {
     return this;
   }), define(Gp, "toString", function () {
     return "[object Generator]";
-  }), exports.keys = function (object) {
-    var keys = [];
+  }), exports.keys = function (val) {
+    var object = Object(val),
+      keys = [];
     for (var key in object) {
       keys.push(key);
     }

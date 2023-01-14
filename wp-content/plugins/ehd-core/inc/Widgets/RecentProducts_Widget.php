@@ -1,8 +1,8 @@
 <?php
 
-namespace EHD\Plugins\Widgets;
+namespace EHD\Widgets;
 
-use EHD\Plugins\Core\Widget;
+use EHD\Cores\Widget;
 use WP_Query;
 
 \defined('ABSPATH') || die;

@@ -1,4 +1,4 @@
-/*! elementor - v3.9.2 - 21-12-2022 */
+/*! elementor - v3.10.0 - 09-01-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["preloaded-modules"],{
 
 /***/ "../assets/dev/js/frontend/handlers/accordion.js":
@@ -879,6 +879,7 @@ var _toggle = _interopRequireDefault(__webpack_require__(/*! ./handlers/toggle *
 var _video = _interopRequireDefault(__webpack_require__(/*! ./handlers/video */ "../assets/dev/js/frontend/handlers/video.js"));
 var _imageCarousel = _interopRequireDefault(__webpack_require__(/*! ./handlers/image-carousel */ "../assets/dev/js/frontend/handlers/image-carousel.js"));
 var _textEditor = _interopRequireDefault(__webpack_require__(/*! ./handlers/text-editor */ "../assets/dev/js/frontend/handlers/text-editor.js"));
+var _nestedTabs = _interopRequireDefault(__webpack_require__(/*! elementor/modules/nested-tabs/assets/js/frontend/handlers/nested-tabs */ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js"));
 var _lightbox = _interopRequireDefault(__webpack_require__(/*! elementor-frontend/utils/lightbox/lightbox */ "../assets/dev/js/frontend/utils/lightbox/lightbox.js"));
 elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
   elementorFrontend.elementsHandler.elementsHandlers = {
@@ -887,6 +888,7 @@ elementorFrontend.elements.$window.on('elementor/frontend/init', () => {
     'counter.default': _counter.default,
     'progress.default': _progress.default,
     'tabs.default': _tabs.default,
+    'nested-tabs.default': _nestedTabs.default,
     'toggle.default': _toggle.default,
     'video.default': _video.default,
     'image-carousel.default': _imageCarousel.default,
@@ -2178,6 +2180,55 @@ module.exports = elementorModules.ViewModule.extend({
     window.screenfull = screenfull;
   }
 })();
+
+/***/ }),
+
+/***/ "../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js":
+/*!*************************************************************************!*\
+  !*** ../modules/nested-tabs/assets/js/frontend/handlers/nested-tabs.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _baseNestedTabs = _interopRequireDefault(__webpack_require__(/*! elementor-frontend/handlers/base-nested-tabs */ "../assets/dev/js/frontend/handlers/base-nested-tabs.js"));
+class NestedTabs extends _baseNestedTabs.default {
+  getTabContentFilterSelector(tabIndex) {
+    // Double by 2, since each `e-con` should have 'e-collapse'.
+    return `*:nth-child(${tabIndex * 2})`;
+  }
+  onInit() {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    // TODO: Find better solution, Manually adding 'e-collapse' for each container.
+    if (elementorFrontend.isEditMode()) {
+      const $widget = this.$element,
+        $removed = this.findElement('.e-collapse').remove();
+      let index = 1;
+      this.findElement('.e-con').each(function () {
+        const $current = jQuery(this),
+          $desktopTabTitle = $widget.find(`.e-n-tabs-heading > *:nth-child(${index})`),
+          mobileTitleHTML = `<div class="e-n-tab-title e-collapse" data-tab="${index}" role="tab">${$desktopTabTitle.html()}</div>`;
+        $current.before(mobileTitleHTML);
+        ++index;
+      });
+
+      // On refresh since indexes are rearranged, do not call `activateDefaultTab` let editor control handle it.
+      if ($removed.length) {
+        return elementorModules.ViewModule.prototype.onInit.apply(this, args);
+      }
+    }
+    super.onInit(...args);
+  }
+}
+exports["default"] = NestedTabs;
 
 /***/ }),
 
