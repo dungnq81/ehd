@@ -9,7 +9,7 @@ namespace EHD\Sites\Plugins\ACF;
 
 \defined('\WPINC') || die;
 
-use EHD\Plugins\Core\Helper;
+use EHD\Cores\Helper;
 
 // If plugin - 'ACF' not exist then return.
 if (!class_exists('\ACF')) {
