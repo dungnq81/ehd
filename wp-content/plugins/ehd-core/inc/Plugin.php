@@ -5,8 +5,12 @@ namespace EHD;
 use EHD\Cores\Shortcode;
 
 use EHD\Plugins\ACF;
+use EHD\Plugins\CF7;
 use EHD\Plugins\Elementor\Elementor;
+use EHD\Plugins\LiteSpeed;
+use EHD\Plugins\RankMath;
 use EHD\Plugins\WooCommerce\WooCommerce;
+use EHD\Plugins\WpRocket;
 
 use EHD\Themes\Admin;
 use EHD\Themes\Customizer;
@@ -35,14 +39,14 @@ final class Plugin
      */
     public function plugins_loaded() : void
     {
-        // Widgets wordpress
+        /** Widgets wordpress */
         add_action('widgets_init', [&$this, 'unregister_default_widgets'], 11);
         add_action('widgets_init', [&$this, 'register_widgets'], 11);
 
         /** WooCommerce */
         class_exists('\WooCommerce') && (new WooCommerce());
 
-        /** ACF */
+        /** Advanced Custom Fields */
         if (!class_exists('\ACF')) {
             add_action('admin_notices', [$this, 'admin_notice_missing_acf']);
         } else {
@@ -55,6 +59,18 @@ final class Plugin
         } else {
             (new Elementor());
         }
+
+        /** WpRocket cache */
+        defined('WP_ROCKET_VERSION') && (new WpRocket());
+
+        /** Litespeed cache */
+        defined('LSCWP_BASENAME') && (new LiteSpeed());
+
+        /** RankMath */
+        class_exists('\RankMath') && (new RankMath());
+
+        /** Contact form 7 */
+        class_exists('\WPCF7') && (new CF7());
     }
 
     /**

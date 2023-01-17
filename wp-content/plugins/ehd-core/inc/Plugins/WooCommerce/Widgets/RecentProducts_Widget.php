@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD\Widgets;
+namespace EHD\Plugins\WooCommerce\Widgets;
 
 use EHD\Cores\Widget;
 use WP_Query;

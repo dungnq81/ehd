@@ -3,12 +3,17 @@
 namespace EHD\Plugins\WooCommerce;
 
 use EHD\Cores\Helper;
-use EHD\Widgets\MiniCart_Widget;
-use EHD\Widgets\Products_Widget;
-use EHD\Widgets\ProductsCarousel_Widget;
-use EHD\Widgets\RecentProducts_Widget;
+use EHD\Plugins\WooCommerce\Widgets\MiniCart_Widget;
+use EHD\Plugins\WooCommerce\Widgets\Products_Widget;
+use EHD\Plugins\WooCommerce\Widgets\ProductsCarousel_Widget;
+use EHD\Plugins\WooCommerce\Widgets\RecentProducts_Widget;
 
 \defined('ABSPATH') || die;
+
+/**
+ * WooCommerce Plugin
+ * @author   WEBHD
+ */
 
 final class WooCommerce
 {

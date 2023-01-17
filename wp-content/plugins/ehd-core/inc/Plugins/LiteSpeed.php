@@ -1,18 +1,17 @@
 <?php
 
-namespace EHD\Plugins\Elementor;
+namespace EHD\Plugins;
 
 \defined('ABSPATH') || die;
 
 /**
- * Elementor Plugin
- * @author   WEBHD
+ * litespeed Plugins
+ * @author WEBHD
  */
 
-final class Elementor
+final class LiteSpeed
 {
     public function __construct()
     {
-
     }
 }
