@@ -25,8 +25,5 @@ mix
     .sass(dir + '/resources/sass/elementor.scss', assets + '/css')
 
     .js(dir + '/resources/js/plugins-dev/draggable.js', assets + '/js/plugins')
-    .js(dir + '/resources/js/plugins-dev/skip-link-focus-fix.js', assets + '/js/plugins')
-    .js(dir + '/resources/js/plugins-dev/flex-gap.js', assets + '/js/plugins')
-    .js(dir + '/resources/js/plugins-dev/passive-events-fix.js', assets + '/js/plugins')
 
     .js(dir + '/resources/js/app.js', assets + '/js');

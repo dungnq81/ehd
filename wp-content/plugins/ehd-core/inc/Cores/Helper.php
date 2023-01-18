@@ -2,11 +2,12 @@
 
 namespace EHD\Cores;
 
-use EHD\Cores\Traits\Elementor;
 use EHD\Cores\Traits\File;
 use EHD\Cores\Traits\Plugin;
-use EHD\Cores\Traits\WooCommerce;
 use EHD\Cores\Traits\Wp;
+
+use EHD\Cores\Traits\Elementor;
+use EHD\Cores\Traits\WooCommerce;
 
 \defined('ABSPATH') || die;
 
@@ -15,7 +16,7 @@ use EHD\Cores\Traits\Wp;
  *
  * @author WEBHD
  */
-class Helper
+final class Helper
 {
     use File;
     use Plugin;

@@ -8,10 +8,9 @@ use EHD\Cores\Helper;
 
 /**
  * Optimizer Class
- *
  * @author eHD
  */
-class Optimizer
+final class Optimizer
 {
     public function __construct()
     {
@@ -27,9 +26,12 @@ class Optimizer
             add_filter('script_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
         }
 
+        // wp_print_footer_scripts
+        add_action('wp_print_footer_scripts', [&$this, 'print_footer_scripts'], 99);
+
         // fixed canonical
-        add_action( 'wp_head', [&$this, 'fixed_archive_canonical'], 10 );
-        add_action( 'wp_head', [&$this, 'rel_next_prev'], 10 );
+        add_action('wp_head', [&$this, 'fixed_archive_canonical'], 10);
+        add_action('wp_head', [&$this, 'rel_next_prev'], 10);
 
         // filter post search only by title
         add_filter("posts_search", [&$this, 'post_search_by_title'], 500, 2);
@@ -37,8 +39,9 @@ class Optimizer
         // remove id li navigation
         add_filter('nav_menu_item_id', '__return_null', 10, 3);
 
-        add_filter('script_loader_tag', [&$this, 'script_loader_tag'], 11, 3);
-        add_filter('style_loader_tag', [&$this, 'style_loader_tag'], 11, 2);
+        //...
+        add_filter('script_loader_tag', [&$this, 'script_loader_tag'], 12, 3);
+        add_filter('style_loader_tag', [&$this, 'style_loader_tag'], 12, 2);
 
         // Adding Shortcode in WordPress Using Custom HTML Widget
         add_filter('widget_text', 'do_shortcode');
@@ -85,10 +88,10 @@ class Optimizer
         // Prevent Specific Plugins from Deactivation
         add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
 
-            $keys = [ 'deactivate', 'delete' ];
+            $keys = ['deactivate', 'delete'];
             foreach ($keys as $key) {
 
-                if ( array_key_exists($key, $actions)
+                if (array_key_exists($key, $actions)
                     && in_array(
                         $plugin_file,
                         [
@@ -154,6 +157,43 @@ class Optimizer
     // ------------------------------------------------------
 
     /**
+     * This does not enqueue the script because it is tiny and because it is only for IE11,
+     * thus it does not warrant having an entire dedicated blocking script being loaded.
+     *
+     * @link https://git.io/vWdr2
+     */
+    public function print_footer_scripts()
+    {
+        ?>
+        <script>document.documentElement.classList.remove("no-js");
+            if (-1 !== navigator.userAgent.indexOf('MSIE') || -1 !== navigator.appVersion.indexOf('Trident/')) {
+                document.documentElement.classList.add('is-IE');
+            }</script>
+        <?php
+        if (file_exists($passive_events = EHD_PLUGIN_URL . '/assets/js/plugins/passive-events-fix.js')) {
+            echo '<script>';
+            include $passive_events;
+            echo '</script>';
+        }
+
+        if (file_exists($skip_link = EHD_PLUGIN_URL . '/assets/js/plugins/skip-link-focus-fix.js')) {
+            echo '<script>';
+            include $skip_link;
+            echo '</script>';
+        }
+
+        if (file_exists($flex_gap = EHD_PLUGIN_URL . '/assets/js/plugins/flex-gap.js')) {
+            echo '<script>';
+            include $flex_gap;
+            echo '</script>';
+        }
+
+        // The following is minified via `npx terser --compress --mangle -- assets/js/skip-link-focus-fix.js`.
+    }
+
+    // ------------------------------------------------------
+
+    /**
      * @return void
      */
     public function fixed_archive_canonical()
@@ -173,12 +213,13 @@ class Optimizer
     public function rel_next_prev()
     {
         global $paged;
-        if ( get_previous_posts_link() ) { ?>
-            <link rel="prev" href="<?php echo get_pagenum_link( $paged - 1 ); ?>" /><?php
+
+        if (get_previous_posts_link()) { ?>
+            <link rel="prev" href="<?php echo get_pagenum_link($paged - 1); ?>" /><?php
         }
 
-        if ( get_next_posts_link() ) { ?>
-            <link rel="next" href="<?php echo get_pagenum_link( $paged +1 ); ?>" /><?php
+        if (get_next_posts_link()) { ?>
+            <link rel="next" href="<?php echo get_pagenum_link($paged + 1); ?>" /><?php
         }
     }
 
@@ -193,9 +234,31 @@ class Optimizer
      */
     public function script_loader_tag(string $tag, string $handle, string $src) : string
     {
-        $str_parsed = [];
-        $str_parsed = apply_filters('defer_script_loader_tag', $str_parsed);
+        // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
+        foreach (['async', 'defer'] as $attr) {
+            if (!wp_scripts()->get_data($handle, $attr)) {
+                continue;
+            }
 
+            // Prevent adding attribute when already added in #12009.
+            if (!preg_match(":\s$attr(=|>|\s):", $tag)) {
+                $tag = preg_replace(':(?=></script>):', " $attr", $tag, 1);
+            }
+
+            // Only allow async or defer, not both.
+            break;
+        }
+
+        // custom filter which adds proper attributes
+
+        // fontawesome kit
+        if (('fontawesome-kit' == $handle) && !preg_match(":\scrossorigin(=|>|\s):", $tag)) {
+            $tag = preg_replace(':(?=></script>):', " crossorigin='anonymous'", $tag, 1);
+        }
+
+        //...
+        // add script handles to the array
+        $str_parsed = apply_filters('defer_script_loader_tag', []);
         return Helper::lazyScriptTag($str_parsed, $tag, $handle, $src);
     }
 
@@ -210,9 +273,7 @@ class Optimizer
     public function style_loader_tag(string $html, string $handle) : string
     {
         // add style handles to the array below
-        $styles = [];
-        $styles = apply_filters('defer_style_loader_tag', $styles);
-
+        $styles = apply_filters('defer_style_loader_tag', []);
         return Helper::lazyStyleTag($styles, $html, $handle);
     }
 

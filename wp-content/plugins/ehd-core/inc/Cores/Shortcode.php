@@ -9,7 +9,7 @@ namespace EHD\Cores;
  *
  * @author WEBHD
  */
-class Shortcode
+final class Shortcode
 {
     /**
      * @return void

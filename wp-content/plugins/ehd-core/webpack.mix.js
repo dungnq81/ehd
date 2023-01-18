@@ -8,14 +8,21 @@ const assets = dir + '/assets';
 
 mix
     .disableNotifications()
-    
+
     //.copyDirectory(dir + '/resources/img', assets + '/img')
 
     .sass(dir + '/resources/sass/editor-style.scss', assets + '/css')
     .sass(dir + '/resources/sass/admin.scss', assets + '/css')
     .sass(dir + '/resources/sass/ehd.scss', assets + '/css')
+    .sass(dir + '/resources/sass/swiper.scss', assets + '/css')
     .sass(dir + '/resources/sass/woocommerce.scss', assets + '/css')
     .sass(dir + '/resources/sass/elementor.scss', assets + '/css')
+
+    .js(dir + '/resources/js/plugins-dev/skip-link-focus-fix.js', assets + '/js/plugins')
+    .js(dir + '/resources/js/plugins-dev/flex-gap.js', assets + '/js/plugins')
+    .js(dir + '/resources/js/plugins-dev/passive-events-fix.js', assets + '/js/plugins')
+
+    .js(dir + '/resources/js/plugins-dev/swiper.js', assets + '/js/plugins')
 
     .js(dir + '/resources/js/admin.js', assets + '/js')
     .js(dir + '/resources/js/login.js', assets + '/js')

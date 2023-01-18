@@ -6,7 +6,6 @@ use EHD\Cores\Helper;
 
 /**
  * Admin Class
- *
  * @author EHD
  */
 

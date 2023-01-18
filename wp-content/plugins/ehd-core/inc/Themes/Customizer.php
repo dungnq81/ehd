@@ -6,7 +6,6 @@ namespace EHD\Themes;
 
 /**
  * Customizer Class
- *
  * @author eHD
  */
 
@@ -14,7 +13,7 @@ use WP_Customize_Color_Control;
 use WP_Customize_Image_Control;
 use WP_Customize_Manager;
 
-class Customizer
+final class Customizer
 {
     public function __construct()
     {

@@ -34,9 +34,6 @@ final class Optimizer
         add_action('wp_footer', [&$this, 'back_to_top'], 98);
         add_action('wp_footer', [&$this, 'deferred_scripts'], 999);
 
-        // wp_print_footer_scripts
-        add_action('wp_print_footer_scripts', [&$this, 'print_footer_scripts'], 99);
-
         // hide admin bar
         add_action("user_register", function ($user_id) {
             update_user_meta($user_id, 'show_admin_bar_front', false);
@@ -109,42 +106,6 @@ final class Optimizer
     // ------------------------------------------------------
     // ------------------------------------------------------
 
-    /**
-     * This does not enqueue the script because it is tiny and because it is only for IE11,
-     * thus it does not warrant having an entire dedicated blocking script being loaded.
-     *
-     * @link https://git.io/vWdr2
-     */
-    public function print_footer_scripts()
-    {
-        ?>
-        <script>document.documentElement.classList.remove("no-js");
-            if (-1 !== navigator.userAgent.indexOf('MSIE') || -1 !== navigator.appVersion.indexOf('Trident/')) {
-                document.documentElement.classList.add('is-IE');
-            }</script>
-        <?php
-        if (file_exists($passive_events = get_template_directory() . '/assets/js/plugins/passive-events-fix.js')) {
-            echo '<script>';
-            include $passive_events;
-            echo '</script>';
-        }
-
-        if (file_exists($skip_link = get_template_directory() . '/assets/js/plugins/skip-link-focus-fix.js')) {
-            echo '<script>';
-            include $skip_link;
-            echo '</script>';
-        }
-
-        if (file_exists($flex_gap = get_template_directory() . '/assets/js/plugins/flex-gap.js')) {
-            echo '<script>';
-            include $flex_gap;
-            echo '</script>';
-        }
-
-        // The following is minified via `npx terser --compress --mangle -- assets/js/skip-link-focus-fix.js`.
-    }
-
-    // ------------------------------------------------------
 
     /**
      * Build the back to top button

@@ -232,10 +232,6 @@ final class Theme
         if (is_singular() && comments_open() && get_option('thread_comments')) {
             wp_enqueue_script('comment-reply');
         }
-
-        // Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
-        $loader = new ScriptLoader();
-        add_filter('script_loader_tag', [&$loader, 'filterScriptTag'], 10, 3);
     }
 
     /** ---------------------------------------- */
