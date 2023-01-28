@@ -170,19 +170,20 @@ final class Optimizer
                 document.documentElement.classList.add('is-IE');
             }</script>
         <?php
-        if (file_exists($passive_events = EHD_PLUGIN_URL . '/assets/js/plugins/passive-events-fix.js')) {
+
+        if (file_exists($passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js')) {
             echo '<script>';
             include $passive_events;
             echo '</script>';
         }
 
-        if (file_exists($skip_link = EHD_PLUGIN_URL . '/assets/js/plugins/skip-link-focus-fix.js')) {
+        if (file_exists($skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js')) {
             echo '<script>';
             include $skip_link;
             echo '</script>';
         }
 
-        if (file_exists($flex_gap = EHD_PLUGIN_URL . '/assets/js/plugins/flex-gap.js')) {
+        if (file_exists($flex_gap = EHD_PLUGIN_PATH . 'assets/js/plugins/flex-gap.js')) {
             echo '<script>';
             include $flex_gap;
             echo '</script>';

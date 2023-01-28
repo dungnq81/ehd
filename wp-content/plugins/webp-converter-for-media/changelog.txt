@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 5.6.4 (2023-01-21) =
+* `[Fixed]` Error detection of cached redirects of images to WebP files
+
 = 5.6.3 (2023-01-10) =
 * `[Changed]` Error message for bypassing_apache error in server configuration
 * `[Changed]` Error message for rewrites_not_executed error in server configuration

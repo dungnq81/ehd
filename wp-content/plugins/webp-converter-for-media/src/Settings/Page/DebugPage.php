@@ -69,7 +69,7 @@ class DebugPage extends PageAbstract {
 	public function get_template_vars(): array {
 		$uploads_url  = apply_filters( 'webpc_dir_url', '', 'uploads' );
 		$uploads_path = apply_filters( 'webpc_dir_path', '', 'uploads' );
-		$ver_param    = time() * 100;
+		$ver_param    = uniqid();
 
 		$errors_messages = apply_filters( 'webpc_server_errors_messages', [] );
 		$errors_codes    = apply_filters( 'webpc_server_errors', [] );

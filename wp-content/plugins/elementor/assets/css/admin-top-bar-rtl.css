@@ -1,4 +1,4 @@
-/*! elementor - v3.10.0 - 09-01-2023 */
+/*! elementor - v3.10.1 - 17-01-2023 */
 #e-dashboard-widget-admin-top-bar {
   position: absolute;
   opacity: 0;
@@ -14,6 +14,9 @@
   top: 0;
   width: calc(100% - 160px);
   z-index: 1;
+}
+body.folded #e-admin-top-bar-root {
+  width: calc(100% - 36px);
 }
 #e-admin-top-bar-root .e-admin-top-bar {
   display: flex;

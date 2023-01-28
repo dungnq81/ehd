@@ -48,7 +48,7 @@
             
             public function get_attribute_taxonomy_by_name( $attribute_name ) {
                 
-                $transient_key = woo_variation_swatches()->get_cache()->get_key_with_language_suffix( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $attribute_name ) );
+                $transient_key = woo_variation_swatches()->get_cache()->get_cache_key( sprintf( 'woo_variation_swatches_cache_attribute_taxonomy__%s', $attribute_name ) );
                 
                 if ( ! taxonomy_exists( $attribute_name ) ) {
                     return false;

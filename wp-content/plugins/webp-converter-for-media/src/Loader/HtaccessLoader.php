@@ -210,7 +210,7 @@ class HtaccessLoader extends LoaderAbstract {
 		$content    = '';
 		$extensions = implode( '|', $settings[ SupportedExtensionsOption::OPTION_NAME ] );
 
-		$cache_control = ( ( ( $_SERVER['X-LSCACHE'] ?? '' ) !== 'on' ) || isset( $_SERVER['HTTP_CDN_LOOP'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$cache_control = true;
 		if ( OptionsAccessManager::get_option( CloudflareConfigurator::REQUEST_CACHE_CONFIG_OPTION ) === 'yes' ) {
 			$cache_control = false;
 		}

@@ -7,7 +7,6 @@ use WebpConverter\Error\Detector\LibsNotInstalledDetector;
 use WebpConverter\Error\Detector\LibsWithoutWebpSupportDetector;
 use WebpConverter\Error\Detector\PassthruExecutionDetector;
 use WebpConverter\Error\Detector\PathsErrorsDetector;
-use WebpConverter\Error\Detector\PermalinksStructureDetector;
 use WebpConverter\Error\Detector\RestApiDisabledDetector;
 use WebpConverter\Error\Detector\RewritesErrorsDetector;
 use WebpConverter\Error\Detector\SettingsIncorrectDetector;
@@ -25,7 +24,8 @@ use WebpConverter\Service\OptionsAccessManager;
  */
 class ErrorDetectorAggregator implements HookableInterface {
 
-	const ERRORS_CACHE_OPTION = 'webpc_errors_cache';
+	const ERRORS_CACHE_OPTION           = 'webpc_errors_cache';
+	const ERROR_DETECTOR_DATE_TRANSIENT = 'webpc_error_detector';
 
 	/**
 	 * @var PluginInfo
@@ -141,6 +141,7 @@ class ErrorDetectorAggregator implements HookableInterface {
 			return $this->cached_errors;
 		}
 
+		$this->pause_duplicated_detection();
 		$this->cached_errors = [];
 
 		if ( $new_error = ( new TokenStatusDetector( $this->plugin_data ) )->get_error() ) {
@@ -179,5 +180,19 @@ class ErrorDetectorAggregator implements HookableInterface {
 		}
 
 		return $this->cached_errors;
+	}
+
+	/**
+	 * @return void
+	 */
+	private function pause_duplicated_detection() {
+		$current_date = ( new \DateTime() )->format( 'Uv' );
+		$cached_date  = get_site_transient( self::ERROR_DETECTOR_DATE_TRANSIENT );
+		if ( $cached_date && ( $cached_date >= ( $current_date - 1000 ) ) ) {
+			sleep( 1 );
+			$current_date = ( new \DateTime() )->format( 'Uv' );
+		}
+
+		set_site_transient( self::ERROR_DETECTOR_DATE_TRANSIENT, $current_date );
 	}
 }

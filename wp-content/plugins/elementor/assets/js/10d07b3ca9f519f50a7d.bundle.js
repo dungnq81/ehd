@@ -1,4 +1,4 @@
-/*! elementor - v3.10.0 - 09-01-2023 */
+/*! elementor - v3.10.1 - 17-01-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["modules_nested-elements_assets_js_editor_module_js"],{
 
 /***/ "../modules/nested-elements/assets/js/editor/component.js":
@@ -201,13 +201,12 @@ var Repeater = /*#__PURE__*/function (_elementor$modules$co) {
   }, {
     key: "updateActiveRow",
     value: function updateActiveRow() {
-      var activeItemIndex = 1;
-      if (this.currentEditableChild) {
-        activeItemIndex = this.currentEditableChild.itemIndex;
+      if (!this.currentEditableChild) {
+        return;
       }
       $e.run('document/repeater/select', {
         container: this.container,
-        index: activeItemIndex,
+        index: this.currentEditableChild.itemIndex,
         options: {
           useHistory: false
         }
@@ -1124,4 +1123,4 @@ module.exports = _typeof, module.exports.__esModule = true, module.exports["defa
 /***/ })
 
 }]);
-//# sourceMappingURL=a03952720ce4c3867a35.bundle.js.map
+//# sourceMappingURL=10d07b3ca9f519f50a7d.bundle.js.map

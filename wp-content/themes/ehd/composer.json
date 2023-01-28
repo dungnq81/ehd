@@ -17,9 +17,7 @@
 			"EHD\\Sites\\Plugins\\": "inc/Plugins",
 			"EHD\\Sites\\Themes\\": "inc/Themes"
 		},
-		"exclude-from-classmap": [
-			"**/Plugins/ACF/_/**"
-		]
+		"exclude-from-classmap": []
 	},
 	"require": {
 		"vectorface/whip": "^v0.4.0"

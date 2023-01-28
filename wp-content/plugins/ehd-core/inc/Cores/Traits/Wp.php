@@ -286,7 +286,7 @@ trait Wp
      * @param bool|string  $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
-    public static function queryByTerm(object|array $term, string $post_type = 'any', bool $include_children = false, int $posts_per_page = 0, $orderby = [], bool|string $strtotime_recent = false)
+    public static function queryByTerm(object|array $term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], bool|string $strtotime_recent = false)
     {
         if (!$term) {
             return false;
@@ -343,7 +343,7 @@ trait Wp
         }
 
         // woocommerce_hide_out_of_stock_items
-        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce')) {
+        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce') && 'product' == $post_type) {
 
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
@@ -376,7 +376,7 @@ trait Wp
      * @param bool|string  $strtotime_str
      * @return bool|WP_Query
      */
-    public static function queryByTerms(array|string $term_ids = [], string $taxonomy = 'category', string $post_type = 'any', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
+    public static function queryByTerms(array|string $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
     {
         if (!$term_ids) {
             return false;
@@ -427,7 +427,7 @@ trait Wp
         }
 
         // woocommerce_hide_out_of_stock_items
-        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce')) {
+        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce') && 'product' == $post_type) {
 
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 

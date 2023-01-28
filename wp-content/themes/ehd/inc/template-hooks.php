@@ -4,8 +4,8 @@
  * @author WEBHD
  */
 
-use EHD\Plugins\Core\Helper;
-use EHD\Plugins\Themes\Css;
+use EHD\Cores\Helper;
+use EHD\Themes\Css;
 
 \defined('\WPINC') || die;
 
@@ -29,7 +29,7 @@ if (!function_exists('ehd_enqueue_inline_css')) {
      */
     function ehd_enqueue_inline_css()
     {
-        $css = new Css;
+        $css = new Css();
 
         // breadcrumbs bg
         $breadcrumb_bg = Helper::getThemeMod('breadcrumb_bg_setting');

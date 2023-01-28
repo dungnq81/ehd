@@ -75,13 +75,13 @@ if (!class_exists('RecentPosts_Widget')) {
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
 
             $r = new WP_Query(
-            /**
-             * Filters the arguments for the Recent Posts widget.
-             *
-             * @param array $args     An array of arguments used to retrieve the recent posts.
-             * @param array $instance Array of settings for the current widget.
-             * @see   WP_Query::get_posts()
-             */
+                /**
+                 * Filters the arguments for the Recent Posts widget.
+                 *
+                 * @param array $args     An array of arguments used to retrieve the recent posts.
+                 * @param array $instance Array of settings for the current widget.
+                 * @see   WP_Query::get_posts()
+                 */
                 apply_filters(
                     'widget_recent_posts_args',
                     [
@@ -138,22 +138,20 @@ if (!class_exists('RecentPosts_Widget')) {
                                         $ratio_class = '3-2';
                                     }
                                 ?>
-                                <a class="d-block" href="<?php the_permalink($recent_post->ID); ?>"
-                                   aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
+                                <a class="d-block" href="<?php the_permalink($recent_post->ID); ?>" aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
                                     <span class="cover after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
                                 </a>
                                 <?php endif; ?>
                                 <div class="post-info">
-                                    <a href="<?php the_permalink($recent_post->ID); ?>"
-                                       title="<?php echo esc_attr($title); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
+                                    <a href="<?php the_permalink($recent_post->ID); ?>" title="<?php echo esc_attr($title); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
                                     <?php if ($show_date || $show_cat) : ?>
-                                        <div class="meta">
-                                            <?php if ($show_date) : ?>
-                                            <span class="post-date"><?php echo Helper::humanizeTime($recent_post); ?></span>
-                                            <?php endif;
-                                            if ($show_cat) echo Helper::getPrimaryTerm($recent_post);
-                                            ?>
-                                        </div>
+                                    <div class="meta">
+                                        <?php if ($show_date) : ?>
+                                        <span class="post-date"><?php echo Helper::humanizeTime($recent_post); ?></span>
+                                        <?php endif;
+                                        if ($show_cat) echo Helper::getPrimaryTerm($recent_post);
+                                        ?>
+                                    </div>
                                     <?php endif; ?>
                                 </div>
                             </li>

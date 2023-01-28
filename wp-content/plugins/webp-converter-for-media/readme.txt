@@ -5,7 +5,7 @@ Tags: convert webp, webp, optimize images, image optimization, compress images
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 5.6.3
+Stable tag: 5.6.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,9 @@ In case of problems, please contact us in [the support forum](https://url.mattpl
 4. Optimization statistics of Media Library
 
 == Changelog ==
+
+= 5.6.4 (2023-01-21) =
+* `[Fixed]` Error detection of cached redirects of images to WebP files
 
 = 5.6.3 (2023-01-10) =
 * `[Changed]` Error message for bypassing_apache error in server configuration

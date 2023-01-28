@@ -1,4 +1,4 @@
-/*! elementor - v3.10.0 - 09-01-2023 */
+/*! elementor - v3.10.1 - 17-01-2023 */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -61,7 +61,7 @@ module.exports = wp.i18n;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_module_js") return "a03952720ce4c3867a35.bundle.js";
+/******/ 			if (chunkId === "modules_nested-elements_assets_js_editor_module_js") return "10d07b3ca9f519f50a7d.bundle.js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

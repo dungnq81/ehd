@@ -1,4 +1,4 @@
-/*! elementor - v3.10.0 - 09-01-2023 */
+/*! elementor - v3.10.1 - 17-01-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend-modules"],{
 
 /***/ "../assets/dev/js/editor/utils/is-instanceof.js":
@@ -255,9 +255,17 @@ class BaseNestedTabs extends _base.default {
   activateTab(tabIndex) {
     const settings = this.getSettings(),
       activeClass = settings.classes.active,
-      $requestedTitle = this.elements.$tabTitles.filter(this.getTabTitleFilterSelector(tabIndex)),
-      $requestedContent = this.elements.$tabContents.filter(this.getTabContentFilterSelector(tabIndex)),
       animationDuration = 'show' === settings.showTabFn ? 0 : 400;
+    let $requestedTitle = this.elements.$tabTitles.filter(this.getTabTitleFilterSelector(tabIndex)),
+      $requestedContent = this.elements.$tabContents.filter(this.getTabContentFilterSelector(tabIndex));
+
+    // Check if the tabIndex exists.
+    if (!$requestedTitle.length) {
+      // Activate the previous tab and ensure that the tab index is not less than 1.
+      const previousTabIndex = Math.max(tabIndex - 1, 1);
+      $requestedTitle = this.elements.$tabTitles.filter(this.getTabTitleFilterSelector(previousTabIndex));
+      $requestedContent = this.elements.$tabContents.filter(this.getTabContentFilterSelector(previousTabIndex));
+    }
     $requestedTitle.add($requestedContent).addClass(activeClass);
     $requestedTitle.attr({
       tabindex: '0',

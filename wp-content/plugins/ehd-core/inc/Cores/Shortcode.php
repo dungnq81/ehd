@@ -24,11 +24,65 @@ final class Shortcode
             'off_canvas_button' => __CLASS__ . '::off_canvas_button',
             'horizontal_menu'   => __CLASS__ . '::horizontal_menu',
             'vertical_menu'     => __CLASS__ . '::vertical_menu',
+
+            'posts' => __CLASS__ . '::posts',
         ];
 
         foreach ($shortcodes as $shortcode => $function) {
             add_shortcode(apply_filters("{$shortcode}_shortcode_tag", $shortcode), $function);
         }
+    }
+
+    // ------------------------------------------------------
+
+    /**
+     * @param $atts
+     * @return string
+     */
+    public static function posts($atts)
+    {
+        $default_atts = [
+            'post_type'        => 'post',
+            'term_ids'         => [],
+            'taxonomy'         => 'category',
+            'include_children' => false,
+            'posts_per_page'   => 12,
+
+            'desktop'    => 4,
+            'tablet'     => 3,
+            'mobile'     => 2,
+
+            'limit_time' => false,
+            'wrapper' => false,
+            'class'   => 'grid-posts',
+            'id'      => esc_attr(uniqid('grid-posts-')),
+
+            'show' => [
+                'thumbnail' => true,
+                'scale' => true,
+                'time' => true,
+                'term' => true,
+                'desc' => true,
+                'more' => true,
+            ],
+        ];
+
+        $atts = shortcode_atts(
+            $default_atts,
+            $atts,
+            'posts'
+        );
+
+        //...
+        $post_type = $atts['location'] ?: 'post';
+        $taxonomy = $atts['taxonomy'] ?: 'category';
+        $term_ids = $atts['term_ids'] ?: [];
+        $posts_per_page = $atts['posts_per_page'] ?: 12;
+        $include_children = Helper::toBool($atts['include_children']);
+        $strtotime_str = $atts['limit_time'] ?: null;
+
+        $r = Helper::queryByTerms($term_ids, $taxonomy, $post_type, $include_children, $posts_per_page, $strtotime_str);
+
     }
 
     // ------------------------------------------------------
@@ -137,10 +191,10 @@ final class Shortcode
     {
         $atts = shortcode_atts(
             [
-                'title'      => '',
-                'email'      => 'info@webhd.vn',
-                'class'      => '',
-                'id'         => esc_attr(uniqid('mail-')),
+                'title' => '',
+                'email' => 'info@webhd.vn',
+                'class' => '',
+                'id'    => esc_attr(uniqid('mail-')),
             ],
             $atts,
             'safe_mail'
@@ -202,9 +256,11 @@ final class Shortcode
         ob_start();
 
         ?>
-        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
+              data-abide novalidate>
             <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr($title_for); ?></label>
-            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= esc_attr($placeholder_title); ?>">
+            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s"
+                   value="<?= get_search_query(); ?>" placeholder="<?= esc_attr($placeholder_title); ?>">
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
@@ -244,14 +300,18 @@ final class Shortcode
         ob_start();
 
         ?>
-        <a class="trigger-s" title="<?= esc_attr($title); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph="">
+        <a class="trigger-s" title="<?= esc_attr($title); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>"
+           data-glyph="">
             <span><?php echo $title; ?></span>
         </a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $atts['id']; ?>" data-dropdown data-auto-focus="true">
-            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
+            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
+                  data-abide novalidate>
                 <div class="frm-container">
                     <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr($title_for); ?></label>
-                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo esc_attr($placeholder_title); ?>">
+                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s"
+                           value="<?php echo get_search_query(); ?>"
+                           placeholder="<?php echo esc_attr($placeholder_title); ?>">
                     <button class="btn-s" type="submit" data-glyph="">
                         <span><?php echo $title; ?></span>
                     </button>

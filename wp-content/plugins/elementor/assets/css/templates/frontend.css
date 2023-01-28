@@ -1850,6 +1850,10 @@ ul.elementor-icon-list-items.elementor-inline-items .elementor-inline-item {
   --flex-basis: auto;
   --flex-grow: 0;
   --flex-shrink: 1;
+  --container-widget-width: 100%;
+  --container-widget-height: initial;
+  --container-widget-flex-grow: 0;
+  --container-widget-align-self: initial;
   --content-width: Min( 100%, var( --container-max-width, 1140px ) );
   --width: 100%;
   --min-height: initial;

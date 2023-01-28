@@ -2,7 +2,7 @@
 
 namespace EHD\Sites\Themes;
 
-use EHD\Plugins\Core\Helper;
+use EHD\Cores\Helper;
 
 \defined('\WPINC') || die;
 
@@ -140,7 +140,6 @@ final class Optimizer
         wp_enqueue_script("backtop", get_template_directory_uri() . "/assets/js/plugins/backtop.js", [], false, true);
         wp_enqueue_script("shares", get_template_directory_uri() . "/assets/js/plugins/shares.min.js", ["jquery"], false, true);
 
-        //$widgets_block_editor_off = Helper::getThemeMod('use_widgets_block_editor_setting');
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
         $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
         if ($gutenberg_widgets_off && $gutenberg_off) {
