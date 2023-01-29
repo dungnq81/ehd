@@ -23,9 +23,9 @@ if (!class_exists('ProductsCarousel_Widget')) {
                 ],
                 'number'                => [
                     'type'  => 'number',
-                    'min'   => 1,
-                    'max'   => '',
-                    'std'   => 10,
+                    'min'   => 0,
+                    'max'   => 99,
+                    'std'   => 8,
                     'class' => 'tiny-text',
                     'label' => __('Number of products to show', 'woocommerce'),
                 ],
@@ -108,10 +108,10 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'label'   => __('Pagination', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
                         ''         => __('None', EHD_PLUGIN_TEXT_DOMAIN),
-                        'dynamic'  => __('Pagination dynamic', EHD_PLUGIN_TEXT_DOMAIN),
-                        'progress' => __('Pagination progress', EHD_PLUGIN_TEXT_DOMAIN),
-                        'fraction' => __('Pagination fraction', EHD_PLUGIN_TEXT_DOMAIN),
-                        'custom'   => __('Pagination custom', EHD_PLUGIN_TEXT_DOMAIN),
+                        'dynamic'  => __('Dynamic', EHD_PLUGIN_TEXT_DOMAIN),
+                        'progress' => __('Progress', EHD_PLUGIN_TEXT_DOMAIN),
+                        'fraction' => __('Fraction', EHD_PLUGIN_TEXT_DOMAIN),
+                        'custom'   => __('Custom', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
                 'delay'                 => [
@@ -184,6 +184,12 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'std'   => '#',
                     'label' => __('View more link', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
+                'limit_time'          => [
+                    'type'  => 'text',
+                    'std'   => '',
+                    'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'css_class'             => [
                     'type'  => 'text',
                     'std'   => '',
@@ -208,6 +214,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
             $show = !empty($instance['show']) ? sanitize_title($instance['show']) : $this->settings['show']['std'];
             $orderby = !empty($instance['orderby']) ? sanitize_title($instance['orderby']) : $this->settings['orderby']['std'];
             $order = !empty($instance['order']) ? sanitize_title($instance['order']) : $this->settings['order']['std'];
+            $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : $this->settings['limit_time']['std'];
 
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
@@ -222,6 +229,22 @@ if (!class_exists('ProductsCarousel_Widget')) {
                 'order'                  => $order,
                 'tax_query'              => ['relation' => 'AND'],
             ]; // WPCS: slow query ok.
+
+            // ...
+            if ($limit_time) {
+
+                // constrain to just posts in $limit_time
+                $recent = strtotime($limit_time);
+                if (Helper::isInteger($recent)) {
+                    $query_args['date_query'] = [
+                        'after' => [
+                            'year'  => date('Y', $recent),
+                            'month' => date('n', $recent),
+                            'day'   => date('j', $recent),
+                        ],
+                    ];
+                }
+            }
 
             // hide_free
             if (!empty($instance['hide_free'])) {
@@ -320,7 +343,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
             }
 
             // class
-            $_class = $this->id;
+            $_class = $this->widget_classname . ' ' . $this->id;
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             if ($css_class) {
@@ -342,7 +365,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
 
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
-                <div class="<?= $uniqid ?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                     <div class="swiper-section carousel-products grid-products">
                         <?php
 

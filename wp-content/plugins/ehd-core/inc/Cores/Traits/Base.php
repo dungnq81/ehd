@@ -35,6 +35,17 @@ trait Base
     // --------------------------------------------------
 
     /**
+     * @param $input
+     * @return bool
+     */
+    public static function isInteger($input)
+    {
+        return(ctype_digit(strval($input)));
+    }
+
+    // --------------------------------------------------
+
+    /**
      * @param $value
      * @return mixed
      */

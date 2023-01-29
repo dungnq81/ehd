@@ -331,7 +331,7 @@ trait Wp
 
             // constrain to just posts in $strtotime_recent
             $recent = strtotime($strtotime_recent);
-            if ($recent) {
+            if (self::isInteger($recent)) {
                 $_args['date_query'] = [
                     'after' => [
                         'year'  => date('Y', $recent),
@@ -389,7 +389,7 @@ trait Wp
             'tax_query'              => ['relation' => 'AND'],
             'no_found_rows'          => true,
             'ignore_sticky_posts'    => true,
-            'posts_per_page'         => $posts_per_page ?: 10,
+            'posts_per_page'         => $posts_per_page ?: 12,
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
         ];
@@ -415,7 +415,7 @@ trait Wp
 
             // constrain to just posts in $strtotime_str
             $recent = strtotime($strtotime_str);
-            if ($recent) {
+            if (self::isInteger($recent)) {
                 $_args['date_query'] = [
                     'after' => [
                         'year'  => date('Y', $recent),
@@ -452,17 +452,17 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param bool $echo
-     *
+     * @param bool   $echo
+     * @param string $home_heading
      * @return string|void
      */
-    public static function siteTitleOrLogo(bool $echo = true)
+    public static function siteTitleOrLogo(bool $echo = true, string $home_heading = 'h1')
     {
         if (function_exists('the_custom_logo') && has_custom_logo()) {
             $logo = get_custom_logo();
-            $html = (is_home() || is_front_page()) ? '<h1 class="logo">' . $logo . '</h1>' : $logo;
+            $html = (is_home() || is_front_page()) ? '<' . $home_heading . ' class="logo">' . $logo . '</' . $home_heading . '>' : $logo;
         } else {
-            $tag = is_home() ? 'h1' : 'div';
+            $tag = is_home() ? $home_heading : 'div';
             $html = '<' . esc_attr($tag) . ' class="site-title"><a title href="' . self::home() . '" rel="home">' . esc_html(get_bloginfo('name')) . '</a></' . esc_attr($tag) . '>';
             if ('' !== get_bloginfo('description')) {
                 $html .= '<p class="site-description">' . esc_html(get_bloginfo('description', 'display')) . '</p>';
@@ -530,12 +530,11 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param null        $post
-     * @param string|null $class
-     *
+     * @param $post
+     * @param string $class
      * @return string|null
      */
-    public static function loopExcerpt($post = null, ?string $class = 'excerpt')
+    public static function loopExcerpt($post = null, string $class = 'excerpt')
     {
         $excerpt = get_the_excerpt($post);
         if (!self::stripSpace($excerpt)) {
@@ -553,12 +552,12 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param             $post
-     * @param string|null $class
-     * @param bool        $glyph_icon
+     * @param null   $post
+     * @param string $class
+     * @param bool   $glyph_icon
      * @return string|null
      */
-    public static function postExcerpt($post = null, ?string $class = 'excerpt', bool $glyph_icon = false)
+    public static function postExcerpt($post = null, string $class = 'excerpt', bool $glyph_icon = false)
     {
         $post = get_post($post);
         if (!self::stripSpace($post->post_excerpt)) {
@@ -582,12 +581,12 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param int         $term
-     * @param string|null $class
+     * @param int    $term
+     * @param string $class
      *
      * @return string|null
      */
-    public static function termExcerpt($term = 0, ?string $class = 'excerpt')
+    public static function termExcerpt($term = 0, string $class = 'excerpt')
     {
         $description = term_description($term);
         if (!self::stripSpace($description)) {
@@ -605,10 +604,10 @@ trait Wp
 
     /**
      * @param             $post
-     * @param string|null $taxonomy
+     * @param string      $taxonomy
      * @return array|false|mixed|WP_Error|WP_Term
      */
-    public static function primaryTerm($post, ?string $taxonomy = 'category')
+    public static function primaryTerm($post, string $taxonomy = 'category')
     {
         //$post = get_post( $post );
         //$ID   = $post->ID ?? null;
@@ -666,13 +665,13 @@ trait Wp
 
     /**
      * @param null        $post
-     * @param string|null $taxonomy
-     * @param string|null $wrapper_open
+     * @param string      $taxonomy
+     * @param string      $wrapper_open
      * @param string|null $wrapper_close
      *
      * @return string|null
      */
-    public static function getPrimaryTerm($post = null, ?string $taxonomy = '', ?string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
+    public static function getPrimaryTerm($post = null, string $taxonomy = '', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
     {
         $term = self::primaryTerm($post, $taxonomy);
         if (!$term) {
@@ -691,13 +690,13 @@ trait Wp
 
     /**
      * @param             $post
-     * @param string|null $taxonomy
-     * @param string|null $wrapper_open
+     * @param string      $taxonomy
+     * @param string      $wrapper_open
      * @param string|null $wrapper_close
      *
      * @return string|null
      */
-    public static function postTerms($post, ?string $taxonomy = 'category', ?string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
+    public static function postTerms($post, string $taxonomy = 'category', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
     {
         if (!$taxonomy) {
             $post_type = get_post_type($post);
@@ -730,13 +729,13 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param string|null $taxonomy
-     * @param int         $id
-     * @param string      $sep
+     * @param string $taxonomy
+     * @param int    $id
+     * @param string $sep
      *
      * @return void
      */
-    public static function hashTags(?string $taxonomy = 'post_tag', int $id = 0, string $sep = '')
+    public static function hashTags(string $taxonomy = 'post_tag', int $id = 0, string $sep = '')
     {
         if (!$taxonomy) {
             $taxonomy = 'post_tag';

@@ -22,9 +22,9 @@ if (!class_exists('Products_Widget')) {
                 ],
                 'number'                => [
                     'type'  => 'number',
-                    'min'   => 1,
-                    'max'   => '',
-                    'std'   => 8,
+                    'min'   => 0,
+                    'max'   => 99,
+                    'std'   => 12,
                     'class' => 'tiny-text',
                     'label' => __('Number of products to show', 'woocommerce'),
                 ],
@@ -156,7 +156,7 @@ if (!class_exists('Products_Widget')) {
             $columns = !empty($instance['columns']) ? absint($instance['columns']) : 1;
             $order = !empty($instance['order']) ? sanitize_title($instance['order']) : $this->settings['order']['std'];;
 
-            $args = [
+            $query_args = [
                 'limit'   => $number,
                 'columns' => $columns,
                 'order'   => $order,
@@ -166,55 +166,55 @@ if (!class_exists('Products_Widget')) {
             // Orderby
             $orderby = !empty($instance['orderby']) ? sanitize_title($instance['orderby']) : $this->settings['orderby']['std'];
             if ($orderby) {
-                $args['orderby'] = $orderby;
+                $query_args['orderby'] = $orderby;
             }
 
             // Display Product Attributes
             $product_attributes = !empty($instance['product_attributes']) ? sanitize_title($instance['product_attributes']) : $this->settings['product_attributes']['std'];
             if ($product_attributes) {
-                $args[$product_attributes] = $product_attributes;
+                $query_args[$product_attributes] = $product_attributes;
             }
 
             // Visibility
             $visibility = !empty($instance['visibility']) ? sanitize_title($instance['visibility']) : $this->settings['visibility']['std'];
             if ($visibility) {
-                $args['visibility '] = $visibility;
+                $query_args['visibility '] = $visibility;
             }
 
             // Product Categories
             $category = !empty($instance['category']) ? sanitize_title($instance['category']) : $this->settings['category']['std'];
             if ($category) {
-                $args['category '] = $category;
+                $query_args['category '] = $category;
             }
 
             // Cat Operator
             $cat_operator = !empty($instance['cat_operator']) ? sanitize_title($instance['cat_operator']) : $this->settings['cat_operator']['std'];
             if ($cat_operator) {
-                $args['cat_operator'] = $cat_operator;
+                $query_args['cat_operator'] = $cat_operator;
             }
 
             // Product IDs
             $ids = !empty($instance['ids']) ? sanitize_title($instance['ids']) : $this->settings['ids']['std'];
             if ($ids) {
-                $args['ids'] = $ids;
+                $query_args['ids'] = $ids;
             }
 
             // Toggle Pagination
             $paginate = empty($instance['paginate']) ? 'false' : 'true';
             if ('true' == $paginate) {
-                $args['paginate'] = $paginate;
+                $query_args['paginate'] = $paginate;
             }
 
             $shortcode_content = Helper::doShortcode(
                 'products',
                 apply_filters(
                     'products_widget_shortcode_args',
-                    $args
+                    $query_args
                 )
             );
 
             // class
-            $_class = $this->id;
+            $_class = $this->widget_classname . ' ' . $this->id;
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             if ($css_class) {
@@ -239,7 +239,7 @@ if (!class_exists('Products_Widget')) {
 
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
-                <div class="<?= $uniqid ?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                     <?php echo $shortcode_content; ?>
                 </div>
 

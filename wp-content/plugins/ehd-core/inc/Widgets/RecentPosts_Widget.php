@@ -47,6 +47,18 @@ if (!class_exists('RecentPosts_Widget')) {
                     'class' => 'checkbox',
                     'label' => __('Display post date?'),
                 ],
+                'show_desc'             => [
+                    'type'  => 'checkbox',
+                    'std'   => '',
+                    'class' => 'checkbox',
+                    'label' => __('Display post description?', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'limit_time'          => [
+                    'type'  => 'text',
+                    'std'   => '',
+                    'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'css_class' => [
                     'type' => 'text',
                     'std' => '',
@@ -68,11 +80,39 @@ if (!class_exists('RecentPosts_Widget')) {
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
 
             $number = (!empty($instance['number'])) ? absint($instance['number']) : 5;
-            $show_cat = $instance['show_cat'] ?? false;
-            $show_thumbnail = $instance['show_thumbnail'] ?? false;
-            $show_date = $instance['show_date'] ?? false;
+            $show_cat = !empty($instance['show_cat']);
+            $show_thumbnail = !empty($instance['show_thumbnail']);
+            $show_date = !empty($instance['show_date']);
+            $show_desc = !empty($instance['show_desc']);
 
-            $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
+            $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : '';
+
+            $query_args = [
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+
+                'post_type'        => 'post',
+                'post_status' => 'publish',
+                'posts_per_page' => $number,
+                'no_found_rows' => true,
+                'ignore_sticky_posts' => true,
+            ];
+
+            // ...
+            if ($limit_time) {
+
+                // constrain to just posts in $limit_time
+                $recent = strtotime($limit_time);
+                if (Helper::isInteger($recent)) {
+                    $query_args['date_query'] = [
+                        'after' => [
+                            'year'  => date('Y', $recent),
+                            'month' => date('n', $recent),
+                            'day'   => date('j', $recent),
+                        ],
+                    ];
+                }
+            }
 
             $r = new WP_Query(
                 /**
@@ -84,21 +124,14 @@ if (!class_exists('RecentPosts_Widget')) {
                  */
                 apply_filters(
                     'widget_recent_posts_args',
-                    [
-                        'update_post_meta_cache' => false,
-                        'update_post_term_cache' => false,
-
-                        'post_status' => 'publish',
-                        'posts_per_page' => $number,
-                        'no_found_rows' => true,
-                        'ignore_sticky_posts' => true,
-                    ],
+                    $query_args,
                     $instance
                 )
             );
 
             // class
             $_class = $this->widget_classname . ' ' . $this->id;
+            $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
             }
@@ -138,11 +171,11 @@ if (!class_exists('RecentPosts_Widget')) {
                                         $ratio_class = '3-2';
                                     }
                                 ?>
-                                <a class="d-block" href="<?php the_permalink($recent_post->ID); ?>" aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
-                                    <span class="cover after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
+                                <a class="d-block cover" href="<?php the_permalink($recent_post->ID); ?>" aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
+                                    <span class="after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
                                 </a>
                                 <?php endif; ?>
-                                <div class="post-info">
+                                <div class="cover-content">
                                     <a href="<?php the_permalink($recent_post->ID); ?>" title="<?php echo esc_attr($title); ?>"<?php echo $aria_current; ?>><?php echo $title; ?></a>
                                     <?php if ($show_date || $show_cat) : ?>
                                     <div class="meta">
@@ -153,6 +186,7 @@ if (!class_exists('RecentPosts_Widget')) {
                                         ?>
                                     </div>
                                     <?php endif; ?>
+                                    <?php if ($show_desc) echo Helper::loopExcerpt($recent_post); ?>
                                 </div>
                             </li>
                         <?php endforeach; ?>

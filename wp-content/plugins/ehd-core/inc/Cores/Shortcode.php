@@ -22,8 +22,9 @@ final class Shortcode
             'inline_search'     => __CLASS__ . '::inline_search',
             'dropdown_search'   => __CLASS__ . '::dropdown_search',
             'off_canvas_button' => __CLASS__ . '::off_canvas_button',
-            'horizontal_menu'   => __CLASS__ . '::horizontal_menu',
-            'vertical_menu'     => __CLASS__ . '::vertical_menu',
+
+            'horizontal_menu' => __CLASS__ . '::horizontal_menu',
+            'vertical_menu'   => __CLASS__ . '::vertical_menu',
 
             'posts' => __CLASS__ . '::posts',
         ];
@@ -36,10 +37,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
-     * @return string
+     * @param array $atts
+     * @return false|string|null
      */
-    public static function posts($atts)
+    public static function posts(array $atts = [])
     {
         $default_atts = [
             'post_type'        => 'post',
@@ -48,17 +49,13 @@ final class Shortcode
             'include_children' => false,
             'posts_per_page'   => 12,
 
-            'desktop'    => 4,
-            'tablet'     => 3,
-            'mobile'     => 2,
-
-            'limit_time' => false,
-            'wrapper' => false,
-            'class'   => 'grid-posts',
-            'id'      => esc_attr(uniqid('grid-posts-')),
+            'limit_time' => '',
+            'wrapper' => '',
+            'wrapper_class' => '',
 
             'show' => [
                 'thumbnail' => true,
+                'thumbnail_size' => 'medium',
                 'scale' => true,
                 'time' => true,
                 'term' => true,
@@ -76,22 +73,88 @@ final class Shortcode
         //...
         $post_type = $atts['location'] ?: 'post';
         $taxonomy = $atts['taxonomy'] ?: 'category';
-        $term_ids = $atts['term_ids'] ?: [];
-        $posts_per_page = $atts['posts_per_page'] ?: 12;
+        $term_ids = $atts['term_ids'] ? Helper::toArray($atts['term_ids']) : [];
+        $posts_per_page = $atts['posts_per_page'] ? absint($atts['posts_per_page']) : 12;
         $include_children = Helper::toBool($atts['include_children']);
-        $strtotime_str = $atts['limit_time'] ?: null;
+        $strtotime_str = $atts['limit_time'] ? Helper::toString($atts['limit_time']) : null;
 
         $r = Helper::queryByTerms($term_ids, $taxonomy, $post_type, $include_children, $posts_per_page, $strtotime_str);
+        if (!$r) return null;
 
+        // ok !
+        $wrapper_open = $atts['wrapper'] ? '<' . $atts['wrapper'] . ' class="' . $atts['wrapper_class'] . '">' : '';
+        $wrapper_close = $atts['wrapper'] ? '</' . $atts['wrapper'] . '>' : '';
+
+        $thumbnail_size = $atts['show']['thumbnail_size'] ?? 'medium';
+
+        ob_start();
+
+        $i = 0;
+
+        // Load slides loop.
+        while ($r->have_posts() && $i < $posts_per_page) :
+            $r->the_post();
+
+            global $post;
+
+            $post_title = get_the_title($post->ID);
+            $title = (!empty($post_title)) ? $post_title : __('(no title)', EHD_PLUGIN_TEXT_DOMAIN);
+            $post_thumbnail = get_the_post_thumbnail($post, $thumbnail_size);
+
+            echo $wrapper_open . '<div class="cell">';
+                echo '<article class="item">';
+
+                // thumbnail
+                if ($atts['show']['thumbnail'] && $post_thumbnail) :
+
+                    $scale_class = $atts['show']['scale'] ? 'scale ' : '';
+                    $ratio = Helper::getThemeMod('news_menu_setting');
+                    $ratio_class = $ratio;
+                    if ('default' == $ratio or !$ratio) {
+                        $ratio_class = '3-2';
+                    }
+
+                    echo '<a class="d-block cover" href="' . get_permalink($post->ID) . '" aria-label="' . esc_attr($title) . '" tabindex="0">';
+                    echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio_class . '">' . $post_thumbnail . '</span>';
+                    echo '</a>';
+
+                endif;
+
+                // post info
+                echo '<div class="cover-content">';
+                echo '<a href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '"><h6>' . $title . '</h6></a>';
+
+                if ($atts['show']['time'] || $atts['show']['term']) :
+                    echo '<div class="meta">';
+
+                    if ($atts['show']['time']) echo '<span class="post-date">'.  Helper::humanizeTime($post) . '</span>';
+                    if ($atts['show']['term']) echo Helper::getPrimaryTerm($post);
+
+                    echo '</div>';
+                endif;
+
+                if ($atts['show']['desc']) echo Helper::loopExcerpt($post);
+                if ($atts['show']['more']) echo '<a class="view-detail" href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '" data-glyph=""><span>' . __('Detail', EHD_PLUGIN_TEXT_DOMAIN) . '</span></a>';
+
+                echo '</div>';
+
+                echo '</article>';
+            echo '</div>' . $wrapper_close;
+
+            ++$i;
+        endwhile;
+        wp_reset_postdata();
+
+        return ob_get_clean();
     }
 
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function vertical_menu($atts)
+    public static function vertical_menu(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -121,10 +184,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function horizontal_menu($atts)
+    public static function horizontal_menu(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -154,15 +217,15 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function off_canvas_button($atts)
+    public static function off_canvas_button(array $atts = [])
     {
         $atts = shortcode_atts(
             [
                 'title'           => '',
-                'hide_if_desktop' => 1,
+                'hide_if_desktop' => true,
             ],
             $atts,
             'off_canvas_button'
@@ -170,6 +233,7 @@ final class Shortcode
 
         $title = $atts['title'] ?: __('Menu', EHD_PLUGIN_TEXT_DOMAIN);
         $class = $atts['hide_if_desktop'] ? 'hide-for-large' : '';
+
         ob_start();
 
         ?>
@@ -184,10 +248,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function safe_mail($atts)
+    public static function safe_mail(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -213,10 +277,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function site_logo($atts)
+    public static function site_logo(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -233,10 +297,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function inline_search($atts)
+    public static function inline_search(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -256,16 +320,14 @@ final class Shortcode
         ob_start();
 
         ?>
-        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
-              data-abide novalidate>
+        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
             <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr($title_for); ?></label>
-            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s"
-                   value="<?= get_search_query(); ?>" placeholder="<?= esc_attr($placeholder_title); ?>">
+            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= esc_attr($placeholder_title); ?>">
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
             <?php if (class_exists('\WooCommerce')) : ?>
-                <input type="hidden" name="post_type" value="product">
+            <input type="hidden" name="post_type" value="product">
             <?php endif; ?>
         </form>
         <?php
@@ -276,10 +338,10 @@ final class Shortcode
     // ------------------------------------------------------
 
     /**
-     * @param $atts
+     * @param array $atts
      * @return string
      */
-    public static function dropdown_search($atts)
+    public static function dropdown_search(array $atts = [])
     {
         $atts = shortcode_atts(
             [
@@ -305,13 +367,10 @@ final class Shortcode
             <span><?php echo $title; ?></span>
         </a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $atts['id']; ?>" data-dropdown data-auto-focus="true">
-            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
-                  data-abide novalidate>
+            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">
                     <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr($title_for); ?></label>
-                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s"
-                           value="<?php echo get_search_query(); ?>"
-                           placeholder="<?php echo esc_attr($placeholder_title); ?>">
+                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo esc_attr($placeholder_title); ?>">
                     <button class="btn-s" type="submit" data-glyph="">
                         <span><?php echo $title; ?></span>
                     </button>
@@ -320,7 +379,7 @@ final class Shortcode
                     </button>
                 </div>
                 <?php if (class_exists('\WooCommerce')) : ?>
-                    <input type="hidden" name="post_type" value="product">
+                <input type="hidden" name="post_type" value="product">
                 <?php endif; ?>
             </form>
         </div>

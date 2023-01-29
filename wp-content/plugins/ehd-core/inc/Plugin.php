@@ -18,6 +18,7 @@ use EHD\Themes\Optimizer;
 
 use EHD\Widgets\DropdownSearch_Widget;
 use EHD\Widgets\offCanvas_Widget;
+use EHD\Widgets\Posts_Widget;
 use EHD\Widgets\RecentPosts_Widget;
 use EHD\Widgets\Search_Widget;
 
@@ -92,9 +93,12 @@ final class Plugin
     public function register_widgets() : void
     {
         class_exists(offCanvas_Widget::class) && register_widget(new offCanvas_Widget());
+
         class_exists(Search_Widget::class) && register_widget(new Search_Widget());
         class_exists(DropdownSearch_Widget::class) && register_widget(new DropdownSearch_Widget());
+
         class_exists(RecentPosts_Widget::class) && register_widget(new RecentPosts_Widget());
+        class_exists(Posts_Widget::class) && register_widget(new Posts_Widget());
     }
 
     /**

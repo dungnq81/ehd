@@ -228,6 +228,9 @@ abstract class Widget extends WP_Widget
                                id="<?php echo esc_attr($this->get_field_id($key)); ?>"
                                name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="text"
                                value="<?php echo esc_attr($value); ?>"/>
+                        <?php if (isset($setting['desc'])) : ?>
+                        <small><?php echo esc_html($setting['desc']); ?></small>
+                        <?php endif; ?>
                     </p>
                     <?php
                     break;
@@ -241,6 +244,9 @@ abstract class Widget extends WP_Widget
                                name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="number"
                                min="<?php echo esc_attr($setting['min']); ?>"
                                max="<?php echo esc_attr($setting['max']); ?>" value="<?php echo esc_attr($value); ?>"/>
+                        <?php if (isset($setting['desc'])) : ?>
+                            <small><?php echo esc_html($setting['desc']); ?></small>
+                        <?php endif; ?>
                     </p>
                     <?php
                     break;
@@ -256,6 +262,9 @@ abstract class Widget extends WP_Widget
                                 <option value="<?php echo esc_attr($option_key); ?>" <?php selected($option_key, $value); ?>><?php echo esc_html($option_value); ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <?php if (isset($setting['desc'])) : ?>
+                            <small><?php echo esc_html($setting['desc']); ?></small>
+                        <?php endif; ?>
                     </p>
                     <?php
                     break;
@@ -267,7 +276,7 @@ abstract class Widget extends WP_Widget
                         <textarea class="widefat <?php echo esc_attr($class); ?>"
                                   id="<?php echo esc_attr($this->get_field_id($key)); ?>"
                                   name="<?php echo esc_attr($this->get_field_name($key)); ?>" cols="20"
-                                  rows="3"><?php echo esc_textarea($value); ?></textarea>
+                                  rows="2"><?php echo esc_textarea($value); ?></textarea>
                         <?php if (isset($setting['desc'])) : ?>
                             <small><?php echo esc_html($setting['desc']); ?></small>
                         <?php endif; ?>

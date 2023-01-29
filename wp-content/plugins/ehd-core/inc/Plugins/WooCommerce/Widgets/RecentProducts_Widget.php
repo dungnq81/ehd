@@ -2,6 +2,7 @@
 
 namespace EHD\Plugins\WooCommerce\Widgets;
 
+use EHD\Cores\Helper;
 use EHD\Cores\Widget;
 use WP_Query;
 
@@ -64,6 +65,12 @@ if (!class_exists('RecentProducts_Widget')) {
                     'std'   => 0,
                     'label' => __('Hide free products', 'woocommerce'),
                 ],
+                'limit_time'          => [
+                    'type'  => 'text',
+                    'std'   => '',
+                    'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'css_class' => [
                     'type'  => 'text',
                     'std'   => '',
@@ -90,6 +97,8 @@ if (!class_exists('RecentProducts_Widget')) {
             $orderby = !empty($instance['orderby']) ? sanitize_title($instance['orderby']) : $this->settings['orderby']['std'];
             $order = !empty($instance['order']) ? sanitize_title($instance['order']) : $this->settings['order']['std'];
 
+            $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : '';
+
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
             $query_args = [
                 'update_post_meta_cache' => false,
@@ -103,6 +112,22 @@ if (!class_exists('RecentProducts_Widget')) {
                 'order'               => $order,
                 'tax_query'           => ['relation' => 'AND'],
             ]; // WPCS: slow query ok.
+
+            // ...
+            if ($limit_time) {
+
+                // constrain to just posts in $limit_time
+                $recent = strtotime($limit_time);
+                if (Helper::isInteger($recent)) {
+                    $query_args['date_query'] = [
+                        'after' => [
+                            'year'  => date('Y', $recent),
+                            'month' => date('n', $recent),
+                            'day'   => date('j', $recent),
+                        ],
+                    ];
+                }
+            }
 
             // hide_free
             if (!empty($instance['hide_free'])) {
@@ -198,7 +223,7 @@ if (!class_exists('RecentProducts_Widget')) {
 
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
-                <div class="<?= $uniqid ?>" aria-labelledby="<?php echo esc_attr($title); ?>">
+                <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                     <div class="grid-products">
                         <?php
                         $i = 0;
