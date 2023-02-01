@@ -22,6 +22,13 @@ final class RankMath
         // disable_adjacent_rel_links
         add_filter('rank_math/frontend/disable_adjacent_rel_links', '__return_true');
 
+        /**
+         * Filter if XML sitemap transient cache is enabled.
+         *
+         * @param boolean $unsigned Enable cache or not, defaults to true
+         */
+        add_filter( 'rank_math/sitemap/enable_caching', '__return_false');
+
         // remove author schema
         add_filter('rank_math/json_ld', function ($entities, $jsonld) {
             if (isset($entities['ProfilePage'])) {

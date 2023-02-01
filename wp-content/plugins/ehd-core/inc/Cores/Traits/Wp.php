@@ -2,6 +2,7 @@
 
 namespace EHD\Cores\Traits;
 
+use EHD\Cores\Helper;
 use EHD\Walkers\Horizontal_Nav_Walker;
 use EHD\Walkers\Vertical_Nav_Walker;
 use WP_Error;
@@ -277,7 +278,7 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param object|array $term
+     * @param $term
      * @param string       $post_type
      * @param bool         $include_children
      *
@@ -286,7 +287,7 @@ trait Wp
      * @param bool|string  $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
-    public static function queryByTerm(object|array $term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], bool|string $strtotime_recent = false)
+    public static function queryByTerm($term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], bool|string $strtotime_recent = false)
     {
         if (!$term) {
             return false;
@@ -368,20 +369,16 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param array|string $term_ids
-     * @param string       $taxonomy
-     * @param string       $post_type
-     * @param bool         $include_children
-     * @param int          $posts_per_page
-     * @param bool|string  $strtotime_str
+     * @param array       $term_ids
+     * @param string      $taxonomy
+     * @param string      $post_type
+     * @param bool        $include_children
+     * @param int         $posts_per_page
+     * @param bool|string $strtotime_str
      * @return bool|WP_Query
      */
-    public static function queryByTerms(array|string $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
+    public static function queryByTerms(array $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
     {
-        if (!$term_ids) {
-            return false;
-        }
-
         $_args = [
             'post_type'              => $post_type ?: 'post',
             'post_status'            => 'publish',
@@ -394,21 +391,25 @@ trait Wp
             'update_post_term_cache' => false,
         ];
 
-        if (!is_array($term_ids)) {
-            $term_ids = self::toArray($term_ids);
-        }
+//        if (!is_array($term_ids)) {
+//            $term_ids = self::separatedToArray($term_ids, ',');
+//        }
 
         if (!$taxonomy) {
             $taxonomy = 'category';
         }
 
         //...
-        $_args['tax_query'][] = [
-            'taxonomy'         => $taxonomy,
-            'terms'            => $term_ids,
-            'include_children' => (bool) $include_children,
-            'operator'         => 'IN',
-        ];
+        $term_ids = Helper::removeEmptyValues($term_ids);
+        if (count($term_ids) > 0) {
+            $_args['tax_query'][] = [
+                'taxonomy'         => $taxonomy,
+                'terms'            => $term_ids,
+                'field'     => 'term_id',
+                'include_children' => (bool) $include_children,
+                'operator'         => 'IN',
+            ];
+        }
 
         // ...
         if ($strtotime_str) {

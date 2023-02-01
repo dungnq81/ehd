@@ -305,8 +305,8 @@ if (!class_exists('ProductsCarousel_Widget')) {
             // Product Categories
             $include_children = !empty($instance['include_children']);
 
-            $term_ids = !empty($instance['category']) ? sanitize_title($instance['category']) : $this->settings['category']['std'];
-            $term_ids = explode(',', Helper::stripSpace($term_ids));
+            $term_ids = $instance['category'] ?: $this->settings['category']['std'];
+            $term_ids = Helper::separatedToArray($term_ids, ',');
 
             //...
             if ($term_ids) {

@@ -49,18 +49,18 @@ final class Shortcode
             'include_children' => false,
             'posts_per_page'   => 12,
 
-            'limit_time' => '',
-            'wrapper' => '',
+            'limit_time'    => '',
+            'wrapper'       => '',
             'wrapper_class' => '',
 
             'show' => [
-                'thumbnail' => true,
+                'thumbnail'      => true,
                 'thumbnail_size' => 'medium',
-                'scale' => true,
-                'time' => true,
-                'term' => true,
-                'desc' => true,
-                'more' => true,
+                'scale'          => true,
+                'time'           => true,
+                'term'           => true,
+                'desc'           => true,
+                'more'           => true,
             ],
         ];
 
@@ -73,7 +73,7 @@ final class Shortcode
         //...
         $post_type = $atts['location'] ?: 'post';
         $taxonomy = $atts['taxonomy'] ?: 'category';
-        $term_ids = $atts['term_ids'] ? Helper::toArray($atts['term_ids']) : [];
+        $term_ids = $atts['term_ids'] ?: [];
         $posts_per_page = $atts['posts_per_page'] ? absint($atts['posts_per_page']) : 12;
         $include_children = Helper::toBool($atts['include_children']);
         $strtotime_str = $atts['limit_time'] ? Helper::toString($atts['limit_time']) : null;

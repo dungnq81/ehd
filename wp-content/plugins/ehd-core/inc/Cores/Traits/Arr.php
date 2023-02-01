@@ -7,6 +7,28 @@ namespace EHD\Cores\Traits;
 trait Arr
 {
     /**
+     * https://wordpress.stackexchange.com/questions/252865/tax-query-terms-ids-using-variable
+     *
+     * @param $string
+     * @param string $separator
+     * @return string[]
+     */
+    public static function separatedToArray($string, string $separator = ',')
+    {
+        // Explode on comma
+        $vals = explode($separator, $string);
+
+        // Trim whitespace
+        foreach ($vals as $key => $val) {
+            $vals[$key] = trim($val);
+        }
+
+        // Return empty array if no items found
+        // http://php.net/manual/en/function.explode.php#114273
+        return array_diff($vals, [""]);
+    }
+
+    /**
      * @param array $arr1
      * @param array $arr2
      * @return bool

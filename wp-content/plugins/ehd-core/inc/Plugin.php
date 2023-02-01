@@ -4,6 +4,10 @@ namespace EHD;
 
 use EHD\Cores\Shortcode;
 
+use EHD\Themes\Admin;
+use EHD\Themes\Customizer;
+use EHD\Themes\Optimizer;
+
 use EHD\Plugins\ACF;
 use EHD\Plugins\CF7;
 use EHD\Plugins\Elementor\Elementor;
@@ -12,13 +16,10 @@ use EHD\Plugins\RankMath;
 use EHD\Plugins\WooCommerce\WooCommerce;
 use EHD\Plugins\WpRocket;
 
-use EHD\Themes\Admin;
-use EHD\Themes\Customizer;
-use EHD\Themes\Optimizer;
-
 use EHD\Widgets\DropdownSearch_Widget;
 use EHD\Widgets\offCanvas_Widget;
 use EHD\Widgets\Posts_Widget;
+use EHD\Widgets\PostsCarousel_Widget;
 use EHD\Widgets\RecentPosts_Widget;
 use EHD\Widgets\Search_Widget;
 
@@ -61,10 +62,10 @@ final class Plugin
             (new Elementor());
         }
 
-        /** WpRocket cache */
+        /** WpRocket */
         defined('WP_ROCKET_VERSION') && (new WpRocket());
 
-        /** Litespeed cache */
+        /** Litespeed */
         defined('LSCWP_BASENAME') && (new LiteSpeed());
 
         /** RankMath */
@@ -99,6 +100,7 @@ final class Plugin
 
         class_exists(RecentPosts_Widget::class) && register_widget(new RecentPosts_Widget());
         class_exists(Posts_Widget::class) && register_widget(new Posts_Widget());
+        class_exists(PostsCarousel_Widget::class) && register_widget(new PostsCarousel_Widget());
     }
 
     /**

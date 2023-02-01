@@ -76,7 +76,7 @@ final class ACF
                     $title = $fields->icon_svg . '<span>' . $item->title . '</span>';
                 } else if ($fields->icon_image ?? false) {
                     $item->classes[] = 'thumb-menu';
-                    $title = '<img width="48px" height="48px" alt="' . esc_attr($item->title) . '" src="' . Helper::attachmentImageSrc($fields->icon_image) . '" loading="lazy" />' . '<span>' . $item->title . '</span>';
+                    $title = '<img width="50px" height="50px" alt="' . esc_attr($item->title) . '" src="' . Helper::attachmentImageSrc($fields->icon_image) . '" loading="lazy" />' . '<span>' . $item->title . '</span>';
                 } else if ($fields->icon_glyph ?? false) {
                     $item->classes[] = 'glyph-menu';
                     $title = '<span data-glyph="' . $fields->icon_glyph . '">' . $item->title . '</span>';

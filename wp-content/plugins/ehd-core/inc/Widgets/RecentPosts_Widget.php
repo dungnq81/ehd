@@ -77,6 +77,10 @@ if (!class_exists('RecentPosts_Widget')) {
          */
         public function widget($args, $instance)
         {
+            if ($this->get_cached_widget($args)) {
+                return;
+            }
+
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
 
             $number = (!empty($instance['number'])) ? absint($instance['number']) : 5;
@@ -138,6 +142,8 @@ if (!class_exists('RecentPosts_Widget')) {
 
             if (!$r->have_posts()) return;
 
+            ob_start();
+
             ?>
             <div class="<?php echo $_class; ?>">
                 <?php if ($title) : ?>
@@ -194,6 +200,8 @@ if (!class_exists('RecentPosts_Widget')) {
                 </nav>
             </div>
             <?php
+
+            echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
 }

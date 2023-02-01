@@ -4,7 +4,6 @@ namespace EHD\Widgets;
 
 use EHD\Cores\Helper;
 use EHD\Cores\Widget;
-use WP_Query;
 
 \defined('ABSPATH') || die;
 
@@ -39,6 +38,7 @@ if (!class_exists('Posts_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Posts Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc' => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'full_width'            => [
                     'type'  => 'checkbox',
@@ -113,6 +113,10 @@ if (!class_exists('Posts_Widget')) {
          */
         public function widget($args, $instance)
         {
+            if ($this->get_cached_widget($args)) {
+                return;
+            }
+
             $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
             $desc = $instance['desc'] ? trim($instance['desc']) : '';
 
@@ -123,12 +127,14 @@ if (!class_exists('Posts_Widget')) {
             $show_desc = !empty($instance['show_desc']);
             $show_viewmore_button = !empty($instance['show_viewmore_button']);
 
-            $category = !empty($instance['category']) ? sanitize_title($instance['category']) : $this->settings['category']['std'];
             $include_children = !empty($instance['include_children']);
             $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : '';
 
+            $term_ids = $instance['category'] ?: $this->settings['category']['std'];
+            $term_ids = Helper::separatedToArray($term_ids, '-');
+
             $query_args = [
-                'term_ids' => $category,
+                'term_ids' => $term_ids,
                 'include_children' => $include_children,
                 'posts_per_page' => $number,
                 'limit_time' => $limit_time,
@@ -153,16 +159,6 @@ if (!class_exists('Posts_Widget')) {
             $full_width = !empty($instance['full_width']);
             $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
-            // shortcode content
-            $shortcode_content = Helper::doShortcode(
-                'posts',
-                apply_filters(
-                    'posts_widget_shortcode_args',
-                    $query_args
-                )
-            );
-
-
             ob_start();
 
         ?>
@@ -175,11 +171,19 @@ if (!class_exists('Posts_Widget')) {
 
             <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                 <div class="grid-posts grid-x">
-                    <?php echo $shortcode_content; ?>
+                    <?php
+                    echo Helper::doShortcode(
+                        'posts',
+                        apply_filters(
+                            'posts_widget_shortcode_args',
+                            $query_args
+                        )
+                    );
+                    ?>
                 </div>
             </div>
-
             <?php
+
             if ($show_viewmore_button) {
 
                 $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
