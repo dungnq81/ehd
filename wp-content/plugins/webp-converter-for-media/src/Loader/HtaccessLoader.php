@@ -7,6 +7,7 @@ use WebpConverter\Service\OptionsAccessManager;
 use WebpConverter\Service\PathsGenerator;
 use WebpConverter\Settings\Option\ExtraFeaturesOption;
 use WebpConverter\Settings\Option\LoaderTypeOption;
+use WebpConverter\Settings\Option\RewriteInheritanceOption;
 use WebpConverter\Settings\Option\SupportedExtensionsOption;
 
 /**
@@ -161,8 +162,6 @@ class HtaccessLoader extends LoaderAbstract {
 			return $content;
 		}
 
-		$inheritance_active = ! ( in_array( ExtraFeaturesOption::OPTION_VALUE_REWRITE_INHERIT, $settings[ ExtraFeaturesOption::OPTION_NAME ] ) );
-
 		$document_root = PathsGenerator::get_rewrite_root();
 		$root_suffix   = PathsGenerator::get_rewrite_path();
 		$output_path   = apply_filters( 'webpc_dir_name', '', 'webp' );
@@ -173,25 +172,25 @@ class HtaccessLoader extends LoaderAbstract {
 		foreach ( $this->format_factory->get_mime_types() as $format => $mime_type ) {
 			$content .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 			$content .= '  RewriteEngine On' . PHP_EOL;
-			if ( apply_filters( 'webpc_htaccess_mod_rewrite_inherit', $inheritance_active ) === true ) {
+			if ( apply_filters( 'webpc_htaccess_mod_rewrite_inherit', ! $settings[ RewriteInheritanceOption::OPTION_NAME ] ) === true ) {
 				$content .= '  RewriteOptions Inherit' . PHP_EOL;
 			}
 
 			foreach ( $settings[ SupportedExtensionsOption::OPTION_NAME ] as $ext ) {
-				$content .= "  RewriteCond %{HTTP_ACCEPT} ${mime_type}" . PHP_EOL;
+				$content .= "  RewriteCond %{HTTP_ACCEPT} {$mime_type}" . PHP_EOL;
 				if ( in_array( ExtraFeaturesOption::OPTION_VALUE_ONLY_SMALLER, $settings[ ExtraFeaturesOption::OPTION_NAME ] ) ) {
 					$content .= "  RewriteCond %{REQUEST_FILENAME} -f" . PHP_EOL;
 				}
 				if ( strpos( $document_root, '%{DOCUMENT_ROOT}' ) !== false ) {
-					$content .= "  RewriteCond ${document_root}${output_path}/$1.${ext}.${format} -f" . PHP_EOL;
+					$content .= "  RewriteCond {$document_root}{$output_path}/$1.{$ext}.{$format} -f" . PHP_EOL;
 				} else {
-					$content .= "  RewriteCond ${document_root}${output_path}/$1.${ext}.${format} -f [OR]" . PHP_EOL;
-					$content .= "  RewriteCond %{DOCUMENT_ROOT}${root_suffix}${output_path}/$1.${ext}.${format} -f" . PHP_EOL;
+					$content .= "  RewriteCond {$document_root}{$output_path}/$1.{$ext}.{$format} -f [OR]" . PHP_EOL;
+					$content .= "  RewriteCond %{DOCUMENT_ROOT}{$root_suffix}{$output_path}/$1.{$ext}.{$format} -f" . PHP_EOL;
 				}
 				if ( apply_filters( 'webpc_htaccess_mod_rewrite_referer', false ) === true ) {
 					$content .= "  RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} ^([^@]*)@@https?://\\1/.*" . PHP_EOL;
 				}
-				$content .= "  RewriteRule (.+)\.${ext}$ ${root_suffix}${output_path}/$1.${ext}.${format} [NC,T=${mime_type},L]" . PHP_EOL;
+				$content .= "  RewriteRule (.+)\.{$ext}$ {$root_suffix}{$output_path}/$1.{$ext}.{$format} [NC,T={$mime_type},L]" . PHP_EOL;
 			}
 			$content .= '</IfModule>' . PHP_EOL;
 		}
@@ -242,7 +241,7 @@ class HtaccessLoader extends LoaderAbstract {
 		$content .= '<IfModule mod_expires.c>' . PHP_EOL;
 		$content .= '  ExpiresActive On' . PHP_EOL;
 		foreach ( $this->format_factory->get_mime_types() as $format => $mime_type ) {
-			$content .= "  ExpiresByType ${mime_type} \"access plus 1 year\"" . PHP_EOL;
+			$content .= "  ExpiresByType {$mime_type} \"access plus 1 year\"" . PHP_EOL;
 		}
 		$content .= '</IfModule>';
 
@@ -264,7 +263,7 @@ class HtaccessLoader extends LoaderAbstract {
 
 		$content .= '<IfModule mod_mime.c>' . PHP_EOL;
 		foreach ( $this->format_factory->get_mime_types() as $format => $mime_type ) {
-			$content .= "  AddType ${mime_type} .${format}" . PHP_EOL;
+			$content .= "  AddType {$mime_type} .{$format}" . PHP_EOL;
 		}
 		$content .= '</IfModule>';
 

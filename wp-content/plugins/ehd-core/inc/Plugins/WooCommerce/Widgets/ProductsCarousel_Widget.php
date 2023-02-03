@@ -21,6 +21,12 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'std'   => __('Products Slideshow', EHD_PLUGIN_TEXT_DOMAIN),
                     'label' => __('Title', 'woocommerce'),
                 ],
+                'desc'                  => [
+                    'type'  => 'textarea',
+                    'std'   => '',
+                    'label' => __('Description', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Short description of widget', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'number'                => [
                     'type'  => 'number',
                     'min'   => 0,
@@ -29,29 +35,17 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Number of products to show', 'woocommerce'),
                 ],
-                'columns_desktop'       => [
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'max'   => '',
-                    'std'   => 4,
-                    'class' => 'tiny-text',
-                    'label' => __('Products per row (desktop)', EHD_PLUGIN_TEXT_DOMAIN),
+                'columns_number'       => [
+                    'type'  => 'text',
+                    'std'   => '4-3-2',
+                    'label' => __('Posts per row', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc' => __('Separated by dashes "-" (3 values)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'columns_tablet'        => [
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'max'   => '',
-                    'std'   => 3,
-                    'class' => 'tiny-text',
-                    'label' => __('Products per row (tablet)', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'columns_mobile'        => [
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'max'   => '',
-                    'std'   => 2,
-                    'class' => 'tiny-text',
-                    'label' => __('Products per row (mobile)', EHD_PLUGIN_TEXT_DOMAIN),
+                'gap'           => [
+                    'type'  => 'text',
+                    'std'   => '0-0',
+                    'label' => __('Gap', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by dashes "-" (2 values)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'rows'                  => [
                     'type'  => 'number',
@@ -61,26 +55,11 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Number of rows to show', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'desktop_gap'           => [
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'max'   => '',
-                    'std'   => 0,
-                    'class' => 'tiny-text',
-                    'label' => __('Desktop Gap', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'mobile_gap'            => [
-                    'type'  => 'number',
-                    'min'   => 0,
-                    'max'   => '',
-                    'std'   => 0,
-                    'class' => 'tiny-text',
-                    'label' => __('Mobile Gap', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
                 'category'              => [
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Product Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc' => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'full_width'            => [
                     'type'  => 'checkbox',
@@ -188,7 +167,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'css_class'             => [
                     'type'  => 'text',
@@ -371,13 +350,19 @@ if (!class_exists('ProductsCarousel_Widget')) {
 
                         //...
                         $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
-                        $columns_desktop = !empty($instance['columns_desktop']) ? absint($instance['columns_desktop']) : $this->settings['columns_desktop']['std'];
-                        $columns_tablet = !empty($instance['columns_tablet']) ? absint($instance['columns_tablet']) : $this->settings['columns_tablet']['std'];
-                        $columns_mobile = !empty($instance['columns_mobile']) ? absint($instance['columns_mobile']) : $this->settings['columns_mobile']['std'];
                         $rows = !empty($instance['rows']) ? absint($instance['rows']) : $this->settings['rows']['std'];
 
-                        $desktop_gap = !empty($instance['desktop_gap']) ? absint($instance['desktop_gap']) : $this->settings['desktop_gap']['std'];
-                        $mobile_gap = !empty($instance['mobile_gap']) ? absint($instance['mobile_gap']) : $this->settings['mobile_gap']['std'];
+                        $_columns_number = $instance['columns_number'] ?: $this->settings['columns_number']['std'];
+                        $_gap = $instance['gap'] ?: $this->settings['gap']['std'];
+
+                        $_columns_number = Helper::separatedToArray($_columns_number, '-');
+                        $_gap = Helper::separatedToArray($_gap, '-');
+
+                        $desktop_gap = $_gap[0] ?? 0;
+                        $mobile_gap = $_gap[1] ?? 0;
+                        $columns_desktop = $_columns_number[0] ?? 0;
+                        $columns_tablet = $_columns_number[1] ?? 0;
+                        $columns_mobile = $_columns_number[2] ?? 0;
 
                         $pagination = !empty($instance['pagination']) ? sanitize_title($instance['pagination']) : $this->settings['pagination']['std'];
                         $navigation = !empty($instance['navigation']);

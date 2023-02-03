@@ -86,16 +86,46 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'std'   => 0,
                     'label' => __('Loop', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
+                'marquee'                  => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Marquee', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'direction'            => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Direction', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'horizontal'  => __('Horizontal', EHD_PLUGIN_TEXT_DOMAIN),
+                        'vertical' => __('Vertical', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
                 'pagination'            => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Pagination', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
                         ''         => __('None', EHD_PLUGIN_TEXT_DOMAIN),
-                        'dynamic'  => __('Dynamic', EHD_PLUGIN_TEXT_DOMAIN),
-                        'progress' => __('Progress', EHD_PLUGIN_TEXT_DOMAIN),
+                        'bullets'  => __('Bullets', EHD_PLUGIN_TEXT_DOMAIN),
                         'fraction' => __('Fraction', EHD_PLUGIN_TEXT_DOMAIN),
+                        'progressbar' => __('Progressbar', EHD_PLUGIN_TEXT_DOMAIN),
                         'custom'   => __('Custom', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
+                'effect'            => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Effect', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'slide'  => __('Slide', EHD_PLUGIN_TEXT_DOMAIN),
+                        'fade' => __('Fade', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cube' => __('Cube', EHD_PLUGIN_TEXT_DOMAIN),
+                        'coverflow'   => __('Coverflow', EHD_PLUGIN_TEXT_DOMAIN),
+                        'flip'   => __('Flip', EHD_PLUGIN_TEXT_DOMAIN),
+                        'creative'   => __('Creative', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cards'   => __('Cards', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
                 'delay'                 => [
@@ -155,7 +185,7 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'css_class'             => [
                     'type'  => 'text',
@@ -213,7 +243,7 @@ if (!class_exists('PostsCarousel_Widget')) {
             ];
 
             // class
-            $_class = $this->widget_classname . ' ' . $this->id;
+            $_class = $this->widget_classname;
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
@@ -239,9 +269,13 @@ if (!class_exists('PostsCarousel_Widget')) {
                         $rows = !empty($instance['rows']) ? absint($instance['rows']) : $this->settings['rows']['std'];
 
                         $pagination = !empty($instance['pagination']) ? sanitize_title($instance['pagination']) : $this->settings['pagination']['std'];
+                        $direction = !empty($instance['direction']) ? sanitize_title($instance['direction']) : $this->settings['direction']['std'];
+                        $effect = !empty($instance['effect']) ? sanitize_title($instance['effect']) : $this->settings['effect']['std'];
+
                         $navigation = !empty($instance['navigation']);
                         $autoplay = !empty($instance['autoplay']);
                         $loop = !empty($instance['loop']);
+                        $marquee = !empty($instance['marquee']);
 
                         $delay = !empty($instance['delay']) ? absint($instance['delay']) : $this->settings['delay']['std'];
                         $speed = !empty($instance['speed']) ? absint($instance['speed']) : $this->settings['speed']['std'];
@@ -261,32 +295,41 @@ if (!class_exists('PostsCarousel_Widget')) {
 
                         //...
                         $swiper_class = '';
-                        $_data = [];
+                        $_data = [
+                            'observer' => true,
+                        ];
 
-                        if ($desktop_gap > 0) $_data['desktop_gap'] = $desktop_gap;
-                        if ($mobile_gap > 0) $_data['mobile_gap'] = $mobile_gap;
+                        if ($desktop_gap) $_data['desktop_gap'] = absint($desktop_gap);
+                        if ($mobile_gap) $_data['mobile_gap'] = absint($mobile_gap);
 
                         if ($delay > 0) $_data['delay'] = $delay;
                         if ($speed > 0) $_data['speed'] = $speed;
 
                         if ($pagination) $_data['pagination'] = $pagination;
+                        if ($direction) $_data['direction'] = $direction;
+                        if ($effect) $_data['effect'] = $effect;
 
                         if ($navigation) $_data['navigation'] = true;
                         if ($autoplay) $_data['autoplay'] = true;
                         if ($loop) $_data['loop'] = true;
+                        if ($marquee) {
+                            $_data['marquee'] = true;
+                            $swiper_class .= ' marquee';
+                        }
 
-                        if (!$columns_desktop && !$columns_tablet && !$columns_mobile) {
+                        if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {
                             $_data['autoview'] = true;
                             $swiper_class .= ' autoview';
                         } else {
-                            $_data['desktop'] = $columns_desktop;
-                            $_data['tablet'] = $columns_tablet;
-                            $_data['mobile'] = $columns_mobile;
+                            $_data['desktop'] = absint($columns_desktop);
+                            $_data['tablet'] = absint($columns_tablet);
+                            $_data['mobile'] = absint($columns_mobile);
                         }
 
                         if ($rows > 1) {
                             $_data['row'] = $rows;
                             $_data['loop'] = false;
+                            $swiper_class .= ' multirow';
                         }
 
                         $_data = json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
@@ -297,24 +340,17 @@ if (!class_exists('PostsCarousel_Widget')) {
                                 <?php
                                 echo Helper::doShortcode(
                                     'posts',
-                                    apply_filters(
-                                        'posts_carousel_widget_shortcode_args',
-                                        $query_args
-                                    )
+                                    $query_args
                                 );
                                 ?>
                             </div>
                         </div>
                     </div>
                     <?php
-
                     $show_viewmore_button = !empty($instance['show_viewmore_button']);
-
                     if ($show_viewmore_button) {
                         $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
-
                         if ($viewmore_button_title) {
-
                             $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
                             echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
                         }

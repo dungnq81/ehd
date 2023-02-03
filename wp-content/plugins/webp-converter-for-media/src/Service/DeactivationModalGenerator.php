@@ -113,11 +113,7 @@ class DeactivationModalGenerator {
 							return sprintf(
 							/* translators: %1$s: option label, %2$s: open anchor tag, %3$s: close anchor tag */
 								__( 'Check the %1$s option in %2$sthe plugin settings%3$s - this should solve the problem.', 'webp-converter-for-media' ),
-								sprintf(
-									'"%1$s &raquo; %2$s"',
-									__( 'Extra features', 'webp-converter-for-media' ),
-									__( 'Disable rewrite inheritance in .htaccess files', 'webp-converter-for-media' )
-								),
+								__( 'Disable rewrite inheritance in .htaccess files', 'webp-converter-for-media' ),
 								'<a href="' . esc_url( PageIntegration::get_settings_page_url( AdvancedSettingsPage::PAGE_SLUG ) ) . '">',
 								'</a>'
 							);

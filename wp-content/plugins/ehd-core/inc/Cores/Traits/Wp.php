@@ -375,7 +375,7 @@ trait Wp
      * @param bool        $include_children
      * @param int         $posts_per_page
      * @param bool|string $strtotime_str
-     * @return bool|WP_Query
+     * @return false|WP_Query
      */
     public static function queryByTerms(array $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
     {

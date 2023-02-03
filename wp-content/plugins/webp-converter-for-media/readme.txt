@@ -5,7 +5,7 @@ Tags: convert webp, webp, optimize images, image optimization, compress images
 Requires at least: 4.9
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 5.6.4
+Stable tag: 5.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -349,6 +349,12 @@ In case of problems, please contact us in [the support forum](https://url.mattpl
 4. Optimization statistics of Media Library
 
 == Changelog ==
+
+= 5.7.0 (2023-02-01) =
+* `[Fixed]` Compatibility with PHP 8.2
+* `[Changed]` Layout of settings in Advanced Settings tab
+* `[Added]` Error detection of blocked rewrites for images from /uploads directory
+* `[Added]` Exception for blocked REST API endpoints by external plugins
 
 = 5.6.4 (2023-01-21) =
 * `[Fixed]` Error detection of cached redirects of images to WebP files

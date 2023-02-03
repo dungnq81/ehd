@@ -205,14 +205,6 @@ if (!class_exists('Products_Widget')) {
                 $query_args['paginate'] = $paginate;
             }
 
-            $shortcode_content = Helper::doShortcode(
-                'products',
-                apply_filters(
-                    'products_widget_shortcode_args',
-                    $query_args
-                )
-            );
-
             // class
             $_class = $this->widget_classname . ' ' . $this->id;
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
@@ -240,7 +232,12 @@ if (!class_exists('Products_Widget')) {
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
                 <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
-                    <?php echo $shortcode_content; ?>
+                    <?php
+                    echo Helper::doShortcode(
+                        'products',
+                        $query_args
+                    );
+                    ?>
                 </div>
 
                 <?php

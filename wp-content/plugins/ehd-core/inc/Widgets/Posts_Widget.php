@@ -78,7 +78,7 @@ if (!class_exists('Posts_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc'  => __('Constrain to just posts in a period of time', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'show_viewmore_button'  => [
                     'type'  => 'checkbox',
@@ -174,10 +174,7 @@ if (!class_exists('Posts_Widget')) {
                     <?php
                     echo Helper::doShortcode(
                         'posts',
-                        apply_filters(
-                            'posts_widget_shortcode_args',
-                            $query_args
-                        )
+                        $query_args
                     );
                     ?>
                 </div>
