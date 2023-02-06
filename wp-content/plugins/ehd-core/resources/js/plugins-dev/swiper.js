@@ -3,6 +3,13 @@ import random from "lodash/random";
 import isEmpty from "lodash/isEmpty";
 import toString from "lodash/toString";
 
+/** current-device */
+import device from "current-device";
+
+const is_mobile = () => device.mobile();
+const is_tablet = () => device.tablet();
+const is_desktop = () => device.desktop();
+
 /** import Swiper bundle with all modules installed */
 import {Swiper} from 'swiper/bundle';
 
@@ -10,10 +17,12 @@ import {Swiper} from 'swiper/bundle';
 const w_swiper = [...document.querySelectorAll('.w-swiper')];
 w_swiper.forEach((el, index) => {
 
-    const _rand = nanoid(12);
-    const _class = 'swiper-' + _rand;
-    const _next_class = 'next-' + _rand;
-    const _prev_class = 'prev-' + _rand;
+    const _rand = nanoid(12),
+        _class = 'swiper-' + _rand,
+        _next_class = 'next-' + _rand,
+        _prev_class = 'prev-' + _rand,
+        _pagination_class = 'pagination-' + _rand,
+        _scrollbar_class = 'scrollbar-' + _rand;
 
     el.classList.add(_class);
 
@@ -209,7 +218,30 @@ w_swiper.forEach((el, index) => {
 
     /** pagination */
     if ("pagination" in _obj_options) {
+        const _section = el.closest('.swiper-section');
+        let _pagination = _section.querySelector('.swiper-pagination');
+        if (_pagination) {
+            _pagination.classList.add(_pagination_class);
+        }
+    }
 
+    /** scrollbar */
+    if ("scrollbar" in _obj_options) {
+        const _section = el.closest('.swiper-section');
+        let _scrollbar = _section.querySelector('.swiper-scrollbar');
+        if (_scrollbar) {
+            _scrollbar.classList.add(_scrollbar_class);
+        } else {
+            _scrollbar = document.createElement("div");
+            _scrollbar.classList.add('swiper-scrollbar', _scrollbar_class);
+            _controls.appendChild(_scrollbar);
+        }
+
+        _result_options.scrollbar = {
+            hide: !0,
+            draggable: !0,
+            el: '.' + _scrollbar_class,
+        };
     }
 
     /** parallax */
@@ -228,14 +260,16 @@ w_swiper.forEach((el, index) => {
         _result_options.allowTouchMove = !0;
     }
 
-    /**cssMode*/
-    if (!("row" in _obj_options)
+    /** cssMode */
+    if ((is_mobile() || is_tablet())
+        && !("row" in _obj_options)
         && !("marquee" in _obj_options)
         && !("centered" in _obj_options)
         && !("freemode" in _obj_options)
         && !("progressbar" in _obj_options)
-        && ( is_mobile() || is_tablet() )
-        && !el.classList.contains('sync-swiper')) {
+        && (!("effect" in _obj_options) || (("effect" in _obj_options) && 'cube' !== _result_options.effect))
+        && !el.classList.contains('sync-swiper'))
+    {
         _result_options.cssMode = !0; /* API CSS Scroll Snap */
     }
 

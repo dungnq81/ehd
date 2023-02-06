@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 5.7.1 (2023-02-04) =
+* `[Changed]` Verification of rewrites_not_executed server configuration error
+
 = 5.7.0 (2023-02-01) =
 * `[Fixed]` Compatibility with PHP 8.2
 * `[Changed]` Layout of settings in Advanced Settings tab

@@ -91,6 +91,11 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'std'   => 0,
                     'label' => __('Marquee', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
+                'scrollbar'                  => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Scrollbar', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'direction'            => [
                     'type'    => 'select',
                     'std'     => '',
@@ -276,6 +281,7 @@ if (!class_exists('PostsCarousel_Widget')) {
                         $autoplay = !empty($instance['autoplay']);
                         $loop = !empty($instance['loop']);
                         $marquee = !empty($instance['marquee']);
+                        $scrollbar = !empty($instance['scrollbar']);
 
                         $delay = !empty($instance['delay']) ? absint($instance['delay']) : $this->settings['delay']['std'];
                         $speed = !empty($instance['speed']) ? absint($instance['speed']) : $this->settings['speed']['std'];
@@ -312,9 +318,14 @@ if (!class_exists('PostsCarousel_Widget')) {
                         if ($navigation) $_data['navigation'] = true;
                         if ($autoplay) $_data['autoplay'] = true;
                         if ($loop) $_data['loop'] = true;
+
                         if ($marquee) {
                             $_data['marquee'] = true;
                             $swiper_class .= ' marquee';
+                        }
+                        if ($scrollbar) {
+                            $_data['scrollbar'] = true;
+                            $swiper_class .= ' scrollbar';
                         }
 
                         if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {

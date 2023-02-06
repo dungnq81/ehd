@@ -31,7 +31,7 @@ class RewritesErrorsDetector implements ErrorDetector {
 	const PATH_OUTPUT_FILE_PNG     = '/webp-converter-for-media-test.png';
 	const PATH_OUTPUT_FILE_PNG2    = '/webp-converter-for-media-test.png2';
 	const PATH_OUTPUT_FILE_PLUGINS = '/webp-converter-for-media/assets/img/icon-test.png';
-	const URL_DEBUG_HTACCESS_FILE  = 'assets/img/debug-htaccess/icon-test.png';
+	const URL_DEBUG_HTACCESS_FILE  = 'assets/img/debug-htaccess/icon-test.png2';
 
 	/**
 	 * @var PluginInfo
