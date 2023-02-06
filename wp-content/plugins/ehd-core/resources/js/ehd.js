@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/** jquery */
+const $ = jQuery;
+
+'use strict';
 $(() => {
 
     /** Remove empty P tags created by WP inside of Accordion and Orbit */

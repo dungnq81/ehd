@@ -44,7 +44,7 @@ final class Shortcode
     {
         $default_atts = [
             'post_type'        => 'post',
-            'term_ids'         => [],
+            'term_ids'         => '',
             'taxonomy'         => 'category',
             'include_children' => false,
             'posts_per_page'   => 12,
@@ -74,7 +74,7 @@ final class Shortcode
         $post_type = $atts['post_type'] ?: 'post';
         $taxonomy = $atts['taxonomy'] ?: 'category';
 
-        $term_ids = $atts['term_ids'] ?: [];
+        $term_ids = $atts['term_ids'] ?: '';
         $term_ids = Helper::separatedToArray($term_ids, '-');
 
         $posts_per_page = $atts['posts_per_page'] ? absint($atts['posts_per_page']) : 12;

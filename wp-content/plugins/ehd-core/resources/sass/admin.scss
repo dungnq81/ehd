@@ -109,7 +109,7 @@ body.wp-admin {
     table {
         &.wp-list-table {
             .column-post_thumb, .column-term_thumb, .column-thumb {
-                width: 50px;
+                width: 66px;
                 text-align: center;
                 white-space: nowrap;
                 img {
@@ -285,6 +285,10 @@ table.wp-list-table .column-price {
     ins {
         color: #ff0000;
     }
+}
+
+table.wp-list-table .column-handle, table.wp-list-table tbody td.column-handle {
+    width: 38px;
 }
 
 /** */

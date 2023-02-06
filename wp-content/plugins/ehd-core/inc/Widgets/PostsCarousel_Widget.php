@@ -4,7 +4,6 @@ namespace EHD\Widgets;
 
 use EHD\Cores\Helper;
 use EHD\Cores\Widget;
-use WP_Query;
 
 \defined('ABSPATH') || die;
 
@@ -200,6 +199,21 @@ if (!class_exists('PostsCarousel_Widget')) {
             ];
 
             parent::__construct();
+
+            // load styles and scripts
+            if ( is_active_widget(false, false, $this->id_base) ) {
+                add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
+            }
+        }
+
+        /**
+         * @return void
+         */
+        public function styles_and_scripts() {
+            wp_enqueue_style( 'ehd-swiper-style' );
+
+            wp_enqueue_script( 'ehd-swiper' );
+            wp_script_add_data("ehd-swiper", "defer", true);
         }
 
         /**

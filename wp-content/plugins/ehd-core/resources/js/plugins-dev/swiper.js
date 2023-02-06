@@ -222,7 +222,41 @@ w_swiper.forEach((el, index) => {
         let _pagination = _section.querySelector('.swiper-pagination');
         if (_pagination) {
             _pagination.classList.add(_pagination_class);
+        } else {
+            let _pagination = document.createElement("div");
+            _pagination.classList.add('swiper-pagination', _pagination_class);
+            _controls.appendChild(_pagination);
         }
+
+        //...
+        if (_obj_options.pagination === 'bullets') {
+            _result_options.pagination = {
+                dynamicBullets: !0,
+                el: '.' + _pagination_class,
+                type: 'bullets',
+            };
+        } else if (_obj_options.pagination === 'fraction') {
+            _result_options.pagination = {
+                el: '.' + _pagination_class,
+                type: 'fraction',
+            };
+        } else if (_obj_options.pagination === 'progressbar') {
+            _result_options.pagination = {
+                el: '.' + _pagination_class,
+                type: "progressbar",
+            };
+        } else if (_obj_options.pagination === 'custom') {
+            let _pagination = _section.querySelector('.swiper-pagination');
+            _pagination.classList.add('swiper-pagination-custom');
+            _result_options.pagination = {
+                el: '.' + _pagination_class,
+                renderBullet: function (index, className) {
+                    return '<span class="' + className + '">' + (index + 1) + "</span>";
+                },
+            };
+        }
+
+        _result_options.pagination.clickable = !0;
     }
 
     /** scrollbar */
