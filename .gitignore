@@ -154,7 +154,6 @@ fabric.properties
 /yarn.lock
 /mix-manifest.json
 /package-lock.json
-/.env
 /wp-content/themes/hello-elementor/
 /wp-content/themes/ehd/assets/
 /wp-content/plugins/ehd-core/assets/
