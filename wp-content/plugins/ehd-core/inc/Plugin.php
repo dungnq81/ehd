@@ -22,6 +22,7 @@ use EHD\Widgets\Posts_Widget;
 use EHD\Widgets\PostsCarousel_Widget;
 use EHD\Widgets\RecentPosts_Widget;
 use EHD\Widgets\Search_Widget;
+use EHD\Widgets\Shortcode_Widget;
 
 \defined('ABSPATH') || die;
 
@@ -97,6 +98,7 @@ final class Plugin
 
         class_exists(Search_Widget::class) && register_widget(new Search_Widget());
         class_exists(DropdownSearch_Widget::class) && register_widget(new DropdownSearch_Widget());
+        class_exists(Shortcode_Widget::class) && register_widget(new Shortcode_Widget());
 
         class_exists(RecentPosts_Widget::class) && register_widget(new RecentPosts_Widget());
         class_exists(Posts_Widget::class) && register_widget(new Posts_Widget());
@@ -136,7 +138,7 @@ final class Plugin
     public function admin_notice_missing_elementor() : void
     {
         $class = 'notice notice-error';
-        $message = sprintf(__('You need %1$s"Elementor"%2$s for the %1$s"EHD-Core"%2$s plugin to work and updated.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
+        $message = sprintf(__(' you need to have %1$s"Elementor"%2$s installed and updated for the %1$s"EHD-Core"%2$s plugin to function properly.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
 
         printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
     }

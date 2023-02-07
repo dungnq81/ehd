@@ -104,6 +104,17 @@ trait Base
     // --------------------------------------------------
 
     /**
+     * @param mixed $value
+     * @return bool
+     */
+    public static function notEmpty(mixed $value)
+    {
+        return isset($value) && !empty($value);
+    }
+
+    // --------------------------------------------------
+
+    /**
      * @param array $array
      * @return array
      */

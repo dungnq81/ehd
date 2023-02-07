@@ -29,23 +29,6 @@ abstract class Widget extends WP_Widget
     }
 
     /**
-     * @param $id
-     *
-     * @return object|null
-     */
-    protected function acfFields($id)
-    {
-        if (class_exists('\ACF')) {
-            $fields = \get_fields($id);
-            if ($fields) {
-                return Helper::toObject($fields);
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * @return array
      */
     protected function widget_options()
@@ -303,5 +286,108 @@ abstract class Widget extends WP_Widget
                     break;
             }
         }
+    }
+
+    /** ---------------------------------------------------- */
+
+    /**
+     * @param $id
+     *
+     * @return object|null
+     */
+    protected function acfFields($id)
+    {
+        if (class_exists('\ACF')) {
+            $fields = \get_fields($id);
+            if ($fields) {
+                return Helper::toObject($fields);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $instance
+     * @param $default_settings
+     * @return array
+     */
+    protected function swiperOptions($instance, $default_settings)
+    {
+        $rows = Helper::notEmpty($instance['rows']) ? absint($instance['rows']) : $default_settings['rows']['std'];
+
+        $_columns_number = $instance['columns_number'] ?? $default_settings['columns_number']['std'];
+        $_gap = $instance['gap'] ?? $default_settings['gap']['std'];
+        $_columns_number = Helper::separatedToArray($_columns_number, '-');
+        $_gap = Helper::separatedToArray($_gap, '-');
+
+        $pagination = Helper::notEmpty($instance['pagination']) ? sanitize_title($instance['pagination']) : $default_settings['pagination']['std'];
+        $direction = Helper::notEmpty($instance['direction']) ? sanitize_title($instance['direction']) : $default_settings['direction']['std'];
+        $effect = Helper::notEmpty($instance['effect']) ? sanitize_title($instance['effect']) : $default_settings['effect']['std'];
+
+        $navigation = Helper::notEmpty($instance['navigation']);
+        $autoplay = Helper::notEmpty($instance['autoplay']);
+        $loop = Helper::notEmpty($instance['loop']);
+        $marquee = Helper::notEmpty($instance['marquee']);
+        $scrollbar = Helper::notEmpty($instance['scrollbar']);
+
+        $delay = Helper::notEmpty($instance['delay']) ? absint($instance['delay']) : $default_settings['delay']['std'];
+        $speed = Helper::notEmpty($instance['speed']) ? absint($instance['speed']) : $default_settings['speed']['std'];
+
+        //...
+        $desktop_gap = $_gap[0] ?? 0;
+        $mobile_gap = $_gap[1] ?? 0;
+        $columns_desktop = $_columns_number[0] ?? 0;
+        $columns_tablet = $_columns_number[1] ?? 0;
+        $columns_mobile = $_columns_number[2] ?? 0;
+
+        //...
+        $swiper_class = '';
+        $_data = [
+            'observer' => true,
+        ];
+
+        if ($desktop_gap) $_data['desktop_gap'] = absint($desktop_gap);
+        if ($mobile_gap) $_data['mobile_gap'] = absint($mobile_gap);
+
+        if ($delay > 0) $_data['delay'] = $delay;
+        if ($speed > 0) $_data['speed'] = $speed;
+
+        if ($pagination) $_data['pagination'] = $pagination;
+        if ($direction) $_data['direction'] = $direction;
+        if ($effect) $_data['effect'] = $effect;
+
+        if ($navigation) $_data['navigation'] = true;
+        if ($autoplay) $_data['autoplay'] = true;
+        if ($loop) $_data['loop'] = true;
+
+        if ($marquee) {
+            $_data['marquee'] = true;
+            $swiper_class .= ' marquee';
+        }
+        if ($scrollbar) {
+            $_data['scrollbar'] = true;
+            $swiper_class .= ' scrollbar';
+        }
+
+        if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {
+            $_data['autoview'] = true;
+            $swiper_class .= ' autoview';
+        } else {
+            $_data['desktop'] = absint($columns_desktop);
+            $_data['tablet'] = absint($columns_tablet);
+            $_data['mobile'] = absint($columns_mobile);
+        }
+
+        if ($rows > 1) {
+            $_data['row'] = $rows;
+            $_data['loop'] = false;
+            $swiper_class .= ' multirow';
+        }
+
+        return [
+            'class' => $swiper_class,
+            'data' => json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE),
+        ];
     }
 }

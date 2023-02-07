@@ -61,6 +61,11 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'label' => __('Product Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
                     'desc' => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
+                'include_children'      => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Include Children', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
                 'full_width'            => [
                     'type'  => 'checkbox',
                     'std'   => 0,
@@ -81,16 +86,51 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     'std'   => 0,
                     'label' => __('Loop', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
+                'marquee'                  => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Marquee', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'scrollbar'                  => [
+                    'type'  => 'checkbox',
+                    'std'   => 0,
+                    'label' => __('Scrollbar', EHD_PLUGIN_TEXT_DOMAIN),
+                ],
+                'direction'            => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Direction', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'horizontal'  => __('Horizontal', EHD_PLUGIN_TEXT_DOMAIN),
+                        'vertical' => __('Vertical', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
                 'pagination'            => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Pagination', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
                         ''         => __('None', EHD_PLUGIN_TEXT_DOMAIN),
-                        'dynamic'  => __('Dynamic', EHD_PLUGIN_TEXT_DOMAIN),
-                        'progress' => __('Progress', EHD_PLUGIN_TEXT_DOMAIN),
+                        'bullets'  => __('Bullets', EHD_PLUGIN_TEXT_DOMAIN),
                         'fraction' => __('Fraction', EHD_PLUGIN_TEXT_DOMAIN),
+                        'progressbar' => __('Progressbar', EHD_PLUGIN_TEXT_DOMAIN),
                         'custom'   => __('Custom', EHD_PLUGIN_TEXT_DOMAIN),
+                    ],
+                ],
+                'effect'            => [
+                    'type'    => 'select',
+                    'std'     => '',
+                    'label'   => __('Effect', EHD_PLUGIN_TEXT_DOMAIN),
+                    'options' => [
+                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'slide'  => __('Slide', EHD_PLUGIN_TEXT_DOMAIN),
+                        'fade' => __('Fade', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cube' => __('Cube', EHD_PLUGIN_TEXT_DOMAIN),
+                        'coverflow'   => __('Coverflow', EHD_PLUGIN_TEXT_DOMAIN),
+                        'flip'   => __('Flip', EHD_PLUGIN_TEXT_DOMAIN),
+                        'creative'   => __('Creative', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cards'   => __('Cards', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
                 'delay'                 => [
@@ -138,11 +178,6 @@ if (!class_exists('ProductsCarousel_Widget')) {
                         'desc' => __('DESC', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
-                'include_children'      => [
-                    'type'  => 'checkbox',
-                    'std'   => 0,
-                    'label' => __('Include Children', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
                 'hide_free'             => [
                     'type'  => 'checkbox',
                     'std'   => 0,
@@ -177,6 +212,21 @@ if (!class_exists('ProductsCarousel_Widget')) {
             ];
 
             parent::__construct();
+
+            // load styles and scripts
+            if ( is_active_widget(false, false, $this->id_base) ) {
+                add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
+            }
+        }
+
+        /**
+         * @return void
+         */
+        public function styles_and_scripts() {
+            wp_enqueue_style( 'ehd-swiper-style' );
+
+            wp_enqueue_script( 'ehd-swiper' );
+            wp_script_add_data("ehd-swiper", "defer", true);
         }
 
         /**
@@ -285,7 +335,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
             $include_children = !empty($instance['include_children']);
 
             $term_ids = $instance['category'] ?: $this->settings['category']['std'];
-            $term_ids = Helper::separatedToArray($term_ids, ',');
+            $term_ids = Helper::separatedToArray($term_ids, '-');
 
             //...
             if ($term_ids) {
@@ -322,15 +372,15 @@ if (!class_exists('ProductsCarousel_Widget')) {
             }
 
             // class
-            $_class = $this->widget_classname . ' ' . $this->id;
+            $_class = $this->widget_classname;
             $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
 
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
             }
 
-            $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
             $full_width = !empty($instance['full_width']);
+            $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
             // has products
             wc_set_loop_prop('name', 'products_carousel_widget');
@@ -348,64 +398,12 @@ if (!class_exists('ProductsCarousel_Widget')) {
                     <div class="swiper-section carousel-products grid-products">
                         <?php
 
-                        //...
                         $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
-                        $rows = !empty($instance['rows']) ? absint($instance['rows']) : $this->settings['rows']['std'];
-
-                        $_columns_number = $instance['columns_number'] ?: $this->settings['columns_number']['std'];
-                        $_gap = $instance['gap'] ?: $this->settings['gap']['std'];
-
-                        $_columns_number = Helper::separatedToArray($_columns_number, '-');
-                        $_gap = Helper::separatedToArray($_gap, '-');
-
-                        $desktop_gap = $_gap[0] ?? 0;
-                        $mobile_gap = $_gap[1] ?? 0;
-                        $columns_desktop = $_columns_number[0] ?? 0;
-                        $columns_tablet = $_columns_number[1] ?? 0;
-                        $columns_mobile = $_columns_number[2] ?? 0;
-
-                        $pagination = !empty($instance['pagination']) ? sanitize_title($instance['pagination']) : $this->settings['pagination']['std'];
-                        $navigation = !empty($instance['navigation']);
-                        $autoplay = !empty($instance['autoplay']);
-                        $loop = !empty($instance['loop']);
-
-                        $delay = !empty($instance['delay']) ? absint($instance['delay']) : $this->settings['delay']['std'];
-                        $speed = !empty($instance['speed']) ? absint($instance['speed']) : $this->settings['speed']['std'];
-
-                        //...
-                        $swiper_class = '';
-                        $_data = [];
-
-                        if ($desktop_gap > 0) $_data['desktop_gap'] = $desktop_gap;
-                        if ($mobile_gap > 0) $_data['mobile_gap'] = $mobile_gap;
-
-                        if ($delay >= 0) $_data['delay'] = $delay;
-                        if ($speed >= 0) $_data['speed'] = $speed;
-
-                        if ($pagination) $_data['pagination'] = $pagination;
-                        if ($navigation) $_data['navigation'] = true;
-                        if ($autoplay) $_data['autoplay'] = true;
-                        if ($loop) $_data['loop'] = true;
-
-                        if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {
-                            $_data['autoview'] = true;
-                            $swiper_class .= ' autoview';
-                        } else {
-                            $_data['desktop'] = $columns_desktop;
-                            $_data['tablet'] = $columns_tablet;
-                            $_data['mobile'] = $columns_mobile;
-                        }
-
-                        if ($rows > 1) {
-                            $_data['row'] = $rows;
-                            $_data['loop'] = false;
-                        }
-
-                        $_data = json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
+                        $_data = $this->swiperOptions($instance, $this->settings);
 
                         ?>
                         <div class="w-swiper swiper">
-                            <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $_data; ?>'>
+                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
                                 <?php
                                 $i = 0;
 

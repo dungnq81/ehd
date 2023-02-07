@@ -263,7 +263,7 @@ if (!class_exists('PostsCarousel_Widget')) {
 
             // class
             $_class = $this->widget_classname;
-            $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
+            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
             }
@@ -283,85 +283,11 @@ if (!class_exists('PostsCarousel_Widget')) {
 
                 <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                     <div class="swiper-section carousel-posts grid-posts">
-                        <?php
 
-                        $rows = !empty($instance['rows']) ? absint($instance['rows']) : $this->settings['rows']['std'];
+                        <?php $_data = $this->swiperOptions($instance, $this->settings); ?>
 
-                        $pagination = !empty($instance['pagination']) ? sanitize_title($instance['pagination']) : $this->settings['pagination']['std'];
-                        $direction = !empty($instance['direction']) ? sanitize_title($instance['direction']) : $this->settings['direction']['std'];
-                        $effect = !empty($instance['effect']) ? sanitize_title($instance['effect']) : $this->settings['effect']['std'];
-
-                        $navigation = !empty($instance['navigation']);
-                        $autoplay = !empty($instance['autoplay']);
-                        $loop = !empty($instance['loop']);
-                        $marquee = !empty($instance['marquee']);
-                        $scrollbar = !empty($instance['scrollbar']);
-
-                        $delay = !empty($instance['delay']) ? absint($instance['delay']) : $this->settings['delay']['std'];
-                        $speed = !empty($instance['speed']) ? absint($instance['speed']) : $this->settings['speed']['std'];
-
-                        $_columns_number = $instance['columns_number'] ?: $this->settings['columns_number']['std'];
-                        $_gap = $instance['gap'] ?: $this->settings['gap']['std'];
-
-                        $_columns_number = Helper::separatedToArray($_columns_number, '-');
-                        $_gap = Helper::separatedToArray($_gap, '-');
-
-                        //...
-                        $desktop_gap = $_gap[0] ?? 0;
-                        $mobile_gap = $_gap[1] ?? 0;
-                        $columns_desktop = $_columns_number[0] ?? 0;
-                        $columns_tablet = $_columns_number[1] ?? 0;
-                        $columns_mobile = $_columns_number[2] ?? 0;
-
-                        //...
-                        $swiper_class = '';
-                        $_data = [
-                            'observer' => true,
-                        ];
-
-                        if ($desktop_gap) $_data['desktop_gap'] = absint($desktop_gap);
-                        if ($mobile_gap) $_data['mobile_gap'] = absint($mobile_gap);
-
-                        if ($delay > 0) $_data['delay'] = $delay;
-                        if ($speed > 0) $_data['speed'] = $speed;
-
-                        if ($pagination) $_data['pagination'] = $pagination;
-                        if ($direction) $_data['direction'] = $direction;
-                        if ($effect) $_data['effect'] = $effect;
-
-                        if ($navigation) $_data['navigation'] = true;
-                        if ($autoplay) $_data['autoplay'] = true;
-                        if ($loop) $_data['loop'] = true;
-
-                        if ($marquee) {
-                            $_data['marquee'] = true;
-                            $swiper_class .= ' marquee';
-                        }
-                        if ($scrollbar) {
-                            $_data['scrollbar'] = true;
-                            $swiper_class .= ' scrollbar';
-                        }
-
-                        if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {
-                            $_data['autoview'] = true;
-                            $swiper_class .= ' autoview';
-                        } else {
-                            $_data['desktop'] = absint($columns_desktop);
-                            $_data['tablet'] = absint($columns_tablet);
-                            $_data['mobile'] = absint($columns_mobile);
-                        }
-
-                        if ($rows > 1) {
-                            $_data['row'] = $rows;
-                            $_data['loop'] = false;
-                            $swiper_class .= ' multirow';
-                        }
-
-                        $_data = json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
-
-                        ?>
                         <div class="w-swiper swiper">
-                            <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $_data; ?>'>
+                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
                                 <?php
                                 echo Helper::doShortcode(
                                     'posts',
