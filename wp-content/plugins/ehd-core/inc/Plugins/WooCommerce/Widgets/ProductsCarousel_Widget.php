@@ -282,9 +282,12 @@ if (!class_exists('ProductsCarousel_Widget')) {
                         $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
                         $_data = $this->swiperOptions($instance, $this->settings);
 
+                        $swiper_class = $_data['class'];
+                        $swiper_data = $_data["data"];
+
                         ?>
                         <div class="w-swiper swiper">
-                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
+                            <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $swiper_data ?>'>
                                 <?php
                                 $i = 0;
 

@@ -8,7 +8,7 @@ import device from "current-device";
 
 const is_mobile = () => device.mobile();
 const is_tablet = () => device.tablet();
-//const is_desktop = () => device.desktop();
+const is_desktop = () => device.desktop();
 
 /** import Swiper bundle with all modules installed */
 import {Swiper} from 'swiper/bundle';

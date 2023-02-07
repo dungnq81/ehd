@@ -288,15 +288,21 @@ if (!class_exists('PostsCarousel_Widget')) {
                 <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
                     <div class="swiper-section carousel-posts grid-posts">
 
-                        <?php $_data = $this->swiperOptions($instance, $this->settings); ?>
+                        <?php
+                        $_data = $this->swiperOptions($instance, $this->settings);
+
+                        $swiper_class = $_data['class'];
+                        $swiper_data = $_data['data'];
+
+                        ?>
 
                         <div class="w-swiper swiper">
-                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
+                            <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $swiper_data ?>'>
                                 <?php
                                 echo Helper::doShortcode(
                                     'posts',
                                     $query_args
-                                );
+                                );''
                                 ?>
                             </div>
                         </div>
