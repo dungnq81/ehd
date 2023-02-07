@@ -218,7 +218,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
          * @param $number
          * @return void
          */
-        public function _register_one( $number = -1 )
+        public function _register_one( $number = -1 ) : void
         {
             parent::_register_one( $number );
             if ( $this->registered ) {
@@ -226,13 +226,116 @@ if (!class_exists('ProductsCarousel_Widget')) {
             }
             $this->registered = true;
 
-            add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
+            // load styles and scripts
+            if ( is_active_widget(false, false, $this->id_base) ) {
+                add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
+            }
+        }
+
+        /**
+         * Output widget.
+         *
+         * @param array $args     Arguments.
+         * @param array $instance Widget instance.
+         */
+        public function widget($args, $instance)
+        {
+            if ($this->get_cached_widget($args)) {
+                return;
+            }
+
+            // title
+            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+
+            $products = $this->get_products($args, $instance);
+            if (!$products || !$products->have_posts()) {
+                return;
+            }
+
+            // class
+            $_class = $this->widget_classname;
+            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
+
+            if ($css_class) {
+                $_class = $_class . ' ' . $css_class;
+            }
+
+            $full_width = !empty($instance['full_width']);
+            $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
+
+            // has products
+            wc_set_loop_prop('name', 'products_carousel_widget');
+
+            ob_start();
+
+            ?>
+            <section class="section carousel-section products-carousel-section <?= $_class ?>" id="<?= $uniqid ?>">
+
+                <?php if (!$full_width) echo '<div class="grid-container">'; ?>
+
+                <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
+
+                <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
+                    <div class="swiper-section carousel-products grid-products">
+                        <?php
+
+                        $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
+                        $_data = $this->swiperOptions($instance, $this->settings);
+
+                        ?>
+                        <div class="w-swiper swiper">
+                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
+                                <?php
+                                $i = 0;
+
+                                // Load slides loop
+                                while ($products->have_posts() && $i < $number) : $products->the_post();
+                                    global $product;
+
+                                    if (empty($product) || FALSE === wc_get_loop_product_visibility($product->get_id()) || !$product->is_visible()) {
+                                        continue;
+                                    }
+
+                                    echo '<div class="swiper-slide">';
+                                    wc_get_template_part('content', 'product');
+                                    echo '</div>';
+                                    ++$i;
+
+                                endwhile;
+                                wp_reset_postdata();
+
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $show_viewmore_button = !empty($instance['show_viewmore_button']);
+
+                    if ($show_viewmore_button) {
+
+                        $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
+                        $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
+
+                        if ($viewmore_button_title) {
+                            echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
+                        }
+                    }
+                    ?>
+                </div>
+
+                <?php if (!$full_width) echo '</div>'; ?>
+
+            </section>
+            <?php
+
+            echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
 
         /**
          * @return void
          */
-        public function styles_and_scripts() {
+        public function styles_and_scripts() : void
+        {
             wp_enqueue_style( 'ehd-swiper-style' );
 
             wp_enqueue_script( 'ehd-swiper' );
@@ -247,7 +350,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
          *
          * @return WP_Query
          */
-        public function get_products($args, $instance)
+        public function get_products($args, $instance) : WP_Query
         {
             $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
             $show = !empty($instance['show']) ? sanitize_title($instance['show']) : $this->settings['show']['std'];
@@ -359,105 +462,6 @@ if (!class_exists('ProductsCarousel_Widget')) {
 
             //...
             return new WP_Query(apply_filters('products_carousel_widget_query_args', $query_args));
-        }
-
-        /**
-         * Output widget.
-         *
-         * @param array $args     Arguments.
-         * @param array $instance Widget instance.
-         */
-        public function widget($args, $instance)
-        {
-            if ($this->get_cached_widget($args)) {
-                return;
-            }
-
-            // title
-            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
-
-            $products = $this->get_products($args, $instance);
-            if (!$products || !$products->have_posts()) {
-                return;
-            }
-
-            // class
-            $_class = $this->widget_classname;
-            $css_class = !empty($instance['css_class']) ? sanitize_title($instance['css_class']) : '';
-
-            if ($css_class) {
-                $_class = $_class . ' ' . $css_class;
-            }
-
-            $full_width = !empty($instance['full_width']);
-            $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
-
-            // has products
-            wc_set_loop_prop('name', 'products_carousel_widget');
-
-            ob_start();
-
-            ?>
-            <section class="section carousel-section products-carousel-section <?= $_class ?>" id="<?= $uniqid ?>">
-
-                <?php if (!$full_width) echo '<div class="grid-container">'; ?>
-
-                <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
-
-                <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
-                    <div class="swiper-section carousel-products grid-products">
-                        <?php
-
-                        $number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
-                        $_data = $this->swiperOptions($instance, $this->settings);
-
-                        ?>
-                        <div class="w-swiper swiper">
-                            <div class="swiper-wrapper<?= $_data['class'] ?>" data-options="<?= $_data['data'] ?>">
-                                <?php
-                                $i = 0;
-
-                                // Load slides loop
-                                while ($products->have_posts() && $i < $number) : $products->the_post();
-                                    global $product;
-
-                                    if (empty($product) || FALSE === wc_get_loop_product_visibility($product->get_id()) || !$product->is_visible()) {
-                                        continue;
-                                    }
-
-                                    echo '<div class="swiper-slide">';
-                                    wc_get_template_part('content', 'product');
-                                    echo '</div>';
-                                    ++$i;
-
-                                endwhile;
-                                wp_reset_postdata();
-
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-                    $show_viewmore_button = !empty($instance['show_viewmore_button']);
-
-                    if ($show_viewmore_button) {
-
-                        $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
-                        $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
-
-                        if ($viewmore_button_title) {
-                            echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
-                        }
-                    }
-                    ?>
-                </div>
-
-                <?php if (!$full_width) echo '</div>'; ?>
-
-            </section>
-            <?php
-
-            echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
 }

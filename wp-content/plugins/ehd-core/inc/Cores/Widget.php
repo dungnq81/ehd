@@ -21,7 +21,7 @@ abstract class Widget extends WP_Widget
      *
      * @var bool
      */
-    protected $registered = false;
+    protected bool $registered = false;
 
     public function __construct()
     {
