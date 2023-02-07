@@ -6,6 +6,7 @@ namespace EHD\Sites\Themes;
 
 /**
  * Font Class
+ *
  * @author EHD
  */
 final class Fonts
