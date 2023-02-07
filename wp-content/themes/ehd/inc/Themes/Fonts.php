@@ -8,7 +8,7 @@ namespace EHD\Sites\Themes;
  * Font Class
  * @author EHD
  */
-class Fonts
+final class Fonts
 {
     public function __construct()
     {

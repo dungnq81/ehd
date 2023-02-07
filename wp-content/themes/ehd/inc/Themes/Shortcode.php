@@ -4,7 +4,7 @@ namespace EHD\Sites\Themes;
 
 \defined('\WPINC') || die;
 
-class Shortcode
+final class Shortcode
 {
     /**
      * @return void

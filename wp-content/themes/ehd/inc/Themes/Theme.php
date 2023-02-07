@@ -3,6 +3,8 @@
 namespace EHD\Sites\Themes;
 
 use EHD\Cores\Helper;
+use EHD\Sites\Plugins\Elementor;
+use EHD\Sites\Plugins\Woocommerce;
 
 \defined('\WPINC') || die;
 
@@ -17,9 +19,9 @@ final class Theme
     {
         add_action('init', [&$this, 'init']);
 
-        add_action('after_setup_theme', [&$this, 'after_setup_theme']);
+        add_action('after_setup_theme', [&$this, 'after_setup_theme'], 11);
         add_action('wp_enqueue_scripts', [&$this, 'wp_enqueue_scripts'], 99);
-        add_action('widgets_init', [&$this, 'register_sidebars'], 10);
+        add_action('widgets_init', [&$this, 'register_sidebars'], 11);
     }
 
     /** ---------------------------------------- */
@@ -247,7 +249,13 @@ final class Theme
             (new Fonts());
         }
 
-        (new Optimizer());
+        (new Hooks());
         (new Shortcode())::init();
+
+        /** WooCommerce */
+        class_exists('\WooCommerce') && (new WooCommerce());
+
+        /** Elementor */
+        did_action('elementor/loaded') && (new Elementor());
     }
 }

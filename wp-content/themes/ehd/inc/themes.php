@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugins functions
+ * Theme functions
  *
  * @author WEBHD
  */

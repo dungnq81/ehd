@@ -7,19 +7,18 @@
 		}
 	],
 	"autoload": {
+		"psr-4": {
+			"EHD\\Sites\\Plugins\\": "inc/Plugins",
+			"EHD\\Sites\\Themes\\": "inc/Themes",
+			"EHD\\Sites\\Widgets\\": "inc/Widgets"
+		},
+		"exclude-from-classmap": [],
 		"files": [
 			"inc/helpers.php",
 			"inc/image-sizes.php",
-			"inc/plugins.php",
-			"inc/template-hooks.php"
-		],
-		"psr-4": {
-			"EHD\\Sites\\Plugins\\": "inc/Plugins",
-			"EHD\\Sites\\Themes\\": "inc/Themes"
-		},
-		"exclude-from-classmap": []
+			"inc/template-hooks.php",
+			"inc/themes.php"
+		]
 	},
-	"require": {
-		"vectorface/whip": "^v0.4.0"
-	}
+	"require": {}
 }

@@ -7,11 +7,11 @@ use EHD\Cores\Helper;
 \defined('\WPINC') || die;
 
 /**
- * Optimizer Class
+ * Hooks Class
  *
  * @author EHD
  */
-final class Optimizer
+final class Hooks
 {
     public function __construct()
     {
