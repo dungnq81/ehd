@@ -485,6 +485,10 @@
                     // Global
                     $global_attachment_id = apply_filters( 'woo_variation_swatches_global_product_attribute_image_id', woo_variation_swatches()->get_frontend()->get_product_attribute_image( $term, $data ), $data );
                     
+                    if ( empty( $global_attachment_id ) && $data[ 'total_attributes' ] === 1 && $data[ 'variation_image_id' ] > 0 ) {
+                        $global_attachment_id = $data[ 'variation_image_id' ];
+                    }
+                    
                     // Options
                     $attachment_id = empty( $product_label_attachment_id ) ? $global_attachment_id : $product_label_attachment_id;
                     
@@ -845,10 +849,17 @@
                         
                         foreach ( $swatches_item as $data ) {
                             
+                            
+                            /*echo '<pre>';
+                            print_r( $data );
+                            echo '</pre>';*/
+                            
+                            
                             // If attribute have no image we should convert attribute type image to attribute type button
                             if ( 'image' === $attribute_type && ! is_array( $this->get_image_attribute( $data, $attribute_type, $variation_data ) ) ) {
                                 $attribute_type = 'button';
                             }
+                            
                             
                             $item .= $this->item_start( $data, $attribute_type, $variation_data );
                             
@@ -912,9 +923,12 @@
             
             public function get_swatch_data( $args, $term_or_option ) {
                 
-                $options   = $args[ 'options' ];
-                $product   = $args[ 'product' ];
-                $attribute = $args[ 'attribute' ];
+                $options          = $args[ 'options' ];
+                $product          = $args[ 'product' ];
+                $attribute        = $args[ 'attribute' ];
+                $attributes       = $product->get_variation_attributes();
+                $count_attributes = count( array_keys( $attributes ) );
+                
                 
                 $is_term = is_object( $term_or_option );
                 
@@ -941,23 +955,38 @@
                     // $group_name  = false;
                 }
                 
+                
+                $attribute_name  = wc_variation_attribute_name( $attribute );
+                $attribute_value = $slug;
+                
+                $single_attribute_variation_image_id = 0;
+                if ( count( array_keys( $attributes ) ) === 1 ) {
+                    $available_variations = $this->get_available_variation_images( $product );
+                    
+                    $variation = $this->get_variation_by_attribute_name_value( $available_variations, $attribute_name, $attribute_value );
+                    
+                    $single_attribute_variation_image_id = $variation[ 'variation_image_id' ];
+                }
+                
                 return array(
-                    'group_slug'      => $group_slug,
-                    'group_name'      => $group_name,
-                    'is_selected'     => $is_selected,
-                    'is_term'         => $is_term,
-                    'term_id'         => $is_term ? $term->term_id : woo_variation_swatches()->sanitize_name( $option ),
-                    'option_slug'     => woo_variation_swatches()->sanitize_name( $slug ),
-                    'slug'            => $slug,
-                    'item'            => $term_or_option,
-                    'options'         => $options,
-                    'option_name'     => $option_name,
-                    'attribute'       => $attribute,
-                    'attribute_key'   => sanitize_title( $attribute ),
-                    'attribute_name'  => wc_variation_attribute_name( $attribute ),
-                    'attribute_label' => wc_attribute_label( $attribute, $product ),
-                    'args'            => $args,
-                    'product'         => $product,
+                    'group_slug'         => $group_slug,
+                    'group_name'         => $group_name,
+                    'is_selected'        => $is_selected,
+                    'is_term'            => $is_term,
+                    'term_id'            => $is_term ? $term->term_id : woo_variation_swatches()->sanitize_name( $option ),
+                    'option_slug'        => woo_variation_swatches()->sanitize_name( $slug ),
+                    'slug'               => $slug,
+                    'variation_image_id' => absint( $single_attribute_variation_image_id ),
+                    'total_attributes'   => absint( $count_attributes ),
+                    'item'               => $term_or_option,
+                    'options'            => $options,
+                    'option_name'        => $option_name,
+                    'attribute'          => $attribute,
+                    'attribute_key'      => sanitize_title( $attribute ),
+                    'attribute_name'     => wc_variation_attribute_name( $attribute ),
+                    'attribute_label'    => wc_attribute_label( $attribute, $product ),
+                    'args'               => $args,
+                    'product'            => $product,
                 );
             }
         }

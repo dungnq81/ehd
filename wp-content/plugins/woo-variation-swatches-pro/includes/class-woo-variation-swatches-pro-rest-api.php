@@ -42,7 +42,7 @@
                 add_action( 'rest_api_init', array( $this, 'register_single_product_preview_rest_route' ) );
                 add_action( 'rest_api_init', array( $this, 'register_archive_product_preview_rest_route' ) );
                 add_filter( 'wp_rest_cache/allowed_endpoints', array( $this, 'rest_cache_allowed_endpoints' ) );
-                add_filter( 'litespeed_const_DONOTCACHEPAGE', '__return_false' );
+                // add_filter( 'litespeed_const_DONOTCACHEPAGE', '__return_false' );
                 add_action( 'litespeed_load_thirdparty', array( $this, 'litespeed_cache' ) );
             }
             
