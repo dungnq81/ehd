@@ -16,6 +16,13 @@ abstract class Widget extends WP_Widget
     protected string $widget_description = '';
     protected array $settings;
 
+    /**
+     * Whether or not the widget has been registered yet.
+     *
+     * @var bool
+     */
+    protected $registered = false;
+
     public function __construct()
     {
         $className = (new ReflectionClass($this))->getShortName();
@@ -44,6 +51,7 @@ abstract class Widget extends WP_Widget
 
     /**
      * Flush the cache
+     *
      * @return void
      */
     public function flush_widget_cache()

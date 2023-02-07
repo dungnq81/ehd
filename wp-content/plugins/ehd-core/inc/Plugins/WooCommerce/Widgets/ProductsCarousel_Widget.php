@@ -212,11 +212,21 @@ if (!class_exists('ProductsCarousel_Widget')) {
             ];
 
             parent::__construct();
+        }
 
-            // load styles and scripts
-            if ( is_active_widget(false, false, $this->id_base) ) {
-                add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
+        /**
+         * @param $number
+         * @return void
+         */
+        public function _register_one( $number = -1 )
+        {
+            parent::_register_one( $number );
+            if ( $this->registered ) {
+                return;
             }
+            $this->registered = true;
+
+            add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
         }
 
         /**
