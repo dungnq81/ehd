@@ -314,9 +314,9 @@ abstract class Widget extends WP_Widget
         $_columns_number = Helper::separatedToArray($_columns_number, '-');
         $_gap = Helper::separatedToArray($_gap, '-');
 
-        $pagination = Helper::notEmpty($instance['pagination']) ? sanitize_title($instance['pagination']) : $default_settings['pagination']['std'];
-        $direction = Helper::notEmpty($instance['direction']) ? sanitize_title($instance['direction']) : $default_settings['direction']['std'];
-        $effect = Helper::notEmpty($instance['effect']) ? sanitize_title($instance['effect']) : $default_settings['effect']['std'];
+        $pagination = isset($instance['pagination']) ? sanitize_title($instance['pagination']) : $default_settings['pagination']['std'];
+        $direction = isset($instance['direction']) ? sanitize_title($instance['direction']) : $default_settings['direction']['std'];
+        $effect = isset($instance['effect']) ? sanitize_title($instance['effect']) : $default_settings['effect']['std'];
 
         $navigation = Helper::notEmpty($instance['navigation']);
         $autoplay = Helper::notEmpty($instance['autoplay']);
