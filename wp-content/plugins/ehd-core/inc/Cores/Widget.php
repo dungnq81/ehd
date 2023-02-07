@@ -305,7 +305,7 @@ abstract class Widget extends WP_Widget
      * @param $default_settings
      * @return array
      */
-    protected function swiperOptions($instance, $default_settings)
+    protected function swiperOptions($instance, $default_settings) : array
     {
         $rows = Helper::notEmpty($instance['rows']) ? absint($instance['rows']) : $default_settings['rows']['std'];
 
