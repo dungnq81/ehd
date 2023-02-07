@@ -1,7 +1,7 @@
 @use "sass:list";
 @use "sass:math";
 
-@import "zf_settings";
+@import "settings";
 @import "linear-gradient";
 
 /** media */
@@ -19,7 +19,7 @@
 
 /** breakpoint */
 @mixin mq($breakpoint, $type: min) {
-    $breakpoint-value: get-breakpoint($breakpoint);
+    $breakpoint-value: get-breakpoint($breakpoint, $mq-breakpoints);
     @if $breakpoint-value {
         @if $type == max {
             $breakpoint-value: #{$breakpoint-value - fs(0.5)};
@@ -766,6 +766,31 @@
     transform: translate(-50%, -50%);
 }
 
+/// Vertically centers the element inside of its first non-static parent,
+/// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
+@mixin vertical-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/// Horizontally centers the element inside of its first non-static parent,
+/// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
+@mixin horizontal-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/// Absolutely centers the element inside of its first non-static parent,
+/// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
+@mixin absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @mixin absolute-full {
     left: 0;
     top: 0;
@@ -780,6 +805,100 @@
     bottom: 0;
     right: 0;
     position: fixed;
+}
+
+$global-flexbox: true;
+
+/// Applies the micro clearfix hack popularized by Nicolas Gallagher. Include this mixin on a container if its children are all floated, to give the container a proper height.
+/// The clearfix is augmented with specific styles to prevent borders in flexbox environments
+/// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix Hack
+/// @link http://danisadesigner.com/blog/flexbox-clear-fix-pseudo-elements/ Flexbox fix
+@mixin clearfix {
+    &::before,
+    &::after {
+        display: table;
+        content: ' ';
+
+        @if $global-flexbox {
+            flex-basis: 0;
+            order: 1;
+        }
+    }
+
+    &::after {
+        clear: both;
+    }
+}
+
+/// Creates a menu icon with a set width, height, number of bars, and colors. The mixin uses the height of the icon and the weight of the bars to determine spacing. <div class="docs-example-burger"></div>
+///
+/// @param {Color} $color [$black] - Color to use for the icon.
+/// @param {Color} $color-hover [$dark-gray] - Color to use when the icon is hovered over.
+/// @param {Number} $width [20px] - Width of the icon.
+/// @param {Number} $height [16px] - Height of the icon.
+/// @param {Number} $weight [2px] - Height of individual bars in the icon.
+/// @param {Number} $bars [3] - Number of bars in the icon.
+@mixin hamburger(
+    $color: $black,
+    $color-hover: $dark-gray,
+    $width: 20px,
+    $height: 16px,
+    $weight: 2px,
+    $bars: 3
+) {
+    // box-shadow CSS output
+    $shadow: ();
+    $hover-shadow: ();
+
+    // Spacing between bars is calculated based on the total height of the icon and the weight of each bar
+    $spacing: divide($height - ($weight * $bars), $bars - 1);
+
+    @if unit($spacing) == 'px' {
+        $spacing: floor($spacing);
+    }
+
+    @for $i from 2 through $bars {
+        $offset: ($weight + $spacing) * ($i - 1);
+        $shadow: append($shadow, 0 $offset 0 $color, comma);
+    }
+
+    // Icon container
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: $width;
+    height: $height;
+    cursor: pointer;
+
+    // Icon bars
+    &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+        width: 100%;
+        height: $weight;
+
+        background: $color;
+        box-shadow: $shadow;
+
+        content: '';
+    }
+
+    // Hover state
+    @if $color-hover {
+        // Generate CSS
+        @for $i from 2 through $bars {
+            $offset: ($weight + $spacing) * ($i - 1);
+            $hover-shadow: append($hover-shadow, 0 $offset 0 $color-hover, comma);
+        }
+
+        &:hover::after {
+            background: $color-hover;
+            box-shadow: $hover-shadow;
+        }
+    }
 }
 
 /** */
@@ -856,97 +975,6 @@
         &::before {
             animation: circle 0.75s;
         }
-    }
-}
-
-/** */
-/** functions to urlencode the svg string*/
-@function str-replace($string, $search, $replace: '') {
-    $index: str-index($string, $search);
-    @if $index {
-        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
-    }
-    @return $string;
-}
-
-@function url-encode($string) {
-    $map: (
-            "%": "%25",
-            "<": "%3C",
-            ">": "%3E",
-            " ": "%20",
-            "!": "%21",
-            "*": "%2A",
-            "'": "%27",
-            '"': "%22",
-            "(": "%28",
-            ")": "%29",
-            ";": "%3B",
-            ":": "%3A",
-            "@": "%40",
-            "&": "%26",
-            "=": "%3D",
-            "+": "%2B",
-            "$": "%24",
-            ",": "%2C",
-            "/": "%2F",
-            "?": "%3F",
-            "#": "%23",
-            "[": "%5B",
-            "]": "%5D"
-    );
-    $new: $string;
-    @each $search, $replace in $map {
-        $new: str-replace($new, $search, $replace);
-    }
-    @return $new;
-}
-
-/** $string - svg */
-@function inline-svg($string) {
-    @return url('data:image/svg+xml;utf8,#{url-encode($string)}');
-}
-
-/** add unique id image url */
-@function inline-image($url) {
-    @return url("#{$url}?v=#{$unique_id}");
-}
-
-/** https://github.com/pentzzsolt/sass-is-int/blob/master/_is-int.scss */
-@function is-int($value) {
-    @if type-of($value) != number {
-        //@warn '`#{$value}` is not a valid number!';
-        @return null;
-    }
-    @return round($value) == $value;
-}
-
-/** https://webdesign.tutsplus.com/tutorials/an-introduction-to-error-handling-in-sass--cms-19996 */
-@function throw($log: '') {
-    @warn $log;
-    @return false;
-}
-
-/** get breakpoint */
-@function get-breakpoint($breakpoint) {
-    @if map-has-key($mq-breakpoints, $breakpoint) {
-        @return map-get($mq-breakpoints, $breakpoint);
-    } @else {
-        //@warn 'given `#{$breakpoint}` is not available in `#{$mq-breakpoints}`';
-        //@return false;
-        @return throw($log: 'given `#{$breakpoint}` is not available in `#{$mq-breakpoints}`');
-    }
-}
-
-/** size */
-@function fs($size: inherit) {
-    @if false == $size {
-        @warn '`#{$size}` is not a valid size!';
-        @return null;
-    } @else if inherit == $size or auto == $size or unit($size) == '%' {
-        @return $size;
-    } @else {
-        @return rem-calc($size);
     }
 }
 

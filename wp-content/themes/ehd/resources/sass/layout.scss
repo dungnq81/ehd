@@ -2072,7 +2072,7 @@ figure.wp-caption, figure.caption {
                 & > li {
                     @include grid-self(3, 1, 0, false);
                     padding: 0;
-                    bottom: none;
+                    bottom: unset;
 
                     &::after {
                         content: '';
