@@ -285,7 +285,7 @@ w_swiper.forEach((el, index) => {
 
     /** marquee **/
     if ("marquee" in _obj_options) {
-        _result_options.centeredSlides = !0;
+        _result_options.centeredSlides = !1;
         _result_options.autoplay = {
             delay: 1,
             disableOnInteraction: !1

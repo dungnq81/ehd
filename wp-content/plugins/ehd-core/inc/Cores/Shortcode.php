@@ -105,43 +105,43 @@ final class Shortcode
             $post_thumbnail = get_the_post_thumbnail($post, $thumbnail_size);
 
             echo $wrapper_open . '<div class="cell">';
-                echo '<article class="item">';
+            echo '<article class="item">';
 
-                // thumbnail
-                if ($atts['show']['thumbnail'] && $post_thumbnail) :
+            // thumbnail
+            if ($atts['show']['thumbnail'] && $post_thumbnail) :
 
-                    $scale_class = $atts['show']['scale'] ? 'scale ' : '';
-                    $ratio = Helper::getThemeMod('news_menu_setting');
-                    $ratio_class = $ratio;
-                    if ('default' == $ratio or !$ratio) {
-                        $ratio_class = '3-2';
-                    }
+                $scale_class = $atts['show']['scale'] ? 'scale ' : '';
+                $ratio = Helper::getThemeMod('news_menu_setting');
+                $ratio_class = $ratio;
+                if ('default' == $ratio or !$ratio) {
+                    $ratio_class = '3-2';
+                }
 
-                    echo '<a class="d-block cover" href="' . get_permalink($post->ID) . '" aria-label="' . esc_attr($title) . '" tabindex="0">';
-                    echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio_class . '">' . $post_thumbnail . '</span>';
-                    echo '</a>';
+                echo '<a class="d-block cover" href="' . get_permalink($post->ID) . '" aria-label="' . esc_attr($title) . '" tabindex="0">';
+                echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio_class . '">' . $post_thumbnail . '</span>';
+                echo '</a>';
 
-                endif;
+            endif;
 
-                // post info
-                echo '<div class="cover-content">';
-                echo '<a href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '"><h6>' . $title . '</h6></a>';
+            // post info
+            echo '<div class="cover-content">';
+            echo '<a href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '"><h6>' . $title . '</h6></a>';
 
-                if ($atts['show']['time'] || $atts['show']['term']) :
-                    echo '<div class="meta">';
+            if ($atts['show']['time'] || $atts['show']['term']) :
+                echo '<div class="meta">';
 
-                    if ($atts['show']['time']) echo '<span class="post-date">'.  Helper::humanizeTime($post) . '</span>';
-                    if ($atts['show']['term']) echo Helper::getPrimaryTerm($post);
-
-                    echo '</div>';
-                endif;
-
-                if ($atts['show']['desc']) echo Helper::loopExcerpt($post);
-                if ($atts['show']['more']) echo '<a class="view-detail" href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '" data-glyph=""><span>' . __('Detail', EHD_PLUGIN_TEXT_DOMAIN) . '</span></a>';
+                if ($atts['show']['time']) echo '<span class="post-date">' . Helper::humanizeTime($post) . '</span>';
+                if ($atts['show']['term']) echo Helper::getPrimaryTerm($post);
 
                 echo '</div>';
+            endif;
 
-                echo '</article>';
+            if ($atts['show']['desc']) echo Helper::loopExcerpt($post);
+            if ($atts['show']['more']) echo '<a class="view-detail" href="' . get_permalink($post->ID) . '" title="' . esc_attr($title) . '" data-glyph=""><span>' . __('Detail', EHD_PLUGIN_TEXT_DOMAIN) . '</span></a>';
+
+            echo '</div>';
+
+            echo '</article>';
             echo '</div>' . $wrapper_close;
 
             ++$i;
