@@ -34,17 +34,17 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'class' => 'tiny-text',
                     'label' => __('Number of posts to show', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'columns_number'       => [
+                'columns_number'        => [
                     'type'  => 'text',
                     'std'   => '4-3-2',
                     'label' => __('Posts per row', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc' => __('Separated by dashes "-" (3 values)', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by dashes "-" (3 values)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'gap'           => [
+                'gap'                   => [
                     'type'  => 'text',
                     'std'   => '0-0',
                     'label' => __('Gap', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc' => __('Separated by dashes "-" (2 values)', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by dashes "-" (2 values)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'rows'                  => [
                     'type'  => 'number',
@@ -58,7 +58,7 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Posts Categories Ids', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc' => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'include_children'      => [
                     'type'  => 'checkbox',
@@ -85,24 +85,24 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'std'   => 0,
                     'label' => __('Loop', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'marquee'                  => [
+                'marquee'               => [
                     'type'  => 'checkbox',
                     'std'   => 0,
                     'label' => __('Marquee', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'scrollbar'                  => [
+                'scrollbar'             => [
                     'type'  => 'checkbox',
                     'std'   => 0,
                     'label' => __('Scrollbar', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'direction'            => [
+                'direction'             => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Direction', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
-                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
-                        'horizontal'  => __('Horizontal', EHD_PLUGIN_TEXT_DOMAIN),
-                        'vertical' => __('Vertical', EHD_PLUGIN_TEXT_DOMAIN),
+                        ''           => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'horizontal' => __('Horizontal', EHD_PLUGIN_TEXT_DOMAIN),
+                        'vertical'   => __('Vertical', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
                 'pagination'            => [
@@ -110,26 +110,26 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'std'     => '',
                     'label'   => __('Pagination', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
-                        ''         => __('None', EHD_PLUGIN_TEXT_DOMAIN),
-                        'bullets'  => __('Bullets', EHD_PLUGIN_TEXT_DOMAIN),
-                        'fraction' => __('Fraction', EHD_PLUGIN_TEXT_DOMAIN),
+                        ''            => __('None', EHD_PLUGIN_TEXT_DOMAIN),
+                        'bullets'     => __('Bullets', EHD_PLUGIN_TEXT_DOMAIN),
+                        'fraction'    => __('Fraction', EHD_PLUGIN_TEXT_DOMAIN),
                         'progressbar' => __('Progressbar', EHD_PLUGIN_TEXT_DOMAIN),
-                        'custom'   => __('Custom', EHD_PLUGIN_TEXT_DOMAIN),
+                        'custom'      => __('Custom', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
-                'effect'            => [
+                'effect'                => [
                     'type'    => 'select',
                     'std'     => '',
                     'label'   => __('Effect', EHD_PLUGIN_TEXT_DOMAIN),
                     'options' => [
-                        ''         => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
-                        'slide'  => __('Slide', EHD_PLUGIN_TEXT_DOMAIN),
-                        'fade' => __('Fade', EHD_PLUGIN_TEXT_DOMAIN),
-                        'cube' => __('Cube', EHD_PLUGIN_TEXT_DOMAIN),
-                        'coverflow'   => __('Coverflow', EHD_PLUGIN_TEXT_DOMAIN),
-                        'flip'   => __('Flip', EHD_PLUGIN_TEXT_DOMAIN),
-                        'creative'   => __('Creative', EHD_PLUGIN_TEXT_DOMAIN),
-                        'cards'   => __('Cards', EHD_PLUGIN_TEXT_DOMAIN),
+                        ''          => __('Default', EHD_PLUGIN_TEXT_DOMAIN),
+                        'slide'     => __('Slide', EHD_PLUGIN_TEXT_DOMAIN),
+                        'fade'      => __('Fade', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cube'      => __('Cube', EHD_PLUGIN_TEXT_DOMAIN),
+                        'coverflow' => __('Coverflow', EHD_PLUGIN_TEXT_DOMAIN),
+                        'flip'      => __('Flip', EHD_PLUGIN_TEXT_DOMAIN),
+                        'creative'  => __('Creative', EHD_PLUGIN_TEXT_DOMAIN),
+                        'cards'     => __('Cards', EHD_PLUGIN_TEXT_DOMAIN),
                     ],
                 ],
                 'delay'                 => [
@@ -185,7 +185,7 @@ if (!class_exists('PostsCarousel_Widget')) {
                     'std'   => '#',
                     'label' => __('View more link', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'limit_time'          => [
+                'limit_time'            => [
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
@@ -205,17 +205,17 @@ if (!class_exists('PostsCarousel_Widget')) {
          * @param $number
          * @return void
          */
-        public function _register_one( $number = -1 ) : void
+        public function _register_one($number = -1) : void
         {
-            parent::_register_one( $number );
-            if ( $this->registered ) {
+            parent::_register_one($number);
+            if ($this->registered) {
                 return;
             }
 
             $this->registered = true;
 
             // load styles and scripts
-            if ( is_active_widget(false, false, $this->id_base) ) {
+            if (is_active_widget(false, false, $this->id_base)) {
                 add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
             }
         }
@@ -248,20 +248,20 @@ if (!class_exists('PostsCarousel_Widget')) {
             $show_viewmore_button = !empty($instance['show_viewmore_button']);
 
             $query_args = [
-                'term_ids' => $term_ids,
+                'term_ids'         => $term_ids,
                 'include_children' => $include_children,
-                'posts_per_page' => $number,
-                'limit_time' => $limit_time,
-                'wrapper' => 'div',
-                'wrapper_class' => 'swiper-slide',
-                'show' => [
+                'posts_per_page'   => $number,
+                'limit_time'       => $limit_time,
+                'wrapper'          => 'div',
+                'wrapper_class'    => 'swiper-slide',
+                'show'             => [
                     'thumbnail' => Helper::toBool($show_thumbnail),
                     //'thumbnail_size' => 'medium',
                     //'scale' => true,
-                    'time' => Helper::toBool($show_date),
-                    'term' => Helper::toBool($show_cat),
-                    'desc' => Helper::toBool($show_desc),
-                    'more' => Helper::toBool($show_viewmore_button),
+                    'time'      => Helper::toBool($show_date),
+                    'term'      => Helper::toBool($show_cat),
+                    'desc'      => Helper::toBool($show_desc),
+                    'more'      => Helper::toBool($show_viewmore_button),
                 ],
             ];
 
@@ -278,7 +278,8 @@ if (!class_exists('PostsCarousel_Widget')) {
             ob_start();
 
             ?>
-            <section class="section carousel-section posts-carousel-section posts-section <?= $_class ?>" id="<?= $uniqid ?>">
+            <section class="section carousel-section posts-carousel-section posts-section <?= $_class ?>"
+                     id="<?= $uniqid ?>">
 
                 <?php if (!$full_width) echo '<div class="grid-container">'; ?>
 
@@ -295,14 +296,13 @@ if (!class_exists('PostsCarousel_Widget')) {
                         $swiper_data = $_data['data'];
 
                         ?>
-
                         <div class="w-swiper swiper">
                             <div class="swiper-wrapper<?= $swiper_class ?>" data-options='<?= $swiper_data ?>'>
                                 <?php
                                 echo Helper::doShortcode(
                                     'posts',
                                     $query_args
-                                );''
+                                );
                                 ?>
                             </div>
                         </div>
@@ -332,9 +332,9 @@ if (!class_exists('PostsCarousel_Widget')) {
          */
         public function styles_and_scripts() : void
         {
-            wp_enqueue_style( 'ehd-swiper-style' );
+            wp_enqueue_style('ehd-swiper-style');
 
-            wp_enqueue_script( 'ehd-swiper' );
+            wp_enqueue_script('ehd-swiper');
             wp_script_add_data("ehd-swiper", "defer", true);
         }
     }

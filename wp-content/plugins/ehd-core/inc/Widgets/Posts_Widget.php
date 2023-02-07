@@ -38,7 +38,7 @@ if (!class_exists('Posts_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Posts Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc' => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'full_width'            => [
                     'type'  => 'checkbox',
@@ -74,7 +74,7 @@ if (!class_exists('Posts_Widget')) {
                     'class' => 'checkbox',
                     'label' => __('Display post description?', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
-                'limit_time'          => [
+                'limit_time'            => [
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
@@ -196,7 +196,6 @@ if (!class_exists('Posts_Widget')) {
 
         </section>
         <?php
-
             echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
