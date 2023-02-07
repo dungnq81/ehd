@@ -278,8 +278,7 @@ if (!class_exists('PostsCarousel_Widget')) {
             ob_start();
 
             ?>
-            <section class="section carousel-section posts-carousel-section posts-section <?= $_class ?>"
-                     id="<?= $uniqid ?>">
+            <section class="section carousel-section posts-carousel-section posts-section <?= $_class ?>" id="<?= $uniqid ?>">
 
                 <?php if (!$full_width) echo '<div class="grid-container">'; ?>
 
