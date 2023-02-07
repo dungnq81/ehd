@@ -33,7 +33,7 @@ define('EHD_PLUGIN_VERSION', $plugin_data['Version']);
 define('EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain']);
 
 //...
-defined('EHD_MU_PLUGIN_VERSION') || wp_die(__('eHD Core requires "eHD mu-core" plugin to work properly', EHD_PLUGIN_TEXT_DOMAIN));
+defined('EHD_MU_PLUGIN_VERSION') || wp_die(__('eHD Core requires "eHD mu-core" plugin to function properly', EHD_PLUGIN_TEXT_DOMAIN));
 
 file_exists($composer = __DIR__ . '/vendor/autoload.php') || wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', EHD_PLUGIN_TEXT_DOMAIN));
 

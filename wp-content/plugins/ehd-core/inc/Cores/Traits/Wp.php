@@ -278,13 +278,13 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $term
-     * @param string       $post_type
-     * @param bool         $include_children
+     * @param             $term
+     * @param string      $post_type
+     * @param bool        $include_children
      *
-     * @param int          $posts_per_page
-     * @param array        $orderby
-     * @param bool|string  $strtotime_recent - strtotime( 'last week' );
+     * @param int         $posts_per_page
+     * @param array       $orderby
+     * @param bool|string $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
     public static function queryByTerm($term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], bool|string $strtotime_recent = false)
@@ -405,7 +405,7 @@ trait Wp
             $_args['tax_query'][] = [
                 'taxonomy'         => $taxonomy,
                 'terms'            => $term_ids,
-                'field'     => 'term_id',
+                'field'            => 'term_id',
                 'include_children' => (bool) $include_children,
                 'operator'         => 'IN',
             ];
@@ -531,7 +531,7 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $post
+     * @param        $post
      * @param string $class
      * @return string|null
      */
@@ -1110,10 +1110,10 @@ trait Wp
     /**
      * A fallback when no navigation is selected by default.
      *
-     * @param string|null $container
+     * @param string $container
      * @return void
      */
-    public static function menuFallback(?string $container = '')
+    public static function menuFallback(string $container = '')
     {
         echo '<div class="menu-fallback">';
         if ($container) {

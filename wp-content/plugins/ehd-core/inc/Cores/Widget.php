@@ -2,6 +2,7 @@
 
 namespace EHD\Cores;
 
+use ReflectionClass;
 use WP_Widget;
 
 \defined('ABSPATH') || die;
@@ -17,7 +18,7 @@ abstract class Widget extends WP_Widget
 
     public function __construct()
     {
-        $className = (new \ReflectionClass($this))->getShortName();
+        $className = (new ReflectionClass($this))->getShortName();
         $this->widget_classname = str_replace(['_widget', '-widget'], '', Helper::dashCase(strtolower($className)));
         $this->widget_id = $this->prefix . $this->widget_classname;
 
@@ -207,10 +208,7 @@ abstract class Widget extends WP_Widget
                     <p>
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo wp_kses_post($setting['label']); ?></label><?php // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
                         ?>
-                        <input class="widefat <?php echo esc_attr($class); ?>"
-                               id="<?php echo esc_attr($this->get_field_id($key)); ?>"
-                               name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="text"
-                               value="<?php echo esc_attr($value); ?>"/>
+                        <input class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="text" value="<?php echo esc_attr($value); ?>"/>
                         <?php if (isset($setting['desc'])) : ?>
                         <small><?php echo esc_html($setting['desc']); ?></small>
                         <?php endif; ?>
@@ -222,13 +220,9 @@ abstract class Widget extends WP_Widget
                     ?>
                     <p>
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
-                        <input class="widefat <?php echo esc_attr($class); ?>"
-                               id="<?php echo esc_attr($this->get_field_id($key)); ?>"
-                               name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="number"
-                               min="<?php echo esc_attr($setting['min']); ?>"
-                               max="<?php echo esc_attr($setting['max']); ?>" value="<?php echo esc_attr($value); ?>"/>
+                        <input class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="number" min="<?php echo esc_attr($setting['min']); ?>" max="<?php echo esc_attr($setting['max']); ?>" value="<?php echo esc_attr($value); ?>"/>
                         <?php if (isset($setting['desc'])) : ?>
-                            <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small><?php echo esc_html($setting['desc']); ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -238,15 +232,13 @@ abstract class Widget extends WP_Widget
                     ?>
                     <p>
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
-                        <select class="widefat <?php echo esc_attr($class); ?>"
-                                id="<?php echo esc_attr($this->get_field_id($key)); ?>"
-                                name="<?php echo esc_attr($this->get_field_name($key)); ?>">
+                        <select class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>">
                             <?php foreach ($setting['options'] as $option_key => $option_value) : ?>
-                                <option value="<?php echo esc_attr($option_key); ?>" <?php selected($option_key, $value); ?>><?php echo esc_html($option_value); ?></option>
+                            <option value="<?php echo esc_attr($option_key); ?>" <?php selected($option_key, $value); ?>><?php echo esc_html($option_value); ?></option>
                             <?php endforeach; ?>
                         </select>
                         <?php if (isset($setting['desc'])) : ?>
-                            <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small><?php echo esc_html($setting['desc']); ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -256,12 +248,9 @@ abstract class Widget extends WP_Widget
                     ?>
                     <p>
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
-                        <textarea class="widefat <?php echo esc_attr($class); ?>"
-                                  id="<?php echo esc_attr($this->get_field_id($key)); ?>"
-                                  name="<?php echo esc_attr($this->get_field_name($key)); ?>" cols="20"
-                                  rows="2"><?php echo esc_textarea($value); ?></textarea>
+                        <textarea class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" cols="20" rows="2"><?php echo esc_textarea($value); ?></textarea>
                         <?php if (isset($setting['desc'])) : ?>
-                            <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small><?php echo esc_html($setting['desc']); ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -270,11 +259,7 @@ abstract class Widget extends WP_Widget
                 case 'checkbox':
                     ?>
                     <p>
-                        <input class="checkbox <?php echo esc_attr($class); ?>"
-                               id="<?php echo esc_attr($this->get_field_id($key)); ?>"
-                               name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="checkbox"
-                               value="1" <?php checked($value, 1); ?> />
-
+                        <input class="checkbox <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="checkbox" value="1" <?php checked($value, 1); ?> />
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                     </p>
                     <?php

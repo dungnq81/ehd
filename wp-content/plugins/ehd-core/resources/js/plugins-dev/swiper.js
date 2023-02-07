@@ -8,7 +8,7 @@ import device from "current-device";
 
 const is_mobile = () => device.mobile();
 const is_tablet = () => device.tablet();
-const is_desktop = () => device.desktop();
+//const is_desktop = () => device.desktop();
 
 /** import Swiper bundle with all modules installed */
 import {Swiper} from 'swiper/bundle';
@@ -101,7 +101,7 @@ w_swiper.forEach((el, index) => {
                 slidesPerView: parseInt(_tablet_data),
             },
             1024: {
-                //spaceBetween: parseInt(_desktop_gap),
+                spaceBetween: parseInt(_desktop_gap),
                 slidesPerView: parseInt(_desktop_data),
             },
         };
