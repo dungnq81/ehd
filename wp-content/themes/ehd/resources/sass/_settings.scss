@@ -4,20 +4,16 @@
 $unique_id: unique_id();
 
 /** */
-$black: #000;
-$medium-black: #454545;
-$white: #ffffff;
+$black-color: #000;
+$medium-color: #555555;
+$white-color: #ffffff;
 
 $header-color: #333333;
 $anchor-color: #333333;
 
-$light-gray: #e6e6e6;
-$medium-gray: #cacaca;
-$gray: #9a9a9a;
-$dark-gray: #8a8a8a;
-
 $color1: #1c68b3;
 $color2: #ef4023;
+
 $color-red: #ff0000;
 
 /** */
@@ -25,28 +21,31 @@ $scrollbar-with: rem-calc(4);
 $scrollbar-height: rem-calc(4);
 
 /** */
-$global-screen-extra: rem-calc(1366);
-$global-screen: rem-calc(1200);
-$global-screen-medium: rem-calc(1140);
 $global-screen-small: rem-calc(960);
+$global-screen-medium: rem-calc(1080);
+$global-screen: rem-calc(1200);
+$global-screen-large: rem-calc(1300);
 
 /** */
 $mobile-width: rem-calc(640);
 $desktop-width: rem-calc(1024);
 $xdesktop-width: rem-calc(1200);
-$xxdesktop-width: rem-calc(1366);
+$xxdesktop-width: rem-calc(1440);
+$xxxdesktop-width: rem-calc(1620);
 
-$wp-mobile-width: rem-calc(782);
-$wp-mobile-width-small: rem-calc(600);
+$wp-small-width: rem-calc(600);
+$wp-medium-width: rem-calc(782);
 
 /** */
 $mq-breakpoints: (
-        wp-mobile-small: $wp-mobile-width-small,
+        wp-mobile: $wp-small-width,
+        wp-tablet: $wp-medium-width,
+
         mobile: $mobile-width,
-        wp-mobile: $wp-mobile-width,
         desktop: $desktop-width,
         xdesktop: $xdesktop-width,
         xxdesktop: $xxdesktop-width,
+        xxxdesktop: $xxxdesktop-width,
 );
 
 /** */
@@ -68,17 +67,19 @@ $header-styles-medium: (
 );
 
 /** */
-$body-background: #ffffff;
+$body-background-color: #ffffff;
 $body-font-color: #333333;
 
 $body-font-size: rem-calc(16);
 $medium-font-size: rem-calc(15);
 $small-font-size: rem-calc(14);
 
+/** */
 $global-line-height: 1.5;
 $header-line-height: 1.4;
-$paragraph-line-height: 1.8;
+$paragraph-line-height: 1.7;
 
+/** */
 $gutter: 15;
 $gutter-mobile: 10;
 
@@ -86,6 +87,6 @@ $gap: $gutter * 2;
 $gap-mobile: $gutter-mobile * 2;
 
 /** */
-$header-font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
-$body-font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
+$header-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
+$body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
 $font-awesome: "Font Awesome 6 Pro", "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;

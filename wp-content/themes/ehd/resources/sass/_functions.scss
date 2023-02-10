@@ -1,3 +1,4 @@
+
 /** functions to urlencode the svg string */
 @function str-replace($string, $search, $replace: '') {
     $index: str-index($string, $search);

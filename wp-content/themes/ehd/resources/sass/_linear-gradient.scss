@@ -41,6 +41,7 @@
     'to left top',
     'to top left'
   ), $value);
+
   $is-angle: type-of($value) == 'number' and index('deg' 'grad' 'turn' 'rad', unit($value));
 
   @return $is-direction or $is-angle;
