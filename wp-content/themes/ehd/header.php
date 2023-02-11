@@ -28,5 +28,15 @@
         <header id="masthead" class="site-header">
             <?php do_action( 'header' ); ?>
         </header><!-- #masthead -->
+
+        <div class="grid-container">
+            <div class="grid-x grid-gap">
+                <div class="cell">sdsdasd</div>
+                <div class="cell">sdsdasd</div>
+                <div class="cell">sdsdasd</div>
+                <div class="cell">sdsdasd</div>
+            </div>
+        </div>
+
     <?php
     endif;

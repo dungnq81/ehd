@@ -3,7 +3,12 @@ let glob = require('glob');
 
 mix
     .sourceMaps()
-	.webpackConfig({ devtool: 'source-map' })
+	.webpackConfig({
+        devtool: 'source-map',
+        stats: {
+            children: true,
+        },
+    })
     .options({
         processCssUrls: false,
         clearConsole: true,

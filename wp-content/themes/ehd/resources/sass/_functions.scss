@@ -78,13 +78,14 @@
 }
 
 /** size */
-@function fs($size: inherit) {
+@function fs($size: 16) {
     @if false == $size {
         @warn '`#{$size}` is not a valid size!';
         @return null;
-    } @else if inherit == $size or auto == $size or unit($size) == '%' {
+    } @else if inherit == $size or unset == $size or unit($size) == '%' {
         @return $size;
-    } @else {
+    }
+    @else {
         @return rem-calc($size);
     }
 }

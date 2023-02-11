@@ -79,7 +79,7 @@
     @include media-pr($m, $t, $d);
 }
 
-@mixin media-pt($m: 20, $t: false, $m: false) {
+@mixin media-pt($m: 20, $t: false, $d: false) {
     @include media-css(padding-top, $m, $t, $d);
 }
 
@@ -209,12 +209,15 @@
             padding-bottom: $padding;
         }
     } @else {
-        height: 0;
-        padding-bottom: $padding;
-    }
 
-    @supports (aspect-ratio: 1) {
-        aspect-ratio: list.slash($ratio-width, $ratio-height);
+        @supports (aspect-ratio: 1) {
+            aspect-ratio: list.slash($ratio-width, $ratio-height);
+        }
+
+        @supports not (aspect-ratio: 1) {
+            height: 0;
+            padding-bottom: $padding;
+        }
     }
 }
 
@@ -431,13 +434,15 @@
     @if $widescreen == true {
         @include mq-min(xxxdesktop) {
             max-width: 100%;
-            padding-left: fs(#{165 + $padding});
-            padding-right: fs(#{165 + $padding});
+            padding-left: fs(165 + $gutter);
+            padding-right: fs(165 + $gutter);
         }
     }
 
-    @include mq-max(xxdesktop) {
-        max-width: $global-screen-medium;
+    &:not(.full) {
+        @include mq-max(xxdesktop) {
+            max-width: $global-screen-medium;
+        }
     }
 }
 
@@ -452,7 +457,7 @@
 }
 
 @mixin grid-padding-x($padding_m: 10, $padding: 15, $class_cell: '.cell') {
-    @include mx-gutter($padding_m, $padding);
+    //@include mx-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if ('.cell' != $class_cell) {
             @include cell(false);
@@ -462,7 +467,7 @@
 }
 
 @mixin grid-padding-y($padding_m: 10, $padding: 15, $class_cell: '.cell') {
-    @include my-gutter($padding_m, $padding);
+    //@include my-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if ('.cell' != $class_cell) {
             @include cell(false);
