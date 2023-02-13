@@ -8,6 +8,7 @@
     "/wp-content/plugins/ehd-core/assets/js/ehd.js": "/wp-content/plugins/ehd-core/assets/js/ehd.js",
     "/wp-content/themes/ehd/assets/js/plugins/draggable.js": "/wp-content/themes/ehd/assets/js/plugins/draggable.js",
     "/wp-content/themes/ehd/assets/js/app.js": "/wp-content/themes/ehd/assets/js/app.js",
+    "/wp-content/themes/ehd/assets/css/plugins.css": "/wp-content/themes/ehd/assets/css/plugins.css",
     "/wp-content/plugins/ehd-core/assets/css/woocommerce.css": "/wp-content/plugins/ehd-core/assets/css/woocommerce.css",
     "/wp-content/plugins/ehd-core/assets/css/swiper.css": "/wp-content/plugins/ehd-core/assets/css/swiper.css",
     "/wp-content/plugins/ehd-core/assets/css/ehd.css": "/wp-content/plugins/ehd-core/assets/css/ehd.css",
@@ -16,8 +17,6 @@
     "/wp-content/themes/ehd/assets/css/elementor.css": "/wp-content/themes/ehd/assets/css/elementor.css",
     "/wp-content/themes/ehd/assets/css/woocommerce.css": "/wp-content/themes/ehd/assets/css/woocommerce.css",
     "/wp-content/themes/ehd/assets/css/app.css": "/wp-content/themes/ehd/assets/css/app.css",
-    "/wp-content/themes/ehd/assets/css/layout.css": "/wp-content/themes/ehd/assets/css/layout.css",
-    "/wp-content/themes/ehd/assets/css/plugins.css": "/wp-content/themes/ehd/assets/css/plugins.css",
     "/wp-content/themes/ehd/assets/css/fonts.css": "/wp-content/themes/ehd/assets/css/fonts.css",
     "/wp-content/plugins/ehd-core/assets/css/elementor.css": "/wp-content/plugins/ehd-core/assets/css/elementor.css"
 }

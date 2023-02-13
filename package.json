@@ -6,9 +6,10 @@
     "build": "mix --production"
   },
   "browserslist": [
-    "last 40 versions",
-    "> 0.4%",
-    "iOS >= 7",
+    "last 2 versions",
+    "ie >= 9",
+    "android >= 4.4",
+    "ios >= 7",
     "Firefox ESR",
     "not dead"
   ],
@@ -36,6 +37,7 @@
     "moment": "^2.29.4",
     "motion-ui": "^2.0.4",
     "nanoid": "^4.0.0",
+    "normalize.css": "^8.0.1",
     "perfect-scrollbar": "^1.5.5",
     "sanitize-html": "^2.9.0",
     "slugify": "^1.6.5",

@@ -19,8 +19,30 @@ input, textarea, button, main {
     margin-bottom: 0;
 }
 
+@for $i from 1 through 6 {
+    h#{$i}, .h#{$i} {
+        font-weight: 700;
+
+        a {
+            display: block;
+        }
+
+        p {
+            color: currentColor;
+            line-height: inherit;
+            margin-bottom: 0;
+        }
+    }
+}
+
 a {
     display: inline-block;
+
+    @for $i from 1 through 6 {
+        h#{$i}, .h#{$i} {
+            font-size: inherit;
+        }
+    }
 }
 
 img {
@@ -39,32 +61,6 @@ img {
         margin-left: auto;
         margin-right: auto;
     }
-}
-
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-weight: 700;
-
-    a {
-        display: block;
-    }
-
-    p {
-        color: currentColor;
-        line-height: inherit;
-        margin-bottom: 0;
-    }
-}
-
-.screen-reader-text, .submenu-toggle-text {
-    border: 0;
-    clip: rect(0, 0, 0, 0);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    top: -10000em;
 }
 
 .skip-link {

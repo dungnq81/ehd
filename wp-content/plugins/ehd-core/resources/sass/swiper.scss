@@ -11,3 +11,10 @@
     z-index: 1;
     display: block;
 }
+
+.swiper-marquee {
+    .swiper-wrapper {
+        transition-timing-function: linear !important;
+        touch-action: manipulation;
+    }
+}

@@ -47,12 +47,18 @@
     }
 }
 
-@mixin box($width: 300, $height: $width) {
+@mixin box($width: 300, $height: $width, $border_radius: 0) {
     width: fs($width);
     height: fs($height);
+
+    $border_radius: abs($border_radius);
+
+    @if (0 < $border_radius) {
+        border-radius: fs($border_radius);
+    }
 }
 
-@mixin media-box($m: 150, $t: false, $d: false) {
+@mixin media-box($m: 150, $t: false, $d: false, $border_radius: 0) {
     @if (false != $m) {
         @include box($m);
     }
@@ -66,6 +72,11 @@
             @include box($d);
         }
     }
+
+    $border_radius: abs($border_radius);
+    @if (0 < $border_radius) {
+        border-radius: fs($border_radius);
+    }
 }
 
 @mixin media-fs($m: 16, $t: false, $d: false) {
@@ -73,10 +84,7 @@
 }
 
 @mixin media-padding($m: 20, $t: false, $d: false) {
-    @include media-pt($m, $t, $d);
-    @include media-pb($m, $t, $d);
-    @include media-pl($m, $t, $d);
-    @include media-pr($m, $t, $d);
+    @include media-css(padding, $m, $t, $d);
 }
 
 @mixin media-pt($m: 20, $t: false, $d: false) {
@@ -96,10 +104,7 @@
 }
 
 @mixin media-margin($m: 20, $t: false, $d: false) {
-    @include media-mt($m, $t, $d);
-    @include media-mb($m, $t, $d);
-    @include media-ml($m, $t, $d);
-    @include media-mr($m, $t, $d);
+    @include media-css(margin, $m, $t, $d);
 }
 
 @mixin media-mt($m: 20, $t: false, $d: false) {
@@ -153,15 +158,19 @@
     background-size: cover;
     background-position: center;
     display: block;
-    height: 0;
-    padding-bottom: percentage(divide($ratio-height, $ratio-width));
 
     @supports (aspect-ratio: 1) {
         aspect-ratio: list.slash($ratio-width, $ratio-height);
     }
+
+    @supports not (aspect-ratio: 1) {
+        height: 0;
+        padding-bottom: percentage(divide($ratio-height, $ratio-width));
+    }
 }
 
 @mixin responsive-wrapper($width: 100%) {
+
     position: relative;
     display: block;
     overflow: hidden;
@@ -319,7 +328,7 @@
     }
 }
 
-@mixin flex-box($m: 1, $t: false, $d: false, $gap_m: 0, $gap: 0, $class_cell: '.cell') {
+@mixin flex-grid($m: 1, $t: false, $d: false, $gap_m: 0, $gap: 0, $class_cell: '.cell') {
     @include media-gap($gap_m, $gap);
 
     & > #{unquote($class_cell)} {
@@ -560,6 +569,12 @@
     justify-content: center;
 }
 
+@mixin inline-flex-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @mixin flex-shrink {
     flex: 0 0 auto;
     max-width: 100%;
@@ -647,10 +662,16 @@
     list-style: none;
 }
 
-@mixin background-css($position: center, $size: cover) {
-    background-repeat: no-repeat;
-    background-size: $size;
-    background-position: $position;
+@mixin hidden-text {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    top: -10000em;
 }
 
 @mixin centering-self($width: 300, $height: $width) {
@@ -793,6 +814,7 @@
     }
 }
 
+// http://el.commonsupport.com/newwp/autorex/services-2/
 @mixin _effect1($c1: $color1, $c2: $color2) {
     box-shadow: 0 0 0 2.5em $c1 inset;
     background-color: transparent;
@@ -830,21 +852,30 @@
 }
 
 // http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect3($bg: rgba(255, 255, 255, 0.2), $border: 0) {
+@mixin _effect3($bg_color: rgba(255, 255, 255, 0.2), $border: 0) {
+
+    $border-radius: abs($border);
+    @if (0 < $border-radius) {
+        border-radius: fs($border-radius);
+    }
+
     position: relative;
     overflow: hidden;
-    border-radius: $border;
     &::before {
         @include absolute-center;
         display: block;
         content: "";
         width: 0;
         height: 0;
-        background: $bg;
+        background: $bg_color;
         opacity: 0;
         z-index: 10;
-        border-radius: $border;
+
+        @if (0 < $border-radius) {
+            border-radius: fs($border-radius);
+        }
     }
+
     &:hover {
         opacity: 1;
 
@@ -864,15 +895,5 @@
     }
     @keyframes #{$name} {
         @content;
-    }
-}
-
-@include keyframes(circle) {
-    0% { opacity: 1; }
-    40% { opacity: 1; }
-    100% {
-        width: 200%;
-        height: 200%;
-        opacity: 0;
     }
 }

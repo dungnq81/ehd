@@ -207,9 +207,7 @@ final class Theme
     {
         // stylesheet.
         wp_register_style("plugin-style", get_template_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION);
-        wp_register_style("layout-style", get_template_directory_uri() . '/assets/css/layout.css', ["plugin-style", "ehd-core-style"], EHD_THEME_VERSION);
-
-        wp_enqueue_style("app-style", get_template_directory_uri() . '/assets/css/app.css', ["layout-style"], EHD_THEME_VERSION);
+        wp_enqueue_style("app-style", get_template_directory_uri() . '/assets/css/app.css', ["ehd-core-style", "plugin-style"], EHD_THEME_VERSION);
 
         // scripts.
         wp_enqueue_script("app", get_template_directory_uri() . "/assets/js/app.js", ["ehd-core"], EHD_THEME_VERSION, true);
