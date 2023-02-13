@@ -1,11 +1,11 @@
-/*! elementor - v3.10.2 - 29-01-2023 */
+/*! elementor - v3.11.0 - 13-02-2023 */
 "use strict";
-(self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["modules_nested-tabs_assets_js_editor_module_js"],{
+(self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["modules_nested-elements_assets_js_editor_nested-element-types-base_js"],{
 
-/***/ "../modules/nested-tabs/assets/js/editor/module.js":
-/*!*********************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/module.js ***!
-  \*********************************************************/
+/***/ "../modules/nested-elements/assets/js/editor/nested-element-types-base.js":
+/*!********************************************************************************!*\
+  !*** ../modules/nested-elements/assets/js/editor/nested-element-types-base.js ***!
+  \********************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -14,51 +14,27 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports["default"] = void 0;
-var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
-var _nestedTabs = _interopRequireDefault(__webpack_require__(/*! ./nested-tabs */ "../modules/nested-tabs/assets/js/editor/nested-tabs.js"));
-var Module = /*#__PURE__*/(0, _createClass2.default)(function Module() {
-  (0, _classCallCheck2.default)(this, Module);
-  elementor.elementsManager.registerElementType(new _nestedTabs.default());
-});
-exports["default"] = Module;
-
-/***/ }),
-
-/***/ "../modules/nested-tabs/assets/js/editor/nested-tabs.js":
-/*!**************************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/nested-tabs.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-
-var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "../node_modules/@babel/runtime/helpers/interopRequireDefault.js");
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports["default"] = exports.NestedTabs = void 0;
+exports["default"] = exports.NestedElementTypesBase = void 0;
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "../node_modules/@babel/runtime/helpers/classCallCheck.js"));
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ "../node_modules/@babel/runtime/helpers/createClass.js"));
 var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ "../node_modules/@babel/runtime/helpers/inherits.js"));
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"));
 var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "../node_modules/@babel/runtime/helpers/getPrototypeOf.js"));
-var _view = _interopRequireDefault(__webpack_require__(/*! ./views/view */ "../modules/nested-tabs/assets/js/editor/views/view.js"));
-var _empty = _interopRequireDefault(__webpack_require__(/*! ./views/empty */ "../modules/nested-tabs/assets/js/editor/views/empty.js"));
+var _view = _interopRequireDefault(__webpack_require__(/*! ./views/view */ "../modules/nested-elements/assets/js/editor/views/view.js"));
+var _empty = _interopRequireDefault(__webpack_require__(/*! ./views/empty */ "../modules/nested-elements/assets/js/editor/views/empty.js"));
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var NestedTabs = /*#__PURE__*/function (_elementor$modules$el) {
-  (0, _inherits2.default)(NestedTabs, _elementor$modules$el);
-  var _super = _createSuper(NestedTabs);
-  function NestedTabs() {
-    (0, _classCallCheck2.default)(this, NestedTabs);
+var NestedElementTypesBase = /*#__PURE__*/function (_elementor$modules$el) {
+  (0, _inherits2.default)(NestedElementTypesBase, _elementor$modules$el);
+  var _super = _createSuper(NestedElementTypesBase);
+  function NestedElementTypesBase() {
+    (0, _classCallCheck2.default)(this, NestedElementTypesBase);
     return _super.apply(this, arguments);
   }
-  (0, _createClass2.default)(NestedTabs, [{
+  (0, _createClass2.default)(NestedElementTypesBase, [{
     key: "getType",
     value: function getType() {
-      return 'nested-tabs';
+      elementorModules.ForceMethodImplementation();
     }
   }, {
     key: "getView",
@@ -76,18 +52,18 @@ var NestedTabs = /*#__PURE__*/function (_elementor$modules$el) {
       return $e.components.get('nested-elements/nested-repeater').exports.NestedModelBase;
     }
   }]);
-  return NestedTabs;
+  return NestedElementTypesBase;
 }(elementor.modules.elements.types.Base);
-exports.NestedTabs = NestedTabs;
-var _default = NestedTabs;
+exports.NestedElementTypesBase = NestedElementTypesBase;
+var _default = NestedElementTypesBase;
 exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../modules/nested-tabs/assets/js/editor/views/add-section-area.js":
-/*!*************************************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/views/add-section-area.js ***!
-  \*************************************************************************/
+/***/ "../modules/nested-elements/assets/js/editor/views/add-section-area.js":
+/*!*****************************************************************************!*\
+  !*** ../modules/nested-elements/assets/js/editor/views/add-section-area.js ***!
+  \*****************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 /* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
@@ -162,10 +138,10 @@ AddSectionArea.propTypes = {
 
 /***/ }),
 
-/***/ "../modules/nested-tabs/assets/js/editor/views/empty.js":
-/*!**************************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/views/empty.js ***!
-  \**************************************************************/
+/***/ "../modules/nested-elements/assets/js/editor/views/empty.js":
+/*!******************************************************************!*\
+  !*** ../modules/nested-elements/assets/js/editor/views/empty.js ***!
+  \******************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 /* provided dependency */ var PropTypes = __webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js");
@@ -180,8 +156,8 @@ exports["default"] = Empty;
 var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "../node_modules/@babel/runtime/helpers/defineProperty.js"));
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "../node_modules/@babel/runtime/helpers/slicedToArray.js"));
-var _addSectionArea = _interopRequireDefault(__webpack_require__(/*! ./add-section-area */ "../modules/nested-tabs/assets/js/editor/views/add-section-area.js"));
-var _selectPreset = _interopRequireDefault(__webpack_require__(/*! ./select-preset */ "../modules/nested-tabs/assets/js/editor/views/select-preset.js"));
+var _addSectionArea = _interopRequireDefault(__webpack_require__(/*! ./add-section-area */ "../modules/nested-elements/assets/js/editor/views/add-section-area.js"));
+var _selectPreset = _interopRequireDefault(__webpack_require__(/*! ./select-preset */ "../modules/nested-elements/assets/js/editor/views/select-preset.js"));
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -202,10 +178,10 @@ Empty.propTypes = {
 
 /***/ }),
 
-/***/ "../modules/nested-tabs/assets/js/editor/views/select-preset.js":
-/*!**********************************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/views/select-preset.js ***!
-  \**********************************************************************/
+/***/ "../modules/nested-elements/assets/js/editor/views/select-preset.js":
+/*!**************************************************************************!*\
+  !*** ../modules/nested-elements/assets/js/editor/views/select-preset.js ***!
+  \**************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 /* provided dependency */ var __ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n")["__"];
@@ -268,10 +244,10 @@ SelectPreset.propTypes = {
 
 /***/ }),
 
-/***/ "../modules/nested-tabs/assets/js/editor/views/view.js":
-/*!*************************************************************!*\
-  !*** ../modules/nested-tabs/assets/js/editor/views/view.js ***!
-  \*************************************************************/
+/***/ "../modules/nested-elements/assets/js/editor/views/view.js":
+/*!*****************************************************************!*\
+  !*** ../modules/nested-elements/assets/js/editor/views/view.js ***!
+  \*****************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -337,4 +313,4 @@ exports["default"] = _default;
 /***/ })
 
 }]);
-//# sourceMappingURL=16cc717bd1ce2da6f96c.bundle.js.map
+//# sourceMappingURL=cef791548925eafe8d06.bundle.js.map

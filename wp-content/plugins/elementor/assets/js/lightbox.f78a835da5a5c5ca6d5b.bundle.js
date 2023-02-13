@@ -1,4 +1,4 @@
-/*! elementor - v3.10.2 - 29-01-2023 */
+/*! elementor - v3.11.0 - 13-02-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["lightbox"],{
 
 /***/ "../assets/dev/js/frontend/utils/icons/e-icons.js":
@@ -308,7 +308,7 @@ module.exports = elementorModules.ViewModule.extend({
         invisible: 'elementor-invisible',
         preventClose: 'elementor-lightbox-prevent-close',
         slideshow: {
-          container: 'swiper-container',
+          container: elementorFrontend.config.swiperClass,
           slidesWrapper: 'swiper-wrapper',
           prevButton: 'elementor-swiper-button elementor-swiper-button-prev',
           nextButton: 'elementor-swiper-button elementor-swiper-button-next',
@@ -460,7 +460,7 @@ module.exports = elementorModules.ViewModule.extend({
         type: 'image',
         id: slideshowID,
         url: element.href,
-        hash: element.getAttribute('e-action-hash'),
+        hash: element.getAttribute('data-e-action-hash'),
         title: element.dataset.elementorLightboxTitle,
         description: element.dataset.elementorLightboxDescription,
         modalOptions: {
@@ -557,7 +557,7 @@ module.exports = elementorModules.ViewModule.extend({
     $.each(socialNetworks, (key, data) => {
       const networkLabel = data.label,
         $link = $('<a>', {
-          href: this.createShareLink(key, itemUrl, $activeSlide.attr('e-action-hash')),
+          href: this.createShareLink(key, itemUrl, $activeSlide.attr('data-e-action-hash')),
           target: '_blank'
         }).text(networkLabel),
         $socialNetworkIconElement = this.isFontIconSvgExperiment ? $(data.iconElement.element) : $('<i>', {
@@ -848,7 +848,7 @@ module.exports = elementorModules.ViewModule.extend({
         $slide.append($zoomContainer);
       }
       if (slide.hash) {
-        $slide.attr('e-action-hash', slide.hash);
+        $slide.attr('data-e-action-hash', slide.hash);
       }
       $slidesWrapper.append($slide);
     });
@@ -1120,7 +1120,7 @@ module.exports = elementorModules.ViewModule.extend({
         index: slideIndex,
         title: this.dataset.elementorLightboxTitle,
         description: this.dataset.elementorLightboxDescription,
-        hash: this.getAttribute('e-action-hash')
+        hash: this.getAttribute('data-e-action-hash')
       };
       if (slideVideo) {
         slideData.video = slideVideo;
@@ -1285,9 +1285,11 @@ module.exports = elementorModules.ViewModule.extend({
 /*!****************************************************************!*\
   !*** ../node_modules/@babel/runtime/helpers/defineProperty.js ***!
   \****************************************************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "../node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperty(obj, key, value) {
+  key = toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -1302,7 +1304,63 @@ function _defineProperty(obj, key, value) {
 }
 module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toPrimitive.js":
+/*!*************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toPrimitive.js ***!
+  \*************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+function _toPrimitive(input, hint) {
+  if (_typeof(input) !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (_typeof(res) !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+module.exports = _toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/toPropertyKey.js":
+/*!***************************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/toPropertyKey.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "../node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+var toPrimitive = __webpack_require__(/*! ./toPrimitive.js */ "../node_modules/@babel/runtime/helpers/toPrimitive.js");
+function _toPropertyKey(arg) {
+  var key = toPrimitive(arg, "string");
+  return _typeof(key) === "symbol" ? key : String(key);
+}
+module.exports = _toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "../node_modules/@babel/runtime/helpers/typeof.js":
+/*!********************************************************!*\
+  !*** ../node_modules/@babel/runtime/helpers/typeof.js ***!
+  \********************************************************/
+/***/ ((module) => {
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(obj);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
 /***/ })
 
 }]);
-//# sourceMappingURL=lightbox.7d480a6e916905e5fb93.bundle.js.map
+//# sourceMappingURL=lightbox.f78a835da5a5c5ca6d5b.bundle.js.map

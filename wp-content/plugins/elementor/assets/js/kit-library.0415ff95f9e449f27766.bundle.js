@@ -1,4 +1,4 @@
-/*! elementor - v3.10.2 - 29-01-2023 */
+/*! elementor - v3.11.0 - 13-02-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["kit-library"],{
 
 /***/ "../app/modules/kit-library/assets/js/components/badge.scss":
@@ -1235,7 +1235,7 @@ var KitListItem = function KitListItem(props) {
   })), /*#__PURE__*/_react.default.createElement(_appUi.CardBody, null, /*#__PURE__*/_react.default.createElement(_appUi.CardImage, {
     alt: props.model.title,
     src: props.model.thumbnailUrl || ''
-  }, (subscriptionPlan === null || subscriptionPlan === void 0 ? void 0 : subscriptionPlan.label) && /*#__PURE__*/_react.default.createElement(_badge.default, {
+  }, !elementorAppConfig.hasPro && (subscriptionPlan === null || subscriptionPlan === void 0 ? void 0 : subscriptionPlan.label) && /*#__PURE__*/_react.default.createElement(_badge.default, {
     variant: "sm",
     className: "e-kit-library__kit-item-subscription-plan-badge",
     style: {
@@ -3075,11 +3075,14 @@ var taxonomyType = [{
 }, {
   key: 'features',
   label: __('Features', 'elementor')
-}, {
-  key: 'subscription_plans',
-  label: __('Kits by plan', 'elementor')
 }];
 exports.taxonomyType = taxonomyType;
+if (!elementorAppConfig.hasPro) {
+  taxonomyType.push({
+    key: 'subscription_plans',
+    label: __('Kits by plan', 'elementor')
+  });
+}
 var Taxonomy = /*#__PURE__*/function (_BaseModel) {
   (0, _inherits2.default)(Taxonomy, _BaseModel);
   var _super = _createSuper(Taxonomy);
@@ -4400,4 +4403,4 @@ exports["default"] = _default;
 /***/ })
 
 }]);
-//# sourceMappingURL=kit-library.8a5a7f84827b7031a821.bundle.js.map
+//# sourceMappingURL=kit-library.0415ff95f9e449f27766.bundle.js.map

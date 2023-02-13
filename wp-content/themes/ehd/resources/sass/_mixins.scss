@@ -32,7 +32,7 @@
 }
 
 @mixin media-css($css_property: font-size, $m: 16, $t: false, $d: false) {
-    @if (false != $m) {
+    @if false != $m {
         #{$css_property}: fs($m);
     }
     @if false != $t {
@@ -52,14 +52,13 @@
     height: fs($height);
 
     $border_radius: abs($border_radius);
-
-    @if (0 < $border_radius) {
+    @if 0 < $border_radius {
         border-radius: fs($border_radius);
     }
 }
 
 @mixin media-box($m: 150, $t: false, $d: false, $border_radius: 0) {
-    @if (false != $m) {
+    @if false != $m {
         @include box($m);
     }
     @if false != $t {
@@ -74,7 +73,7 @@
     }
 
     $border_radius: abs($border_radius);
-    @if (0 < $border_radius) {
+    @if 0 < $border_radius {
         border-radius: fs($border_radius);
     }
 }
@@ -307,10 +306,10 @@
 
     // support aspect-ratio tag, there will also be support flex gap tag
     @supports (aspect-ratio: 1 ) {
-        @if ($gap_m > 0) {
+        @if $gap_m > 0 {
             gap: fs($gap_m);
         }
-        @if ($gap > 0) {
+        @if $gap > 0 {
             @include mq-min(mobile) {
                 gap: fs($gap);
             }
@@ -332,7 +331,7 @@
     @include media-gap($gap_m, $gap);
 
     & > #{unquote($class_cell)} {
-        @if ('.cell' != $class_cell) {
+        @if '.cell' != $class_cell {
             @include cell(false);
         }
 
@@ -344,12 +343,12 @@
     $gutter_m: abs($gutter_m);
     $gutter: abs($gutter);
 
-    @if ($gutter_m > 0) {
+    @if $gutter_m > 0 {
         margin-left: -#{fs($gutter_m)};
         margin-right: -#{fs($gutter_m)};
     }
 
-    @if ($gutter > 0) {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             margin-left: -#{fs($gutter)};
             margin-right: -#{fs($gutter)};
@@ -361,12 +360,12 @@
     $gutter_m: abs($gutter_m);
     $gutter: abs($gutter);
 
-    @if ($gutter_m > 0) {
+    @if $gutter_m > 0 {
         margin-top: -#{fs($gutter_m)};
         margin-bottom: -#{fs($gutter_m)};
     }
 
-    @if ($gutter > 0) {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             margin-top: -#{fs($gutter)};
             margin-bottom: -#{fs($gutter)};
@@ -378,11 +377,11 @@
     $gutter_m: abs($gutter_m);
     $gutter: abs($gutter);
 
-    @if ($gutter_m > 0) {
+    @if $gutter_m > 0 {
         padding-left: fs($gutter_m);
         padding-right: fs($gutter_m);
     }
-    @if ($gutter > 0) {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             padding-left: fs($gutter);
             padding-right: fs($gutter);
@@ -394,11 +393,11 @@
     $gutter_m: abs($gutter_m);
     $gutter: abs($gutter);
 
-    @if ($gutter_m > 0) {
+    @if $gutter_m > 0 {
         padding-top: fs($gutter_m);
         padding-bottom: fs($gutter_m);
     }
-    @if ($gutter > 0) {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             padding-top: fs($gutter);
             padding-bottom: fs($gutter);
@@ -410,7 +409,9 @@
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
-    @if $width != false {
+
+    $width: abs($width);
+    @if 0 != $width {
         width: $width;
     }
 }
@@ -423,11 +424,11 @@
     $padding_m: abs($padding_m);
     $padding: abs($padding);
 
-    @if ($padding_m > 0) {
+    @if $padding_m > 0 {
         padding-left: fs($padding_m);
         padding-right: fs($padding_m);
     }
-    @if ($padding > 0) {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
             padding-right: fs($padding);
@@ -468,9 +469,10 @@
 @mixin grid-padding-x($padding_m: 10, $padding: 15, $class_cell: '.cell') {
     //@include mx-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
-        @if ('.cell' != $class_cell) {
-            @include cell(false);
+        @if '.cell' != $class_cell {
+            @include cell();
         }
+
         @include px-gutter($padding_m, $padding);
     }
 }
@@ -478,8 +480,8 @@
 @mixin grid-padding-y($padding_m: 10, $padding: 15, $class_cell: '.cell') {
     //@include my-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
-        @if ('.cell' != $class_cell) {
-            @include cell(false);
+        @if '.cell' != $class_cell {
+            @include cell();
         }
         @include py-gutter($padding_m, $padding);
     }
@@ -510,11 +512,11 @@
 
     $padding_m: abs($padding_m);
     $padding: abs($padding);
-    @if ($padding_m > 0) {
+    @if $padding_m > 0 {
         padding-left: fs($padding_m);
     }
 
-    @if ($padding > 0) {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
         }
@@ -537,11 +539,11 @@
 
     $padding_m: abs($padding_m);
     $padding: abs($padding);
-    @if ($padding_m > 0) {
+    @if $padding_m > 0 {
         padding-right: fs($padding_m);
     }
 
-    @if ($padding > 0) {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-right: fs($padding);
         }
@@ -555,6 +557,34 @@
 
     @include mq-max(xxdesktop) {
         max-width: calc(50% + #{divide($global-screen-medium, 2)});
+    }
+}
+
+/** padding-left, padding-right, left, right ... */
+@mixin position-screen($css_property: padding-left, $gutter_m: 10, $gutter: 15, $grid_extra: false) {
+    $_property: abs($gutter_m);
+    #{$css_property}: fs($_property);
+
+    @include mq-min(mobile) {
+        $_property: abs($gutter);
+        #{$css_property}: fs($_property);
+    }
+
+    @media only screen and (min-width: $global-screen-medium) {
+        $_property: calc(50vw - #{divide($global-screen-medium, 2)} + #{fs($gutter)});
+        #{$css_property}: $_property;
+    }
+
+    @if true == $grid_extra {
+        @include mq-min(xxdesktop) {
+            $_property: calc(50vw - #{divide($global-screen-large, 2)} + #{fs($gutter)});
+            #{$css_property}: $_property;
+        }
+    } @else {
+        @include mq-min(xxdesktop) {
+            $_property: calc(50vw - #{divide($global-screen, 2)} + #{fs($gutter)});
+            #{$css_property}: $_property;
+        }
     }
 }
 

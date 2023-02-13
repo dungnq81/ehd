@@ -1,4 +1,4 @@
-/*! elementor - v3.10.2 - 29-01-2023 */
+/*! elementor - v3.11.0 - 13-02-2023 */
 "use strict";
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["image-carousel"],{
 
@@ -55,6 +55,9 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
         slidesPerView: +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow,
         slidesPerGroup: +elementSettings['slides_to_scroll_' + breakpointName] || 1
       };
+      if (elementSettings.image_spacing_custom) {
+        swiperOptions.breakpoints[elementorBreakpoints[breakpointName].value].spaceBetween = this.getSpaceBetween(breakpointName);
+      }
       lastBreakpointSlidesToShowValue = +elementSettings['slides_to_show_' + breakpointName] || defaultSlidesToShow;
     });
     if ('yes' === elementSettings.autoplay) {
@@ -74,7 +77,7 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
       swiperOptions.slidesPerGroup = +elementSettings.slides_to_scroll || 1;
     }
     if (elementSettings.image_spacing_custom) {
-      swiperOptions.spaceBetween = elementSettings.image_spacing_custom.size;
+      swiperOptions.spaceBetween = this.getSpaceBetween();
     }
     const showArrows = 'arrows' === elementSettings.navigation || 'both' === elementSettings.navigation,
       showDots = 'dots' === elementSettings.navigation || 'both' === elementSettings.navigation;
@@ -121,9 +124,6 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
 
     // Handle special cases where the value to update is not the value that the Swiper library accepts.
     switch (propertyName) {
-      case 'image_spacing_custom':
-        params.spaceBetween = newSettingValue.size || 0;
-        break;
       case 'autoplay_speed':
         params.autoplay.delay = newSettingValue;
         break;
@@ -138,10 +138,15 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
       pause_on_hover: 'pauseOnHover',
       autoplay_speed: 'delay',
       speed: 'speed',
-      image_spacing_custom: 'spaceBetween'
+      arrows_position: 'arrows_position' // Not a Swiper setting.
     };
   }
+
   onElementChange(propertyName) {
+    if (0 === propertyName.indexOf('image_spacing_custom')) {
+      this.updateSpaceBetween(propertyName);
+      return;
+    }
     const changeableProperties = this.getChangeableProperties();
     if (changeableProperties[propertyName]) {
       // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library.
@@ -158,10 +163,24 @@ class ImageCarousel extends elementorModules.frontend.handlers.SwiperBase {
       this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
     }
   }
+  getSpaceBetween() {
+    let device = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    return elementorFrontend.utils.controls.getResponsiveControlValue(this.getElementSettings(), 'image_spacing_custom', 'size', device) || 0;
+  }
+  updateSpaceBetween(propertyName) {
+    const deviceMatch = propertyName.match('image_spacing_custom_(.*)'),
+      device = deviceMatch ? deviceMatch[1] : 'desktop',
+      newSpaceBetween = this.getSpaceBetween(device);
+    if ('desktop' !== device) {
+      this.swiper.params.breakpoints[elementorFrontend.config.responsive.activeBreakpoints[device].value].spaceBetween = newSpaceBetween;
+    }
+    this.swiper.params.spaceBetween = newSpaceBetween;
+    this.swiper.update();
+  }
 }
 exports["default"] = ImageCarousel;
 
 /***/ })
 
 }]);
-//# sourceMappingURL=image-carousel.68bbb96593f8c6ecf166.bundle.js.map
+//# sourceMappingURL=image-carousel.eb05c92d71778c099df7.bundle.js.map

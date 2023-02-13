@@ -1,1 +1,56 @@
 @import "layout";
+
+/** @todo .carousels-section */
+.section.carousels-section {
+
+}
+
+/** @todo .images-carousel */
+.section.images-carousel {
+    position: relative;
+
+    /** .zoom-in */
+    &.zoom-in {
+        overflow: hidden;
+
+        .swiper-slide {
+            figure, picture {
+                img {
+                    opacity: 0;
+                    transform: scale(1) rotate(0deg);
+                    transition: transform .6s, opacity .6s, box-shadow 0.6s;
+                }
+            }
+
+            &.swiper-slide-active {
+                figure, picture {
+                    img {
+                        opacity: 1;
+                        transform: scale(1.11) rotate(2deg);
+                        transition: opacity 1s, transform 20s ease-out;
+                    }
+                }
+            }
+        }
+    }
+
+    /** .swiper */
+    .swiper {
+        .swiper-slide {
+            height: auto;
+
+            article.item {
+                @include flex-center;
+            }
+
+            &.swiper-slide-active {
+                article.item {}
+            }
+        }
+    }
+
+    /** .swiper-controls */
+    .swiper-controls {
+
+    }
+}
