@@ -1,13 +1,74 @@
 @import "layout";
 
+/** @todo .swiper-controls */
+.swiper-controls {
+    &.normal-controls {
+        .swiper-button {
+            opacity: 1;
+            border: none !important;
+        }
+    }
+
+    /** */
+    .swiper-button {
+        opacity: 0.5;
+        transition: all 0.3s ease-in-out;
+        @include media-box(32, false, 36);
+        margin-top: 0;
+
+        &::before {
+            color: $header-color;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        svg {
+            fill: $header-color;
+            color: $header-color;
+            font-size: 18px;
+        }
+
+        &:focus, &:hover {
+            outline: none;
+            opacity: 1;
+
+            &::before {
+                opacity: 0.9;
+            }
+        }
+    }
+
+    /** */
+    .swiper-pagination {}
+
+    /** */
+    .swiper-progress {}
+}
+
 /** @todo .carousels-section */
 .section.carousels-section {
+    position: relative;
 
+    .swiper-section {
+        .swiper {
+            &.swiper-initialized {
+                & ~ .swiper-controls {
+                    .swiper-button {
+                        filter: drop-shadow(1px 1px 6px rgba(153, 153, 153, 0.3));
+                        background-color: transparentize(#fff, 0.5);
+                        backdrop-filter: blur(5px);
+
+                        &.swiper-button-prev {}
+                        &.swiper-button-next {}
+                    }
+                }
+            }
+        }
+    }
 }
 
 /** @todo .images-carousel */
 .section.images-carousel {
-    position: relative;
 
     /** .zoom-in */
     &.zoom-in {
