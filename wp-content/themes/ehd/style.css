@@ -1,12 +1,17 @@
 /**
- * Theme Name: eHD
- * Theme URI: https://webhd.vn/ehd
- * Author: EHD Team
- * Author URI: https://webhd.vn
- * Description: eHD theme, created by eHD team.
- * Requires PHP: 7.4
- * Version: 0.22.09
- * License: GNU General Public License v2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: ehd
- */
+Theme Name: eHD
+Theme URI: https://webhd.vn/ehd
+Author: EHD Team
+Author URI: https://webhd.vn
+Description: eHD theme, created by eHD team.
+Requires PHP: 7.4
+Version: 0.22.09
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: ehd
+Domain Path: /languages
+
+eHD WordPress Theme, Copyright 2023 WebHD.
+
+Note: The CSS files are loaded from assets/css/ folder.
+*/

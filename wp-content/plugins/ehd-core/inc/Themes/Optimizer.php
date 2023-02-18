@@ -8,6 +8,7 @@ use EHD\Cores\Helper;
 
 /**
  * Optimizer Class
+ *
  * @author eHD
  */
 final class Optimizer

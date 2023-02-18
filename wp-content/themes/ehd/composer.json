@@ -16,8 +16,7 @@
 		"files": [
 			"inc/helpers.php",
 			"inc/image-sizes.php",
-			"inc/template-hooks.php",
-			"inc/themes.php"
+			"inc/template-hooks.php"
 		]
 	},
 	"require": {}

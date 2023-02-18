@@ -4,7 +4,7 @@ namespace EHD\Sites\Themes;
 
 use EHD\Cores\Helper;
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 /**
  * Hooks Class

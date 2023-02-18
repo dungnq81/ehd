@@ -7,7 +7,7 @@
 use EHD\Cores\Helper;
 use EHD\Themes\Css;
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 // ------------------------------------------
 

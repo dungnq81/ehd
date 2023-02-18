@@ -6,7 +6,7 @@
  * @author   WEBHD
  */
 
-\defined( '\WPINC' ) || die;
+\defined( 'ABSPATH' ) || die;
 
 /** ----------------------------------------------- */
 

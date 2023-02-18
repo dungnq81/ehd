@@ -7,8 +7,4 @@
  * the loop is executed (when needed) by the relevant template part.
  */
 
-\defined( '\WPINC' ) || die; // Exit if accessed directly.
-
-get_header();
-
-get_footer();
+\defined( 'ABSPATH' ) || die;

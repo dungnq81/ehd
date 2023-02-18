@@ -5,7 +5,7 @@
  * @package WordPress
  */
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 /**
  * thumbnail (480x0)

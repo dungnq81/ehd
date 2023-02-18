@@ -6,7 +6,7 @@
  * @package hd
  */
 
-\defined( '\WPINC' ) || die; // Exit if accessed directly.
+\defined( 'ABSPATH' ) || die;
 
 ?>
 <!doctype html>
@@ -20,23 +20,3 @@
 <body <?php body_class(); ?>>
     <?php do_action( 'before_header' );?>
     <div class="site-outer site-page">
-    <?php
-
-    if ( ! function_exists( 'elementor_theme_do_location' ) || ! elementor_theme_do_location( 'header' ) ) :
-        do_action( 'off_canvas' );
-        ?>
-        <header id="masthead" class="site-header">
-            <?php do_action( 'header' ); ?>
-        </header><!-- #masthead -->
-
-        <div class="grid-container">
-            <div class="grid-x grid-gap">
-                <div class="cell">sdsdasd</div>
-                <div class="cell">sdsdasd</div>
-                <div class="cell">sdsdasd</div>
-                <div class="cell">sdsdasd</div>
-            </div>
-        </div>
-
-    <?php
-    endif;

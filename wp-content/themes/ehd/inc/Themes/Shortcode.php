@@ -2,7 +2,7 @@
 
 namespace EHD\Sites\Themes;
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 final class Shortcode
 {

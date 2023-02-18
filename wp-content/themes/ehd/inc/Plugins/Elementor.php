@@ -2,7 +2,7 @@
 
 namespace EHD\Sites\Plugins;
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 /**
  * Elementor Class

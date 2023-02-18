@@ -138,27 +138,31 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 #
-#
 # Project exclude paths
 /wp-content/themes/ehd/node_modules/
 /wp-content/themes/ehd/vendor/
 /wp-content/themes/ehd/composer.lock
 /wp-content/themes/ehd/package-lock.json
 /wp-content/themes/ehd/yarn.lock
+/wp-content/themes/ehd/assets/
+
 # Project exclude paths
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/cart.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/contexts.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/hooks.js
 /wp-content/plugins/woocommerce/packages/woocommerce-blocks/assets/js/types/type-defs/shipping.js
 /node_modules/
+
 /yarn.lock
 /mix-manifest.json
 /package-lock.json
-/wp-content/themes/hello-elementor/
-/wp-content/themes/ehd/assets/
-/wp-content/plugins/ehd-core/assets/
-/wp-content/themes/storefront/
 /wp-content/mu-plugins/composer.lock
 /wp-content/mu-plugins/vendor/
 /vendor/
 /composer.lock
+/wp-content/plugins/ehd-core/assets/
+
+/wp-content/themes/hello-elementor/
+/wp-content/themes/storefront/
+/wp-content/themes/astra/
+/wp-content/themes/generatepress/

@@ -6,7 +6,7 @@ use EHD\Cores\Helper;
 use EHD\Sites\Plugins\Elementor;
 use EHD\Sites\Plugins\Woocommerce;
 
-\defined('\WPINC') || die;
+\defined( 'ABSPATH' ) || die;
 
 /**
  * Theme Class

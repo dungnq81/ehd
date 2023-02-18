@@ -6,6 +6,7 @@ namespace EHD\Themes;
 
 /**
  * Customizer Class
+ *
  * @author eHD
  */
 

@@ -7,6 +7,8 @@
 
 use EHD\Cores\Helper;
 
+\defined( 'ABSPATH' ) || die;
+
 if ( post_password_required() ) {
     return;
 }
