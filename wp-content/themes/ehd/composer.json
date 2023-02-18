@@ -9,6 +9,7 @@
 	"autoload": {
 		"psr-4": {
 			"EHD\\Sites\\Plugins\\": "inc/Plugins",
+			"EHD\\Sites\\PostTypes\\": "inc/PostTypes",
 			"EHD\\Sites\\Themes\\": "inc/Themes",
 			"EHD\\Sites\\Widgets\\": "inc/Widgets"
 		},

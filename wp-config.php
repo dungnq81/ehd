@@ -22,7 +22,7 @@
 const WP_MEMORY_LIMIT     = '512M';
 const WP_MAX_MEMORY_LIMIT = '512M';
 
-const DISALLOW_FILE_EDIT = false;
+const DISALLOW_FILE_EDIT = true;
 const DISALLOW_FILE_MODS = false;
 
 /* SSL */
@@ -89,7 +89,7 @@ $table_prefix = 'w_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-const WP_DEBUG = true;
+const WP_DEBUG = false;
 
 /* Add any custom values between this line and the "stop editing" line. */
 

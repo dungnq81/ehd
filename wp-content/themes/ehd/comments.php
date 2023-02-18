@@ -23,6 +23,6 @@ if ( post_password_required() ) {
 }
 
 ?>
-<div id="comments">
+<section id="comments" class="comments-area" aria-label="<?php esc_attr_e( 'Post Comments', EHD_TEXT_DOMAIN ); ?>">
 
-</div><!-- #comments -->
+</section><!-- #comments -->

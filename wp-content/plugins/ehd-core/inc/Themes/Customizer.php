@@ -249,9 +249,9 @@ final class Customizer
         $wp_customize->add_setting(
             'fb_chat_setting',
             [
-                'default'           => false,
+                'default'   => false,
                 //'sanitize_callback' => 'sanitize_checkbox',
-                'transport'         => 'refresh',
+                'transport' => 'refresh',
             ]
         );
         $wp_customize->add_control(
@@ -295,9 +295,9 @@ final class Customizer
         $wp_customize->add_setting(
             'zalo_chat_setting',
             [
-                'default'           => false,
+                'default'   => false,
                 //'sanitize_callback' => 'sanitize_checkbox',
-                'transport'         => 'refresh',
+                'transport' => 'refresh',
             ]
         );
         $wp_customize->add_control(
@@ -497,9 +497,9 @@ final class Customizer
         $wp_customize->add_setting(
             'use_widgets_block_editor_setting',
             [
-                'default'           => false,
+                'default'   => false,
                 //'sanitize_callback' => 'sanitize_checkbox',
-                'transport'         => 'refresh',
+                'transport' => 'refresh',
             ]
         );
 
@@ -518,9 +518,9 @@ final class Customizer
         $wp_customize->add_setting(
             'gutenberg_use_widgets_block_editor_setting',
             [
-                'default'           => false,
+                'default'   => false,
                 //'sanitize_callback' => 'sanitize_checkbox',
-                'transport'         => 'refresh',
+                'transport' => 'refresh',
             ]
         );
 
@@ -539,9 +539,9 @@ final class Customizer
         $wp_customize->add_setting(
             'use_block_editor_for_post_type_setting',
             [
-                'default'           => false,
+                'default'   => false,
                 //'sanitize_callback' => 'sanitize_checkbox',
-                'transport'         => 'refresh',
+                'transport' => 'refresh',
             ]
         );
 

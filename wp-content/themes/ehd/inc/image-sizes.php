@@ -1,7 +1,7 @@
 <?php
-
 /**
  * Configure responsive images sizes
+ *
  * @package WordPress
  */
 

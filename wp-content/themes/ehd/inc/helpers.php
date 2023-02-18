@@ -1,8 +1,5 @@
 <?php
-
 /**
- * Helpers functions
- *
  * @author   WEBHD
  */
 

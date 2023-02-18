@@ -725,14 +725,14 @@
     transform: translateY(-50%);
 }
 
-/// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
+// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
 @mixin horizontal-center {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-/// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
+// @link http://www.sitepoint.com/centering-with-sass/ Centering With Sass
 @mixin absolute-center {
     position: absolute;
     top: 50%;
@@ -756,8 +756,8 @@
     position: fixed;
 }
 
-/// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix Hack
-/// @link http://danisadesigner.com/blog/flexbox-clear-fix-pseudo-elements/ Flexbox fix
+// @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix Hack
+// @link http://danisadesigner.com/blog/flexbox-clear-fix-pseudo-elements/ Flexbox fix
 @mixin clearfix {
     &::before, &::after {
         display: table;
@@ -775,12 +775,12 @@
     }
 }
 
-/// @param {Color} $color [$black] - Color to use for the icon.
-/// @param {Color} $color-hover [$dark-gray] - Color to use when the icon is hovered over.
-/// @param {Number} $width [20px] - Width of the icon.
-/// @param {Number} $height [16px] - Height of the icon.
-/// @param {Number} $weight [2px] - Height of individual bars in the icon.
-/// @param {Number} $bars [3] - Number of bars in the icon.
+// @param {Color} $color [$black] - Color to use for the icon.
+// @param {Color} $color-hover [$dark-gray] - Color to use when the icon is hovered over.
+// @param {Number} $width [20px] - Width of the icon.
+// @param {Number} $height [16px] - Height of the icon.
+// @param {Number} $weight [2px] - Height of individual bars in the icon.
+// @param {Number} $bars [3] - Number of bars in the icon.
 @mixin hamburger(
     $color: $header-color,
     $color-hover: #8a8a8a,
