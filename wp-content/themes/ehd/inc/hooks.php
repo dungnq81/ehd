@@ -90,12 +90,13 @@ if (!function_exists('ehd_defer_script_loader_tag')) {
             'wc-single-product' => 'defer',
             'wc-add-to-cart' => 'defer',
             'contact-form-7' => 'defer',
+
             'comment-reply' => 'delay',
             'wp-embed' => 'delay',
             'admin-bar' => 'delay',
             'fixedtoc-js' => 'delay',
-            'backtop' => 'delay',
-            'shares' => 'delay',
+            'back-to-top' => 'delay',
+            'social-share' => 'delay',
             'o-draggable' => 'delay',
         ];
         return $arr;

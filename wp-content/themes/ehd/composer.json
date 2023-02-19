@@ -15,9 +15,11 @@
 		},
 		"exclude-from-classmap": [],
 		"files": [
+			"inc/css-output.php",
 			"inc/helpers.php",
+			"inc/hooks.php",
 			"inc/image-sizes.php",
-			"inc/template-hooks.php"
+			"inc/themes.php"
 		]
 	},
 	"require": {}

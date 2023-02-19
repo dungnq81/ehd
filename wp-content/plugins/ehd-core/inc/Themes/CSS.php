@@ -12,7 +12,7 @@ namespace EHD\Themes;
  * Modified by Tom Usborne for GeneratePress
  * Modified by HD Team
  */
-final class Css
+final class CSS
 {
     /**
      * The css selector that you're currently adding rules to

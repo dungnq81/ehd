@@ -119,7 +119,7 @@ final class Hooks
             echo apply_filters( // phpcs:ignore
                 'back_to_top_output',
                 sprintf(
-                    '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" style="opacity:0;visibility:hidden;" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
+                    '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
                     esc_attr__('Scroll back to top', EHD_TEXT_DOMAIN),
                     absint(apply_filters('back_to_top_scroll_speed', 400)),
                     absint(apply_filters('back_to_top_start_scroll', 300)),
@@ -136,9 +136,9 @@ final class Hooks
     public function enqueue_scripts()
     {
         /*extra scripts*/
+        wp_enqueue_script("back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], false, true);
         wp_enqueue_script("o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
-        wp_enqueue_script("backtop", get_template_directory_uri() . "/assets/js/plugins/backtop.js", [], false, true);
-        wp_enqueue_script("shares", get_template_directory_uri() . "/assets/js/plugins/shares.min.js", ["jquery"], false, true);
+        wp_enqueue_script("social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], false, true);
 
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
         $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
@@ -201,7 +201,7 @@ final class Hooks
         }
 
         // dark mode func
-        //$classes[] = 'light-mode';
+        $classes[] = 'default-mode';
 
         return $classes;
     }
