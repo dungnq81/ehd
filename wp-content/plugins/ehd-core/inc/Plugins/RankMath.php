@@ -8,7 +8,6 @@ namespace EHD\Plugins;
  * RankMath Plugins
  * @author   WEBHD
  */
-
 final class RankMath
 {
     public function __construct()
@@ -27,7 +26,7 @@ final class RankMath
          *
          * @param boolean $unsigned Enable cache or not, defaults to true
          */
-        add_filter( 'rank_math/sitemap/enable_caching', '__return_false');
+        add_filter('rank_math/sitemap/enable_caching', '__return_false');
 
         // remove author schema
         add_filter('rank_math/json_ld', function ($entities, $jsonld) {
@@ -45,6 +44,16 @@ final class RankMath
             return $entities;
 
         }, 999, 2);
+
+        /**
+         * Filter to add plugins to the Rank Math SEO TOC list.
+         */
+//        if (is_plugin_active('fixed-toc/fixed-toc.php')) {
+//            add_filter('rank_math/researches/toc_plugins', function ($toc_plugins) {
+//                $toc_plugins['fixed-toc/fixed-toc.php'] = 'Fixed TOC';
+//                return $toc_plugins;
+//            });
+//        }
     }
 
     /** ---------------------------------------- */

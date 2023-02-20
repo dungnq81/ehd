@@ -15,30 +15,7 @@ final class Hooks
 {
     public function __construct()
     {
-        $this->_doActions();
         $this->_doFilters();
-    }
-
-    // ------------------------------------------------------
-    // Actions hook
-    // ------------------------------------------------------
-
-    /**
-     * @return void
-     */
-    protected function _doActions()
-    {
-        add_action('wp_default_scripts', [&$this, 'default_scripts']);
-        add_action('wp_enqueue_scripts', [&$this, 'enqueue_scripts'], 1001);
-
-        add_action('wp_footer', [&$this, 'back_to_top'], 98);
-        add_action('wp_footer', [&$this, 'deferred_scripts'], 999);
-
-        // hide admin bar
-        add_action("user_register", function ($user_id) {
-            update_user_meta($user_id, 'show_admin_bar_front', false);
-            update_user_meta($user_id, 'show_admin_bar_admin', false);
-        }, 10, 1);
     }
 
     // ------------------------------------------------------
@@ -54,15 +31,6 @@ final class Hooks
         add_filter('post_class', [&$this, 'post_classes'], 11, 1);
 
         add_filter('nav_menu_css_class', [&$this, 'nav_menu_css_classes'], 11, 2);
-
-        // comment off default
-        add_filter('wp_insert_post_data', function ($data) {
-            if ($data['post_status'] == 'auto-draft') {
-                $data['comment_status'] = 0;
-                $data['ping_status'] = 0;
-            }
-            return $data;
-        }, 11, 1);
 
         // Add support for buttons in the top-bar menu
         add_filter('wp_nav_menu', function ($ulclass) {
@@ -97,7 +65,7 @@ final class Hooks
         // add multiple for category dropdown
         add_filter('wp_dropdown_cats', [&$this, 'dropdown_cats_multiple'], 10, 2);
 
-        //...
+        // Admin footer text
         add_filter('admin_footer_text', function () {
             printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', EHD_TEXT_DOMAIN), EHD_AUTHOR);
         });
@@ -105,67 +73,6 @@ final class Hooks
 
     // ------------------------------------------------------
     // ------------------------------------------------------
-
-
-    /**
-     * Build the back to top button
-     *
-     * @return void
-     */
-    public function back_to_top()
-    {
-        $back_to_top = apply_filters('back_to_top', true);
-        if ($back_to_top) {
-            echo apply_filters( // phpcs:ignore
-                'back_to_top_output',
-                sprintf(
-                    '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
-                    esc_attr__('Scroll back to top', EHD_TEXT_DOMAIN),
-                    absint(apply_filters('back_to_top_scroll_speed', 400)),
-                    absint(apply_filters('back_to_top_start_scroll', 300)),
-                )
-            );
-        }
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return void
-     */
-    public function enqueue_scripts()
-    {
-        /*extra scripts*/
-        wp_enqueue_script("back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], false, true);
-        wp_enqueue_script("o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
-        wp_enqueue_script("social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], false, true);
-
-        $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
-        $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
-        if ($gutenberg_widgets_off && $gutenberg_off) {
-            wp_dequeue_style('wp-block-library');
-            wp_dequeue_style('wp-block-library-theme');
-        }
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @param $scripts
-     * @return void
-     */
-    public function default_scripts($scripts)
-    {
-        if (!is_admin() && isset($scripts->registered['jquery'])) {
-            $script = $scripts->registered['jquery'];
-            if ($script->deps) {
-                // Check whether the script has any dependencies
-                $script->deps = array_diff($script->deps, ['jquery-migrate']);
-            }
-        }
-    }
-
-    /** ---------------------------------------- */
 
     /**
      * Adds custom classes to the array of body classes.
@@ -183,20 +90,18 @@ final class Hooks
 
         foreach ($classes as $class) {
             if (
-                str_contains($class, 'page-template-default')
+                str_contains($class, 'wp-custom-logo')
                 || str_contains($class, 'page-template-templates')
-                || str_contains($class, 'page-template-templatespage-homepage-php')
-                || str_contains($class, 'wp-custom-logo')
+                || str_contains($class, 'page-template-default')
                 || str_contains($class, 'no-customize-support')
-                || str_contains($class, 'theme-hello-elementor')
-                || str_contains($class, 'elementor-kit-')
+                || str_contains($class, 'page-id-')
                 || str_contains($class, 'wvs-theme-')
             ) {
                 $classes = array_diff($classes, [$class]);
             }
         }
 
-        if (is_home() || is_front_page() && class_exists('\WooCommerce')) {
+        if ((is_home() || is_front_page()) && class_exists('\WooCommerce')) {
             $classes[] = 'woocommerce';
         }
 
@@ -289,51 +194,5 @@ final class Hooks
         }
 
         return $output;
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return void
-     */
-    public function deferred_scripts()
-    {
-        // Facebook
-        $fb_appid = Helper::getThemeMod('fb_menu_setting');
-        if ($fb_appid) {
-            echo "<script>";
-            echo "window.fbAsyncInit = function() {FB.init({appId:'" . $fb_appid . "',status:true,xfbml:true,autoLogAppEvents:true,version:'v15.0'});};";
-            echo "</script>";
-            echo "<script async defer crossorigin=\"anonymous\" data-type='lazy' data-src=\"https://connect.facebook.net/en_US/sdk.js\"></script>";
-        }
-
-        $fb_pageid = Helper::getThemeMod('fbpage_menu_setting');
-        $fb_livechat = Helper::getThemeMod('fb_chat_setting');
-        if ($fb_appid && $fb_pageid && $fb_livechat && !is_customize_preview()) {
-            if ($fb_pageid) {
-                echo '<script async defer data-type="lazy" data-src="https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js"></script>';
-                $_fb_message = __('If you need assistance, please leave a message here. Thanks', EHD_TEXT_DOMAIN);
-                echo '<div class="fb-customerchat" attribution="setup_tool" page_id="' . $fb_pageid . '" theme_color="#CC3366" logged_in_greeting="' . esc_attr($_fb_message) . '" logged_out_greeting="' . esc_attr($_fb_message) . '"></div>';
-            }
-        }
-
-        // Zalo
-        $zalo_oaid = Helper::getThemeMod('zalo_oa_menu_setting');
-        $zalo_livechat = Helper::getThemeMod('zalo_chat_setting');
-        if ($zalo_oaid) {
-            if ($zalo_livechat) {
-                echo '<div class="zalo-chat-widget" data-oaid="' . $zalo_oaid . '" data-welcome-message="' . __('Rất vui khi được hỗ trợ bạn.', EHD_TEXT_DOMAIN) . '" data-autopopup="0" data-width="350" data-height="420"></div>';
-            }
-
-            echo "<script defer data-type='lazy' data-src=\"https://sp.zalo.me/plugins/sdk.js\"></script>";
-        }
-
-        /** Set delay timeout milisecond **/
-        $timeout = 5000;
-        $inline_js = 'const loadScriptsTimer=setTimeout(loadScripts,' . $timeout . ');const userInteractionEvents=["mouseover","keydown","touchstart","touchmove","wheel"];userInteractionEvents.forEach(function(event){window.addEventListener(event,triggerScriptLoader,{passive:!0})});function triggerScriptLoader(){loadScripts();clearTimeout(loadScriptsTimer);userInteractionEvents.forEach(function(event){window.removeEventListener(event,triggerScriptLoader,{passive:!0})})}';
-        $inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");})}";
-        //echo "\n";
-        echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
-        //echo "\n";
     }
 }

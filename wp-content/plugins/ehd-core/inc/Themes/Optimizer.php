@@ -88,7 +88,6 @@ final class Optimizer
 
         // Prevent Specific Plugins from Deactivation
         add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
-
             $keys = ['deactivate', 'delete'];
             foreach ($keys as $key) {
 
