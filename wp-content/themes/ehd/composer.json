@@ -19,7 +19,6 @@
 			"inc/css-output.php",
 			"inc/helpers.php",
 			"inc/template-hooks.php",
-			"inc/image-sizes.php",
 			"inc/themes.php"
 		]
 	},
