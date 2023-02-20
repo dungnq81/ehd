@@ -22,24 +22,24 @@ final class Theme
 
         add_action('wp_default_scripts', [&$this, 'wp_default_scripts']);
         add_action('wp_enqueue_scripts', [&$this, 'wp_enqueue_scripts'], 99);
+
         add_action('wp_footer', [&$this, 'wp_footer'], 999);
 
         /** ---------------------------------------- */
 
-        // hide user's admin bar
-        add_action("user_register", function ($user_id) {
-            update_user_meta($user_id, 'show_admin_bar_front', false);
-            update_user_meta($user_id, 'show_admin_bar_admin', false);
-        }, 11, 1);
+        add_filter('body_class', [&$this, 'body_classes'], 11, 1);
+        add_filter('post_class', [&$this, 'post_classes'], 11, 1);
+        add_filter('nav_menu_css_class', [&$this, 'nav_menu_css_classes'], 11, 2);
 
-        // comment off default
-        add_filter('wp_insert_post_data', function ($data) {
-            if ($data['post_status'] == 'auto-draft') {
-                $data['comment_status'] = 0;
-                $data['ping_status'] = 0;
-            }
-            return $data;
-        }, 11, 1);
+        /** ---------------------------------------- */
+
+        // add multiple for category dropdown
+        add_filter('wp_dropdown_cats', [&$this, 'dropdown_cats_multiple'], 10, 2);
+
+        /** ---------------------------------------- */
+
+        /** template hooks */
+        $this->_hooks();
     }
 
     /** ---------------------------------------- */
@@ -184,7 +184,6 @@ final class Theme
             (new Fonts());
         }
 
-        //(new Hooks());
         (new Shortcode())::init();
 
         /** WooCommerce */
@@ -214,7 +213,10 @@ final class Theme
 
     /** ---------------------------------------- */
 
-    public function wp_footer()
+    /**
+     * @return void
+     */
+    public function wp_footer() : void
     {
         /** Build the back to top button */
         $back_to_top = apply_filters('back_to_top', true);
@@ -267,5 +269,246 @@ final class Theme
         $inline_js = 'const loadScriptsTimer=setTimeout(loadScripts,' . $timeout . ');const userInteractionEvents=["mouseover","keydown","touchstart","touchmove","wheel"];userInteractionEvents.forEach(function(event){window.addEventListener(event,triggerScriptLoader,{passive:!0})});function triggerScriptLoader(){loadScripts();clearTimeout(loadScriptsTimer);userInteractionEvents.forEach(function(event){window.removeEventListener(event,triggerScriptLoader,{passive:!0})})}';
         $inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");})}";
         echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
+    }
+
+    // ------------------------------------------------------
+    // ------------------------------------------------------
+
+    /**
+     * Adds custom classes to the array of body classes.
+     *
+     * @param array $classes Classes for the body element.
+     *
+     * @return array
+     */
+    public function body_classes($classes) : array
+    {
+        // Check whether we're in the customizer preview.
+        if (is_customize_preview()) {
+            $classes[] = 'customizer-preview';
+        }
+
+        foreach ($classes as $class) {
+            if (
+                str_contains($class, 'wp-custom-logo')
+                || str_contains($class, 'page-template-templates')
+                || str_contains($class, 'page-template-default')
+                || str_contains($class, 'no-customize-support')
+                || str_contains($class, 'page-id-')
+                || str_contains($class, 'wvs-theme-')
+            ) {
+                $classes = array_diff($classes, [$class]);
+            }
+        }
+
+        if ((is_home() || is_front_page()) && class_exists('\WooCommerce')) {
+            $classes[] = 'woocommerce';
+        }
+
+        // dark mode func
+        $classes[] = 'default-mode';
+
+        return $classes;
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * Adds custom classes to the array of post classes.
+     *
+     * @param array $classes Classes for the post element.
+     *
+     * @return array
+     */
+    public function post_classes($classes) : array
+    {
+        // remove_sticky_class
+        if (in_array('sticky', $classes)) {
+            $classes = array_diff($classes, ["sticky"]);
+            $classes[] = 'wp-sticky';
+        }
+
+        // remove tag-, category- classes
+        foreach ($classes as $class) {
+            if (
+                str_contains($class, 'tag-')
+                || str_contains($class, 'category-')
+            ) {
+                $classes = array_diff($classes, [$class]);
+            }
+        }
+
+        return $classes;
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * @param $classes
+     * @param $item
+     *
+     * @return array
+     */
+    public function nav_menu_css_classes($classes, $item) : array
+    {
+        if (!is_array($classes)) {
+            $classes = [];
+        }
+
+        // remove menu-item-type-, menu-item-object- classes
+        foreach ($classes as $class) {
+            if (str_contains($class, 'menu-item-type-')
+                || str_contains($class, 'menu-item-object-')
+            ) {
+                $classes = array_diff($classes, [$class]);
+            }
+        }
+
+        if (1 == $item->current
+            || $item->current_item_ancestor
+            || $item->current_item_parent
+        ) {
+            //$classes[] = 'is-active';
+            $classes[] = 'active';
+        }
+
+        return $classes;
+    }
+
+    // ------------------------------------------------------
+
+    /**
+     * @param $output
+     * @param $r
+     *
+     * @return mixed|string|string[]
+     */
+    public function dropdown_cats_multiple($output, $r) : mixed
+    {
+        if (isset($r['multiple']) && $r['multiple']) {
+            $output = preg_replace('/^<select/i', '<select multiple', $output);
+            $output = str_replace("name='{$r['name']}'", "name='{$r['name']}[]'", $output);
+            foreach (array_map('trim', explode(",", $r['selected'])) as $value) {
+                $output = str_replace("value=\"{$value}\"", "value=\"{$value}\" selected", $output);
+            }
+        }
+
+        return $output;
+    }
+
+    /** ---------------------------------------- */
+    /** ---------------------------------------- */
+
+    protected function _hooks() : void
+    {
+        /**
+         * Use the is-active class of ZURB Foundation on wp_list_pages output.
+         * From required+ Foundation http://themes.required.ch.
+         */
+        add_filter('wp_list_pages', function ($input) {
+            $pattern = '/current_page_item/';
+            $replace = 'current_page_item is-active';
+            return preg_replace($pattern, $replace, $input);
+        }, 10, 2);
+
+        // ------------------------------------------
+
+        /** Add support for buttons in the top-bar menu */
+        add_filter('wp_nav_menu', function ($ulclass) {
+            $find = ['/<a rel="button"/', '/<a title=".*?" rel="button"/'];
+            $replace = ['<a rel="button" class="button"', '<a rel="button" class="button"'];
+            return preg_replace($find, $replace, $ulclass, 1);
+        });
+
+        // ------------------------------------------
+
+        /** add class to anchor link */
+        add_filter('nav_menu_link_attributes', function ($atts) {
+            //$atts['class'] = "nav-link";
+            return $atts;
+        }, 100, 1);
+
+        // ------------------------------------------
+
+        /** comment off default */
+        add_filter('wp_insert_post_data', function ($data) {
+            if ($data['post_status'] == 'auto-draft') {
+                $data['comment_status'] = 0;
+                $data['ping_status'] = 0;
+            }
+            return $data;
+        }, 11, 1);
+
+        // ------------------------------------------
+
+        // tag clound font sizes
+        add_filter('widget_tag_cloud_args', function (array $args) {
+            $args['smallest'] = '10';
+            $args['largest'] = '19';
+            $args['unit'] = 'px';
+            $args['number'] = 12;
+
+            return $args;
+        });
+
+        // ------------------------------------------
+
+        /** SMTP Settings **/
+        add_action('phpmailer_init', function ($phpmailer) {
+            if (!is_object($phpmailer)) {
+                $phpmailer = Helper::toObject($phpmailer);
+            }
+
+            $phpmailer->isSMTP();
+            $phpmailer->Host = 'smtp.gmail.com';
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->Username = 'official.webhd@gmail.com';
+            $phpmailer->Password = 'obvyigyczmcbxgji';
+
+            // Additional settings
+            $phpmailer->SMTPSecure = 'tls';
+            $phpmailer->Port = 587;
+            $phpmailer->From = 'official.webhd@gmail.com';
+            $phpmailer->FromName = get_bloginfo('name');
+
+        }, 11);
+
+        // -------------------------------------------------------------
+        // optimize load
+        // -------------------------------------------------------------
+
+        add_filter('defer_script_loader_tag', function ($arr) {
+            $arr = [
+                'woo-variation-swatches' => 'defer',
+                'wc-single-product'      => 'defer',
+                'wc-add-to-cart'         => 'defer',
+                'contact-form-7'         => 'defer',
+
+                'comment-reply' => 'delay',
+                'wp-embed'      => 'delay',
+                'admin-bar'     => 'delay',
+                'fixedtoc-js'   => 'delay',
+                'back-to-top'   => 'delay',
+                'social-share'  => 'delay',
+                'o-draggable'   => 'delay',
+            ];
+
+            return $arr;
+
+        }, 11, 1);
+
+        // ------------------------------------------
+
+        add_filter('defer_style_loader_tag', function ($arr) {
+            $arr = [
+                'dashicons',
+                'fixedtoc-style',
+                'contact-form-7',
+                'rank-math',
+            ];
+
+            return $arr;
+
+        }, 11, 1);
     }
 }
