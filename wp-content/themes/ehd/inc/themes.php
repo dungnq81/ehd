@@ -1,5 +1,6 @@
 <?php
 /**
+ * themes functions
  * @author   WEBHD
  */
 

@@ -22,7 +22,7 @@ final class Fonts
     /**
      * @return void
      */
-    public function pre_connect()
+    public function pre_connect() : void
     {
         echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
         echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
@@ -30,7 +30,7 @@ final class Fonts
 
     /** ---------------------------------------- */
 
-    public function enqueue_scripts()
+    public function enqueue_scripts() : void
     {
         wp_enqueue_style("fonts-style", get_template_directory_uri() . '/assets/css/fonts.css', [], EHD_THEME_VERSION);
 

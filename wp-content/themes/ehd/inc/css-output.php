@@ -6,20 +6,21 @@
  */
 
 use EHD\Cores\Helper;
+use EHD\Themes\CSS;
 
 \defined( 'ABSPATH' ) || die;
 
 // ------------------------------------------
 
 /** inline css */
-add_action('wp_enqueue_scripts', 'ehd_enqueue_inline_css', 31); // After WooCommerce.
+add_action('wp_enqueue_scripts', 'enqueue_inline_css', 31); // After WooCommerce.
 if (!function_exists('ehd_enqueue_inline_css')) {
     /**
      * Add CSS for third-party plugins.
      *
      * @return void
      */
-    function ehd_enqueue_inline_css()
+    function enqueue_inline_css() : void
     {
         $css = new Css();
 

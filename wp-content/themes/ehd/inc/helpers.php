@@ -1,6 +1,7 @@
 <?php
 /**
- * @author   WEBHD
+ * helpers functions
+ * @author WEBHD
  */
 
 \defined( 'ABSPATH' ) || die;

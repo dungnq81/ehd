@@ -1,6 +1,6 @@
 <?php
 /**
- * Hook functions
+ * hooks functions
  * @author WEBHD
  */
 
