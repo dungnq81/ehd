@@ -90,7 +90,7 @@ final class Admin
             //'service_tag',
         ];
         foreach ($taxonomy_arr as $term) {
-            add_filter("{$term}_row_actions", [&$this, 'term_action_links'], 10, 2);
+            add_filter("{$term}_row_actions", [&$this, 'term_action_links'], 11, 2);
         }
 
         // customize row_actions
@@ -100,7 +100,7 @@ final class Admin
             'page',
         ];
         foreach ($post_type_arr as $post_type) {
-            add_filter("{$post_type}_row_actions", [&$this, 'post_type_action_links'], 10, 2);
+            add_filter("{$post_type}_row_actions", [&$this, 'post_type_action_links'], 11, 2);
         }
 
         // thumb post page

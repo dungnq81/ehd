@@ -8,6 +8,7 @@ use EHD\Cores\Shortcode;
 use EHD\Themes\Admin;
 use EHD\Themes\Customizer;
 use EHD\Themes\Optimizer;
+use EHD\Themes\Options;
 
 use EHD\Plugins\ACF;
 use EHD\Plugins\CF7;
@@ -111,7 +112,7 @@ final class Plugin
      */
     public function i18n() : void
     {
-        // Load localization file
+        /** Load localization file */
         load_plugin_textdomain(EHD_PLUGIN_TEXT_DOMAIN);
         load_plugin_textdomain(EHD_PLUGIN_TEXT_DOMAIN, false, EHD_PLUGIN_PATH . 'languages');
     }
@@ -164,7 +165,7 @@ final class Plugin
 
         if ($gutenberg_widgets_off && $gutenberg_off) {
 
-            // Remove block CSS
+            /** Remove block CSS */
             wp_dequeue_style('wp-block-library');
             wp_dequeue_style('wp-block-library-theme');
         }
@@ -181,6 +182,8 @@ final class Plugin
 
         (new Customizer());
         (new Optimizer());
+        (new Options());
+
         (new Shortcode())::init();
     }
 }
