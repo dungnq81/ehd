@@ -157,14 +157,6 @@ final class Theme
         ];
         wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
 
-        /** customize */
-        $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
-        $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
-        if ($gutenberg_widgets_off && $gutenberg_off) {
-            wp_dequeue_style('wp-block-library');
-            wp_dequeue_style('wp-block-library-theme');
-        }
-
         /** comments */
         if (is_singular() && comments_open() && get_option('thread_comments')) {
             wp_enqueue_script('comment-reply');
@@ -264,10 +256,10 @@ final class Theme
             echo "<script defer data-type='lazy' data-src=\"https://sp.zalo.me/plugins/sdk.js\"></script>";
         }
 
-        /** Set delay timeout milisecond **/
+        /** Set delay timeout milisecond */
         $timeout = 5000;
         $inline_js = 'const loadScriptsTimer=setTimeout(loadScripts,' . $timeout . ');const userInteractionEvents=["mouseover","keydown","touchstart","touchmove","wheel"];userInteractionEvents.forEach(function(event){window.addEventListener(event,triggerScriptLoader,{passive:!0})});function triggerScriptLoader(){loadScripts();clearTimeout(loadScriptsTimer);userInteractionEvents.forEach(function(event){window.removeEventListener(event,triggerScriptLoader,{passive:!0})})}';
-        $inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");})}";
+        $inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");elem.removeAttribute(\"data-type\");})}";
         echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
     }
 
@@ -281,7 +273,7 @@ final class Theme
      *
      * @return array
      */
-    public function body_classes($classes) : array
+    public function body_classes(array $classes) : array
     {
         // Check whether we're in the customizer preview.
         if (is_customize_preview()) {
@@ -305,7 +297,7 @@ final class Theme
             $classes[] = 'woocommerce';
         }
 
-        // dark mode func
+        // ...
         $classes[] = 'default-mode';
 
         return $classes;
@@ -320,7 +312,7 @@ final class Theme
      *
      * @return array
      */
-    public function post_classes($classes) : array
+    public function post_classes(array $classes) : array
     {
         // remove_sticky_class
         if (in_array('sticky', $classes)) {

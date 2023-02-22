@@ -61,12 +61,13 @@ final class WooCommerce
 
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
         $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
-        if ($gutenberg_widgets_off && $gutenberg_off) {
+
+        //if ($gutenberg_widgets_off && $gutenberg_off) {
 
             // Remove WooCommerce block CSS
             wp_deregister_style('wc-blocks-vendors-style');
             wp_deregister_style('wc-block-style');
-        }
+        //}
     }
 
     /**

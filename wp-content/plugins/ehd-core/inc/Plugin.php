@@ -2,6 +2,7 @@
 
 namespace EHD;
 
+use EHD\Cores\Helper;
 use EHD\Cores\Shortcode;
 
 use EHD\Themes\Admin;
@@ -153,6 +154,20 @@ final class Plugin
 
         wp_register_style('ehd-swiper-style', EHD_PLUGIN_URL . "assets/css/swiper.css", [], EHD_PLUGIN_VERSION);
         wp_register_script("ehd-swiper", EHD_PLUGIN_URL . "assets/js/plugins/swiper.js", [], EHD_PLUGIN_VERSION, true);
+
+        /** */
+        wp_dequeue_style( 'classic-theme-styles' );
+
+        /** customize */
+        $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
+        $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
+
+        if ($gutenberg_widgets_off && $gutenberg_off) {
+
+            // Remove block CSS
+            wp_dequeue_style('wp-block-library');
+            wp_dequeue_style('wp-block-library-theme');
+        }
     }
 
     /**
