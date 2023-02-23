@@ -33,6 +33,8 @@ const WP_POST_REVISIONS = 1;
 const EMPTY_TRASH_DAYS  = 5;
 const AUTOSAVE_INTERVAL = 120;
 
+const ALLOW_UNFILTERED_UPLOADS = true;
+
 /** Disable WordPress core auto-update, */
 const WP_AUTO_UPDATE_CORE = false;
 

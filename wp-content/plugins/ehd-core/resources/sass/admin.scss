@@ -313,3 +313,13 @@ input[value="advanced-custom-fields-pro/acf.php"],
 input[value="ehd-core/ehd-core.php"] {
     display: none !important;
 }
+
+/** */
+body.toplevel_page_ehd-settings {
+    #wpbody-content {
+        .notice {
+            margin-left: 2px;
+        }
+
+    }
+}

@@ -68,8 +68,23 @@ final class Options
                             <button type="submit" name="ehd_update_settings" class="button button-primary">Save Changes</button>
                         </div>
                         <ul>
-                            <li class="globalsettings current">
-                                <a title="Global Settings" href="#option-globalsettings">Global Settings</a>
+                            <li class="global-settings current">
+                                <a title="Global Settings" href="#global-settings">Global Settings</a>
+                            </li>
+                            <li class="smtp smtp-settings">
+                                <a title="SMTP" href="#smtp-settings">SMTP</a>
+                            </li>
+                            <li class="social social-settings">
+                                <a title="Socials" href="#social-settings">Socials</a>
+                            </li>
+                            <li class="news news-settings">
+                                <a title="News" href="#news-settings">News</a>
+                            </li>
+                            <li class="products products-settings">
+                                <a title="Products" href="#products-settings">Products</a>
+                            </li>
+                            <li class="block-editor block-editor-settings">
+                                <a title="Blocks Editor" href="#block-editor-settings">Blocks Editor</a>
                             </li>
                         </ul>
                     </div>
