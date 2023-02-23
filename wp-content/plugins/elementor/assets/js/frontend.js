@@ -1,4 +1,4 @@
-/*! elementor - v3.11.1 - 15-02-2023 */
+/*! elementor - v3.11.2 - 22-02-2023 */
 (self["webpackChunkelementor"] = self["webpackChunkelementor"] || []).push([["frontend"],{
 
 /***/ "../assets/dev/js/frontend/documents-manager.js":
@@ -1728,10 +1728,13 @@ class Swiper {
       // The config is passed as a param to allow adjustConfig to be called outside of this wrapper
       this.config = this.adjustConfig(config);
     }
+    if (container instanceof jQuery) {
+      container = container[0];
+    }
 
     // The Swiper will overlap the column width when applying custom margin values on the column.
-    jQuery(container).closest('.elementor-widget-wrap').addClass('e-swiper-container');
-    jQuery(container).closest('.elementor-widget').addClass('e-widget-swiper');
+    container.closest('.elementor-widget-wrap')?.classList.add('e-swiper-container');
+    container.closest('.elementor-widget')?.classList.add('e-widget-swiper');
     return new Promise(resolve => {
       if (!elementorFrontend.config.experimentalFeatures.e_optimized_assets_loading) {
         return resolve(this.createSwiperInstance(container, this.config));
@@ -1742,7 +1745,7 @@ class Swiper {
   createSwiperInstance(container, config) {
     const SwiperSource = window.Swiper;
     SwiperSource.prototype.adjustConfig = this.adjustConfig;
-    return new SwiperSource(container[0], config);
+    return new SwiperSource(container, config);
   }
 
   // Backwards compatibility for Elementor Pro <2.9.0 (old Swiper version - <5.0.0)

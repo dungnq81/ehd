@@ -269,12 +269,12 @@
         } @else if $gap > 0 and $total_n > $self_n {
 
             // support aspect-ratio tag
-            @supports (aspect-ratio: 1) {
+            @supports (aspect-ratio: 1) or (grid-gap: 1rem) {
                 width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
             }
 
             // not support aspect-ratio tag, there will also skip the gap
-            @supports not (aspect-ratio: 1) {
+            @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
                 width: percentage(divide($self_n, $total_n));
                 padding: fs(divide($gap, 2));
             }
@@ -305,22 +305,25 @@
     $gap: abs($gap);
 
     // support aspect-ratio tag, there will also be support flex gap tag
-    @supports (aspect-ratio: 1 ) {
+    @supports (aspect-ratio: 1) or (grid-gap: 1rem) {
         @if $gap_m > 0 {
+            grid-gap: fs($gap_m);
             gap: fs($gap_m);
         }
         @if $gap > 0 {
             @include mq-min(mobile) {
+                grid-gap: fs($gap);
                 gap: fs($gap);
             }
         }
     }
 
     // you just need to check if old Safari really doesnt support such css tag
-    @supports not (aspect-ratio: 1 ) {
+    @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
         $gutter_m: divide($gap_m, 2);
         $gutter: divide($gap, 2);
 
+        grid-gap: 0;
         gap: 0; // reset
         @include mx-gutter($gutter_m, $gutter);
         @include my-gutter($gutter_m, $gutter);
