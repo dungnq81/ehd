@@ -10,10 +10,14 @@ import device from "current-device";
 const is_mobile = () => device.mobile();
 const is_tablet = () => device.tablet();
 
-//require("jquery.marquee");
-
 /** Fancybox */
 import { Fancybox } from "@fancyapps/ui";
+
+/** AOS */
+//import AOS from 'aos';
+//AOS.init();
+
+const $ = jQuery;
 
 /** Create deferred YT object */
 // const YTdeferred = $.Deferred();
@@ -21,11 +25,8 @@ import { Fancybox } from "@fancyapps/ui";
 //     YTdeferred.resolve(window.YT);
 // };
 
-/** AOS */
-//import AOS from 'aos';
-//AOS.init();
+//require("jquery.marquee");
 
-/** jquery */
 $(() => {
     //...
 });

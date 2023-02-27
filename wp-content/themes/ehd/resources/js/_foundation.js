@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
-import $ from 'jquery';
+//import $ from 'jquery';
 
 //const $ = jQuery;
-window.$ = jQuery;
-window.jQuery = jQuery;
+//window.$ = jQuery;
+//window.jQuery = jQuery;
 
 import { Foundation } from 'foundation-sites/js/foundation.core';
 import * as CoreUtils from 'foundation-sites/js/foundation.core.utils';
@@ -101,7 +101,7 @@ import { Abide } from 'foundation-sites/js/foundation.abide';
 Foundation.plugin(Abide, 'Abide');
 
 //...
-Foundation.addToJquery($);
-$(() => ($(document).foundation()));
+//Foundation.addToJquery($);
+//$(() => ($(document).foundation()));
 
 export default Foundation;
