@@ -18,12 +18,16 @@ $(function () {
         const _rand = nanoid(9);
         $(el).addClass(_rand);
 
-        const _id = $(el).attr('id');
+        let _id = $(el).attr('id');
+        if (_id === undefined || _id === '') {
+            _id = _rand;
+            $(el).attr('id', _id);
+        }
+
         const _nav = $(el).find(".tabs-nav");
         const _content = $(el).find(".tabs-content");
 
         _content.find('.tabs-panel').hide();
-
         let _cookie = 'cookie_' + _id + '_' + index;
 
         if (_getCookie(_cookie) === '' || _getCookie(_cookie) === 'undefined') {

@@ -46,6 +46,7 @@ final class Options
 
         //...
         add_submenu_page('ehd-settings', 'Advanced', 'Advanced', 'manage_options', 'customize.php');
+        add_submenu_page('ehd-settings', 'Server Info', 'Server Info', 'manage_options', 'server-info', [&$this, 'server_info']);
         add_submenu_page('ehd-settings', 'Help & Guides', 'Help & Guides', 'manage_options', 'panel-support', [&$this, 'panel_support']);
     }
 
@@ -81,43 +82,52 @@ final class Options
                         </div>
                         <ul class="ul-menu-list">
                             <li class="global-settings">
-                                <a class="current" title="Global Settings" href="#global-settings">Global Settings</a>
+                                <a class="current" title="Global Settings" href="#global_settings">Global Settings</a>
                             </li>
                             <li class="smtp smtp-settings">
-                                <a title="SMTP" href="#smtp-settings">SMTP</a>
+                                <a title="SMTP" href="#smtp_settings">SMTP</a>
                             </li>
                             <li class="socials social-settings">
-                                <a title="Socials" href="#social-settings">Socials</a>
+                                <a title="Socials" href="#social_settings">Socials</a>
                             </li>
                             <li class="news news-settings">
-                                <a title="News" href="#news-settings">News</a>
+                                <a title="News" href="#news_settings">News</a>
                             </li>
                             <li class="products product-settings">
-                                <a title="Products" href="#product-settings">Products</a>
+                                <a title="Products" href="#product_settings">Products</a>
                             </li>
                             <li class="blocks block-settings">
-                                <a title="Blocks" href="#block-settings">Blocks Editor</a>
+                                <a title="Blocks" href="#block_settings">Blocks Editor</a>
                             </li>
                         </ul>
                     </div>
                     <div id="ehd_content" class="tabs-content">
                         <h2 class="hidden-text"></h2>
-                        <div id="global-settings" class="group tabs-panel show">
+                        <div id="global_settings" class="group tabs-panel show">
                             <h2>Global Settings</h2>
                         </div>
-                        <div id="smtp-settings" class="group tabs-panel">
+                        <div id="smtp_settings" class="group tabs-panel">
                             <h2>SMTP Settings</h2>
+                            <div class="section section-text" id="section_smtp_host">
+                                <label class="heading" for="smtp_host">SMTP Host</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input" type="text" id="smtp_host" name="smtp-host">
+                                    </div>
+                                    <div class="explain">The SMTP server which will be used to send email. For example: smtp.gmail.com</div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="social-settings" class="group tabs-panel">
+                        <div id="social_settings" class="group tabs-panel">
                             <h2>Socials Settings</h2>
                         </div>
-                        <div id="news-settings" class="group tabs-panel">
+                        <div id="news_settings" class="group tabs-panel">
                             <h2>News Settings</h2>
                         </div>
-                        <div id="product-settings" class="group tabs-panel">
+                        <div id="product_settings" class="group tabs-panel">
                             <h2>Products Settings</h2>
                         </div>
-                        <div id="block-settings" class="group tabs-panel">
+                        <div id="block_settings" class="group tabs-panel">
                             <h2>Blocks Editor Settings</h2>
                         </div>
                     </div>
@@ -132,8 +142,12 @@ final class Options
     /**
      * @return void
      */
-    public function panel_support() : void
-    {
+    public function panel_support() : void {}
 
-    }
+    /** ---------------------------------------- */
+
+    /**
+     * @return void
+     */
+    public function server_info() : void {}
 }

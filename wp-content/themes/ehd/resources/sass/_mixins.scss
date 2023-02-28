@@ -203,8 +203,8 @@
     object-fit: contain;
     max-width: 100%;
     max-height: 100%;
-    min-width: 80%;
-    min-height: 80%;
+    min-width: 70%;
+    min-height: 70%;
 }
 
 @mixin responsive-ratio($ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100%) {
@@ -318,7 +318,7 @@
         }
     }
 
-    // you just need to check if old Safari really doesnt support such css tag
+    // you just need to check if old Safari really doesn't support such css tag
     @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
         $gutter_m: divide($gap_m, 2);
         $gutter: divide($gap, 2);
@@ -889,7 +889,7 @@
 @mixin _effect3($bg_color: rgba(255, 255, 255, 0.2), $border: 0) {
 
     $border-radius: abs($border);
-    @if (0 < $border-radius) {
+    @if 0 < $border-radius {
         border-radius: fs($border-radius);
     }
 
@@ -905,7 +905,7 @@
         opacity: 0;
         z-index: 10;
 
-        @if (0 < $border-radius) {
+        @if 0 < $border-radius {
             border-radius: fs($border-radius);
         }
     }
