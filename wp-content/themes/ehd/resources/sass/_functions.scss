@@ -82,7 +82,7 @@
     @if false == $size {
         @warn '`#{$size}` is not a valid size!';
         @return null;
-    } @else if inherit == $size or unset == $size or unit($size) == '%' {
+    } @else if auto == $size or inherit == $size or initial == $size or unset == $size or unit($size) == '%' {
         @return $size;
     }
     @else {

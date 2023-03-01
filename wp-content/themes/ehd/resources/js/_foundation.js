@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-//import $ from 'jquery';
+import $ from 'jquery';
 
 //const $ = jQuery;
 //window.$ = jQuery;
@@ -101,7 +101,7 @@ import { Abide } from 'foundation-sites/js/foundation.abide';
 Foundation.plugin(Abide, 'Abide');
 
 //...
-//Foundation.addToJquery($);
-//$(() => ($(document).foundation()));
+Foundation.addToJquery($);
+$(() => ($(document).foundation()));
 
 export default Foundation;

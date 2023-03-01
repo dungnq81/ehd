@@ -48,6 +48,7 @@
 }
 
 @mixin box($width: 300, $height: $width, $border_radius: 0) {
+
     width: fs($width);
     height: fs($height);
 
@@ -323,8 +324,8 @@
         $gutter_m: divide($gap_m, 2);
         $gutter: divide($gap, 2);
 
-        grid-gap: 0;
-        gap: 0; // reset
+        grid-gap: 0; // reset
+        gap: 0;
         @include mx-gutter($gutter_m, $gutter);
         @include my-gutter($gutter_m, $gutter);
     }
@@ -681,13 +682,13 @@
     }
 }
 
-@mixin hardware($backface: true, $perspective: 1000) {
-    @if $backface {
-        backface-visibility: hidden;
-    }
-    transform: translate3d(0, 0, 0);
-    perspective: $perspective;
-}
+//@mixin hardware($backface: true, $perspective: 1000) {
+//    @if $backface {
+//        backface-visibility: hidden;
+//    }
+//    transform: translate3d(0, 0, 0);
+//    perspective: $perspective;
+//}
 
 @mixin list-reset($margin: 0, $padding: 0) {
     margin: $margin;
@@ -703,7 +704,6 @@
     margin: -1px;
     overflow: hidden;
     padding: 0;
-    margin: 0;
     position: absolute;
     top: -10000em;
 }
