@@ -102,7 +102,7 @@ final class Options
                         </ul>
                     </div>
                     <div id="ehd_content" class="tabs-content">
-                        <h2 class="hidden-text"></h2>
+                        <h2 class="hidden-text">eHD Options</h2>
                         <div id="global_settings" class="group tabs-panel show">
                             <h2>Global Settings</h2>
                         </div>
@@ -112,9 +112,93 @@ final class Options
                                 <label class="heading" for="smtp_host">SMTP Host</label>
                                 <div class="option">
                                     <div class="controls">
-                                        <input class="ehd-input" type="text" id="smtp_host" name="smtp-host">
+                                        <input class="ehd-input ehd-control" type="text" id="smtp_host" name="smtp-host">
                                     </div>
                                     <div class="explain">The SMTP server which will be used to send email. For example: smtp.gmail.com</div>
+                                </div>
+                            </div>
+                            <div class="section section-select" id="section_smtp_auth">
+                                <label class="heading" for="smtp_auth">SMTP Authentication</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <div class="select_wrapper">
+                                            <select class="ehd-control ehd-select" name="smtp-auth" id="smtp_auth">
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="explain">Whether to use SMTP Authentication when sending an email (recommended: True).</div>
+                                </div>
+                            </div>
+                            <div class="section section-text" id="section_smtp_username">
+                                <label class="heading" for="smtp_username">SMTP Username</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input ehd-control" type="text" id="smtp_username" name="smtp-username">
+                                    </div>
+                                    <div class="explain">Your SMTP Username. For example: abc@gmail.com</div>
+                                </div>
+                            </div>
+                            <div class="section section-password" id="section_smtp_password">
+                                <label class="heading" for="smtp_password">SMTP Password</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input ehd-control" type="password" id="smtp_password" name="smtp-password">
+                                    </div>
+                                    <div class="explain">Your SMTP Password (The saved password is not shown for security reasons. If you do not want to update the saved password, you can leave this field empty when updating other options).</div>
+                                </div>
+                            </div>
+                            <div class="section section-select" id="section_smtp_encryption">
+                                <label class="heading" for="smtp_encryption">Type of Encryption</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <div class="select_wrapper">
+                                            <select class="ehd-control ehd-select" name="smtp-encryption" id="smtp_encryption">
+                                                <option value="tls">TLS</option>
+                                                <option value="ssl">SSL</option>
+                                                <option value="none">No Encryption</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="explain">The encryption which will be used when sending an email (recommended: TLS).</div>
+                                </div>
+                            </div>
+                            <div class="section section-text" id="section_smtp_port">
+                                <label class="heading" for="smtp_port">SMTP Port</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input ehd-control" type="text" id="smtp_port" name="smtp-port">
+                                    </div>
+                                    <div class="explain">The port which will be used when sending an email (587/465/25). If you choose TLS it should be set to 587. For SSL use port 465 instead.</div>
+                                </div>
+                            </div>
+                            <div class="section section-text" id="section_smtp_from_email">
+                                <label class="heading" for="smtp_from_email">From Email Address</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input ehd-control" type="text" id="smtp_from_email" name="smtp-from-email">
+                                    </div>
+                                    <div class="explain">The email address which will be used as the From Address if it is not supplied to the mail function.</div>
+                                </div>
+                            </div>
+                            <div class="section section-text" id="section_smtp_from_name">
+                                <label class="heading" for="smtp_from_name">From Name</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input class="ehd-input ehd-control" type="text" id="smtp_from_name" name="smtp-from-name">
+                                    </div>
+                                    <div class="explain">The name which will be used as the From Name if it is not supplied to the mail function.</div>
+                                </div>
+                            </div>
+                            <div class="section section-checkbox" id="section_smtp_disable_ssl_verification">
+                                <label class="heading" for="smtp_disable_ssl_verification">Disable SSL Certificate Verification</label>
+                                <div class="option">
+                                    <div class="controls">
+                                        <input type="hidden" name="smtp-disable-ssl-verification" value="0">
+                                        <input type="checkbox" class="ehd-checkbox ehd-control" name="smtp-disable-ssl-verification" id="smtp_disable_ssl_verification" value="1">
+                                    </div>
+                                    <div class="explain">You should get your host to fix the SSL configurations instead of bypassing it.</div>
                                 </div>
                             </div>
                         </div>
@@ -129,6 +213,9 @@ final class Options
                         </div>
                         <div id="block_settings" class="group tabs-panel">
                             <h2>Blocks Editor Settings</h2>
+                        </div>
+                        <div class="save-bar">
+                            <button type="submit" name="ehd_update_settings" class="button button-primary">Save Changes</button>
                         </div>
                     </div>
                 </div>
