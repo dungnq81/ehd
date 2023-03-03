@@ -2,8 +2,6 @@
 
 namespace EHD\Themes;
 
-use EHD\Cores\Helper;
-
 \defined('ABSPATH') || die;
 
 /**
@@ -20,12 +18,22 @@ final class Options
     }
 
     /** ---------------------------------------- */
-    /** ---------------------------------------- */
 
     /**
      * @return void
      */
-    public function options_admin_notice() : void {}
+    public function options_admin_notice() : void
+    {
+        // SMTP
+        if (!self::_smtp__is_configured()) {
+            $class = 'notice notice-error';
+            $message = __('You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN);
+
+            printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
+        }
+
+        //...
+    }
 
     /** ---------------------------------------- */
 
@@ -34,6 +42,7 @@ final class Options
      */
     public function options_admin_menu() : void
     {
+        // menu page
         add_menu_page(
             __('eHD Settings', EHD_PLUGIN_TEXT_DOMAIN),
             __('eHD Settings', EHD_PLUGIN_TEXT_DOMAIN),
@@ -44,10 +53,10 @@ final class Options
             80
         );
 
-        //...
-        add_submenu_page('ehd-settings', 'Advanced', 'Advanced', 'manage_options', 'customize.php');
-        add_submenu_page('ehd-settings', 'Server Info', 'Server Info', 'manage_options', 'server-info', [&$this, 'server_info']);
-        add_submenu_page('ehd-settings', 'Help & Guides', 'Help & Guides', 'manage_options', 'panel-support', [&$this, 'panel_support']);
+        // submenu page
+        add_submenu_page('ehd-settings', __('Advanced', EHD_PLUGIN_TEXT_DOMAIN), __('Advanced', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'customize.php');
+        add_submenu_page('ehd-settings', __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'server-info', [&$this, 'server_info']);
+        add_submenu_page('ehd-settings', __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'panel-support', [&$this, 'panel_support']);
     }
 
     /** ---------------------------------------- */
@@ -57,162 +66,70 @@ final class Options
      */
     public function options_page() : void
     {
+        if (isset($_POST['ehd_update_settings'])) {
+
+            $nonce = $_REQUEST['_wpnonce'];
+            if (!wp_verify_nonce($nonce, 'ehd-settings')) {
+                wp_die(__('Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN));
+            }
+
+            //$smtp_options = get_option('smtp_options');
+
+            self::_message_success();
+        }
+
         ?>
         <div class="wrap" id="ehd_container">
-            <div id="message_success" class="notice notice-success is-dismissible">
-                <p><strong>Settings saved.</strong></p>
-                <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
-            </div>
-            <div id="message_error" class="notice notice-error is-dismissible">
-                <p><strong>Settings error.</strong></p>
-                <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
-            </div>
             <form id="ehd_form" method="post" enctype="multipart/form-data">
                 <?php wp_nonce_field('ehd-settings'); ?>
                 <div id="main" class="filter-tabs clearfix">
                     <div id="ehd_nav" class="tabs-nav">
                         <div class="logo-title">
-                            <h3>
-                                eHD Options
-                                <span>Version: <?php echo EHD_PLUGIN_VERSION?></span>
-                            </h3>
+                            <h3>eHD Settings<span>Version: <?php echo EHD_PLUGIN_VERSION; ?></span></h3>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary">Save Changes</button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
                         </div>
                         <ul class="ul-menu-list">
                             <li class="global-settings">
-                                <a class="current" title="Global Settings" href="#global_settings">Global Settings</a>
+                                <a class="current" title="Global Settings" href="#global_settings"><?php _e('Global Settings', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="smtp smtp-settings">
-                                <a title="SMTP" href="#smtp_settings">SMTP</a>
+                                <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="socials social-settings">
-                                <a title="Socials" href="#social_settings">Socials</a>
+                                <a title="Socials" href="#social_settings"><?php _e('Socials', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="news news-settings">
-                                <a title="News" href="#news_settings">News</a>
+                                <a title="News" href="#news_settings"><?php _e('News', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="products product-settings">
-                                <a title="Products" href="#product_settings">Products</a>
+                                <a title="Products" href="#product_settings"><?php _e('Products', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="blocks block-settings">
-                                <a title="Blocks" href="#block_settings">Blocks Editor</a>
+                                <a title="Blocks" href="#block_settings"><?php _e('Blocks Editor', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                         </ul>
                     </div>
                     <div id="ehd_content" class="tabs-content">
-                        <h2 class="hidden-text">eHD Options</h2>
+                        <h2 class="hidden-text"></h2>
                         <div id="global_settings" class="group tabs-panel show">
-                            <h2>Global Settings</h2>
+                            <?php require __DIR__ . '/options/global.php'; ?>
                         </div>
                         <div id="smtp_settings" class="group tabs-panel">
-                            <h2>SMTP Settings</h2>
-                            <div class="section section-text" id="section_smtp_host">
-                                <label class="heading" for="smtp_host">SMTP Host</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="text" id="smtp_host" name="smtp-host">
-                                    </div>
-                                    <div class="explain">The SMTP server which will be used to send email. For example: smtp.gmail.com</div>
-                                </div>
-                            </div>
-                            <div class="section section-select" id="section_smtp_auth">
-                                <label class="heading" for="smtp_auth">SMTP Authentication</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <div class="select_wrapper">
-                                            <select class="ehd-control ehd-select" name="smtp-auth" id="smtp_auth">
-                                                <option value="true">True</option>
-                                                <option value="false">False</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="explain">Whether to use SMTP Authentication when sending an email (recommended: True).</div>
-                                </div>
-                            </div>
-                            <div class="section section-text" id="section_smtp_username">
-                                <label class="heading" for="smtp_username">SMTP Username</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="text" id="smtp_username" name="smtp-username">
-                                    </div>
-                                    <div class="explain">Your SMTP Username. For example: abc@gmail.com</div>
-                                </div>
-                            </div>
-                            <div class="section section-password" id="section_smtp_password">
-                                <label class="heading" for="smtp_password">SMTP Password</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="password" id="smtp_password" name="smtp-password">
-                                    </div>
-                                    <div class="explain">Your SMTP Password (The saved password is not shown for security reasons. If you do not want to update the saved password, you can leave this field empty when updating other options).</div>
-                                </div>
-                            </div>
-                            <div class="section section-select" id="section_smtp_encryption">
-                                <label class="heading" for="smtp_encryption">Type of Encryption</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <div class="select_wrapper">
-                                            <select class="ehd-control ehd-select" name="smtp-encryption" id="smtp_encryption">
-                                                <option value="tls">TLS</option>
-                                                <option value="ssl">SSL</option>
-                                                <option value="none">No Encryption</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="explain">The encryption which will be used when sending an email (recommended: TLS).</div>
-                                </div>
-                            </div>
-                            <div class="section section-text" id="section_smtp_port">
-                                <label class="heading" for="smtp_port">SMTP Port</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="text" id="smtp_port" name="smtp-port">
-                                    </div>
-                                    <div class="explain">The port which will be used when sending an email (587/465/25). If you choose TLS it should be set to 587. For SSL use port 465 instead.</div>
-                                </div>
-                            </div>
-                            <div class="section section-text" id="section_smtp_from_email">
-                                <label class="heading" for="smtp_from_email">From Email Address</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="text" id="smtp_from_email" name="smtp-from-email">
-                                    </div>
-                                    <div class="explain">The email address which will be used as the From Address if it is not supplied to the mail function.</div>
-                                </div>
-                            </div>
-                            <div class="section section-text" id="section_smtp_from_name">
-                                <label class="heading" for="smtp_from_name">From Name</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input class="ehd-input ehd-control" type="text" id="smtp_from_name" name="smtp-from-name">
-                                    </div>
-                                    <div class="explain">The name which will be used as the From Name if it is not supplied to the mail function.</div>
-                                </div>
-                            </div>
-                            <div class="section section-checkbox" id="section_smtp_disable_ssl_verification">
-                                <label class="heading" for="smtp_disable_ssl_verification">Disable SSL Certificate Verification</label>
-                                <div class="option">
-                                    <div class="controls">
-                                        <input type="hidden" name="smtp-disable-ssl-verification" value="0">
-                                        <input type="checkbox" class="ehd-checkbox ehd-control" name="smtp-disable-ssl-verification" id="smtp_disable_ssl_verification" value="1">
-                                    </div>
-                                    <div class="explain">You should get your host to fix the SSL configurations instead of bypassing it.</div>
-                                </div>
-                            </div>
+                            <?php require __DIR__ . '/options/smtp.php'; ?>
                         </div>
                         <div id="social_settings" class="group tabs-panel">
-                            <h2>Socials Settings</h2>
+                            <?php require __DIR__ . '/options/social.php'; ?>
                         </div>
                         <div id="news_settings" class="group tabs-panel">
-                            <h2>News Settings</h2>
+                            <?php require __DIR__ . '/options/news.php'; ?>
                         </div>
                         <div id="product_settings" class="group tabs-panel">
-                            <h2>Products Settings</h2>
+                            <?php require __DIR__ . '/options/product.php'; ?>
                         </div>
                         <div id="block_settings" class="group tabs-panel">
-                            <h2>Blocks Editor Settings</h2>
+                            <?php require __DIR__ . '/options/block.php'; ?>
                         </div>
                         <div class="save-bar">
                             <button type="submit" name="ehd_update_settings" class="button button-primary">Save Changes</button>
@@ -237,4 +154,61 @@ final class Options
      * @return void
      */
     public function server_info() : void {}
+
+    /** ---------------------------------------- */
+
+    /**
+     * @return bool
+     */
+    private function _smtp__is_configured() : bool
+    {
+        $smtp_options = get_option('smtp__options');
+        $smtp_configured = true;
+
+        if (isset($smtp_options['smtp_auth']) && $smtp_options['smtp_auth'] == "true") {
+            if (empty($smtp_options['smtp_username']) ||
+                empty($smtp_options['smtp_password'])
+            ) {
+                $smtp_configured = false;
+            }
+        }
+
+        if (empty($smtp_options['smtp_host']) ||
+            empty($smtp_options['smtp_auth']) ||
+            empty($smtp_options['smtp_encryption']) ||
+            empty($smtp_options['smtp_port']) ||
+            empty($smtp_options['smtp_from_email']) ||
+            empty($smtp_options['smtp_from_name'])
+        ) {
+            $smtp_configured = false;
+        }
+
+        return $smtp_configured;
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * @return void
+     */
+    private function _message_success() : void
+    {
+        $class = 'notice notice-success is-dismissible';
+        $message = __('Settings saved.', EHD_PLUGIN_TEXT_DOMAIN);
+
+        printf('<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr($class), $message);
+    }
+
+    /** ---------------------------------------- */
+
+    /**
+     * @return void
+     */
+    private function _message_error() : void
+    {
+        $class = 'notice notice-error is-dismissible';
+        $message = __('Settings error.', EHD_PLUGIN_TEXT_DOMAIN);
+
+        printf('<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr($class), $message);
+    }
 }

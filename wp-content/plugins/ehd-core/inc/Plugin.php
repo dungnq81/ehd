@@ -140,7 +140,7 @@ final class Plugin
     public function admin_notice_missing_elementor() : void
     {
         $class = 'notice notice-error';
-        $message = sprintf(__(' you need to have %1$s"Elementor"%2$s installed and updated for the %1$s"EHD-Core"%2$s plugin to function properly.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
+        $message = sprintf(__('You need to have %1$s"Elementor"%2$s installed and updated for the %1$s"EHD-Core"%2$s plugin to function properly.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
 
         printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
     }

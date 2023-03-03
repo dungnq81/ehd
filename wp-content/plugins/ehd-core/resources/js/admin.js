@@ -43,7 +43,7 @@ $(function () {
             _setCookie(_cookie, _hash, 100);
 
             _nav.find('a.current').removeClass("current");
-            _content.find('.tabs-panel:visible').hide();
+            _content.find('.tabs-panel:visible').removeClass('show').hide();
             $(this.hash).addClass("show").fadeIn();
             $(this).addClass("current");
 

@@ -20,10 +20,10 @@ import { Fancybox } from "@fancyapps/ui";
 const $ = jQuery;
 
 /** Create deferred YT object */
-// const YTdeferred = $.Deferred();
-// window.onYouTubeIframeAPIReady = function () {
-//     YTdeferred.resolve(window.YT);
-// };
+const YTdeferred = $.Deferred();
+window.onYouTubeIframeAPIReady = function () {
+    YTdeferred.resolve(window.YT);
+};
 
 //require("jquery.marquee");
 

@@ -39,7 +39,7 @@ abstract class Widget extends WP_Widget
     /**
      * @return array
      */
-    protected function widget_options()
+    protected function widget_options() : array
     {
         return [
             'classname'                   => $this->widget_classname,
@@ -54,7 +54,7 @@ abstract class Widget extends WP_Widget
      *
      * @return void
      */
-    public function flush_widget_cache()
+    public function flush_widget_cache() : void
     {
         foreach (['https', 'http'] as $scheme) {
             wp_cache_delete($this->get_widget_id_for_cache($this->widget_id, $scheme), 'widget');
@@ -84,7 +84,7 @@ abstract class Widget extends WP_Widget
      * @param string $content Content
      * @return string the content that was cached
      */
-    public function cache_widget($args, $content)
+    public function cache_widget($args, $content) : string
     {
         // Don't set any cache if widget_id doesn't exist
         if (empty($args['widget_id'])) {
@@ -108,7 +108,7 @@ abstract class Widget extends WP_Widget
      * @param array $args Arguments
      * @return bool true if the widget is cached otherwise false
      */
-    public function get_cached_widget($args)
+    public function get_cached_widget($args) : bool
     {
         // Don't get cache if widget_id doesn't exists
         if (empty($args['widget_id'])) {
@@ -132,7 +132,7 @@ abstract class Widget extends WP_Widget
      * @param array $instance Array of instance options.
      * @return string
      */
-    protected function get_instance_title($instance)
+    protected function get_instance_title($instance) : string
     {
         if (isset($instance['title'])) {
             return $instance['title'];
@@ -150,7 +150,7 @@ abstract class Widget extends WP_Widget
      * @param $old_instance
      * @return array
      */
-    public function update($new_instance, $old_instance)
+    public function update($new_instance, $old_instance) : array
     {
         $instance = $old_instance;
         if (empty($this->settings)) {
@@ -199,7 +199,7 @@ abstract class Widget extends WP_Widget
      * @param $instance
      * @return void
      */
-    public function form($instance)
+    public function form($instance) : void
     {
         if (empty($this->settings)) {
             return;
