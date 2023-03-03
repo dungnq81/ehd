@@ -32,7 +32,7 @@ final class Options
             printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
         }
 
-        //...
+        // ...
     }
 
     /** ---------------------------------------- */
@@ -69,11 +69,43 @@ final class Options
         if (isset($_POST['ehd_update_settings'])) {
 
             $nonce = $_REQUEST['_wpnonce'];
-            if (!wp_verify_nonce($nonce, 'ehd-settings')) {
+            if (!wp_verify_nonce($nonce, 'ehd_settings')) {
                 wp_die(__('Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN));
             }
 
-            //$smtp_options = get_option('smtp_options');
+            /** SMTP */
+            $smtp_host = !empty($_POST['smtp_host']) ? sanitize_text_field($_POST['smtp_host']) : '';
+            $smtp_auth = !empty($_POST['smtp_auth']) ? sanitize_text_field($_POST['smtp_auth']) : '';
+            $smtp_username = !empty($_POST['smtp_username']) ? sanitize_text_field($_POST['smtp_username']) : '';
+
+            if (!empty($_POST['smtp_password'])) {
+                $smtp_password = sanitize_text_field($_POST['smtp_password']);
+                $smtp_password = wp_unslash($smtp_password); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
+                $smtp_password = base64_encode($smtp_password);
+            }
+
+            $smtp_encryption = !empty($_POST['smtp_encryption']) ? sanitize_text_field($_POST['smtp_encryption']) : '';
+            $smtp_port = !empty($_POST['smtp_port']) ? sanitize_text_field($_POST['smtp_port']) : '';
+            $smtp_from_email = !empty($_POST['smtp_from_email']) ? sanitize_email($_POST['smtp_from_email']) : '';
+            $smtp_from_name = !empty($_POST['smtp_from_name']) ? sanitize_text_field($_POST['smtp_from_name']) : '';
+            $smtp_disable_ssl_verification = !empty($_POST['smtp_disable_ssl_verification']) ? sanitize_text_field($_POST['smtp_disable_ssl_verification']) : '';
+
+            $smtp_options = [
+                'smtp_host'                     => $smtp_host,
+                'smtp_auth'                     => $smtp_auth,
+                'smtp_username'                 => $smtp_username,
+                'smtp_encryption'               => $smtp_encryption,
+                'smtp_port'                     => $smtp_port,
+                'smtp_from_email'               => $smtp_from_email,
+                'smtp_from_name'                => $smtp_from_name,
+                'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
+            ];
+
+            if (!empty($smtp_password)) {
+                $smtp_options['smtp_password'] = $smtp_password;
+            }
+
+            self::_smtp__update_options($smtp_options);
 
             self::_message_success();
         }
@@ -81,11 +113,14 @@ final class Options
         ?>
         <div class="wrap" id="ehd_container">
             <form id="ehd_form" method="post" enctype="multipart/form-data">
-                <?php wp_nonce_field('ehd-settings'); ?>
+                <?php wp_nonce_field('ehd_settings'); ?>
                 <div id="main" class="filter-tabs clearfix">
                     <div id="ehd_nav" class="tabs-nav">
                         <div class="logo-title">
-                            <h3>eHD Settings<span>Version: <?php echo EHD_PLUGIN_VERSION; ?></span></h3>
+                            <h3>
+                                <?php _e('eHD Settings', EHD_PLUGIN_TEXT_DOMAIN); ?>
+                                <span>Version: <?php echo EHD_PLUGIN_VERSION; ?></span>
+                            </h3>
                         </div>
                         <div class="save-bar">
                             <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
@@ -132,7 +167,7 @@ final class Options
                             <?php require __DIR__ . '/options/block.php'; ?>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary">Save Changes</button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
                         </div>
                     </div>
                 </div>
@@ -154,6 +189,38 @@ final class Options
      * @return void
      */
     public function server_info() : void {}
+
+    /** ---------------------------------------- */
+
+    /**
+     * @param $new_smtp_options
+     * @return void
+     */
+    private function _smtp__update_options($new_smtp_options) : void
+    {
+        $empty_options = [
+            'smtp_host'                     => '',
+            'smtp_auth'                     => '',
+            'smtp_username'                 => '',
+            'smtp_password'                 => '',
+            'smtp_encryption'               => '',
+            'smtp_port'                     => '',
+            'smtp_from_email'               => '',
+            'smtp_from_name'                => '',
+            'smtp_disable_ssl_verification' => '',
+        ];
+
+        $options = get_option('smtp__options');
+
+        if (is_array($options)) {
+            $current_options = array_merge($empty_options, $options);
+            $updated_options = array_merge($current_options, $new_smtp_options);
+        } else {
+            $updated_options = array_merge($empty_options, $new_smtp_options);
+        }
+
+        update_option('smtp__options', $updated_options);
+    }
 
     /** ---------------------------------------- */
 
