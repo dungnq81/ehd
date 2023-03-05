@@ -1,1 +1,0 @@
-<?php return array('dependencies' => array('wc-navigation', 'wc-store-data', 'wp-data', 'wp-i18n'), 'version' => '39281283ec5ac9279ace9f65d98afe51');

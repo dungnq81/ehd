@@ -536,3 +536,17 @@ body.toplevel_page_ehd-settings {
         }
     }
 }
+
+/** */
+#setting-error-tgmpa {
+    & > p {
+        & > strong {
+            span {
+                a {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+

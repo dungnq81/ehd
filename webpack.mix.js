@@ -1,5 +1,5 @@
 let mix = require('laravel-mix');
-let glob = require('glob');
+const glob = require('glob');
 
 mix
     .webpackConfig({

@@ -52,18 +52,10 @@ final class Plugin
         class_exists('\WooCommerce') && (new WooCommerce());
 
         /** Advanced Custom Fields */
-        if (!class_exists('\ACF')) {
-            add_action('admin_notices', [$this, 'admin_notice_missing_acf']);
-        } else {
-            (new ACF());
-        }
+	    class_exists('\ACF') && (new ACF());
 
         /** Elementor */
-        if (!did_action('elementor/loaded')) {
-            add_action('admin_notices', [$this, 'admin_notice_missing_elementor']);
-        } else {
-            (new Elementor());
-        }
+	    did_action('elementor/loaded') && (new Elementor());
 
         /** WpRocket */
         defined('WP_ROCKET_VERSION') && (new WpRocket());
@@ -122,13 +114,13 @@ final class Plugin
      *
      * @return void
      */
-    public function admin_notice_missing_acf() : void
-    {
-        $class = 'notice notice-error';
-        $message = sprintf(__('You need %1$s"Advanced Custom Fields"%2$s for the %1$s"EHD-Core"%2$s plugin to work and updated.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
-
-        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
-    }
+//    public function admin_notice_missing_acf() : void
+//    {
+//        $class = 'notice notice-error';
+//        $message = sprintf(__('You need %1$s"Advanced Custom Fields"%2$s for the %1$s"EHD-Core"%2$s plugin to work and updated.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
+//
+//        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
+//    }
 
     /**
      * Handles admin notice for non-active
@@ -137,13 +129,13 @@ final class Plugin
      *
      * @return void
      */
-    public function admin_notice_missing_elementor() : void
-    {
-        $class = 'notice notice-error';
-        $message = sprintf(__('You need to have %1$s"Elementor"%2$s installed and updated for the %1$s"EHD-Core"%2$s plugin to function properly.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
-
-        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
-    }
+//    public function admin_notice_missing_elementor() : void
+//    {
+//        $class = 'notice notice-error';
+//        $message = sprintf(__('You need to have %1$s"Elementor"%2$s installed and updated for the %1$s"EHD-Core"%2$s plugin to function properly.', EHD_PLUGIN_TEXT_DOMAIN), '<strong>', '</strong>');
+//
+//        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
+//    }
 
     /**
      * @return void

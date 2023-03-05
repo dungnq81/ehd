@@ -6,6 +6,7 @@ namespace EHD\Sites\Plugins;
 
 /**
  * Elementor Class
+ *
  * @author EHD
  */
 final class Elementor
