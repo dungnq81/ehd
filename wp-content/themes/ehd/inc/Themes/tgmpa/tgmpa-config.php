@@ -37,38 +37,38 @@ function ehd_register_required_plugins(): void {
 		// From the WordPress repository
 		//
 		[
-			'name' => 'Contact Form 7',
-			'slug' => 'contact-form-7',
+			'name'     => 'Contact Form 7',
+			'slug'     => 'contact-form-7',
 			'required' => false, // required / recommended
 		],
 		[
-			'name' => 'Elementor',
-			'slug' => 'elementor',
+			'name'     => 'Elementor',
+			'slug'     => 'elementor',
 			'required' => false,
 		],
 		[
-			'name' => 'WooCommerce',
-			'slug' => 'woocommerce',
+			'name'     => 'WooCommerce',
+			'slug'     => 'woocommerce',
 			'required' => false,
 		],
 		[
-			'name' => 'Akismet Anti-Spam',
-			'slug' => 'akismet',
+			'name'     => 'Akismet Anti-Spam',
+			'slug'     => 'akismet',
 			'required' => false,
 		],
 		[
-			'name' => 'Rank Math SEO',
-			'slug' => 'seo-by-rank-math',
+			'name'     => 'Rank Math SEO',
+			'slug'     => 'seo-by-rank-math',
 			'required' => false,
 		],
 		[
-			'name' => 'Comments – wpDiscuz',
-			'slug' => 'wpdiscuz',
+			'name'     => 'Comments – wpDiscuz',
+			'slug'     => 'wpdiscuz',
 			'required' => false,
 		],
 		[
-			'name' => 'Converter for Media',
-			'slug' => 'webp-converter-for-media',
+			'name'     => 'Converter for Media',
+			'slug'     => 'webp-converter-for-media',
 			'required' => false,
 		],
 
@@ -76,20 +76,20 @@ function ehd_register_required_plugins(): void {
 		// Include a plugin bundled with a theme.
 		//
 		[
-			'name' => 'Advanced Custom Fields PRO',
-			'slug' => 'advanced-custom-fields-pro',
-			'source' => __DIR__ . '/bundled/advanced-custom-fields-pro.zip',
-			'required' => true,
+			'name'             => 'Advanced Custom Fields PRO',
+			'slug'             => 'advanced-custom-fields-pro',
+			'source'           => __DIR__ . '/bundled/advanced-custom-fields-pro.zip',
+			'required'         => true,
 			'force_activation' => false,
-			'external_url' => 'https://www.advancedcustomfields.com/'
+			'external_url'     => 'https://www.advancedcustomfields.com/'
 		],
 		[
-			'name' => 'Fixed TOC',
-			'slug' => 'fixed-toc',
-			'source' => __DIR__ . '/bundled/fixed-toc.zip',
-			'required' => false,
+			'name'             => 'Fixed TOC',
+			'slug'             => 'fixed-toc',
+			'source'           => __DIR__ . '/bundled/fixed-toc.zip',
+			'required'         => false,
 			'force_activation' => false,
-			'external_url' => 'https://codecanyon.net/item/fixed-toc-wordpress-plugin/7264676'
+			'external_url'     => 'https://codecanyon.net/item/fixed-toc-wordpress-plugin/7264676'
 		],
 	];
 
@@ -97,9 +97,9 @@ function ehd_register_required_plugins(): void {
 	 * Array of configuration settings. Amend each line as needed.
 	 */
 	$config = [
-		'id' => 'ehd',
+		'id'           => 'ehd',
 		'default_path' => '',
-		'menu' => 'ehd-install-plugins',
+		'menu'         => 'ehd-install-plugins',
 		'parent_slug'  => 'themes.php',
 		'capability'   => 'edit_theme_options',
 		'has_notices'  => true,
