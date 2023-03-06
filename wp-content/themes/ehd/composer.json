@@ -18,7 +18,8 @@
 			"inc/css-output.php",
 			"inc/helpers.php",
 			"inc/template-hooks.php",
-			"inc/themes.php"
+			"inc/themes.php",
+			"inc/Themes/tgmpa/tgmpa-config.php"
 		]
 	},
 	"require": {}

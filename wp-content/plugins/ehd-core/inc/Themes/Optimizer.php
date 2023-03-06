@@ -116,8 +116,7 @@ final class Optimizer
      *
      * @return void
      */
-    protected function _cleanup()
-    {
+    protected function _cleanup(): void {
         remove_action('welcome_panel', 'wp_welcome_panel');
 
         // wp_head
@@ -162,8 +161,7 @@ final class Optimizer
      *
      * @link https://git.io/vWdr2
      */
-    public function print_footer_scripts()
-    {
+    public function print_footer_scripts(): void {
         ?>
         <script>document.documentElement.classList.remove("no-js");
             if (-1 !== navigator.userAgent.indexOf('MSIE') || -1 !== navigator.appVersion.indexOf('Trident/')) {
@@ -197,8 +195,7 @@ final class Optimizer
     /**
      * @return void
      */
-    public function fixed_archive_canonical()
-    {
+    public function fixed_archive_canonical(): void {
         if (is_archive()) {
             echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
         }
@@ -211,8 +208,7 @@ final class Optimizer
      *
      * @return void
      */
-    public function rel_next_prev()
-    {
+    public function rel_next_prev(): void {
         global $paged;
 
         if (get_previous_posts_link()) { ?>
@@ -280,14 +276,14 @@ final class Optimizer
 
     // ------------------------------------------------------
 
-    /**
+	/**
      * Remove version from scripts and styles
      *
-     * @param $src
-     * @return bool|string
-     */
-    public function remove_version_scripts_styles($src)
-    {
+	 * @param $src
+	 *
+	 * @return false|mixed|string
+	 */
+    public function remove_version_scripts_styles($src): mixed {
         if ($src && str_contains($src, 'ver=')) {
             $src = remove_query_arg('ver', $src);
         }
@@ -303,8 +299,7 @@ final class Optimizer
      *
      * @return string
      */
-    public function post_search_by_title($search, $wp_query)
-    {
+    public function post_search_by_title($search, $wp_query): string {
         global $wpdb;
 
         if (empty($search)) {

@@ -14,30 +14,30 @@
 
 use EHD\Plugin;
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
 $headers = [
-    'Name'       => 'Plugin Name',
-    'Version'    => 'Version',
-    'TextDomain' => 'Text Domain',
+	'Name'       => 'Plugin Name',
+	'Version'    => 'Version',
+	'TextDomain' => 'Text Domain',
 ];
 
-$plugin_data = get_file_data(__FILE__, $headers, 'plugin');
+$plugin_data = get_file_data( __FILE__, $headers, 'plugin' );
 
-define('EHD_PLUGIN_URL', plugin_dir_url(__FILE__));       // https://**/wp-content/plugins/ehd-core/
-define('EHD_PLUGIN_PATH', plugin_dir_path(__FILE__));     // **\wp-content\plugins\ehd-core/
-define('EHD_PLUGIN_BASENAME', plugin_basename(__FILE__)); // ehd-core/ehd-core.php
+define( 'EHD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );       // https://**/wp-content/plugins/ehd-core/
+define( 'EHD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );     // **\wp-content\plugins\ehd-core/
+define( 'EHD_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // ehd-core/ehd-core.php
 
-define('EHD_PLUGIN_VERSION', $plugin_data['Version']);
-define('EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain']);
+define( 'EHD_PLUGIN_VERSION', $plugin_data['Version'] );
+define( 'EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 
-defined('EHD_MU_PLUGIN_VERSION') || wp_die(__('eHD Core requires "eHD mu-core" plugin to function properly', EHD_PLUGIN_TEXT_DOMAIN));
+defined( 'EHD_MU_PLUGIN_VERSION' ) || wp_die( __( 'eHD Core requires "eHD mu-core" plugin to function properly', EHD_PLUGIN_TEXT_DOMAIN ) );
 
-if ( !file_exists(__DIR__ . '/vendor/autoload.php')) {
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', EHD_PLUGIN_TEXT_DOMAIN ) );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 // require_once EHD_PLUGIN_PATH . 'inc/Plugin.php';
-(new Plugin());
+( new Plugin() );

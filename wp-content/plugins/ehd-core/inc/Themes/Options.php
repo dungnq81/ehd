@@ -2,6 +2,8 @@
 
 namespace EHD\Themes;
 
+use PHPMailer\PHPMailer\Exception;
+
 \defined('ABSPATH') || die;
 
 /**
@@ -15,16 +17,83 @@ final class Options
     {
         add_action('admin_notices', [&$this, 'options_admin_notice']);
         add_action('admin_menu', [&$this, 'options_admin_menu']);
+
+	    /** SMTP Settings */
+	    if (self::_smtp__is_configured()) {
+		    add_action( 'phpmailer_init', [&$this, 'setup_phpmailer_init'], 11 );
+	    }
     }
 
-    /** ---------------------------------------- */
+	/** ---------------------------------------- */
+
+	/**
+	 * @param $phpmailer
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function setup_phpmailer_init( $phpmailer ): void {
+		// (Re)create it, if it's gone missing.
+		if ( ! ( $phpmailer instanceof \PHPMailer\PHPMailer\PHPMailer ) ) {
+			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+			$phpmailer = new \PHPMailer\PHPMailer\PHPMailer( true );
+
+			$phpmailer::$validator = static function ( $email ) {
+				return (bool) is_email( $email );
+			};
+		}
+
+		$smtp_options = get_option( 'smtp__options' );
+
+		$phpmailer->isSMTP(); // Tell PHPMailer to use SMTP
+		$phpmailer->Host = $smtp_options['smtp_host']; // Set the hostname of the mail server
+
+		// Whether to use SMTP authentication
+		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
+			$phpmailer->SMTPAuth = true;
+			$phpmailer->Username = $smtp_options['smtp_username']; // SMTP username
+			$phpmailer->Password = base64_decode( $smtp_options['smtp_password'] ); // SMTP password
+		}
+
+		// Additional settings
+
+		$type_of_encryption = $smtp_options['smtp_encryption']; // Whether to use encryption
+		if ( $type_of_encryption == "none" ) {
+			$type_of_encryption = '';
+		}
+		$phpmailer->SMTPSecure = $type_of_encryption;
+
+		$phpmailer->Port        = $smtp_options['smtp_port'];  // SMTP port
+		$phpmailer->SMTPAutoTLS = false; // Whether to enable TLS encryption automatically if a server supports it
+
+		// disable ssl certificate verification if checked
+		if ( isset( $smtp_options['smtp_disable_ssl_verification'] ) && ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
+			$phpmailer->SMTPOptions = [
+				'ssl' => [
+					'verify_peer'       => false,
+					'verify_peer_name'  => false,
+					'allow_self_signed' => true,
+				]
+			];
+		}
+
+		$from_email = apply_filters( 'wp_mail_from', $smtp_options['smtp_from_email'] ); // Filters the email address to send from.
+		$from_name  = apply_filters( 'wp_mail_from_name', $smtp_options['smtp_from_name'] ); // Filters the name to associate with the "from" email address.
+
+		$phpmailer->setFrom( $from_email, $from_name, false );
+		$phpmailer->CharSet = apply_filters( 'wp_mail_charset', get_bloginfo( 'charset' ) );
+	}
+
+	/** ---------------------------------------- */
 
     /**
      * @return void
      */
     public function options_admin_notice() : void
     {
-        // SMTP
+        // SMTP notices
         if (!self::_smtp__is_configured()) {
             $class = 'notice notice-error';
             $message = __('You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN);

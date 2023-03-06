@@ -66,6 +66,11 @@ function ehd_register_required_plugins(): void {
 			'slug' => 'wpdiscuz',
 			'required' => false,
 		],
+		[
+			'name' => 'Converter for Media',
+			'slug' => 'webp-converter-for-media',
+			'required' => false,
+		],
 
 		//
 		// Include a plugin bundled with a theme.

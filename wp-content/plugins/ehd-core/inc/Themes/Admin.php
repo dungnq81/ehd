@@ -55,8 +55,7 @@ final class Admin
     /**
      * @return void
      */
-    private function _remove_menu()
-    {
+    private function _remove_menu(): void {
         //echo dump($GLOBALS[ 'menu' ]);
 
         // Hide menu
@@ -76,8 +75,7 @@ final class Admin
     /**
      * Add admin column
      */
-    public function admin_init()
-    {
+    public function admin_init(): void {
         $this->_remove_menu();
 
         // Add customize column taxonomy
@@ -141,23 +139,21 @@ final class Admin
      *
      * @return mixed
      */
-    public function post_exclude_header($columns)
-    {
+    public function post_exclude_header($columns): mixed {
         unset($columns['post_thumb']);
         return $columns;
     }
 
     /** ---------------------------------------- */
 
-    /**
-     * @param string $out
-     * @param string $column
-     * @param int    $term_id
-     *
-     * @return void|string
-     */
-    public function term_column($out, $column, $term_id)
-    {
+	/**
+	 * @param $out
+	 * @param $column
+	 * @param $term_id
+	 *
+	 * @return int|mixed|string|null
+	 */
+    public function term_column($out, $column, $term_id): mixed {
         switch ($column) {
             case 'term_thumb':
                 $term_thumb = Helper::acfTermThumb($term_id, $column, "thumbnail", true);
@@ -185,13 +181,12 @@ final class Admin
 
     /** ---------------------------------------- */
 
-    /**
-     * @param $columns
-     *
-     * @return array
-     */
-    public function term_header($columns)
-    {
+	/**
+	 * @param $columns
+	 *
+	 * @return array|mixed
+	 */
+    public function term_header($columns): mixed {
         if (class_exists('\ACF')) {
 
             // thumb
@@ -216,8 +211,7 @@ final class Admin
      * @param $column_name
      * @param $post_id
      */
-    public function post_column($column_name, $post_id)
-    {
+    public function post_column($column_name, $post_id): void {
         switch ($column_name) {
             case 'post_thumb':
                 $post_type = get_post_type($post_id);
@@ -249,8 +243,7 @@ final class Admin
      *
      * @return array
      */
-    public function post_header($columns)
-    {
+    public function post_header($columns): array {
         $in = [
             "post_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", EHD_PLUGIN_TEXT_DOMAIN)),
         ];
@@ -266,8 +259,7 @@ final class Admin
      *
      * @return mixed
      */
-    public function post_type_action_links($actions, $_object)
-    {
+    public function post_type_action_links($actions, $_object): mixed {
         if (!in_array($_object->post_type, ['product', 'site-review'])) {
             Helper::prepend($actions, 'Id:' . $_object->ID, 'action_id');
         }
@@ -283,8 +275,7 @@ final class Admin
      *
      * @return mixed
      */
-    public function term_action_links($actions, $_object)
-    {
+    public function term_action_links($actions, $_object): mixed {
         Helper::prepend($actions, 'Id: ' . $_object->term_id, 'action_id');
         return $actions;
     }
@@ -296,8 +287,7 @@ final class Admin
      *
      * @return void
      */
-    public function dashboard_meta_box()
-    {
+    public function dashboard_meta_box(): void {
         /*Incoming Links Widget*/
         remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
 
@@ -310,8 +300,7 @@ final class Admin
     /**
      * @return void
      */
-    public function admin_enqueue_scripts()
-    {
+    public function admin_enqueue_scripts(): void {
         wp_enqueue_style("admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION);
         wp_enqueue_script("admin", EHD_PLUGIN_URL . "assets/js/admin.js", ["jquery"], EHD_PLUGIN_VERSION, true);
     }

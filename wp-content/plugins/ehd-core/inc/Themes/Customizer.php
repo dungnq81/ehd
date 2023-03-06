@@ -41,8 +41,7 @@ final class Customizer
      *
      * @param WP_Customize_Manager $wp_customize Theme Customizer object.
      */
-    public function customize_register(WP_Customize_Manager $wp_customize)
-    {
+    public function customize_register(WP_Customize_Manager $wp_customize): void {
         // logo mobile
         $wp_customize->add_setting('alternative_logo');
         $wp_customize->add_control(
@@ -609,8 +608,7 @@ final class Customizer
     /**
      * @retun void
      */
-    public function login_enqueue_script()
-    {
+    public function login_enqueue_script(): void {
         wp_enqueue_style("login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION);
         wp_enqueue_script("login", EHD_PLUGIN_URL . "assets/js/login.js", ["jquery"], EHD_PLUGIN_VERSION, true);
 
@@ -643,8 +641,7 @@ final class Customizer
      *
      * @return void
      */
-    public function enqueue_block_editor_assets()
-    {
+    public function enqueue_block_editor_assets(): void {
         wp_enqueue_style('editor-style', EHD_PLUGIN_URL . "assets/css/editor-style.css");
     }
 }
