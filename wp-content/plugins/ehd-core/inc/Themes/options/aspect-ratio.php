@@ -6,13 +6,13 @@ $ar_post_type_list    = apply_filters('ar_post_type_list', [ 'blogs' ]);
 $aspect_ratio_options = get_option('aspect_ratio__options');
 
 ?>
-<h2><?php _e('Aspect Ratio Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></h2>
+<h2><?php _e( 'Aspect Ratio Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>
 <?php
-foreach ($ar_post_type_list as $ar) :
-    $title = Helper::mbUcFirst($ar);
+foreach ( $ar_post_type_list as $ar ) :
+	$title = Helper::mbUcFirst( $ar );
 
-    $width = $aspect_ratio_options['ar-' . $ar . '-width'] ?? '';
-    $height = $aspect_ratio_options['ar-' . $ar . '-height'] ?? '';
+	$width  = $aspect_ratio_options[ 'ar-' . $ar . '-width' ] ?? '';
+	$height = $aspect_ratio_options[ 'ar-' . $ar . '-height' ] ?? '';
 ?>
 <div class="section section-text" id="section_aspect_ratio">
     <span class="heading"><?php _e( $title, EHD_PLUGIN_TEXT_DOMAIN ); ?></span>
