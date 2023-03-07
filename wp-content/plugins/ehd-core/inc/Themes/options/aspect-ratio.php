@@ -21,12 +21,12 @@ foreach ( $ar_post_type_list as $ar ) :
             <div class="inline-group">
                 <label>
                     Width:
-                    <input name="<?=$ar?>-width" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr($width); ?>">
+                    <input class="ehd-input ehd-control" name="<?=$ar?>-width" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr($width); ?>">
                 </label>
                 <span>x</span>
                 <label>
                     Height:
-                    <input name="<?=$ar?>-height" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr($height); ?>">
+                    <input class="ehd-input ehd-control" name="<?=$ar?>-height" type="number" pattern="\d*" size="3" min="0" value="<?php echo esc_attr($height); ?>">
                 </label>
             </div>
         </div>

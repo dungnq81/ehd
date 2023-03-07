@@ -139,7 +139,7 @@ final class Options
                                 <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="custom-css-settings">
-                                <a class="current" title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                         </ul>
                     </div>
