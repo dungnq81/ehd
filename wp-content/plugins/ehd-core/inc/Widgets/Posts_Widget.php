@@ -37,8 +37,9 @@ if (!class_exists('Posts_Widget')) {
                 'category'              => [
                     'type'  => 'text',
                     'std'   => '',
+                    'class' => '',
                     'label' => __('Posts Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc'  => __('Separated by dashes (-)', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc'  => __('Separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN),
                 ],
                 'full_width'            => [
                     'type'  => 'checkbox',
@@ -131,7 +132,7 @@ if (!class_exists('Posts_Widget')) {
             $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : '';
 
             $term_ids = $instance['category'] ?: $this->settings['category']['std'];
-            $term_ids = Helper::separatedToArray($term_ids, '-');
+            $term_ids = Helper::separatedToArray($term_ids, ',');
 
             $query_args = [
                 'term_ids' => $term_ids,

@@ -1,6 +1,6 @@
 @import "awesome_font";
 
-/** reset */
+/*! reset */
 html {
     font-family: sans-serif;
     font-variant-ligatures: no-common-ligatures;
@@ -43,6 +43,7 @@ a {
     @for $i from 1 through 6 {
         h#{$i}, .h#{$i} {
             font-size: inherit;
+            color: currentColor;
         }
     }
 }

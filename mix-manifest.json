@@ -20,5 +20,12 @@
     "/wp-content/themes/ehd/assets/css/woocommerce.css": "/wp-content/themes/ehd/assets/css/woocommerce.css",
     "/wp-content/themes/ehd/assets/css/app.css": "/wp-content/themes/ehd/assets/css/app.css",
     "/wp-content/themes/ehd/assets/css/fonts.css": "/wp-content/themes/ehd/assets/css/fonts.css",
-    "/wp-content/plugins/ehd-core/assets/css/elementor.css": "/wp-content/plugins/ehd-core/assets/css/elementor.css"
+    "/wp-content/plugins/ehd-core/assets/css/elementor.css": "/wp-content/plugins/ehd-core/assets/css/elementor.css",
+    "/wp-content/plugins/ehd-core/assets/js/plugins/flex-gap.js.map": "/wp-content/plugins/ehd-core/assets/js/plugins/flex-gap.js.map",
+    "/wp-content/plugins/ehd-core/assets/js/plugins/passive-events-fix.js.map": "/wp-content/plugins/ehd-core/assets/js/plugins/passive-events-fix.js.map",
+    "/wp-content/plugins/ehd-core/assets/js/plugins/skip-link-focus-fix.js.map": "/wp-content/plugins/ehd-core/assets/js/plugins/skip-link-focus-fix.js.map",
+    "/wp-content/plugins/ehd-core/assets/js/plugins/swiper.js.map": "/wp-content/plugins/ehd-core/assets/js/plugins/swiper.js.map",
+    "/wp-content/themes/ehd/assets/js/plugins/back-to-top.js.map": "/wp-content/themes/ehd/assets/js/plugins/back-to-top.js.map",
+    "/wp-content/themes/ehd/assets/js/plugins/draggable.js.map": "/wp-content/themes/ehd/assets/js/plugins/draggable.js.map",
+    "/wp-content/themes/ehd/assets/js/plugins/social-share.js.map": "/wp-content/themes/ehd/assets/js/plugins/social-share.js.map"
 }

@@ -10,9 +10,8 @@ use EHD\Cores\Helper;
 
 /** ---------------------------------------- */
 
+add_action('after_setup_theme', '__after_setup_theme', 11);
 if (!function_exists('__after_setup_theme')) {
-    add_action('after_setup_theme', '__after_setup_theme', 11);
-
     /**
      * @link http://codex.wordpress.org/Function_Reference/register_nav_menus#Examples
      *
@@ -34,8 +33,8 @@ if (!function_exists('__after_setup_theme')) {
 
 /** ---------------------------------------- */
 
+add_action('widgets_init', '__register_sidebars', 11);
 if (!function_exists('__register_sidebars')) {
-    add_action('widgets_init', '__register_sidebars', 11);
 
     /**
      * Register widget area.
@@ -71,8 +70,6 @@ if (!function_exists('__register_sidebars')) {
                 'after_title'   => '</span>',
             ]
         );
-
-        /** ---------------------------------------- */
 
         // footer columns
         $footer_args = [];
@@ -122,4 +119,197 @@ if (!function_exists('__register_sidebars')) {
     }
 }
 
+/** ---------------------------------------- */
 
+add_filter('body_class', '__body_classes', 11, 1);
+if (!function_exists('__body_classes')) {
+
+	/**
+	 * Adds custom classes to the array of body classes.
+	 *
+	 * @param array $classes
+	 * @return array
+	 */
+	function __body_classes( array $classes ): array {
+
+		// Check whether we're in the customizer preview.
+		if ( is_customize_preview() ) {
+			$classes[] = 'customizer-preview';
+		}
+
+		foreach ( $classes as $class ) {
+			if (
+				str_contains( $class, 'wp-custom-logo' )
+				|| str_contains( $class, 'page-template-templates' )
+				|| str_contains( $class, 'page-template-default' )
+				|| str_contains( $class, 'no-customize-support' )
+				|| str_contains( $class, 'page-id-' )
+				|| str_contains( $class, 'wvs-theme-' )
+			) {
+				$classes = array_diff( $classes, [ $class ] );
+			}
+		}
+
+		if ( ( is_home() || is_front_page() ) && class_exists( '\WooCommerce' ) ) {
+			$classes[] = 'woocommerce';
+		}
+
+		// ...
+		$classes[] = 'default-mode';
+
+		return $classes;
+	}
+}
+
+/** ---------------------------------------- */
+
+add_filter('post_class', '__post_classes', 11, 1);
+if (!function_exists('__post_classes')) {
+
+	/**
+	 * Adds custom classes to the array of post classes.
+	 *
+	 * @param array $classes Classes for the post element.
+	 * @return array
+	 */
+	function __post_classes( array $classes ): array {
+
+		// remove_sticky_class
+		if ( in_array( 'sticky', $classes ) ) {
+			$classes   = array_diff( $classes, [ "sticky" ] );
+			$classes[] = 'wp-sticky';
+		}
+
+		// remove tag-, category- classes
+		foreach ( $classes as $class ) {
+			if (
+				str_contains( $class, 'tag-' )
+				|| str_contains( $class, 'category-' )
+			) {
+				$classes = array_diff( $classes, [ $class ] );
+			}
+		}
+
+		return $classes;
+	}
+}
+
+/** ---------------------------------------- */
+
+add_filter('nav_menu_css_class', '__nav_menu_css_classes', 11, 2);
+if (!function_exists('__nav_menu_css_classes')) {
+
+	/**
+	 * @param $classes
+	 * @param $item
+	 *
+	 * @return array
+	 */
+	function __nav_menu_css_classes( $classes, $item ): array {
+
+		if ( ! is_array( $classes ) ) {
+			$classes = [];
+		}
+
+		// remove menu-item-type-, menu-item-object- classes
+		foreach ( $classes as $class ) {
+			if ( str_contains( $class, 'menu-item-type-' )
+			     || str_contains( $class, 'menu-item-object-' )
+			) {
+				$classes = array_diff( $classes, [ $class ] );
+			}
+		}
+
+		if ( 1 == $item->current
+		     || $item->current_item_ancestor
+		     || $item->current_item_parent
+		) {
+			//$classes[] = 'is-active';
+			$classes[] = 'active';
+		}
+
+		return $classes;
+	}
+}
+
+/** ---------------------------------------- */
+
+/** add class to anchor link */
+add_filter('nav_menu_link_attributes', function ($atts) {
+	// $atts['class'] = "nav-link";
+	return $atts;
+}, 100, 1);
+
+/** ---------------------------------------- */
+
+/** comment off default */
+add_filter('wp_insert_post_data', function ($data) {
+	if ($data['post_status'] == 'auto-draft') {
+		$data['comment_status'] = 0;
+		$data['ping_status'] = 0;
+	}
+	return $data;
+}, 99, 1);
+
+/** ---------------------------------------- */
+
+/** Tags clound font sizes */
+add_filter('widget_tag_cloud_args', function (array $args) {
+	$args['smallest'] = '10';
+	$args['largest'] = '19';
+	$args['unit'] = 'px';
+	$args['number'] = 12;
+
+	return $args;
+});
+
+/** ---------------------------------------- */
+
+/** defer scripts */
+add_filter( 'defer_script_loader_tag', function ( $arr ) {
+	$arr = [
+
+		// defer script
+		'woo-variation-swatches' => 'defer',
+		'wc-single-product'      => 'defer',
+		'wc-add-to-cart'         => 'defer',
+		'contact-form-7'         => 'defer',
+
+		// delay script, default 5s
+		'comment-reply' => 'delay',
+		'wp-embed'      => 'delay',
+		'admin-bar'     => 'delay',
+		'fixedtoc-js'   => 'delay',
+		'back-to-top'   => 'delay',
+		'social-share'  => 'delay',
+		'o-draggable'   => 'delay',
+	];
+
+	return $arr;
+}, 11, 1 );
+
+// ------------------------------------------
+
+/** defer styles */
+add_filter( 'defer_style_loader_tag', function ( $arr ) {
+	$arr = [
+		'dashicons',
+		'fixedtoc-style',
+		'contact-form-7',
+		'rank-math',
+	];
+
+	return $arr;
+}, 11, 1 );
+
+/** ---------------------------------------- */
+
+/** Aspect Ratio */
+add_filter( 'ar_post_type_list', function ( $arr ) {
+	$arr = [
+		'blogs',
+		'products',
+	];
+
+	return $arr;
+}, 99, 1 );

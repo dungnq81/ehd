@@ -24,6 +24,6 @@ $plugin_data = get_file_data(__FILE__, $headers, 'plugin');
 define('EHD_MU_PLUGIN_VERSION', $plugin_data['Version']);
 define('EHD_MU_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain']);
 
-if (file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
-    require_once $composer;
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
 }
