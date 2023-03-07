@@ -136,7 +136,10 @@ final class Options
                                 <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                             <li class="aspect-ratio aspect-ratio-settings">
-                                <a title="SMTP" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                            </li>
+                            <li class="custom-css-settings">
+                                <a class="current" title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
                         </ul>
                     </div>
@@ -150,6 +153,9 @@ final class Options
                         </div>
                         <div id="aspect_ratio_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+                        </div>
+                        <div id="custom_css_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/custom-css.php'; ?>
                         </div>
                         <div class="save-bar">
                             <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
