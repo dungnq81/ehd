@@ -6,6 +6,7 @@ use EHD\Cores\Helper;
 use EHD\Walkers\Horizontal_Nav_Walker;
 use EHD\Walkers\Vertical_Nav_Walker;
 use WP_Error;
+use WP_Post;
 use WP_Query;
 use WP_Term;
 
@@ -88,13 +89,13 @@ trait Wp
     /**
      * Call a shortcode function by tag name.
      *
-     * @param string     $tag     The shortcode whose function to call.
+     * @param string $tag     The shortcode whose function to call.
      * @param array      $atts    The attributes to pass to the shortcode function. Optional.
      * @param array|null $content The shortcode's content. Default is null (none).
      *
      * @return false|mixed False on failure, the result of the shortcode on success.
      */
-    public static function doShortcode($tag, array $atts = [], $content = null)
+    public static function doShortcode( string $tag, array $atts = [], $content = null)
     {
         global $shortcode_tags;
         if (!isset($shortcode_tags[$tag])) {
@@ -114,8 +115,8 @@ trait Wp
     {
         global $wpdb;
 
-        $sql = 'SELECT ID FROM ' . $wpdb->prefix . "posts WHERE post_type LIKE 'attachment' AND guid LIKE '%" . esc_sql($image_url) . "';";
-        $attachment = $wpdb->get_col($sql);
+		$sql_prepare = $wpdb->prepare("SELECT ID FROM `{$wpdb->prefix}posts` WHERE `post_type` LIKE %s AND `guid` LIKE %s", "attachment", "%" . esc_sql($image_url));
+        $attachment = $wpdb->get_col($sql_prepare);
         $img_id = reset($attachment);
         if (!$img_id) {
             if (str_contains($image_url, '-scaled.')) {
@@ -137,8 +138,7 @@ trait Wp
      * @param $args
      * @return string
      */
-    public static function addQueryArg($url, $args)
-    {
+    public static function addQueryArg($url, $args): string {
         $args = array_map('rawurlencode', $args);
         return add_query_arg($args, $url);
     }
@@ -223,8 +223,8 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $mod_name
-     * @param $default
+     * @param string $mod_name
+     * @param mixed $default
      *
      * @return mixed|string|string[]
      */
@@ -242,9 +242,10 @@ trait Wp
                 $_mod = get_theme_mod($mod_name, $default);
                 if (is_ssl()) {
                     $_is_loaded[0][strtolower($mod_name)] = str_replace(['http://'], 'https://', $_mod);
-                } else {
-                    $_is_loaded[0][strtolower($mod_name)] = str_replace(['https://'], 'http://', $_mod);
                 }
+//				else {
+//                    $_is_loaded[0][strtolower($mod_name)] = str_replace(['https://'], 'http://', $_mod);
+//                }
             }
 
             return $_is_loaded[0][strtolower($mod_name)];
@@ -272,6 +273,7 @@ trait Wp
                 $term = get_term_by('name', $term_id, $taxonomy);
             }
         }
+
         return $term;
     }
 
@@ -484,8 +486,7 @@ trait Wp
      * @param string|null $class
      * @return string
      */
-    public static function siteLogo(string $theme = 'default', ?string $class = '')
-    {
+    public static function siteLogo(string $theme = 'default', ?string $class = ''): string {
         $html = '';
         $custom_logo_id = null;
 
@@ -535,8 +536,7 @@ trait Wp
      * @param string $class
      * @return string|null
      */
-    public static function loopExcerpt($post = null, string $class = 'excerpt')
-    {
+    public static function loopExcerpt($post = null, string $class = 'excerpt'): ?string {
         $excerpt = get_the_excerpt($post);
         if (!self::stripSpace($excerpt)) {
             return null;
@@ -558,8 +558,7 @@ trait Wp
      * @param bool   $glyph_icon
      * @return string|null
      */
-    public static function postExcerpt($post = null, string $class = 'excerpt', bool $glyph_icon = false)
-    {
+    public static function postExcerpt($post = null, string $class = 'excerpt', bool $glyph_icon = false): ?string {
         $post = get_post($post);
         if (!self::stripSpace($post->post_excerpt)) {
             return null;
@@ -587,8 +586,7 @@ trait Wp
      *
      * @return string|null
      */
-    public static function termExcerpt($term = 0, string $class = 'excerpt')
-    {
+    public static function termExcerpt($term = 0, string $class = 'excerpt'): ?string {
         $description = term_description($term);
         if (!self::stripSpace($description)) {
             return null;
@@ -672,8 +670,7 @@ trait Wp
      *
      * @return string|null
      */
-    public static function getPrimaryTerm($post = null, string $taxonomy = '', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
-    {
+    public static function getPrimaryTerm($post = null, string $taxonomy = '', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>'): ?string {
         $term = self::primaryTerm($post, $taxonomy);
         if (!$term) {
             return null;
@@ -768,8 +765,7 @@ trait Wp
      *
      * @return string|null
      */
-    public static function postImageSrc($post = null, string $size = 'thumbnail')
-    {
+    public static function postImageSrc($post = null, string $size = 'thumbnail'): ?string {
         return get_the_post_thumbnail_url($post, $size);
     }
 
@@ -782,8 +778,7 @@ trait Wp
      *
      * @return string|null
      */
-    public static function attachmentImageSrc($attachment_id, string $size = 'thumbnail')
-    {
+    public static function attachmentImageSrc($attachment_id, string $size = 'thumbnail'): ?string {
         return wp_get_attachment_image_url($attachment_id, $size);
     }
 
@@ -796,8 +791,7 @@ trait Wp
      * @param bool   $img_wrap
      * @return string|null
      */
-    public static function acfTermThumb($term, $acf_field_name = null, string $size = "thumbnail", bool $img_wrap = false)
-    {
+    public static function acfTermThumb($term, $acf_field_name = null, string $size = "thumbnail", bool $img_wrap = false): ?string {
         if (is_numeric($term)) {
             $term = get_term($term);
         }
@@ -981,8 +975,7 @@ trait Wp
      *
      * @return string
      */
-    public static function getLang()
-    {
+    public static function getLang(): string {
         return strtolower(substr(get_locale(), 0, 2));
     }
 
@@ -992,8 +985,7 @@ trait Wp
      * @param $user_id
      * @return string
      */
-    public static function getUserLink($user_id = null)
-    {
+    public static function getUserLink($user_id = null): string {
         if (!$user_id) {
             $user_id = get_the_author_meta('ID');
         }
@@ -1096,14 +1088,107 @@ trait Wp
      * @param string $url
      * @return int
      */
-    public static function getPostIdFromUrl(string $url = '')
-    {
+    public static function getPostIdFromUrl(string $url = ''): int {
         if (!$url) {
             global $wp;
             $url = home_url(add_query_arg([], $wp->request));
         }
         return url_to_postid($url);
     }
+
+    // -------------------------------------------------------------
+
+	/**
+	 * @param string $post_type
+	 *
+	 * @return array|WP_Post|null
+	 */
+	public static function getCustomCssPost( string $post_type = 'html_custom_css' ) {
+		if ( empty( $post_type ) ) {
+			$post_type = 'html_custom_css';
+		}
+
+		$custom_css_query_vars = [
+			'post_type'              => $post_type,
+			'post_status'            => get_post_stati(),
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'cache_results'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'lazy_load_term_meta'    => false,
+		];
+
+		//...
+		$post    = null;
+		$post_id = Helper::getThemeMod( 'html_custom_css_post_id' );
+
+		if ( $post_id > 0 && get_post( $post_id ) ) {
+			$post = get_post( $post_id );
+		}
+
+		// `-1` indicates no post exists; no query necessary.
+		if ( ! $post && - 1 !== $post_id ) {
+			$query = new WP_Query( $custom_css_query_vars );
+			$post  = $query->post;
+
+			set_theme_mod( 'html_custom_css_post_id', $post ? $post->ID : - 1 );
+		}
+
+		return $post;
+	}
+
+    // -------------------------------------------------------------
+
+	/**
+	 * @param string $css - CSS, stored in `post_content`.
+	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
+	 * @param string $post_type
+	 *
+	 * @return array|int|WP_Error|WP_Post|null
+	 */
+	public static function updateCustomCssPost( string $css, string $preprocessed = '', string $post_type = 'html_custom_css' )
+	{
+		$data = [
+			'post_type' => $post_type ?? 'html_custom_css',
+			'css'          => $css,
+			'preprocessed' => $preprocessed,
+		];
+
+		$post_data = array(
+			'post_type'             => $data['post_type'],
+			'post_status'           => 'publish',
+			'post_content'          => $data['css'],
+			'post_content_filtered' => $data['preprocessed'],
+		);
+
+		// Update post if it already exists, otherwise create a new one.
+		$post = self::getCustomCssPost($post_type);
+		if ( $post ) {
+			$post_data['ID'] = $post->ID;
+			$r               = wp_update_post( wp_slash( $post_data ), true );
+		} else {
+			$post_data['post_title'] = 'HTML Custom CSS';
+			$post_data['post_name'] = wp_generate_uuid4();
+			$r = wp_insert_post( wp_slash( $post_data ), true );
+
+			if ( ! is_wp_error( $r ) ) {
+				set_theme_mod( 'html_custom_css_post_id', $r );
+
+				// Trigger creation of a revision. This should be removed once #30854 is resolved.
+				$revisions = wp_get_latest_revision_id_and_total_count( $r );
+				if ( ! is_wp_error( $revisions ) && 0 === $revisions['count'] ) {
+					wp_save_post_revision( $r );
+				}
+			}
+		}
+
+		if ( is_wp_error( $r ) ) {
+			return $r;
+		}
+
+		return get_post( $r );
+	}
 
     // -------------------------------------------------------------
 

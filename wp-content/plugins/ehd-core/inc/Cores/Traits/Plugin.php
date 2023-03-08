@@ -9,14 +9,13 @@ trait Plugin
     /**
      * @var array
      */
-    public static $checkedPlugins = [];
+    public static array $checkedPlugins = [];
 
     /**
      * @param $plugin
      * @return bool|mixed
      */
-    public static function isPluginActive($plugin)
-    {
+    public static function isPluginActive($plugin) {
         if (isset(self::$checkedPlugins[$plugin])) {
             return self::$checkedPlugins[$plugin];
         }
@@ -31,8 +30,7 @@ trait Plugin
      * @param $plugin
      * @return false
      */
-    public static function isAcfPro($plugin)
-    {
+    public static function isAcfPro($plugin): bool {
         if ($plugin == 'acf') {
             if (\defined('ACF')) {
                 return ACF;
@@ -49,10 +47,10 @@ trait Plugin
 
     /**
      * @param $plugin
-     * @return mixed
+     *
+     * @return bool
      */
-    public static function isPluginMustUse($plugin)
-    {
+    public static function isPluginMustUse($plugin ): bool {
         $mu_plugins = wp_get_mu_plugins();
 
         // Must Use
@@ -71,10 +69,10 @@ trait Plugin
         if (!empty($mu_plugins)) {
             foreach ($mu_plugins as $aplugin) {
                 $plugin_data = get_plugin_data($aplugin);
-                if (!empty($plugin_data['Name']) && $plugin_data['Name'] == 'Advanced Custom Fields PRO') {
-                    $mu_plugins[] = str_replace('acf.php', 'advanced-custom-fields-pro.php', $aplugin);
-                    break;
-                }
+                //if (!empty($plugin_data['Name']) && $plugin_data['Name'] == 'Advanced Custom Fields PRO') {
+                    //$mu_plugins[] = str_replace('acf.php', 'advanced-custom-fields-pro.php', $aplugin);
+                    //break;
+                //}
             }
         }
         return self::checkPlugin($plugin, $mu_plugins);
@@ -82,10 +80,10 @@ trait Plugin
 
     /**
      * @param $plugin
-     * @return mixed
+     *
+     * @return bool
      */
-    public static function isPluginActiveForLocal($plugin)
-    {
+    public static function isPluginActiveForLocal($plugin ): bool {
         $active_plugins = get_option('active_plugins', []);
         return self::checkPlugin($plugin, $active_plugins);
     }
@@ -94,8 +92,7 @@ trait Plugin
      * @param $plugin
      * @return false
      */
-    public static function isPluginActiveForNetwork($plugin)
-    {
+    public static function isPluginActiveForNetwork($plugin): bool {
         $active_plugins = get_site_option('active_sitewide_plugins');
         if (!empty($active_plugins)) {
             $active_plugins = array_keys($active_plugins);
@@ -106,11 +103,11 @@ trait Plugin
 
     /**
      * @param $plugin
-     * @param $active_plugins
+     * @param array $active_plugins
+     *
      * @return bool
      */
-    public static function checkPlugin($plugin, $active_plugins = [])
-    {
+    public static function checkPlugin($plugin, array $active_plugins = []): bool {
         if (in_array($plugin, (array) $active_plugins)) {
             return true;
         }
@@ -140,8 +137,7 @@ trait Plugin
     /**
      * @return bool
      */
-    public static function isWoocommerceActive()
-    {
+    public static function isWoocommerceActive(): bool {
         if (class_exists('\WooCommerce')) {
             return true;
         }
@@ -152,8 +148,7 @@ trait Plugin
     /**
      * @return bool
      */
-    public static function isAcfActive()
-    {
+    public static function isAcfActive(): bool {
         if (class_exists('\ACF') && \defined('ACF')) {
             return true;
         }
@@ -164,8 +159,7 @@ trait Plugin
     /**
      * @return bool
      */
-    public static function isAcfProActive()
-    {
+    public static function isAcfProActive(): bool {
         if (class_exists('\ACF') && \defined('\ACF_PRO')) {
             return true;
         }
@@ -176,8 +170,7 @@ trait Plugin
     /**
      * @return bool
      */
-    public static function isElementorActive()
-    {
+    public static function isElementorActive(): bool {
         if (class_exists('\Elementor\\Plugin')) {
             return true;
         }
@@ -188,8 +181,7 @@ trait Plugin
     /**
      * @return bool
      */
-    public static function isElementorProActive()
-    {
+    public static function isElementorProActive(): bool {
         if (class_exists('\ElementorPro\\Plugin')) {
             return true;
         }

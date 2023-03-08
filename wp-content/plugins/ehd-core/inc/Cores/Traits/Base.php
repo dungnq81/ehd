@@ -47,7 +47,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function runClosure( $value ): mixed {
+	public static function runClosure( $value ) {
 		if ( $value instanceof \Closure || ( is_array( $value ) && is_callable( $value ) ) ) {
 			return call_user_func( $value );
 		}
@@ -64,7 +64,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function ifEmpty( mixed $value, mixed $fallback, bool $strict = false ): mixed {
+	public static function ifEmpty( $value, $fallback, bool $strict = false ) {
 		$isEmpty = $strict ? empty( $value ) : self::isEmpty( $value );
 
 		return $isEmpty ? $fallback : $value;
@@ -79,7 +79,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function ifTrue( $condition, $ifTrue, $ifFalse = null ): mixed {
+	public static function ifTrue( $condition, $ifTrue, $ifFalse = null ) {
 		return $condition ? self::runClosure( $ifTrue ) : self::runClosure( $ifFalse );
 	}
 
@@ -90,7 +90,7 @@ trait Base {
 	 *
 	 * @return bool
 	 */
-	public static function isEmpty( mixed $value ): bool {
+	public static function isEmpty( $value ): bool {
 		if ( is_string( $value ) ) {
 			return trim( $value ) === '';
 		}
@@ -105,7 +105,7 @@ trait Base {
 	 *
 	 * @return bool
 	 */
-	public static function notEmpty( mixed $value ): bool {
+	public static function notEmpty( $value ): bool {
 		return isset( $value ) && ! empty( $value );
 	}
 
@@ -140,7 +140,7 @@ trait Base {
 	 *
 	 * @return bool
 	 */
-	public static function inRange( mixed $value, $min, $max ): bool {
+	public static function inRange( $value, $min, $max ): bool {
 		$inRange = filter_var( $value, FILTER_VALIDATE_INT, [
 			'options' => [
 				'min_range' => intval( $min ),
@@ -149,29 +149,6 @@ trait Base {
 		] );
 
 		return false !== $inRange;
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * https://catswhocode.com/php-sanitize-input/
-	 *
-	 * @param       $key
-	 * @param array $request
-	 *
-	 * @return mixed
-	 */
-	public static function sanitizeInput( $key, array $request = [] ): mixed {
-		if ( isset( $request[ $key ] ) ) {
-			return $request[ $key ];
-		}
-
-		$variable = filter_input( INPUT_POST, $key );
-		if ( is_null( $variable ) && isset( $_POST[ $key ] ) ) {
-			$variable = $_POST[ $key ];
-		}
-
-		return $variable;
 	}
 
 	// --------------------------------------------------
@@ -257,7 +234,7 @@ trait Base {
 	 *
 	 * @return string|null
 	 */
-	public static function youtubeIframe( $url, int $autoplay = 0, bool $lazyload = true, bool $control = true ) {
+	public static function youtubeIframe( $url, int $autoplay = 0, bool $lazyload = true, bool $control = true ): ?string {
 		$autoplay = (int) $autoplay;
 		parse_str( wp_parse_url( $url, PHP_URL_QUERY ), $vars );
 		$home = trailingslashit( network_home_url() );
@@ -302,7 +279,7 @@ trait Base {
 	 *
 	 * @return string
 	 */
-	public static function safeMailTo( string $email, string $title = '', $attributes = '' ) {
+	public static function safeMailTo( string $email, string $title = '', $attributes = '' ): ?string {
 		if ( ! $email || ! is_email( $email ) ) {
 			return null;
 		}

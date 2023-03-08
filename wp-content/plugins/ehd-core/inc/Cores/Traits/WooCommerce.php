@@ -11,8 +11,7 @@ trait WooCommerce
      *
      * @return integer products per row
      */
-    public static function wc_loop_columns()
-    {
+    public static function wc_loop_columns(): int {
         $columns = 4; // 4 products per row
 
         if (function_exists('wc_get_default_products_per_row')) {
@@ -29,8 +28,7 @@ trait WooCommerce
      *
      * @return bool
      */
-    public static function wc_cart_available()
-    {
+    public static function wc_cart_available(): bool {
         $woo = \WC();
         return $woo instanceof \WooCommerce && $woo->cart instanceof \WC_Cart;
     }

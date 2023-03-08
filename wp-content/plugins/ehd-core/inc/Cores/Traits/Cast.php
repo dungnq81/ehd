@@ -16,8 +16,7 @@ trait Cast
      * @param mixed $value
      * @return int
      */
-    public static function toInt(mixed $value)
-    {
+    public static function toInt($value): int {
         return (int) round(self::toFloat($value));
     }
 
@@ -25,8 +24,7 @@ trait Cast
      * @param mixed $value
      * @return float
      */
-    public static function toFloat(mixed $value)
-    {
+    public static function toFloat($value): float {
         return (float) filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND);
     }
 
@@ -35,8 +33,7 @@ trait Cast
      * @param bool  $explode
      * @return array
      */
-    public static function toArray(mixed $value, bool $explode = true)
-    {
+    public static function toArray($value, bool $explode = true): array {
         if (is_object($value)) {
             $reflection = new \ReflectionObject($value);
             $properties = $reflection->hasMethod('toArray')
@@ -59,8 +56,7 @@ trait Cast
      *
      * @return string
      */
-    public static function toString(mixed $value, bool $strict = true)
-    {
+    public static function toString($value, bool $strict = true): string {
         if (is_object($value) && in_array('__toString', get_class_methods($value))) {
             return (string) $value->__toString();
         }
@@ -81,8 +77,7 @@ trait Cast
      *
      * @return bool
      */
-    public static function toBool(mixed $value)
-    {
+    public static function toBool($value): bool {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
@@ -90,8 +85,7 @@ trait Cast
      * @param mixed $value
      * @return object
      */
-    public static function toObject(mixed $value)
-    {
+    public static function toObject($value): object {
         if (!is_object($value)) {
             return (object) self::toArray($value);
         }

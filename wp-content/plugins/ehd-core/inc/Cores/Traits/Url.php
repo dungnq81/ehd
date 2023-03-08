@@ -6,8 +6,7 @@ namespace EHD\Cores\Traits;
 
 trait Url
 {
-    public static function urlToPath($url)
-    {
+    public static function urlToPath($url): string {
         return substr(get_home_path(), 0, -1) . wp_make_link_relative($url);
     }
 
@@ -28,8 +27,7 @@ trait Url
      *
      * @return string
      */
-    public static function home(string $path = '')
-    {
+    public static function home(string $path = ''): string {
         return trailingslashit(network_home_url($path));
     }
 
@@ -38,8 +36,7 @@ trait Url
      *
      * @return string
      */
-    public static function current($query_vars = false)
-    {
+    public static function current( bool $query_vars = false): string {
         global $wp;
         if (true === $query_vars) {
             return add_query_arg($wp->query_vars, network_home_url($wp->request));
@@ -60,8 +57,7 @@ trait Url
      *
      * @return string
      */
-    public static function normalizePath(string $path)
-    {
+    public static function normalizePath(string $path): string {
         // Backslash to slash convert
         if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
             $path = preg_replace('/([^\\\])\\\+([^\\\])/s', "$1/$2", $path);
@@ -91,21 +87,20 @@ trait Url
      *
      * @return array
      */
-    public static function queries($url)
-    {
+    public static function queries( string $url): array {
         $queries = [];
         parse_str(wp_parse_url($url, PHP_URL_QUERY), $queries);
         return $queries;
     }
 
     /**
-     * @param string     $url
+     * @param string $url
      * @param string     $param
      * @param string|int $fallback
      *
      * @return string
      */
-    public static function query($url, $param, $fallback = null)
+    public static function query( string $url, $param, $fallback = null)
     {
         $queries = self::queries($url);
         if (!isset($queries[$param])) {
@@ -116,9 +111,10 @@ trait Url
 
     /**
      * @param string $url
+     *
      * @return int|false
      */
-    public static function remoteStatusCheck($url)
+    public static function remoteStatusCheck( string $url)
     {
         $response = wp_safe_remote_head($url, [
             'timeout'   => 5,

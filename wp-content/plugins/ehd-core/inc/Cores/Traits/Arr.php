@@ -46,7 +46,7 @@ trait Arr {
 	 *
 	 * @return array
 	 */
-	public static function convertFromString( mixed $value, mixed $callback = null ): array {
+	public static function convertFromString( $value, $callback = null ): array {
 		if ( is_scalar( $value ) ) {
 			$value = array_map( 'trim', explode( ',', (string) $value ) );
 		}
@@ -59,7 +59,7 @@ trait Arr {
 	 *
 	 * @return array
 	 */
-	public static function reIndex( mixed $array ): array {
+	public static function reIndex( $array ): array {
 		return self::isIndexedAndFlat( $array ) ? array_values( $array ) : $array;
 	}
 
@@ -68,7 +68,7 @@ trait Arr {
 	 *
 	 * @return bool
 	 */
-	public static function isIndexedAndFlat( mixed $array ): bool {
+	public static function isIndexedAndFlat( $array ): bool {
 		if ( ! is_array( $array ) || array_filter( $array, 'is_array' ) ) {
 			return false;
 		}
@@ -83,7 +83,7 @@ trait Arr {
 	 *
 	 * @return array
 	 */
-	public static function insertAfter( $key, array $array, array $insert_array ): array {
+	public static function insertAfter( string $key, array $array, array $insert_array ): array {
 		return self::insert( $array, $insert_array, $key, 'after' );
 	}
 

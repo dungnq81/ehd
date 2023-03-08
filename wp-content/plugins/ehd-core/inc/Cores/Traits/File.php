@@ -12,8 +12,7 @@ trait File
      *
      * @return string
      */
-    public static function fileExtension($filename, bool $include_dot = false)
-    {
+    public static function fileExtension($filename, bool $include_dot = false): string {
         $dot = '';
         if ($include_dot === true) {
             $dot = '.';
@@ -27,8 +26,7 @@ trait File
      *
      * @return string
      */
-    public static function fileName($filename, bool $include_ext = false)
-    {
+    public static function fileName($filename, bool $include_ext = false): string {
         return $include_ext ? pathinfo(
                 $filename,
                 PATHINFO_FILENAME
@@ -41,8 +39,7 @@ trait File
      *
      * @return false|mixed|string
      */
-    public static function Read($file, bool $convert_to_array = true)
-    {
+    public static function Read($file, bool $convert_to_array = true): mixed {
         $file = @file_get_contents($file);
         if (!empty($file)) {
             if ($convert_to_array) {
@@ -60,8 +57,7 @@ trait File
      *
      * @return bool
      */
-    public static function Save($path, $data, bool $json = true)
-    {
+    public static function Save($path, $data, bool $json = true): bool {
         try {
             if ($json) {
                 $data = self::jsonEncodePrettify($data);
@@ -89,8 +85,7 @@ trait File
      * @param $files
      * @return array
      */
-    public static function arrayDir($dir, $hidden = false, $files = true)
-    {
+    public static function arrayDir($dir, $hidden = false, $files = true): array {
         $result = [];
         $cdir = scandir($dir);
 
@@ -113,8 +108,7 @@ trait File
         return $result;
     }
 
-    public static function isEmptyDir($dirname)
-    {
+    public static function isEmptyDir($dirname): bool {
         if (!is_dir($dirname)) {
             return false;
         }

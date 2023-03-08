@@ -6,6 +6,8 @@ namespace EHD\Cores\Traits;
 
 trait Str
 {
+
+
 	/**
 	 * https://github.com/cofirazak/phpMissingFunctions
 	 *
@@ -27,10 +29,11 @@ trait Str
 		       mb_substr($str, 1, null, $encoding);
 	}
 
-    /**
-     * @param $content
-     * @return array|string|string[]
-     */
+	/**
+	 * @param $content
+	 *
+	 * @return array|string|string[]
+	 */
     public static function removeEmptyP($content)
     {
         return \str_replace('<p></p>', '', $content);
@@ -41,8 +44,7 @@ trait Str
      *
      * @return string
      */
-    public static function camelCase(string $string)
-    {
+    public static function camelCase(string $string): string {
         $string = ucwords(str_replace(['-', '_'], ' ', trim($string)));
         return str_replace(' ', '', $string);
     }
@@ -52,8 +54,7 @@ trait Str
      *
      * @return string
      */
-    public static function dashCase(string $string)
-    {
+    public static function dashCase(string $string): string {
         return str_replace('_', '-', self::snakeCase($string));
     }
 
@@ -62,8 +63,7 @@ trait Str
      *
      * @return string
      */
-    public static function snakeCase(string $string)
-    {
+    public static function snakeCase(string $string): string {
         if (!ctype_lower($string)) {
             $string = preg_replace('/\s+/u', '', $string);
             $string = preg_replace('/(.)(?=[A-Z])/u', '$1_', $string);
@@ -77,8 +77,7 @@ trait Str
      *
      * @return string
      */
-    public static function random(int $length = 8)
-    {
+    public static function random(int $length = 8): string {
         $text = base64_encode(wp_generate_password());
         return substr(str_replace(['/', '+', '='], '', $text), 0, $length);
     }
@@ -90,8 +89,7 @@ trait Str
      *
      * @return string
      */
-    public static function prefix($string, string $prefix, $trim = null)
-    {
+    public static function prefix($string, string $prefix, $trim = null): string {
         if ('' === $string) {
             return $string;
         }
@@ -107,8 +105,7 @@ trait Str
      *
      * @return string
      */
-    public static function removePrefix(string $string, string $prefix)
-    {
+    public static function removePrefix(string $string, string $prefix): string {
         return self::startsWith($prefix, $string)
             ? substr($string, strlen($prefix))
             : $string;
@@ -120,8 +117,7 @@ trait Str
      *
      * @return bool
      */
-    public static function startsWith($needles, $haystack)
-    {
+    public static function startsWith($needles, $haystack): bool {
         $needles = (array) $needles;
         foreach ($needles as $needle) {
             if (str_starts_with($haystack, $needle)) {
@@ -137,8 +133,7 @@ trait Str
      *
      * @return bool
      */
-    public static function endsWith($needles, $haystack)
-    {
+    public static function endsWith($needles, $haystack): bool {
         $needles = (array) $needles;
         foreach ($needles as $needle) {
             if (str_ends_with($haystack, $needle)) {
@@ -154,8 +149,7 @@ trait Str
      *
      * @return string
      */
-    public static function suffix($string, $suffix)
-    {
+    public static function suffix($string, $suffix): string {
         if (!self::endsWith($suffix, $string)) {
             return $string . $suffix;
         }
@@ -169,8 +163,7 @@ trait Str
      *
      * @return string
      */
-    public static function replaceFirst($search, $replace, $subject)
-    {
+    public static function replaceFirst($search, $replace, $subject): string {
         if ($search == '') {
             return $subject;
         }
@@ -188,8 +181,7 @@ trait Str
      *
      * @return string
      */
-    public static function replaceLast($search, $replace, $subject)
-    {
+    public static function replaceLast($search, $replace, $subject): string {
         $position = strrpos($subject, $search);
         if ('' !== $search && false !== $position) {
             return substr_replace($subject, $replace, $position, strlen($search));
@@ -206,8 +198,7 @@ trait Str
      *
      * @return bool
      */
-    public static function strposOffset($haystack, $needles, int $offset = 0)
-    {
+    public static function strposOffset($haystack, $needles, int $offset = 0): bool {
         if (!is_array($needles)) {
             $needles = [$needles];
         }
@@ -225,8 +216,7 @@ trait Str
      *
      * @return string
      */
-    public static function titleCase($string)
-    {
+    public static function titleCase($string): string {
         $value = str_replace(['-', '_'], ' ', $string);
         return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
@@ -241,8 +231,7 @@ trait Str
      *
      * @return string The list of keywords in a comma separated string form.
      */
-    public static function keyWords(string $str)
-    {
+    public static function keyWords(string $str): string {
         $str = preg_replace('/(\v|\s){1,}/u', ' ', $str);
         return preg_replace('/[\s]+/', ', ', trim($str));
     }
@@ -254,8 +243,7 @@ trait Str
      *
      * @return string
      */
-    public static function truncate($value, $length, $end = '')
-    {
+    public static function truncate($value, $length, $end = ''): string {
         return mb_strwidth($value, 'UTF-8') > $length
             ? mb_substr($value, 0, $length, 'UTF-8') . $end
             : $value;

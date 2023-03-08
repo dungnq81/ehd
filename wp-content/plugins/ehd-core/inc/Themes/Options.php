@@ -2,6 +2,7 @@
 
 namespace EHD\Themes;
 
+use EHD\Cores\Helper;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -58,59 +59,62 @@ final class Options
     {
         if (isset($_POST['ehd_update_settings'])) {
 
-            $nonce = $_REQUEST['_wpnonce'];
-            if (!wp_verify_nonce($nonce, 'ehd_settings')) {
-                wp_die(__('Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN));
-            }
+	        $nonce = $_REQUEST['_wpnonce'];
+	        if ( ! wp_verify_nonce( $nonce, 'ehd_settings' ) ) {
+		        wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN ) );
+	        }
 
-            /** SMTP */
+	        /** SMTP */
 
-            $smtp_host = !empty($_POST['smtp_host']) ? sanitize_text_field($_POST['smtp_host']) : '';
-            $smtp_auth = !empty($_POST['smtp_auth']) ? sanitize_text_field($_POST['smtp_auth']) : '';
-            $smtp_username = !empty($_POST['smtp_username']) ? sanitize_text_field($_POST['smtp_username']) : '';
+	        $smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
+	        $smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
+	        $smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
 
-            if (!empty($_POST['smtp_password'])) {
-                $smtp_password = sanitize_text_field($_POST['smtp_password']);
-                $smtp_password = wp_unslash($smtp_password); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
-                $smtp_password = base64_encode($smtp_password);
-            }
+	        if ( ! empty( $_POST['smtp_password'] ) ) {
+		        $smtp_password = sanitize_text_field( $_POST['smtp_password'] );
+		        $smtp_password = wp_unslash( $smtp_password ); // This removes slash (automatically added by WordPress) from the password when apostrophe is present
+		        $smtp_password = base64_encode( $smtp_password );
+	        }
 
-            $smtp_encryption = !empty($_POST['smtp_encryption']) ? sanitize_text_field($_POST['smtp_encryption']) : '';
-            $smtp_port = !empty($_POST['smtp_port']) ? sanitize_text_field($_POST['smtp_port']) : '';
-            $smtp_from_email = !empty($_POST['smtp_from_email']) ? sanitize_email($_POST['smtp_from_email']) : '';
-            $smtp_from_name = !empty($_POST['smtp_from_name']) ? sanitize_text_field($_POST['smtp_from_name']) : '';
-            $smtp_disable_ssl_verification = !empty($_POST['smtp_disable_ssl_verification']) ? sanitize_text_field($_POST['smtp_disable_ssl_verification']) : '';
+	        $smtp_encryption               = ! empty( $_POST['smtp_encryption'] ) ? sanitize_text_field( $_POST['smtp_encryption'] ) : '';
+	        $smtp_port                     = ! empty( $_POST['smtp_port'] ) ? sanitize_text_field( $_POST['smtp_port'] ) : '';
+	        $smtp_from_email               = ! empty( $_POST['smtp_from_email'] ) ? sanitize_email( $_POST['smtp_from_email'] ) : '';
+	        $smtp_from_name                = ! empty( $_POST['smtp_from_name'] ) ? sanitize_text_field( $_POST['smtp_from_name'] ) : '';
+	        $smtp_disable_ssl_verification = ! empty( $_POST['smtp_disable_ssl_verification'] ) ? sanitize_text_field( $_POST['smtp_disable_ssl_verification'] ) : '';
 
-            $smtp_options = [
-                'smtp_host'                     => $smtp_host,
-                'smtp_auth'                     => $smtp_auth,
-                'smtp_username'                 => $smtp_username,
-                'smtp_encryption'               => $smtp_encryption,
-                'smtp_port'                     => $smtp_port,
-                'smtp_from_email'               => $smtp_from_email,
-                'smtp_from_name'                => $smtp_from_name,
-                'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
-            ];
+	        $smtp_options = [
+		        'smtp_host'                     => $smtp_host,
+		        'smtp_auth'                     => $smtp_auth,
+		        'smtp_username'                 => $smtp_username,
+		        'smtp_encryption'               => $smtp_encryption,
+		        'smtp_port'                     => $smtp_port,
+		        'smtp_from_email'               => $smtp_from_email,
+		        'smtp_from_name'                => $smtp_from_name,
+		        'smtp_disable_ssl_verification' => $smtp_disable_ssl_verification,
+	        ];
 
-            if (!empty($smtp_password)) {
-                $smtp_options['smtp_password'] = $smtp_password;
-            }
+	        if ( ! empty( $smtp_password ) ) {
+		        $smtp_options['smtp_password'] = $smtp_password;
+	        }
 
-            self::_smtp__update_options($smtp_options);
+	        self::_smtp__update_options( $smtp_options );
 
-            /** Aspect Ratio */
+	        /** Aspect Ratio */
 	        $aspect_ratio_options = [];
-	        $ar_post_type_list = apply_filters('ar_post_type_list', [ 'blogs' ]);
-            foreach ($ar_post_type_list as $i => $ar) {
-	            $aspect_ratio_options['ar-' . $ar . '-width'] = !empty($_POST[$ar . '-width']) ? sanitize_text_field($_POST[$ar . '-width']) : 3;
-	            $aspect_ratio_options['ar-' . $ar . '-height'] = !empty($_POST[$ar . '-height']) ? sanitize_text_field($_POST[$ar . '-height']) : 2;
-            }
+	        $ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
+	        foreach ( $ar_post_type_list as $i => $ar ) {
+		        $aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 3;
+		        $aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 2;
+	        }
 
-	        self::_aspect_ratio__update_options($aspect_ratio_options);
+	        self::_aspect_ratio__update_options( $aspect_ratio_options );
 
-            /** */
+	        /** Custom CSS */
+	        $html_custom_css = $_POST['html_custom_css'] ?? '';
+	        Helper::updateCustomCssPost( $html_custom_css, '', 'html_custom_css' );
 
-            self::_message_success();
+	        /** */
+	        self::_message_success();
         }
 
         ?>
