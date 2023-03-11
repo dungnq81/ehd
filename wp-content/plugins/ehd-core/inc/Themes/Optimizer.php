@@ -283,7 +283,7 @@ final class Optimizer
 	 *
 	 * @return false|mixed|string
 	 */
-    public function remove_version_scripts_styles($src): mixed {
+    public function remove_version_scripts_styles($src) {
         if ($src && str_contains($src, 'ver=')) {
             $src = remove_query_arg('ver', $src);
         }

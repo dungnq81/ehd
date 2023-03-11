@@ -100,6 +100,7 @@ final class Options
 	        self::_smtp__update_options( $smtp_options );
 
 	        /** Aspect Ratio */
+
 	        $aspect_ratio_options = [];
 	        $ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
 	        foreach ( $ar_post_type_list as $i => $ar ) {
@@ -110,8 +111,9 @@ final class Options
 	        self::_aspect_ratio__update_options( $aspect_ratio_options );
 
 	        /** Custom CSS */
+
 	        $html_custom_css = $_POST['html_custom_css'] ?? '';
-	        Helper::updateCustomCssPost( $html_custom_css, '', 'html_custom_css' );
+	        Helper::updateCustomCssPost( $html_custom_css, 'html_custom_css' );
 
 	        /** */
 	        self::_message_success();
@@ -303,6 +305,7 @@ final class Options
 	 * @param $new_options
 	 *
 	 * @return void
+     * @todo check (no)
 	 */
     private function _aspect_ratio__update_options($new_options): void
     {

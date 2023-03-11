@@ -6,8 +6,6 @@ namespace EHD\Cores\Traits;
 
 trait Str
 {
-
-
 	/**
 	 * https://github.com/cofirazak/phpMissingFunctions
 	 *
@@ -249,6 +247,30 @@ trait Str
             : $value;
     }
 
+	/**
+	 * @param $string
+	 * @param string $replace
+	 * @param bool $remove_js
+	 * @param bool $flatten
+	 * @param null $allowed_tags
+	 *
+	 * @return string
+	 */
+	public static function stripAllTags($string, string $replace = ' ', bool $remove_js = true, bool $flatten = false, $allowed_tags = null): string
+	{
+		if (true === $remove_js) {
+			$string = preg_replace('#<script[^>]*>([^<]+)</script>#', $replace, $string);
+		}
+
+		$string = strip_tags($string, $allowed_tags);
+
+		if (true === $flatten) {
+			return preg_replace('/\s+/', $replace, $string);
+		}
+
+		return trim(preg_replace('/ {2,}/', $replace, $string));
+	}
+
     /**
      * @param      $string
      * @param bool $strip_tags
@@ -256,19 +278,18 @@ trait Str
      */
     public static function stripSpace($string, bool $strip_tags = true)
     {
+	    if (true === $strip_tags) {
+		    $string = strip_tags($string);
+	    }
+
         $string = preg_replace(
             '/(\v|\s){1,}/u',
             '',
             $string
         );
 
-        $string = preg_replace('/\s+/', '', $string);
         $string = preg_replace('~\x{00a0}~', '', $string);
 
-        if (true === $strip_tags) {
-            $string = strip_tags($string);
-        }
-
-        return $string;
+	    return preg_replace('/\s+/', '', $string);
     }
 }

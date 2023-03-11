@@ -1142,16 +1142,16 @@ trait Wp
 
 	/**
 	 * @param string $css - CSS, stored in `post_content`.
-	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
 	 * @param string $post_type
+	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomCssPost( string $css, string $preprocessed = '', string $post_type = 'html_custom_css' )
+	public static function updateCustomCssPost( string $css, string $post_type = 'html_custom_css', string $preprocessed = '' )
 	{
 		$data = [
 			'post_type' => $post_type ?? 'html_custom_css',
-			'css'          => $css,
+			'css'          => Helper::stripAllTags($css, ' ', true, false),
 			'preprocessed' => $preprocessed,
 		];
 

@@ -4,6 +4,7 @@ use EHD\Cores\Helper;
 
 $html_custom_css_post = Helper::getCustomCssPost();
 $css = $html_custom_css_post->post_content ?? '';
+$css = wp_unslash($css);
 
 ?>
 <h2><?php _e('Custom CSS Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></h2>
