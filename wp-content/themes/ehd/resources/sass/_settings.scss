@@ -30,7 +30,7 @@ $global-screen-large: rem-calc(1300);
 $mobile-width: rem-calc(640);
 $desktop-width: rem-calc(1024);
 $xdesktop-width: rem-calc(1200);
-$xxdesktop-width: rem-calc(1440);
+$xxdesktop-width: rem-calc(1480);
 $xxxdesktop-width: rem-calc(1620);
 
 $wp-small-width: rem-calc(600);
@@ -89,6 +89,6 @@ $gap: $gutter * 2;
 $gap-mobile: $gutter-mobile * 2;
 
 /** */
-$header-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
-$body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Arial, cursive, sans-serif;
+$header-font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
+$body-font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
 $font-awesome: "Font Awesome 6 Pro", "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;

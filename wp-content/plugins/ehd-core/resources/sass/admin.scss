@@ -272,7 +272,6 @@ div[data-notice_id="elementor_dev_promote"] {
 table.fixed {
     th.column-term_order {
         width: 74px;
-        hyphens: auto;
         padding: 0;
 
         a, span {
@@ -284,7 +283,6 @@ table.fixed {
 
     td.column-term_order {
         width: 74px;
-        hyphens: auto;
         text-align: center;
     }
 }
@@ -522,7 +520,7 @@ body.toplevel_page_ehd-settings {
 
                         .inline-group {
                             display: flex;
-                            align-items: end;
+                            align-items: flex-end;
                             flex-wrap: nowrap;
 
                             & > span {

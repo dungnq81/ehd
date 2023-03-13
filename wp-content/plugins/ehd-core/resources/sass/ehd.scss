@@ -4,10 +4,9 @@
 html {
     font-family: sans-serif;
     font-variant-ligatures: no-common-ligatures;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
     -webkit-touch-callout: none;
 }
 
@@ -74,11 +73,6 @@ img {
 
 button[type="submit"], button[type="reset"], button[type="button"] {
     cursor: pointer;
-}
-
-.draggable, .o-draggable {
-    touch-action: none;
-    user-select: none;
 }
 
 .hide, .hidden {
