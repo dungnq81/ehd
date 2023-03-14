@@ -269,7 +269,7 @@ final class Optimizer
      */
     public function style_loader_tag(string $html, string $handle) : string
     {
-        // add style handles to the array below
+        /* add style handles to the array below */
         $styles = apply_filters('defer_style_loader_tag', []);
         return Helper::lazyStyleTag($styles, $html, $handle);
     }
@@ -309,11 +309,13 @@ final class Optimizer
         $q = $wp_query->query_vars;
         $n = !empty($q['exact']) ? '' : '%';
 
-        $search = $searchand = '';
-        foreach (Helper::toArray($q['search_terms']) as $term) {
+        $search = $search_and = '';
+
+        $search_terms = Helper::toArray($q['search_terms']);
+        foreach ($search_terms as $term) {
             $term = esc_sql($wpdb->esc_like($term));
-            $search .= "{$searchand}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
-            $searchand = " AND ";
+            $search .= "{$search_and}($wpdb->posts.post_title LIKE '{$n}{$term}{$n}')";
+	        $search_and = " AND ";
         }
 
         if (!empty($search)) {
