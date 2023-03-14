@@ -196,6 +196,7 @@ final class Options
 	 * @throws Exception
 	 */
 	public function setup_phpmailer_init( $phpmailer ): void {
+		
 		// (Re)create it, if it's gone missing.
 		if ( ! ( $phpmailer instanceof PHPMailer ) ) {
 			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';

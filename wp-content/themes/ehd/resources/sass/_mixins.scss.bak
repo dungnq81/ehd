@@ -47,17 +47,18 @@
     }
 }
 
-@mixin box($width: 300, $height: $width, $border_radius: false) {
+@mixin box($width: 300, $height: $width, $border_radius: 0) {
 
     width: fs($width);
     height: fs($height);
 
-    @if type-of($border_radius) != bool {
+    $border_radius: abs($border_radius);
+    @if 0 < $border_radius {
         border-radius: fs($border_radius);
     }
 }
 
-@mixin media-box($m: 150, $t: false, $d: false, $border_radius: false) {
+@mixin media-box($m: 150, $t: false, $d: false, $border_radius: 0) {
     @if false != $m {
         @include box($m);
     }
@@ -72,7 +73,8 @@
         }
     }
 
-    @if type-of($border_radius) != bool {
+    $border_radius: abs($border_radius);
+    @if 0 < $border_radius {
         border-radius: fs($border_radius);
     }
 }
@@ -260,12 +262,23 @@
     }
 
     @if is-int($total_n) and is-int($self_n) and $self_n > 0 {
+
         @if $total_n == $self_n {
             width: percentage(1);
         } @else if $gap == 0 and $total_n > $self_n {
             width: percentage(divide($self_n, $total_n));
         } @else if $gap > 0 and $total_n > $self_n {
-            width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
+
+            // support aspect-ratio tag
+            @supports (aspect-ratio: 1) or (grid-gap: 1rem) {
+                width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
+            }
+
+            // not support aspect-ratio tag, there will also skip the gap
+            @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
+                width: percentage(divide($self_n, $total_n));
+                padding: fs(divide($gap, 2));
+            }
         }
     }
 }
@@ -288,34 +301,38 @@
     }
 }
 
-@mixin gap($g: 0) {
-    @if is-int($g) {
-        $g: abs($g);
-        grid-gap: fs($g);
-        gap: fs($g);
-    }
-}
-
 @mixin media-gap($m: 0, $t: false, $d: false) {
-    @if is-int($m) and $m > 0 {
-        @include gap($m);
-    }
+    $gap_m: abs($gap_m);
+    $gap: abs($gap);
 
-    @if is-int($t) and $t >= 0 {
-        @include mq-min(mobile) {
-            @include gap($t);
+    // support aspect-ratio tag, there will also be support flex gap tag
+    @supports (aspect-ratio: 1) or (grid-gap: 1rem) {
+        @if $gap_m > 0 {
+            grid-gap: fs($gap_m);
+            gap: fs($gap_m);
+        }
+        @if $gap > 0 {
+            @include mq-min(mobile) {
+                grid-gap: fs($gap);
+                gap: fs($gap);
+            }
         }
     }
 
-    @if is-int($d) and $d >= 0 {
-        @include mq-min(desktop) {
-            @include gap($d);
-        }
+    // you just need to check if old Safari really doesn't support such css tag
+    @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
+        $gutter_m: divide($gap_m, 2);
+        $gutter: divide($gap, 2);
+
+        grid-gap: 0; // reset
+        gap: 0;
+        @include mx-gutter($gutter_m, $gutter);
+        @include my-gutter($gutter_m, $gutter);
     }
 }
 
 @mixin flex-grid($m: 1, $t: false, $d: false, $gap_m: 0, $gap: 0, $class_cell: '.cell') {
-    @include media-gap($gap_m, $gap, false);
+    @include media-gap($gap_m, $gap);
 
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
@@ -327,12 +344,15 @@
 }
 
 @mixin mx-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    $gutter_m: abs($gutter_m);
+    $gutter: abs($gutter);
+
+    @if $gutter_m > 0 {
         margin-left: -#{fs($gutter_m)};
         margin-right: -#{fs($gutter_m)};
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             margin-left: -#{fs($gutter)};
             margin-right: -#{fs($gutter)};
@@ -341,12 +361,15 @@
 }
 
 @mixin my-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    $gutter_m: abs($gutter_m);
+    $gutter: abs($gutter);
+
+    @if $gutter_m > 0 {
         margin-top: -#{fs($gutter_m)};
         margin-bottom: -#{fs($gutter_m)};
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             margin-top: -#{fs($gutter)};
             margin-bottom: -#{fs($gutter)};
@@ -355,12 +378,14 @@
 }
 
 @mixin px-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    $gutter_m: abs($gutter_m);
+    $gutter: abs($gutter);
+
+    @if $gutter_m > 0 {
         padding-left: fs($gutter_m);
         padding-right: fs($gutter_m);
     }
-
-    @if is-int($gutter) and $gutter > 0 {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             padding-left: fs($gutter);
             padding-right: fs($gutter);
@@ -369,12 +394,14 @@
 }
 
 @mixin py-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    $gutter_m: abs($gutter_m);
+    $gutter: abs($gutter);
+
+    @if $gutter_m > 0 {
         padding-top: fs($gutter_m);
         padding-bottom: fs($gutter_m);
     }
-
-    @if is-int($gutter) and $gutter > 0 {
+    @if $gutter > 0 {
         @include mq-min(mobile) {
             padding-top: fs($gutter);
             padding-bottom: fs($gutter);
@@ -382,10 +409,15 @@
     }
 }
 
-@mixin cell() {
+@mixin cell($width: 100%) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
+
+    $width: abs($width);
+    @if 0 != $width {
+        width: $width;
+    }
 }
 
 @mixin grid-container($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
@@ -393,12 +425,14 @@
     margin-left: auto;
     margin-right: auto;
 
-    @if is-int($padding_m) and $padding_m > 0 {
+    $padding_m: abs($padding_m);
+    $padding: abs($padding);
+
+    @if $padding_m > 0 {
         padding-left: fs($padding_m);
         padding-right: fs($padding_m);
     }
-
-    @if is-int($padding) and $padding > 0 {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
             padding-right: fs($padding);
@@ -411,7 +445,7 @@
         }
     }
 
-    @if true == $widescreen {
+    @if $widescreen == true {
         @include mq-min(xxxdesktop) {
             max-width: 100%;
             padding-left: fs(165 + $gutter);
@@ -440,7 +474,7 @@
     //@include mx-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
-            @include cell;
+            @include cell();
         }
 
         @include px-gutter($padding_m, $padding);
@@ -451,7 +485,7 @@
     //@include my-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
-            @include cell;
+            @include cell();
         }
         @include py-gutter($padding_m, $padding);
     }
@@ -480,11 +514,13 @@
     margin: 0 0 0 auto;
     max-width: calc(50% + #{divide($global-screen, 2)});
 
-    @if is-int($padding_m) and $padding_m > 0 {
+    $padding_m: abs($padding_m);
+    $padding: abs($padding);
+    @if $padding_m > 0 {
         padding-left: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding > 0 {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
         }
@@ -505,11 +541,13 @@
     margin: 0 auto 0 0;
     max-width: calc(50% + #{divide($global-screen, 2)});
 
-    @if is-int($padding_m) and $padding_m > 0 {
+    $padding_m: abs($padding_m);
+    $padding: abs($padding);
+    @if $padding_m > 0 {
         padding-right: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding > 0 {
+    @if $padding > 0 {
         @include mq-min(mobile) {
             padding-right: fs($padding);
         }
@@ -528,50 +566,28 @@
 
 /** padding-left, padding-right, left, right ... */
 @mixin position-screen($css_property: padding-left, $gutter_m: 10, $gutter: 15, $grid_extra: false) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
-        #{$css_property}: fs($gutter_m);
+    $_property: abs($gutter_m);
+    #{$css_property}: fs($_property);
+
+    @include mq-min(mobile) {
+        $_property: abs($gutter);
+        #{$css_property}: fs($_property);
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
-        @include mq-min(mobile) {
-            #{$css_property}: fs($gutter);
-        }
+    @media only screen and (min-width: $global-screen-medium) {
+        $_property: calc(50vw - #{divide($global-screen-medium, 2)} + #{fs($gutter)});
+        #{$css_property}: $_property;
     }
 
-    @if is-int($gutter) and $gutter > 0 {
-        @media only screen and (min-width: $global-screen-medium) {
-            $_property: calc(50vw - #{divide($global-screen-medium, 2)} + #{fs($gutter)});
+    @if true == $grid_extra {
+        @include mq-min(xxdesktop) {
+            $_property: calc(50vw - #{divide($global-screen-large, 2)} + #{fs($gutter)});
             #{$css_property}: $_property;
         }
-
-        @if true == $grid_extra {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen-large, 2)} + #{fs($gutter)});
-                #{$css_property}: $_property;
-            }
-        } @else {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen, 2)} + #{fs($gutter)});
-                #{$css_property}: $_property;
-            }
-        }
-
     } @else {
-        @media only screen and (min-width: $global-screen-medium) {
-            $_property: calc(50vw - #{divide($global-screen-medium, 2)});
+        @include mq-min(xxdesktop) {
+            $_property: calc(50vw - #{divide($global-screen, 2)} + #{fs($gutter)});
             #{$css_property}: $_property;
-        }
-
-        @if true == $grid_extra {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen-large, 2)});
-                #{$css_property}: $_property;
-            }
-        } @else {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen, 2)});
-                #{$css_property}: $_property;
-            }
         }
     }
 }
@@ -583,6 +599,12 @@
 
 @mixin flex-center {
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin inline-flex-center {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
@@ -601,8 +623,10 @@
     color: $c1;
     &:hover {
         color: $c2;
-        @if false == $text-decoration {
+        @if $text-decoration == false {
             text-decoration: none;
+        } @else {
+            text-decoration: underline;
         }
     }
 }
@@ -620,9 +644,8 @@
     &::before {
         content: "";
         display: inline-block;
-        @include box($width, $height);
-        /*width: $width;*/
-        /*height: $height;*/
+        width: $width;
+        height: $height;
         position: absolute;
         bottom: $bottom;
         left: $left;
@@ -832,20 +855,16 @@
     transition: all 300ms ease;
     color: $c2;
     &:hover {
-        box-shadow: 0 0 0 0 $c1 inset, 0 3px 10px transparentize($c2, 0.7);
+        box-shadow: 0 0 0 0 $c1 inset, 0 3px 10px rgb(0 0 0 / 30%);
         color: $c1;
         background-color: $c2;
     }
 }
 
 // http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect2($border_radius: false, $c: #000000, $opacity_hover: 0.15) {
+@mixin _effect2($border_radius: 0, $c: #000000, $opacity_hover: 0.15) {
     position: relative;
-
-    @if type-of($border_radius) != bool {
-        border-radius: fs($border_radius);
-    }
-
+    border-radius: fs($border_radius);
     &::before {
         position: absolute;
         left: 0;
@@ -856,10 +875,7 @@
         background-color: $c;
         transition: 0.5s;
         opacity: 0;
-
-        @if type-of($border_radius) != bool {
-            border-radius: fs($border_radius);
-        }
+        border-radius: fs($border_radius);
     }
     &:hover {
         &::before {
@@ -870,10 +886,11 @@
 }
 
 // http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect3($bg_color: rgba(255, 255, 255, 0.2), $border-radius: false) {
+@mixin _effect3($bg_color: rgba(255, 255, 255, 0.2), $border: 0) {
 
-    @if type-of($border_radius) != bool {
-        border-radius: fs($border_radius);
+    $border-radius: abs($border);
+    @if 0 < $border-radius {
+        border-radius: fs($border-radius);
     }
 
     position: relative;
@@ -888,8 +905,8 @@
         opacity: 0;
         z-index: 10;
 
-        @if type-of($border_radius) != bool {
-            border-radius: fs($border_radius);
+        @if 0 < $border-radius {
+            border-radius: fs($border-radius);
         }
     }
 

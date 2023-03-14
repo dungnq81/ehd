@@ -60,7 +60,6 @@ $(function () {
 });
 
 /**
- *
  * @param cname
  * @param cvalue
  * @param exdays
@@ -73,7 +72,6 @@ function _setCookie(cname, cvalue, exdays) {
 }
 
 /**
- *
  * @param cname
  * @returns {string}
  */
