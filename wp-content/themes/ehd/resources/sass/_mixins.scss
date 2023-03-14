@@ -587,6 +587,12 @@
     justify-content: center;
 }
 
+@mixin inline-flex-center {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @mixin flex-shrink {
     flex: 0 0 auto;
     max-width: 100%;

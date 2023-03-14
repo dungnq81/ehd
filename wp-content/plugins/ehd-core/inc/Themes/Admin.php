@@ -301,7 +301,7 @@ final class Admin
      * @return void
      */
     public function admin_enqueue_scripts(): void {
-        wp_enqueue_style("admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION);
-        wp_enqueue_script("admin", EHD_PLUGIN_URL . "assets/js/admin.js", ["jquery"], EHD_PLUGIN_VERSION, true);
+	    wp_enqueue_style( "admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
+	    wp_enqueue_script( "admin", EHD_PLUGIN_URL . "assets/js/admin.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
     }
 }

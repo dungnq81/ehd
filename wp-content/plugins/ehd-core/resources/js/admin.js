@@ -6,15 +6,11 @@ import {nanoid} from 'nanoid';
 'use strict';
 $(function () {
 
-    //...
-    const notice_dismiss = $(".notice-dismiss");
-    notice_dismiss.on('click', function () {
-       $(this).closest('.notice.is-dismissible').fadeOut();
-    });
-
-    // tabs
-    const tabs_wrapper = $(".filter-tabs");
-    tabs_wrapper.each((index, el) => {
+    /**
+     * @param el
+     * @return void
+     */
+    function rand_element_init(el) {
         const _rand = nanoid(9);
         $(el).addClass(_rand);
 
@@ -23,6 +19,40 @@ $(function () {
             _id = _rand;
             $(el).attr('id', _id);
         }
+    }
+
+    // codemirror
+    const codemirror_css = $(".codemirror_css");
+    codemirror_css.each((index, el) => {
+        rand_element_init(el);
+
+        let editorSettings = codemirror_settings.codemirror_css ? _.clone(codemirror_settings.codemirror_css) : {};
+        editorSettings.codemirror = _.extend(
+            {},
+            editorSettings.codemirror,
+            {
+                indentUnit: 3,
+                tabSize: 3,
+                lineNumbers: true,
+                autoRefresh:true,
+                //mode: 'javascript',
+            }
+        );
+
+        wp.codeEditor.initialize($(el), editorSettings);
+    });
+
+    // notice
+    const notice_dismiss = $(".notice-dismiss");
+    notice_dismiss.on('click', function () {
+       $(this).closest('.notice.is-dismissible').fadeOut();
+    });
+
+    // tabs
+    const tabs_wrapper = $(".filter-tabs");
+    tabs_wrapper.each((index, el) => {
+        rand_element_init(el);
+        let _id = $(el).attr('id');
 
         const _nav = $(el).find(".tabs-nav");
         const _content = $(el).find(".tabs-content");

@@ -19,6 +19,7 @@ final class Options
     {
         add_action('admin_notices', [&$this, 'options_admin_notice']);
         add_action('admin_menu', [&$this, 'options_admin_menu']);
+	    add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets'], 32 );
 
 	    /** SMTP Settings */
 	    if (self::_smtp__is_configured()) {
@@ -49,6 +50,32 @@ final class Options
         add_submenu_page('ehd-settings', __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'server-info', [&$this, 'server_info']);
         add_submenu_page('ehd-settings', __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'panel-support', [&$this, 'panel_support']);
     }
+
+    /** ---------------------------------------- */
+
+	/**
+	 * @param $hook
+	 *
+	 * @return void
+	 */
+	public function options_enqueue_assets( $hook ) {
+		$allowed_pages = array(
+			'toplevel_page_ehd-settings',
+		);
+
+		if ( in_array( $hook, $allowed_pages ) ) {
+
+			$codemirror_settings = [
+				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
+				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
+			];
+
+			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
+
+			wp_enqueue_script('wp-theme-plugin-editor');
+			wp_enqueue_style('wp-codemirror');
+		}
+	}
 
     /** ---------------------------------------- */
 
@@ -306,17 +333,18 @@ final class Options
 	 * @param $new_options
 	 *
 	 * @return void
-     * @todo check (no)
+     * @todo check (ok)
 	 */
     private function _aspect_ratio__update_options($new_options): void
     {
-	    $options = get_option( 'aspect_ratio__options' );
-	    if ( is_array( $options ) ) {
-		    $updated_options = array_merge( $options, $new_options );
-	    } else {
-		    $updated_options = $new_options;
-	    }
+//	    $options = get_option( 'aspect_ratio__options' );
+//	    if ( is_array( $options ) ) {
+//		    $updated_options = array_merge( $options, $new_options );
+//	    } else {
+//		    $updated_options = $new_options;
+//	    }
 
+	    $updated_options = $new_options;
 	    update_option( 'aspect_ratio__options', $updated_options );
     }
 

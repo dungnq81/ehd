@@ -23,8 +23,7 @@ trait Str
 			$encoding = mb_internal_encoding();
 		}
 
-		return mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding) .
-		       mb_substr($str, 1, null, $encoding);
+		return mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding) . mb_substr($str, 1, null, $encoding);
 	}
 
 	/**
