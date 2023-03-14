@@ -169,3 +169,4 @@ fabric.properties
 /wp-content/themes/shoptimizer/
 /wp-content/plugins/ehd-core/vendor/
 /.vscode/
+/wp-content/plugins/header-footer-code-manager/

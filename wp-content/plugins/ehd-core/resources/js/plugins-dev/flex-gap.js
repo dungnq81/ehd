@@ -1,6 +1,5 @@
 /**
  * https://github.com/Modernizr/Modernizr/blob/master/feature-detects/css/flexgap.js
- *
  */
 
 /*create flex container with row-gap set*/
