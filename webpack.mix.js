@@ -1,5 +1,5 @@
 let mix = require('laravel-mix');
-const glob = require('glob');
+let glob = require('glob');
 
 mix
     .webpackConfig({
@@ -22,7 +22,7 @@ mix
 if (!mix.inProduction()) {
     mix
         .sourceMaps()
-        .webpackConfig({ devtool: 'source-map' })
+        .webpackConfig({devtool: 'source-map'})
 }
 
 // Run only for a plugin.

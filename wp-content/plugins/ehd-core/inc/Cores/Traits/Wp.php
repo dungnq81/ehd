@@ -228,7 +228,7 @@ trait Wp
      *
      * @return mixed|string|string[]
      */
-    public static function getThemeMod($mod_name, $default = false)
+    public static function getThemeMod( string $mod_name, $default = false)
     {
         static $_is_loaded;
         if (empty($_is_loaded)) {
@@ -289,7 +289,7 @@ trait Wp
      * @param bool|string $strtotime_recent - strtotime( 'last week' );
      * @return bool|WP_Query
      */
-    public static function queryByTerm($term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], bool|string $strtotime_recent = false)
+    public static function queryByTerm($term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], $strtotime_recent = false)
     {
         if (!$term) {
             return false;
@@ -379,7 +379,7 @@ trait Wp
      * @param bool|string $strtotime_str
      * @return false|WP_Query
      */
-    public static function queryByTerms(array $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, bool|string $strtotime_str = false)
+    public static function queryByTerms(array $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, $strtotime_str = false)
     {
         $_args = [
             'post_type'              => $post_type ?: 'post',
@@ -796,7 +796,8 @@ trait Wp
             $term = get_term($term);
         }
 
-        if (class_exists('\ACF') && $attach_id = get_field($acf_field_name, $term)) {
+	    $attach_id = get_field($acf_field_name, $term) ?? '';
+        if (class_exists('\ACF') && $attach_id) {
             $img_src = wp_get_attachment_image_url($attach_id, $size);
             if ($img_wrap) {
                 $img_src = wp_get_attachment_image($attach_id, $size);
@@ -847,7 +848,8 @@ trait Wp
         $before = '<li class="current">';
         $after = '</li>';
 
-        if (!is_home() && !is_front_page()) {
+        if (!is_front_page()) {
+
             echo '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">';
             echo '<li><a class="home" href="' . self::home() . '">' . __('Home', EHD_PLUGIN_TEXT_DOMAIN) . '</a></li>';
 

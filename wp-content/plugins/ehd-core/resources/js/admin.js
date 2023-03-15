@@ -23,6 +23,8 @@ $(function () {
 
     // codemirror
     const codemirror_css = $(".codemirror_css");
+    const codemirror_html = $(".codemirror_html");
+
     codemirror_css.each((index, el) => {
         rand_element_init(el);
 
@@ -33,9 +35,25 @@ $(function () {
             {
                 indentUnit: 3,
                 tabSize: 3,
-                lineNumbers: true,
-                autoRefresh:true,
-                //mode: 'javascript',
+                //lineNumbers: true,
+                autoRefresh: true,
+            }
+        );
+
+        wp.codeEditor.initialize($(el), editorSettings);
+    });
+
+    codemirror_html.each((index, el) => {
+        rand_element_init(el);
+
+        let editorSettings = codemirror_settings.codemirror_html ? _.clone(codemirror_settings.codemirror_html) : {};
+        editorSettings.codemirror = _.extend(
+            {},
+            editorSettings.codemirror,
+            {
+                indentUnit: 3,
+                tabSize: 3,
+                autoRefresh: true,
             }
         );
 
@@ -80,7 +98,7 @@ $(function () {
         }).filter(".current").trigger('click');
     });
 
-    //...
+    // user
     const createuser = $("#createuser");
     createuser.find("#send_user_notification").removeAttr("checked").attr("disabled", true);
 

@@ -17,13 +17,13 @@ final class Options
 {
     public function __construct()
     {
-        add_action('admin_notices', [&$this, 'options_admin_notice']);
-        add_action('admin_menu', [&$this, 'options_admin_menu']);
-	    add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets'], 32 );
+	    add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
+	    add_action( 'admin_menu', [ &$this, 'options_admin_menu' ] );
+	    add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
 
 	    /** SMTP Settings */
-	    if (self::_smtp__is_configured()) {
-		    add_action( 'phpmailer_init', [&$this, 'setup_phpmailer_init'], 11 );
+	    if ( self::_smtp__is_configured() ) {
+		    add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
 	    }
     }
 
@@ -34,21 +34,21 @@ final class Options
      */
     public function options_admin_menu() : void
     {
-        // menu page
-        add_menu_page(
-            __('eHD Settings', EHD_PLUGIN_TEXT_DOMAIN),
-            __('eHD Settings', EHD_PLUGIN_TEXT_DOMAIN),
-            'manage_options',
-            'ehd-settings',
-            [&$this, 'options_page'],
-            'dashicons-admin-generic',
-            80
-        );
+	    // menu page
+	    add_menu_page(
+		    __( 'eHD Settings', EHD_PLUGIN_TEXT_DOMAIN ),
+		    __( 'eHD Settings', EHD_PLUGIN_TEXT_DOMAIN ),
+		    'manage_options',
+		    'ehd-settings',
+		    [ &$this, 'options_page' ],
+		    'dashicons-admin-generic',
+		    80
+	    );
 
-        // submenu page
-        add_submenu_page('ehd-settings', __('Advanced', EHD_PLUGIN_TEXT_DOMAIN), __('Advanced', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'customize.php');
-        add_submenu_page('ehd-settings', __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), __('Server Info', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'server-info', [&$this, 'server_info']);
-        add_submenu_page('ehd-settings', __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), __('Help & Guides', EHD_PLUGIN_TEXT_DOMAIN), 'manage_options', 'panel-support', [&$this, 'panel_support']);
+	    // submenu page
+	    add_submenu_page( 'ehd-settings', __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'customize.php' );
+	    add_submenu_page( 'ehd-settings', __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'server-info', [ &$this, 'server_info' ] );
+	    add_submenu_page( 'ehd-settings', __( 'Help & Guides', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Help & Guides', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'panel-support', [ &$this, 'panel_support' ] );
     }
 
     /** ---------------------------------------- */
@@ -72,8 +72,8 @@ final class Options
 
 			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
 
-			wp_enqueue_script('wp-theme-plugin-editor');
-			wp_enqueue_style('wp-codemirror');
+			wp_enqueue_script( 'wp-theme-plugin-editor' );
+			wp_enqueue_style( 'wp-codemirror' );
 		}
 	}
 
@@ -223,7 +223,7 @@ final class Options
 	 * @throws Exception
 	 */
 	public function setup_phpmailer_init( $phpmailer ): void {
-		
+
 		// (Re)create it, if it's gone missing.
 		if ( ! ( $phpmailer instanceof PHPMailer ) ) {
 			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
@@ -285,11 +285,11 @@ final class Options
 	public function options_admin_notice() : void
 	{
 		// SMTP notices
-		if (!self::_smtp__is_configured()) {
-			$class = 'notice notice-error';
-			$message = __('You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN);
+		if ( ! self::_smtp__is_configured() ) {
+			$class   = 'notice notice-error';
+			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN );
 
-			printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), $message);
+			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 		}
 
 		// ...
@@ -386,10 +386,10 @@ final class Options
      */
     private function _message_success() : void
     {
-        $class = 'notice notice-success is-dismissible';
-        $message = __('Settings saved.', EHD_PLUGIN_TEXT_DOMAIN);
+	    $class   = 'notice notice-success is-dismissible';
+	    $message = __( 'Settings saved.', EHD_PLUGIN_TEXT_DOMAIN );
 
-        printf('<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr($class), $message);
+	    printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
     }
 
     /** ---------------------------------------- */
@@ -399,9 +399,9 @@ final class Options
      */
     private function _message_error() : void
     {
-        $class = 'notice notice-error is-dismissible';
-        $message = __('Settings error.', EHD_PLUGIN_TEXT_DOMAIN);
+	    $class   = 'notice notice-error is-dismissible';
+	    $message = __( 'Settings error.', EHD_PLUGIN_TEXT_DOMAIN );
 
-        printf('<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr($class), $message);
+	    printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
     }
 }

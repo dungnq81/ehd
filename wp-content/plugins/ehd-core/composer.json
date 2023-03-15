@@ -18,5 +18,7 @@
 		"exclude-from-classmap": [],
 		"files": []
 	},
-	"require": {}
+	"require": {
+		"php": ">=7.4.33"
+	}
 }

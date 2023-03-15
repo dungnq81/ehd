@@ -22,5 +22,7 @@
 			"inc/Themes/tgmpa/tgmpa-config.php"
 		]
 	},
-	"require": {}
+	"require": {
+		"php": ">=7.4.33"
+	}
 }

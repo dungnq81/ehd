@@ -12,6 +12,7 @@
 		"files": []
 	},
 	"require": {
+		"php": ">=7.4.33",
 		"roots/wp-password-bcrypt": "^1.1.0",
 		"symfony/var-dumper": "^v5.4.21"
 	}
