@@ -70,7 +70,7 @@ if (!function_exists('post_comment')) {
     /**
      * @param mixed|null $id The ID, to load a single record;
      */
-    function post_comment(mixed $id = null)
+    function post_comment($id = null)
     {
         if (!$id) {
             if (get_post_type() === 'product') {

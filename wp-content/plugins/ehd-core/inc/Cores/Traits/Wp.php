@@ -1105,12 +1105,13 @@ trait Wp
 	 *
 	 * @return array|WP_Post|null
 	 */
-	public static function getCustomCssPost( string $post_type = 'html_custom_css' ) {
+	public static function getCustomPost( string $post_type = 'html_custom_css')
+	{
 		if ( empty( $post_type ) ) {
 			$post_type = 'html_custom_css';
 		}
 
-		$custom_css_query_vars = [
+		$custom_query_vars = [
 			'post_type'              => $post_type,
 			'post_status'            => get_post_stati(),
 			'posts_per_page'         => 1,
@@ -1121,9 +1122,8 @@ trait Wp
 			'lazy_load_term_meta'    => false,
 		];
 
-		//...
 		$post    = null;
-		$post_id = Helper::getThemeMod( 'html_custom_css_post_id' );
+		$post_id = Helper::getThemeMod( $post_type . '_option_id' );
 
 		if ( $post_id > 0 && get_post( $post_id ) ) {
 			$post = get_post( $post_id );
@@ -1131,10 +1131,10 @@ trait Wp
 
 		// `-1` indicates no post exists; no query necessary.
 		if ( ! $post && - 1 !== $post_id ) {
-			$query = new WP_Query( $custom_css_query_vars );
+			$query = new WP_Query( $custom_query_vars );
 			$post  = $query->post;
 
-			set_theme_mod( 'html_custom_css_post_id', $post ? $post->ID : - 1 );
+			set_theme_mod( $post_type . '_option_id', $post ? $post->ID : - 1 );
 		}
 
 		return $post;
@@ -1143,39 +1143,43 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
-	 * @param string $css - CSS, stored in `post_content`.
+	 * @param string $mixed
 	 * @param string $post_type
-	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
+	 * @param string $code_type
+	 * @param string $preprocessed
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomCssPost( string $css, string $post_type = 'html_custom_css', string $preprocessed = '' )
+	public static function updateCustomPost( string $mixed = '', string $post_type = 'html_custom_css', string $code_type = 'css', string $preprocessed = '' )
 	{
-		$data = [
-			'post_type' => $post_type ?? 'html_custom_css',
-			'css'          => Helper::stripAllTags($css, ' ', true, false),
-			'preprocessed' => $preprocessed,
-		];
+		$post_type = $post_type ?: 'html_custom_css';
+		$code_type = $code_type ?: 'text/css';
+
+		if ( in_array( $code_type, [ 'css', 'text/css' ] ) ) {
+			$mixed = Helper::stripAllTags( $mixed, ' ', true, false );
+		} else if ( in_array( $code_type, [ 'html', 'text/html' ] ) ) {
+			$mixed = base64_encode( $mixed );
+		}
 
 		$post_data = array(
-			'post_type'             => $data['post_type'],
+			'post_type'             => $post_type,
 			'post_status'           => 'publish',
-			'post_content'          => $data['css'],
-			'post_content_filtered' => $data['preprocessed'],
+			'post_content'          => $mixed,
+			'post_content_filtered' => $preprocessed,
 		);
 
 		// Update post if it already exists, otherwise create a new one.
-		$post = self::getCustomCssPost($post_type);
+		$post = self::getCustomPost( $post_type );
 		if ( $post ) {
 			$post_data['ID'] = $post->ID;
 			$r               = wp_update_post( wp_slash( $post_data ), true );
 		} else {
-			$post_data['post_title'] = 'HTML Custom CSS';
+			$post_data['post_title'] = $post_type . '_post_title';
 			$post_data['post_name'] = wp_generate_uuid4();
 			$r = wp_insert_post( wp_slash( $post_data ), true );
 
 			if ( ! is_wp_error( $r ) ) {
-				set_theme_mod( 'html_custom_css_post_id', $r );
+				set_theme_mod( $post_type . '_option_id', $r );
 
 				// Trigger creation of a revision. This should be removed once #30854 is resolved.
 				$revisions = wp_get_latest_revision_id_and_total_count( $r );
@@ -1190,6 +1194,20 @@ trait Wp
 		}
 
 		return get_post( $r );
+	}
+
+    // -------------------------------------------------------------
+
+	/**
+	 * @param string $css - CSS, stored in `post_content`.
+	 * @param string $post_type
+	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
+	 *
+	 * @return array|int|WP_Error|WP_Post|null
+	 */
+	public static function updateCustomCssPost( string $css, string $post_type = 'html_custom_css', string $preprocessed = '' )
+	{
+		return self::updateCustomPost($css, $post_type, 'text/css', $preprocessed);
 	}
 
     // -------------------------------------------------------------

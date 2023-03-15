@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$html_custom_css_post = Helper::getCustomCssPost();
+$html_custom_css_post = Helper::getCustomPost( 'html_custom_css' );
 $css = $html_custom_css_post->post_content ?? '';
 $css = wp_unslash($css);
 

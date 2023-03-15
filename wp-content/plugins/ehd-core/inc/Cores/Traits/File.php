@@ -39,7 +39,7 @@ trait File
      *
      * @return false|mixed|string
      */
-    public static function Read($file, bool $convert_to_array = true): mixed {
+    public static function Read($file, bool $convert_to_array = true) {
         $file = @file_get_contents($file);
         if (!empty($file)) {
             if ($convert_to_array) {

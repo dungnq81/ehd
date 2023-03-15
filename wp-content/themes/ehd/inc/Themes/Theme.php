@@ -265,7 +265,7 @@ final class Theme
      *
      * @return mixed|string|string[]
      */
-    public function dropdown_cats_multiple($output, $r) : mixed
+    public function dropdown_cats_multiple($output, $r)
     {
         if (isset($r['multiple']) && $r['multiple']) {
             $output = preg_replace('/^<select/i', '<select multiple', $output);

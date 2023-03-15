@@ -245,7 +245,7 @@ add_filter('nav_menu_link_attributes', function ($atts) {
 /** comment off default */
 add_filter('wp_insert_post_data', function ($data) {
 	if ($data['post_status'] == 'auto-draft') {
-		$data['comment_status'] = 1;
+		//$data['comment_status'] = 0;
 		$data['ping_status'] = 0;
 	}
 	return $data;

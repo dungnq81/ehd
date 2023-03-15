@@ -17,6 +17,12 @@ final class Optimizer
     {
         $this->_cleanup();
 
+	    //...
+	    if ( ! is_admin() ) {
+		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
+	    }
+
         //...
         if (!WP_DEBUG) {
 
@@ -39,10 +45,6 @@ final class Optimizer
 
         // remove id li navigation
         add_filter('nav_menu_item_id', '__return_null', 10, 3);
-
-        //...
-        add_filter('script_loader_tag', [&$this, 'script_loader_tag'], 12, 3);
-        add_filter('style_loader_tag', [&$this, 'style_loader_tag'], 12, 2);
 
         // Adding Shortcode in WordPress Using Custom HTML Widget
         add_filter('widget_text', 'do_shortcode');
