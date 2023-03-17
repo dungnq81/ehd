@@ -58,22 +58,20 @@ final class Options
 	 *
 	 * @return void
 	 */
-	public function options_enqueue_assets( $hook ) {
+	public function options_enqueue_assets( $hook )
+    {
 		$allowed_pages = array(
 			'toplevel_page_ehd-settings',
 		);
 
 		if ( in_array( $hook, $allowed_pages ) ) {
-
 			$codemirror_settings = [
 				'codemirror_css'  => wp_enqueue_code_editor( [ 'type' => 'text/css' ] ),
 				'codemirror_html' => wp_enqueue_code_editor( [ 'type' => 'text/html' ] ),
 			];
 
-			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
-
-			wp_enqueue_script( 'wp-theme-plugin-editor' );
 			wp_enqueue_style( 'wp-codemirror' );
+			wp_localize_script( 'admin', 'codemirror_settings', $codemirror_settings );
 		}
 	}
 
@@ -90,6 +88,18 @@ final class Options
 	        if ( ! wp_verify_nonce( $nonce, 'ehd_settings' ) ) {
 		        wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN ) );
 	        }
+
+            /** Global */
+
+            $html_custom_header = $_POST['html_custom_header'] ?? '';
+            $html_custom_footer = $_POST['html_custom_footer'] ?? '';
+            $html_custom_body_top = $_POST['html_custom_body_top'] ?? '';
+            $html_custom_body_bottom = $_POST['html_custom_body_bottom'] ?? '';
+
+	        Helper::updateCustomPost( $html_custom_header, 'html_custom_header', 'text/html' );
+	        Helper::updateCustomPost( $html_custom_footer, 'html_custom_footer', 'text/html' );
+	        Helper::updateCustomPost( $html_custom_body_top, 'html_custom_body_top', 'text/html' );
+	        Helper::updateCustomPost( $html_custom_body_bottom, 'html_custom_body_bottom', 'text/html' );
 
 	        /** SMTP */
 

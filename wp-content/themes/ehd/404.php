@@ -12,4 +12,4 @@ use EHD\Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 
-wp_safe_redirect(Helper::home());
+wp_redirect(Helper::home(), 302);
