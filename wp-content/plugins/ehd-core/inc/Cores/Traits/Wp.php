@@ -1105,7 +1105,7 @@ trait Wp
 	 *
 	 * @return array|WP_Post|null
 	 */
-	public static function getCustomPost( string $post_type = 'html_custom_css')
+	public static function getCustomPost( string $post_type = 'html_custom_css' )
 	{
 		if ( empty( $post_type ) ) {
 			$post_type = 'html_custom_css';
@@ -1143,23 +1143,54 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
+	 * @param string $post_type
+	 * @param bool $encode
+	 *
+	 * @return array|string
+	 */
+	public static function getCustomPostContent( string $post_type = 'html_custom_css', bool $encode = false )
+	{
+		$post = self::getCustomPost( $post_type );
+		if ( isset( $post->post_content ) ) {
+			$post_content = wp_unslash( $post->post_content );
+			if ( $encode ) {
+				$post_content = wp_unslash( base64_decode( $post_content ) );
+			}
+
+			return $post_content;
+		}
+
+		return __return_empty_string();
+	}
+
+    // -------------------------------------------------------------
+
+	/**
 	 * @param string $mixed
 	 * @param string $post_type
 	 * @param string $code_type
+	 * @param bool $encode
 	 * @param string $preprocessed
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomPost( string $mixed = '', string $post_type = 'html_custom_css', string $code_type = 'css', string $preprocessed = '' )
+	public static function updateCustomPost( string $mixed = '', string $post_type = 'html_custom_css', string $code_type = 'css', bool $encode = false, string $preprocessed = '' )
 	{
 		$post_type = $post_type ?: 'html_custom_css';
 		$code_type = $code_type ?: 'text/css';
 
 		if ( in_array( $code_type, [ 'css', 'text/css' ] ) ) {
 			$mixed = Helper::stripAllTags( $mixed, ' ', true, false );
-		} else if ( in_array( $code_type, [ 'html', 'text/html' ] ) ) {
+		}
+
+		// encode
+		if ( $encode ) {
 			$mixed = base64_encode( $mixed );
 		}
+
+//		else if ( in_array( $code_type, [ 'html', 'text/html' ] ) ) {
+//			$mixed = base64_encode( $mixed );
+//		}
 
 		$post_data = array(
 			'post_type'             => $post_type,
