@@ -1231,7 +1231,7 @@ trait Wp
 
 	/**
 	 * @param string $css - CSS, stored in `post_content`.
-	 * @param string $post_type
+	 * @param string $post_type  - max 20 characters
 	 * @param bool $encode
 	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
 	 *

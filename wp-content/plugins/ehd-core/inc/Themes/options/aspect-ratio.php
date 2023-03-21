@@ -2,8 +2,8 @@
 
 use EHD\Cores\Helper;
 
-$ar_post_type_list    = apply_filters('ar_post_type_list', [ 'blogs' ]);
-$aspect_ratio_options = get_option('aspect_ratio__options');
+$ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
+$aspect_ratio_options = get_option( 'aspect_ratio__options' );
 
 ?>
 <h2><?php _e( 'Aspect Ratio Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>

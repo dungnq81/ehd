@@ -133,7 +133,7 @@ final class Options
 		        $smtp_options['smtp_password'] = $smtp_password;
 	        }
 
-	        self::_smtp__update_options( $smtp_options );
+            self::_update_options( 'smtp__options', $smtp_options, true );
 
 	        /** Aspect Ratio */
 
@@ -144,9 +144,18 @@ final class Options
 		        $aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 2;
 	        }
 
-	        self::_aspect_ratio__update_options( $aspect_ratio_options );
+            self::_update_options( 'aspect_ratio__options', $aspect_ratio_options, false );
 
             /** Contact info */
+
+	        $contact_info_options = [
+                'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
+                'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
+                'phones' => ! empty( $_POST['contact_info_phones'] ) ? sanitize_text_field( $_POST['contact_info_phones'] ) : '',
+                'emails' => ! empty( $_POST['contact_info_emails'] ) ? sanitize_text_field( $_POST['contact_info_emails'] ) : '',
+            ];
+
+            self::_update_options( 'contact_info__options', $contact_info_options, true );
 
 	        $html_contact_info_others = $_POST['contact_info_others'] ?? '';
 	        Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
@@ -154,7 +163,7 @@ final class Options
 	        /** Custom CSS */
 
 	        $html_custom_css = $_POST['html_custom_css'] ?? '';
-	        Helper::updateCustomCssPost( $html_custom_css );
+	        Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
 
 	        /** */
 	        self::_message_success();
@@ -365,56 +374,28 @@ final class Options
 
     /** ---------------------------------------- */
 
-    /**
-     * @param $new_smtp_options
-     * @return void
-     */
-    private function _smtp__update_options($new_smtp_options) : void
-    {
-	    $empty_options = [
-		    'smtp_host'                     => '',
-		    'smtp_auth'                     => '',
-		    'smtp_username'                 => '',
-		    'smtp_password'                 => '',
-		    'smtp_encryption'               => '',
-		    'smtp_port'                     => '',
-		    'smtp_from_email'               => '',
-		    'smtp_from_name'                => '',
-		    'smtp_disable_ssl_verification' => '',
-	    ];
-
-	    $options = get_option( 'smtp__options' );
-
-	    if ( is_array( $options ) ) {
-		    $current_options = array_merge( $empty_options, $options );
-		    $updated_options = array_merge( $current_options, $new_smtp_options );
-	    } else {
-		    $updated_options = array_merge( $empty_options, $new_smtp_options );
-	    }
-
-	    update_option( 'smtp__options', $updated_options );
-    }
-
-    /** ---------------------------------------- */
-
 	/**
-	 * @param $new_options
+	 * @param string $option_name
+	 * @param mixed $new_options
+	 * @param bool $merge_arr
 	 *
 	 * @return void
-     * @todo check (ok)
 	 */
-    private function _aspect_ratio__update_options($new_options): void
+	private function _update_options( string $option_name, $new_options, bool $merge_arr = true ): void
     {
-//	    $options = get_option( 'aspect_ratio__options' );
-//	    if ( is_array( $options ) ) {
-//		    $updated_options = array_merge( $options, $new_options );
-//	    } else {
-//		    $updated_options = $new_options;
-//	    }
+	    if ( true === $merge_arr ) {
+		    $options = get_option( $option_name );
+		    if ( is_array( $options ) ) {
+			    $updated_options = array_merge( $options, $new_options );
+		    } else {
+			    $updated_options = $new_options;
+		    }
+	    } else {
+		    $updated_options = $new_options;
+	    }
 
-	    $updated_options = $new_options;
-	    update_option( 'aspect_ratio__options', $updated_options );
-    }
+	    update_option( $option_name, $updated_options );
+	}
 
     /** ---------------------------------------- */
 
