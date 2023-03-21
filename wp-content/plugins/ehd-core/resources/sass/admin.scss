@@ -515,7 +515,7 @@ body.toplevel_page_ehd-settings {
                             max-width: 100%;
                             padding: 5px;
                             color: #666;
-                            min-height: 150px;
+                            /*min-height: 150px;*/
                         }
 
                         .inline-group {
@@ -562,6 +562,38 @@ body.toplevel_page_ehd-settings {
             span {
                 a {
                     text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+.ehd-settings_page_server-info {
+    #wpcontent {
+        padding-left: 0;
+    }
+
+    .notice {
+        margin: 25px 20px 15px 22px;
+
+        & ~ .notice {
+            margin-top: 5px;
+        }
+    }
+}
+
+.server-info-body {
+    max-width: 800px;
+    margin: 0 auto;
+    .server-info-inner {
+        background: #fff;
+        padding: 1em 1.5em;
+        border: 1px solid #c3c4c7;
+        ul {
+            li {
+                color: #2c3338;
+                & > span:first-child {
+                    font-weight: 700;
                 }
             }
         }

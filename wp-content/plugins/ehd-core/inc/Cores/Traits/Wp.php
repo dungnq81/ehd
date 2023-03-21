@@ -796,7 +796,7 @@ trait Wp
             $term = get_term($term);
         }
 
-	    $attach_id = get_field($acf_field_name, $term) ?? '';
+	    $attach_id = \get_field($acf_field_name, $term) ?? '';
         if (class_exists('\ACF') && $attach_id) {
             $img_src = wp_get_attachment_image_url($attach_id, $size);
             if ($img_wrap) {
@@ -1101,14 +1101,14 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
-	 * @param string $post_type
+	 * @param string $post_type - max 20 characters
 	 *
 	 * @return array|WP_Post|null
 	 */
-	public static function getCustomPost( string $post_type = 'html_custom_css' )
+	public static function getCustomPost( string $post_type = 'ehd_css' )
 	{
 		if ( empty( $post_type ) ) {
-			$post_type = 'html_custom_css';
+			$post_type = 'ehd_css';
 		}
 
 		$custom_query_vars = [
@@ -1143,18 +1143,18 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
-	 * @param string $post_type
+	 * @param string $post_type - max 20 characters
 	 * @param bool $encode
 	 *
 	 * @return array|string
 	 */
-	public static function getCustomPostContent( string $post_type = 'html_custom_css', bool $encode = false )
+	public static function getCustomPostContent( string $post_type = 'ehd_css', bool $encode = false )
 	{
 		$post = self::getCustomPost( $post_type );
 		if ( isset( $post->post_content ) ) {
 			$post_content = wp_unslash( $post->post_content );
 			if ( $encode ) {
-				$post_content = wp_unslash( base64_decode( $post_content ) );
+				$post_content = wp_unslash( base64_decode( $post->post_content ) );
 			}
 
 			return $post_content;
@@ -1167,16 +1167,16 @@ trait Wp
 
 	/**
 	 * @param string $mixed
-	 * @param string $post_type
+	 * @param string $post_type - max 20 characters
 	 * @param string $code_type
 	 * @param bool $encode
 	 * @param string $preprocessed
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomPost( string $mixed = '', string $post_type = 'html_custom_css', string $code_type = 'css', bool $encode = false, string $preprocessed = '' )
+	public static function updateCustomPost( string $mixed = '', string $post_type = 'ehd_css', string $code_type = 'css', bool $encode = false, string $preprocessed = '' )
 	{
-		$post_type = $post_type ?: 'html_custom_css';
+		$post_type = $post_type ?: 'ehd_css';
 		$code_type = $code_type ?: 'text/css';
 
 		if ( in_array( $code_type, [ 'css', 'text/css' ] ) ) {
@@ -1232,13 +1232,14 @@ trait Wp
 	/**
 	 * @param string $css - CSS, stored in `post_content`.
 	 * @param string $post_type
+	 * @param bool $encode
 	 * @param string $preprocessed - Pre-processed CSS, stored in `post_content_filtered`. Normally empty string.
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomCssPost( string $css, string $post_type = 'html_custom_css', string $preprocessed = '' )
+	public static function updateCustomCssPost( string $css, string $post_type = 'ehd_css', bool $encode = false, string $preprocessed = '' )
 	{
-		return self::updateCustomPost($css, $post_type, 'text/css', $preprocessed);
+		return self::updateCustomPost($css, $post_type, 'text/css', $encode, $preprocessed);
 	}
 
     // -------------------------------------------------------------

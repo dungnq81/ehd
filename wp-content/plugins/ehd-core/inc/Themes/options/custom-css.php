@@ -2,8 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$html_custom_css_post = Helper::getCustomPost( 'html_custom_css' );
-$css = isset($html_custom_css_post->post_content) ? wp_unslash($html_custom_css_post->post_content) : '';
+$css = Helper::getCustomPostContent( 'ehd_css', false );
 
 ?>
 <h2><?php _e('CSS Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></h2>

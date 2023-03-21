@@ -16,6 +16,7 @@ use WP_Customize_Manager;
 
 final class Customizer {
 	public function __construct() {
+
 		// Theme Customizer settings and controls.
 		add_action( 'customize_register', [ &$this, 'customize_register' ], 29 );
 
@@ -122,36 +123,6 @@ final class Customizer {
 					'bottom'  => __( 'Bottom', EHD_PLUGIN_TEXT_DOMAIN ),
 					'default' => __( 'Default (Right)', EHD_PLUGIN_TEXT_DOMAIN ),
 				],
-			]
-		);
-
-		// -------------------------------------------------------------
-		// contact info
-		// -------------------------------------------------------------
-
-		$wp_customize->add_section(
-			'link_menu_section',
-			[
-				'title'    => __( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ),
-				'panel'    => 'addon_menu_panel',
-				'priority' => 1006,
-			]
-		);
-
-		// add control
-		$wp_customize->add_setting( 'hotline_setting', [
-			'sanitize_callback' => 'sanitize_text_field',
-			'transport'         => 'refresh',
-		] );
-
-		$wp_customize->add_control(
-			'hotline_control',
-			[
-				'label'       => __( 'Hotline', EHD_PLUGIN_TEXT_DOMAIN ),
-				'section'     => 'link_menu_section',
-				'settings'    => 'hotline_setting',
-				'description' => __( 'Hotline number, support easier interaction on the phone', EHD_PLUGIN_TEXT_DOMAIN ),
-				'type'        => 'text',
 			]
 		);
 
@@ -371,9 +342,9 @@ final class Customizer {
 		);
 
 		// -------------------------------------------------------------
+		// Others
 		// -------------------------------------------------------------
 
-		// Other
 		$wp_customize->add_section(
 			'other_section',
 			[
@@ -383,7 +354,6 @@ final class Customizer {
 			]
 		);
 
-		// add control
 		// meta theme-color
 		$wp_customize->add_setting( 'theme_color_setting', [ 'sanitize_callback' => 'sanitize_hex_color' ] );
 		$wp_customize->add_control(

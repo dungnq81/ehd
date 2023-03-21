@@ -41,14 +41,13 @@ final class Options
 		    'manage_options',
 		    'ehd-settings',
 		    [ &$this, 'options_page' ],
-		    'dashicons-admin-generic',
+            'dashicons-admin-settings',
 		    80
 	    );
 
 	    // submenu page
 	    add_submenu_page( 'ehd-settings', __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'customize.php' );
 	    add_submenu_page( 'ehd-settings', __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'server-info', [ &$this, 'server_info' ] );
-	    add_submenu_page( 'ehd-settings', __( 'Help & Guides', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Help & Guides', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'panel-support', [ &$this, 'panel_support' ] );
     }
 
     /** ---------------------------------------- */
@@ -91,15 +90,15 @@ final class Options
 
             /** Global */
 
-            $html_custom_header = $_POST['html_custom_header'] ?? '';
-            $html_custom_footer = $_POST['html_custom_footer'] ?? '';
-            $html_custom_body_top = $_POST['html_custom_body_top'] ?? '';
-            $html_custom_body_bottom = $_POST['html_custom_body_bottom'] ?? '';
+            $html_header = $_POST['html_header'] ?? '';
+            $html_footer = $_POST['html_footer'] ?? '';
+            $html_body_top = $_POST['html_body_top'] ?? '';
+            $html_body_bottom = $_POST['html_body_bottom'] ?? '';
 
-	        Helper::updateCustomPost( $html_custom_header, 'html_custom_header', 'text/html' );
-	        Helper::updateCustomPost( $html_custom_footer, 'html_custom_footer', 'text/html' );
-	        Helper::updateCustomPost( $html_custom_body_top, 'html_custom_body_top', 'text/html' );
-	        Helper::updateCustomPost( $html_custom_body_bottom, 'html_custom_body_bottom', 'text/html' );
+	        Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
+	        Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
+	        Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
+	        Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
 
 	        /** SMTP */
 
@@ -147,15 +146,19 @@ final class Options
 
 	        self::_aspect_ratio__update_options( $aspect_ratio_options );
 
+            /** Contact info */
+
+	        $html_contact_info_others = $_POST['contact_info_others'] ?? '';
+	        Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
+
 	        /** Custom CSS */
 
 	        $html_custom_css = $_POST['html_custom_css'] ?? '';
-	        Helper::updateCustomCssPost( $html_custom_css, 'html_custom_css' );
+	        Helper::updateCustomCssPost( $html_custom_css );
 
 	        /** */
 	        self::_message_success();
         }
-
         ?>
         <div class="wrap" id="ehd_container">
             <form id="ehd_form" method="post" enctype="multipart/form-data">
@@ -181,6 +184,9 @@ final class Options
                             <li class="aspect-ratio aspect-ratio-settings">
                                 <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
+                            <li class="contact-info contact-info-settings">
+                                <a title="Contact Info" href="#contact_info_settings"><?php _e('Contact Info', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                            </li>
                             <li class="custom-css-settings">
                                 <a title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
                             </li>
@@ -193,6 +199,9 @@ final class Options
                         </div>
                         <div id="smtp_settings" class="group tabs-panel">
                             <?php require __DIR__ . '/options/smtp.php'; ?>
+                        </div>
+                        <div id="contact_info_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/contact-info.php'; ?>
                         </div>
                         <div id="aspect_ratio_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
@@ -215,14 +224,63 @@ final class Options
     /**
      * @return void
      */
-    public function panel_support() : void {}
+    public function server_info() : void {
+    ?>
+    <div class="wrap">
+        <div id="main">
+            <h2 class="hide-text"></h2>
+            <div class="server-info-body">
+                <h2>Server info</h2>
+                <p class="desc">System configuration information</p>
+                <div class="server-info-inner code">
+                    <ul>
+                        <li><?php echo sprintf('<span>OS:</span> %s', php_uname()); ?></li>
+                        <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
+                        <li><?php echo sprintf('<span>SERVER:</span> %s', $server_software); ?></li>
+                        <?php endif; ?>
+                        <li><?php echo sprintf('<span>PHP version:</span> %s', PHP_VERSION); ?></li>
+                        <li><?php echo sprintf('<span>WordPress version:</span> %s', get_bloginfo('version')); ?></li>
+                        <li><?php echo sprintf('<span>WordPress multisite:</span> %s', (is_multisite() ? 'Yes' : 'No')); ?></li>
+	                    <?php
+	                    $openssl_status = 'Available';
+	                    $openssl_text   = '';
+	                    if ( ! extension_loaded( 'openssl' ) && ! defined( 'OPENSSL_ALGO_SHA1' ) ) {
+		                    $openssl_status = 'Not available';
+		                    $openssl_text   = ' (openssl extension is required in order to use any kind of encryption like TLS or SSL)';
+	                    }
+	                    ?>
+                        <li><?php echo sprintf('<span>openssl:</span> %s%s', $openssl_status, $openssl_text); ?></li>
+                        <li><?php echo sprintf('<span>allow_url_fopen:</span> %s', (ini_get('allow_url_fopen') ? 'Enabled' : 'Disabled')); ?></li>
+                        <?php
+                        $stream_socket_client_status = 'Not Available';
+                        $fsockopen_status            = 'Not Available';
+                        $socket_enabled              = false;
 
-    /** ---------------------------------------- */
+                        if ( function_exists( 'stream_socket_client' ) ) {
+	                        $stream_socket_client_status = 'Available';
+	                        $socket_enabled              = true;
+                        }
+                        if ( function_exists( 'fsockopen' ) ) {
+	                        $fsockopen_status = 'Available';
+	                        $socket_enabled   = true;
+                        }
 
-    /**
-     * @return void
-     */
-    public function server_info() : void {}
+                        $socket_text = '';
+                        if ( ! $socket_enabled ) {
+	                        $socket_text = ' (In order to make a SMTP connection your server needs to have either stream_socket_client or fsockopen)';
+                        }
+                        ?>
+                        <li><?php echo sprintf('<span>stream_socket_client:</span> %s', $stream_socket_client_status); ?></li>
+                        <li><?php echo sprintf('<span>fsockopen:</span> %s%s', $fsockopen_status, $socket_text); ?></li>
+	                    <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
+                        <li><?php echo sprintf('<span>AGENT:</span> %s', $agent); ?></li>
+	                    <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php }
 
 	/** ---------------------------------------- */
 
@@ -248,26 +306,26 @@ final class Options
 
 		$smtp_options = get_option( 'smtp__options' );
 
-		$phpmailer->isSMTP(); // Tell PHPMailer to use SMTP
-		$phpmailer->Host = $smtp_options['smtp_host']; // Set the hostname of the mail server
+		$phpmailer->isSMTP();
+		$phpmailer->Host = $smtp_options['smtp_host'];
 
 		// Whether to use SMTP authentication
 		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
 			$phpmailer->SMTPAuth = true;
-			$phpmailer->Username = $smtp_options['smtp_username']; // SMTP username
-			$phpmailer->Password = base64_decode( $smtp_options['smtp_password'] ); // SMTP password
+			$phpmailer->Username = $smtp_options['smtp_username'];
+			$phpmailer->Password = base64_decode( $smtp_options['smtp_password'] );
 		}
 
 		// Additional settings
 
-		$type_of_encryption = $smtp_options['smtp_encryption']; // Whether to use encryption
+		$type_of_encryption = $smtp_options['smtp_encryption'];
 		if ( $type_of_encryption == "none" ) {
 			$type_of_encryption = '';
 		}
 		$phpmailer->SMTPSecure = $type_of_encryption;
 
-		$phpmailer->Port        = $smtp_options['smtp_port'];  // SMTP port
-		$phpmailer->SMTPAutoTLS = false; // Whether to enable TLS encryption automatically if a server supports it
+		$phpmailer->Port        = $smtp_options['smtp_port'];
+		$phpmailer->SMTPAutoTLS = false;
 
 		// disable ssl certificate verification if checked
 		if ( isset( $smtp_options['smtp_disable_ssl_verification'] ) && ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
@@ -280,8 +338,8 @@ final class Options
 			];
 		}
 
-		$from_email = apply_filters( 'wp_mail_from', $smtp_options['smtp_from_email'] ); // Filters the email address to send from.
-		$from_name  = apply_filters( 'wp_mail_from_name', $smtp_options['smtp_from_name'] ); // Filters the name to associate with the "from" email address.
+		$from_email = apply_filters( 'wp_mail_from', $smtp_options['smtp_from_email'] );
+		$from_name  = apply_filters( 'wp_mail_from_name', $smtp_options['smtp_from_name'] );
 
 		$phpmailer->setFrom( $from_email, $from_name, false );
 		$phpmailer->CharSet = apply_filters( 'wp_mail_charset', get_bloginfo( 'charset' ) );
