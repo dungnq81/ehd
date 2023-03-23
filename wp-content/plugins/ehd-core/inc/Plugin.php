@@ -138,7 +138,8 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
-	public function enqueue(): void {
+	public function enqueue(): void
+	{
 		wp_register_style( 'ehd-core-style', EHD_PLUGIN_URL . "assets/css/ehd.css", [], EHD_PLUGIN_VERSION );
 		wp_register_script( "ehd-core", EHD_PLUGIN_URL . "assets/js/ehd.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
 
@@ -152,8 +153,8 @@ final class Plugin {
 		$block_editor_options = get_option( 'block_editor__options' );
 
 		$block_style_off = $block_editor_options['block_style_off'] ?? '';
-		if ( $block_style_off ) {
-
+		if ( $block_style_off )
+		{
 			/** Remove block CSS */
 			wp_dequeue_style( 'wp-block-library' );
 			wp_dequeue_style( 'wp-block-library-theme' );
@@ -163,7 +164,8 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
-	public function init(): void {
+	public function init(): void
+	{
 		if ( is_admin() ) {
 			( new Admin() );
 		}

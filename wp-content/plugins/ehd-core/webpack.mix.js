@@ -13,7 +13,6 @@ mix
 
     //.copyDirectory(resources + '/img', assets + '/img')
     //.copyDirectory(resources + '/fonts/fontawesome/webfonts', assets + '/webfonts')
-    .copyDirectory(resources + '/js/plugins-dev', assets + '/js/plugins')
 
     .sass(resources + '/sass/editor-style.scss', assets + '/css')
     .sass(resources + '/sass/admin.scss', assets + '/css')

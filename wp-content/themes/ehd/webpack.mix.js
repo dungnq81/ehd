@@ -14,7 +14,6 @@ mix
 
     //.copyDirectory(resources + '/img', assets + '/img')
     //.copyDirectory(resources + '/fonts/SVN-Poppins', assets + '/fonts/SVN-Poppins')
-    .copyDirectory(resources + '/js/plugins-dev', assets + '/js/plugins')
 
     .sass(resources + '/sass/fonts.scss', assets + '/css')
     .sass(resources + '/sass/plugins.scss', assets + '/css')

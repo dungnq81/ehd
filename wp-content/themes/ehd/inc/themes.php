@@ -135,7 +135,7 @@ if ( ! function_exists( '__wp_default_scripts' ) ) {
 
 				// Check whether the script has any dependencies
 				// remove jquery-migrate
-				//$script->deps = array_diff( $script->deps, [ 'jquery-migrate' ] );
+				$script->deps = array_diff( $script->deps, [ 'jquery-migrate' ] );
 			}
 		}
 	}
