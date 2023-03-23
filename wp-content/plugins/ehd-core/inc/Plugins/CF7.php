@@ -6,6 +6,7 @@ namespace EHD\Plugins;
 
 /**
  * Contact Form 7
+ *
  * @author   WEBHD
  */
 

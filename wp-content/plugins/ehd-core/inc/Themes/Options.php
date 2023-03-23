@@ -89,7 +89,6 @@ final class Options
 	        }
 
             /** Global */
-
             $html_header = $_POST['html_header'] ?? '';
             $html_footer = $_POST['html_footer'] ?? '';
             $html_body_top = $_POST['html_body_top'] ?? '';
@@ -101,7 +100,6 @@ final class Options
 	        Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
 
 	        /** SMTP */
-
 	        $smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
 	        $smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
 	        $smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
@@ -136,7 +134,6 @@ final class Options
             self::_update_options( 'smtp__options', $smtp_options, true );
 
 	        /** Aspect Ratio */
-
 	        $aspect_ratio_options = [];
 	        $ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
 	        foreach ( $ar_post_type_list as $i => $ar ) {
@@ -147,7 +144,6 @@ final class Options
             self::_update_options( 'aspect_ratio__options', $aspect_ratio_options, false );
 
             /** Contact info */
-
 	        $contact_info_options = [
                 'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
                 'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
@@ -160,12 +156,33 @@ final class Options
 	        $html_contact_info_others = $_POST['contact_info_others'] ?? '';
 	        Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
 
-	        /** Custom CSS */
+            /** Contact Button */
+	        $contact_btn_options = [
+                'contact_title' => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
+                'contact_url' => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
+                'contact_window' => ! empty( $_POST['contact_window'] ) ? sanitize_text_field( $_POST['contact_window'] ) : '',
+            ];
 
+            self::_update_options( 'contact_btn__options', $contact_btn_options, true );
+
+            $html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
+	        Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html', false );
+
+            /** block editor */
+	        $block_editor_options = [
+                'use_widgets_block_editor_off' => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
+                'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
+                'use_block_editor_for_post_type_off' => ! empty( $_POST['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $_POST['use_block_editor_for_post_type_off'] ) : '',
+                'block_style_off' => ! empty( $_POST['block_style_off'] ) ? sanitize_text_field( $_POST['block_style_off'] ) : '',
+            ];
+
+	        self::_update_options( 'block_editor__options', $block_editor_options, true );
+
+	        /** Custom CSS */
 	        $html_custom_css = $_POST['html_custom_css'] ?? '';
 	        Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
 
-	        /** */
+	        /** echo message success */
 	        self::_message_success();
         }
         ?>
@@ -181,43 +198,57 @@ final class Options
                             </h3>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN); ?></button>
                         </div>
                         <ul class="ul-menu-list">
                             <li class="global-settings">
-                                <a class="current" title="Global Settings" href="#global_settings"><?php _e('Global Settings', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a class="current" title="Global Settings" href="#global_settings"><?php _e('Global Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="smtp smtp-settings">
-                                <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="aspect-ratio aspect-ratio-settings">
-                                <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="contact-info contact-info-settings">
-                                <a title="Contact Info" href="#contact_info_settings"><?php _e('Contact Info', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                                <a title="Contact Info" href="#contact_info_settings"><?php _e('Contact Info', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
-                            <li class="custom-css-settings">
-                                <a title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN) ?></a>
+                            <li class="contact-button contact-button-settings">
+                                <a title="Contact Button" href="#contact_button_settings"><?php _e('Contact Button', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+                            </li>
+                            <li class="gutenberg gutenberg-settings">
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e('Block Editor', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+                            </li>
+                            <li class="custom-css custom-css-settings">
+                                <a title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                         </ul>
                     </div>
                     <div id="ehd_content" class="tabs-content">
                         <h2 class="hidden-text"></h2>
+
                         <div id="global_settings" class="group tabs-panel show">
                             <?php require __DIR__ . '/options/global.php'; ?>
                         </div>
                         <div id="smtp_settings" class="group tabs-panel">
                             <?php require __DIR__ . '/options/smtp.php'; ?>
                         </div>
+                        <div id="aspect_ratio_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+                        </div>
                         <div id="contact_info_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/contact-info.php'; ?>
                         </div>
-                        <div id="aspect_ratio_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+                        <div id="contact_button_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/contact-button.php'; ?>
+                        </div>
+                        <div id="block_editor_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/block-editor.php'; ?>
                         </div>
                         <div id="custom_css_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/custom-css.php'; ?>
                         </div>
+
                         <div class="save-bar">
                             <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
                         </div>

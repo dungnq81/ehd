@@ -2,8 +2,6 @@
 
 use EHD\Cores\Helper;
 
-$contact_info_others = Helper::getCustomPostContent( 'html_others', false );
-
 $contact_info_options = get_option( 'contact_info__options' );
 
 $hotline = $contact_info_options['hotline'] ?? '';
@@ -11,8 +9,10 @@ $address = ! empty( $contact_info_options['address'] ) ? wp_unslash($contact_inf
 $phones = $contact_info_options['phones'] ?? '';
 $emails = $contact_info_options['emails'] ?? '';
 
+$contact_info_others = Helper::getCustomPostContent( 'html_others', false );
+
 ?>
-<h2><?php _e('Contact Info', EHD_PLUGIN_TEXT_DOMAIN); ?></h2>
+<h2><?php _e('Contact Info Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></h2>
 <div class="section section-text" id="section_hotline">
 	<label class="heading" for="contact_info_hotline"><?php _e('Hotline', EHD_PLUGIN_TEXT_DOMAIN); ?></label>
 	<div class="option">

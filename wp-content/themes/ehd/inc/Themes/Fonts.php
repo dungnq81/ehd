@@ -13,8 +13,8 @@ final class Fonts
 {
     public function __construct()
     {
-        add_action('wp_head', [&$this, 'pre_connect'], 2);
-        add_action('wp_enqueue_scripts', [&$this, 'enqueue_scripts'], 101);
+	    add_action( 'wp_head', [ &$this, 'pre_connect' ], 2 );
+	    add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 101 );
     }
 
     /** ---------------------------------------- */

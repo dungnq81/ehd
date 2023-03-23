@@ -20,3 +20,4 @@
 <body <?php body_class(); ?>>
     <?php do_action( 'before_header' );?>
     <div class="site-outer site-page">
+        body content test

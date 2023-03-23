@@ -6,6 +6,7 @@ namespace EHD\Plugins;
 
 /**
  * RankMath Plugins
+ *
  * @author   WEBHD
  */
 final class RankMath

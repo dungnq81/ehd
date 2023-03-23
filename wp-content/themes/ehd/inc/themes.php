@@ -121,6 +121,28 @@ if (!function_exists('__register_sidebars')) {
 
 /** ---------------------------------------- */
 
+add_action( 'wp_default_scripts', '__wp_default_scripts' );
+if ( ! function_exists( '__wp_default_scripts' ) ) {
+	/**
+	 * @param $scripts
+	 * @return void
+	 */
+	function __wp_default_scripts( $scripts ): void
+	{
+		if ( ! is_admin() && isset( $scripts->registered['jquery'] ) ) {
+			$script = $scripts->registered['jquery'];
+			if ( $script->deps ) {
+
+				// Check whether the script has any dependencies
+				// remove jquery-migrate
+				//$script->deps = array_diff( $script->deps, [ 'jquery-migrate' ] );
+			}
+		}
+	}
+}
+
+/** ---------------------------------------- */
+
 add_filter('body_class', '__body_classes', 11, 1);
 if (!function_exists('__body_classes')) {
 

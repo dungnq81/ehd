@@ -10,13 +10,14 @@ namespace EHD\Themes;
  * @author eHD
  */
 
+use EHD\Cores\Helper;
 use WP_Customize_Color_Control;
 use WP_Customize_Image_Control;
 use WP_Customize_Manager;
 
 final class Customizer {
-	public function __construct() {
-
+	public function __construct()
+	{
 		// Theme Customizer settings and controls.
 		add_action( 'customize_register', [ &$this, 'customize_register' ], 29 );
 
@@ -31,7 +32,7 @@ final class Customizer {
 
 		// Changing the logo link from wordpress.org to your site
 		add_filter( 'login_headerurl', function () {
-			return esc_url( site_url( '/' ) );
+			return Helper::home();
 		} );
 	}
 
@@ -40,7 +41,8 @@ final class Customizer {
 	 *
 	 * @param WP_Customize_Manager $wp_customize Theme Customizer object.
 	 */
-	public function customize_register( WP_Customize_Manager $wp_customize ): void {
+	public function customize_register( WP_Customize_Manager $wp_customize ): void
+	{
 		// logo mobile
 		$wp_customize->add_setting( 'alternative_logo' );
 		$wp_customize->add_control(
@@ -57,11 +59,7 @@ final class Customizer {
 		);
 
 		// add control
-		$wp_customize->add_setting( 'logo_title_setting', [
-			'sanitize_callback' => 'sanitize_text_field',
-			'transport'         => 'refresh',
-		] );
-
+		$wp_customize->add_setting( 'logo_title_setting', [ 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'refresh' ] );
 		$wp_customize->add_control(
 			'logo_title_control',
 			[
@@ -101,14 +99,7 @@ final class Customizer {
 		);
 
 		// add offcanvas control
-		$wp_customize->add_setting(
-			'offcanvas_menu_setting',
-			[
-				'default'           => 'default',
-				'sanitize_callback' => 'sanitize_text_field',
-				'transport'         => 'refresh',
-			]
-		);
+		$wp_customize->add_setting( 'offcanvas_menu_setting', [ 'default' => 'default', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'refresh' ] );
 		$wp_customize->add_control(
 			'offcanvas_menu_control',
 			[
@@ -265,83 +256,6 @@ final class Customizer {
 		);
 
 		// -------------------------------------------------------------
-		// Block Editor
-		// -------------------------------------------------------------
-
-		// Block Editor + Gutenberg + Widget
-		$wp_customize->add_section(
-			'block_editor_section',
-			[
-				'title'    => __( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ),
-				'panel'    => 'addon_menu_panel',
-				'priority' => 1010,
-			]
-		);
-
-		// add control
-		$wp_customize->add_setting(
-			'use_widgets_block_editor_setting',
-			[
-				'default'   => false,
-				//'sanitize_callback' => 'sanitize_checkbox',
-				'transport' => 'refresh',
-			]
-		);
-
-		$wp_customize->add_control(
-			'use_widgets_block_editor_control',
-			[
-				'type'        => 'checkbox',
-				'settings'    => 'use_widgets_block_editor_setting',
-				'section'     => 'block_editor_section',
-				'label'       => __( 'Disable block widgets', EHD_PLUGIN_TEXT_DOMAIN ),
-				'description' => __( 'Disables the block editor from managing widgets', EHD_PLUGIN_TEXT_DOMAIN ),
-			]
-		);
-
-		// add control
-		$wp_customize->add_setting(
-			'gutenberg_use_widgets_block_editor_setting',
-			[
-				'default'   => false,
-				//'sanitize_callback' => 'sanitize_checkbox',
-				'transport' => 'refresh',
-			]
-		);
-
-		$wp_customize->add_control(
-			'gutenberg_use_widgets_block_editor_control',
-			[
-				'type'        => 'checkbox',
-				'settings'    => 'gutenberg_use_widgets_block_editor_setting',
-				'section'     => 'block_editor_section',
-				'label'       => __( 'Disable Gutenberg widgets', EHD_PLUGIN_TEXT_DOMAIN ),
-				'description' => __( 'Disables the block editor from managing widgets in the Gutenberg plugin', EHD_PLUGIN_TEXT_DOMAIN ),
-			]
-		);
-
-		// add control
-		$wp_customize->add_setting(
-			'use_block_editor_for_post_type_setting',
-			[
-				'default'   => false,
-				//'sanitize_callback' => 'sanitize_checkbox',
-				'transport' => 'refresh',
-			]
-		);
-
-		$wp_customize->add_control(
-			'use_block_editor_for_post_type_control',
-			[
-				'type'        => 'checkbox',
-				'settings'    => 'use_block_editor_for_post_type_setting',
-				'section'     => 'block_editor_section',
-				'label'       => __( 'Use Classic Editor', EHD_PLUGIN_TEXT_DOMAIN ),
-				'description' => __( 'Use Classic Editor - Disable Gutenberg Editor', EHD_PLUGIN_TEXT_DOMAIN ),
-			]
-		);
-
-		// -------------------------------------------------------------
 		// Others
 		// -------------------------------------------------------------
 
@@ -368,14 +282,7 @@ final class Customizer {
 		);
 
 		// Hide menu
-		$wp_customize->add_setting(
-			'remove_menu_setting',
-			[
-				'sanitize_callback' => 'sanitize_textarea_field',
-				'transport'         => 'refresh',
-			]
-		);
-
+		$wp_customize->add_setting( 'remove_menu_setting', [ 'sanitize_callback' => 'sanitize_textarea_field', 'transport' => 'refresh', ] );
 		$wp_customize->add_control(
 			'remove_menu_control',
 			[
@@ -393,7 +300,8 @@ final class Customizer {
 	/**
 	 * @retun void
 	 */
-	public function login_enqueue_script(): void {
+	public function login_enqueue_script(): void
+	{
 		wp_enqueue_style( "login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
 		wp_enqueue_script( "login", EHD_PLUGIN_URL . "assets/js/login.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
 
@@ -401,7 +309,7 @@ final class Customizer {
 		$logo    = EHD_PLUGIN_URL . "assets/img/logo.png";
 		$logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
 
-		$css = new Css;
+		$css = new CSS();
 		if ( $logo_bg ) {
 			$css->set_selector( 'body.login' );
 			$css->add_property( 'background-image', 'url(' . $logo_bg . ')' );
@@ -426,7 +334,8 @@ final class Customizer {
 	 *
 	 * @return void
 	 */
-	public function enqueue_block_editor_assets(): void {
+	public function enqueue_block_editor_assets(): void
+	{
 		wp_enqueue_style( 'editor-style', EHD_PLUGIN_URL . "assets/css/editor-style.css" );
 	}
 }

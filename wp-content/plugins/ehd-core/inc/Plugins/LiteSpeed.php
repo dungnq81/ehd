@@ -6,6 +6,7 @@ namespace EHD\Plugins;
 
 /**
  * litespeed Plugins
+ *
  * @author WEBHD
  */
 

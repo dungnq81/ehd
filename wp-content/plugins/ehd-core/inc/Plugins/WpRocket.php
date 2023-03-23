@@ -10,7 +10,6 @@ use EHD\Cores\Helper;
  * https://github.com/wp-media/wp-rocket-helpers/tree/master/htaccess/wp-rocket-htaccess-remove-all/
  *
  * WpRocket Plugins
- * @author   WEBHD
  */
 
 final class WpRocket

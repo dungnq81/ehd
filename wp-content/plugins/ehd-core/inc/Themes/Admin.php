@@ -17,57 +17,57 @@ final class Admin
     public function __construct()
     {
         /** Remove admin wp version */
-        if (!WP_DEBUG) {
-            add_filter('update_footer', '__return_empty_string', 11);
-        }
+	    if ( ! WP_DEBUG ) {
+		    add_filter( 'update_footer', '__return_empty_string', 11 );
+	    }
 
-        add_action('admin_enqueue_scripts', [&$this, 'admin_enqueue_scripts'], 31);
+	    add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 31 );
 
-        add_action('admin_init', [&$this, 'admin_init'], 10);
-        add_action('admin_menu', [&$this, 'dashboard_meta_box'], 11);
+	    add_action( 'admin_init', [ &$this, 'admin_init' ], 10 );
+	    add_action( 'admin_menu', [ &$this, 'dashboard_meta_box' ], 11 );
 
-        $widgets_block_off = Helper::getThemeMod('use_widgets_block_editor_setting');
-        $gutenberg_widgets_block_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
-        $block_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
+		/** Custom options */
+	    $block_editor_options = get_option( 'block_editor__options' );
 
-        if ($widgets_block_off) {
+	    $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
+	    $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
+	    $use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
 
-            // Disables the block editor from managing widgets.
-            add_filter('use_widgets_block_editor', '__return_false');
-        }
+	    // Disables the block editor from managing widgets.
+	    if ( $use_widgets_block_editor_off ) {
+		    add_filter( 'use_widgets_block_editor', '__return_false' );
+	    }
 
-        if ($gutenberg_widgets_block_off) {
+	    // Disables the block editor from managing widgets in the Gutenberg plugin.
+	    if ( $gutenberg_use_widgets_block_editor_off ) {
+		    add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
+	    }
 
-            // Disables the block editor from managing widgets in the Gutenberg plugin.
-            add_filter('gutenberg_use_widgets_block_editor', '__return_false');
-        }
-
-        if ($block_off) {
-
-            // Use Classic Editor - Disable Gutenberg Editor
-            add_filter('use_block_editor_for_post_type', '__return_false');
-        }
+	    // Use Classic Editor - Disable Gutenberg Editor
+	    if ( $use_block_editor_for_post_type_off ) {
+		    add_filter( 'use_block_editor_for_post_type', '__return_false' );
+	    }
     }
 
-    /** ---------------------------------------- */
     /** ---------------------------------------- */
 
     /**
      * @return void
      */
-    private function _remove_menu(): void {
+    private function _remove_menu(): void
+    {
         //echo dump($GLOBALS[ 'menu' ]);
 
         // Hide menu
-        $hide_menu = Helper::getThemeMod('remove_menu_setting');
-        if ($hide_menu) {
-            $array_hide_menu = explode("\n", $hide_menu);
-            foreach ($array_hide_menu as $menu) {
-                if ($menu) {
-                    remove_menu_page($menu);
-                }
-            }
-        }
+	    $hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
+	    if ( $hide_menu ) {
+		    $array_hide_menu = explode( "\n", $hide_menu );
+		    foreach ( $array_hide_menu as $menu ) {
+			    if ( $menu ) {
+				    remove_menu_page( $menu );
+			    }
+		    }
+	    }
     }
 
     /** ---------------------------------------- */

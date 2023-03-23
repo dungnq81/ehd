@@ -26,4 +26,5 @@ mix
     .js(resources + '/js/plugins-dev/back-to-top.js', assets + '/js/plugins')
     .js(resources + '/js/plugins-dev/draggable.js', assets + '/js/plugins')
     .js(resources + '/js/plugins-dev/social-share.js', assets + '/js/plugins')
+
     .js(resources + '/js/app.js', assets + '/js');

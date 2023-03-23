@@ -12,6 +12,7 @@ use EHD\Plugins\WooCommerce\Widgets\RecentProducts_Widget;
 
 /**
  * WooCommerce Plugin
+ *
  * @author   WEBHD
  */
 
@@ -62,12 +63,12 @@ final class WooCommerce
         $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
         $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
 
-        //if ($gutenberg_widgets_off && $gutenberg_off) {
+        if ($gutenberg_widgets_off && $gutenberg_off) {
 
             // Remove WooCommerce block CSS
             wp_deregister_style('wc-blocks-vendors-style');
             wp_deregister_style('wc-block-style');
-        //}
+        }
     }
 
     /**
@@ -98,6 +99,12 @@ final class WooCommerce
 
             echo '<style>#wpadminbar ~ #wpbody { margin-top: 0 !important; }</style>';
         });
+
+		// Remove the default WooCommerce 3 JSON/LD structured data format
+	    add_action( 'init', function () {
+		    remove_action( 'wp_footer', [ WC()->structured_data, 'output_structured_data' ], 10 );
+		    remove_action( 'woocommerce_email_order_details', [ WC()->structured_data, 'output_email_structured_data' ], 30 );
+	    } );
 
         // Trim zeros in price decimals
         add_filter('woocommerce_price_trim_zeros', '__return_true');

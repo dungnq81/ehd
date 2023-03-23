@@ -13,4 +13,8 @@
 
 \defined( 'ABSPATH' ) || die;
 
+get_header();
+
 echo 'pages';
+
+get_footer();

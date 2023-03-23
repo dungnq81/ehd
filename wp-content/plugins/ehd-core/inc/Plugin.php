@@ -145,14 +145,14 @@ final class Plugin {
 		wp_register_style( 'ehd-swiper-style', EHD_PLUGIN_URL . "assets/css/swiper.css", [], EHD_PLUGIN_VERSION );
 		wp_register_script( "ehd-swiper", EHD_PLUGIN_URL . "assets/js/plugins/swiper.js", [], EHD_PLUGIN_VERSION, true );
 
-		/** */
+		/** dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
 
 		/** customize */
-		$gutenberg_widgets_off = Helper::getThemeMod( 'gutenberg_use_widgets_block_editor_setting' );
-		$gutenberg_off         = Helper::getThemeMod( 'use_block_editor_for_post_type_setting' );
+		$block_editor_options = get_option( 'block_editor__options' );
 
-		if ( $gutenberg_widgets_off && $gutenberg_off ) {
+		$block_style_off = $block_editor_options['block_style_off'] ?? '';
+		if ( $block_style_off ) {
 
 			/** Remove block CSS */
 			wp_dequeue_style( 'wp-block-library' );
