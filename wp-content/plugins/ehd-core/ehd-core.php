@@ -20,6 +20,7 @@ $headers = [
 	'Name'       => 'Plugin Name',
 	'Version'    => 'Version',
 	'TextDomain' => 'Text Domain',
+	'Author'     => 'Author',
 ];
 
 $plugin_data = get_file_data( __FILE__, $headers, 'plugin' );
@@ -30,6 +31,7 @@ define( 'EHD_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // ehd-core/ehd-co
 
 define( 'EHD_PLUGIN_VERSION', $plugin_data['Version'] );
 define( 'EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain'] );
+define( 'EHD_PLUGIN_AUTHOR', $plugin_data['Author'] );
 
 defined( 'EHD_MU_PLUGIN_VERSION' ) || wp_die( __( 'eHD Core requires "eHD mu-core" plugin to function properly', EHD_PLUGIN_TEXT_DOMAIN ) );
 

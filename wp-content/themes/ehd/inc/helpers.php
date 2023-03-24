@@ -8,14 +8,13 @@
 
 /** ----------------------------------------------- */
 
-if (!function_exists('post_comment')) {
+if (!function_exists('ehd_pagination_links')) {
     /**
      * @param bool $echo
      *
      * @return string|null
      */
-    function pagination_links(bool $echo = true)
-    {
+    function ehd_pagination_links(bool $echo = true): ?string {
         global $wp_query;
         if ($wp_query->max_num_pages > 1) {
 
@@ -65,12 +64,12 @@ if (!function_exists('post_comment')) {
 
 /** ----------------------------------------------- */
 
-if (!function_exists('post_comment')) {
+if (!function_exists('ehd_post_comment')) {
 
     /**
      * @param mixed|null $id The ID, to load a single record;
      */
-    function post_comment($id = null)
+    function ehd_post_comment($id = null)
     {
         if (!$id) {
             if (get_post_type() === 'product') {

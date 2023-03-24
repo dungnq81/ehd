@@ -1244,6 +1244,108 @@ trait Wp
 
     // -------------------------------------------------------------
 
+	/**
+	 * Get any necessary microdata.
+	 *
+	 * @param string $context The element to target.
+	 *
+	 * @return string Our final attribute to add to the element.
+	 *
+	 * GeneratePress
+	 */
+	public static function microdata( string $context ): string
+	{
+		$data = false;
+
+		if ( 'body' === $context ) {
+			$type = 'WebPage';
+
+			if ( is_home() || is_archive() || is_attachment() || is_tax() || is_single() ) {
+				$type = 'Blog';
+			}
+
+			if ( is_search() ) {
+				$type = 'SearchResultsPage';
+			}
+
+			$type = apply_filters( 'ehd_body_itemtype', $type );
+
+			$data = sprintf(
+				'itemtype="https://schema.org/%s" itemscope',
+				esc_html( $type )
+			);
+		}
+
+		if ( 'header' === $context ) {
+			$data = 'itemtype="https://schema.org/WPHeader" itemscope';
+		}
+
+		if ( 'navigation' === $context ) {
+			$data = 'itemtype="https://schema.org/SiteNavigationElement" itemscope';
+		}
+
+		if ( 'article' === $context ) {
+			$type = apply_filters( 'ehd_article_itemtype', 'CreativeWork' );
+
+			$data = sprintf(
+				'itemtype="https://schema.org/%s" itemscope',
+				esc_html( $type )
+			);
+		}
+
+		if ( 'post-author' === $context ) {
+			$data = 'itemprop="author" itemtype="https://schema.org/Person" itemscope';
+		}
+
+		if ( 'comment-body' === $context ) {
+			$data = 'itemtype="https://schema.org/Comment" itemscope';
+		}
+
+		if ( 'comment-author' === $context ) {
+			$data = 'itemprop="author" itemtype="https://schema.org/Person" itemscope';
+		}
+
+		if ( 'sidebar' === $context ) {
+			$data = 'itemtype="https://schema.org/WPSideBar" itemscope';
+		}
+
+		if ( 'footer' === $context ) {
+			$data = 'itemtype="https://schema.org/WPFooter" itemscope';
+		}
+
+		return apply_filters( "ehd_{$context}_microdata", $data );
+	}
+
+    // -------------------------------------------------------------
+
+	/**
+	 * Shorten our padding/margin values into shorthand form.
+	 *
+	 * @param $top
+	 * @param $right
+	 * @param $bottom
+	 * @param $left
+	 *
+	 * @return string
+	 *
+	 * GeneratePress
+	 */
+	public static function paddingCss( $top, $right, $bottom, $left ): string
+	{
+		$padding_top = ( isset( $top ) && '' !== $top ) ? absint( $top ) . 'px ' : '0 ';
+		$padding_right = ( isset( $right ) && '' !== $right ) ? absint( $right ) . 'px ' : '0 ';
+		$padding_bottom = ( isset( $bottom ) && '' !== $bottom ) ? absint( $bottom ) . 'px ' : '0 ';
+		$padding_left = ( isset( $left ) && '' !== $left ) ? absint( $left ) . 'px' : '0';
+
+		if ( ( absint( $padding_top ) === absint( $padding_right ) ) && ( absint( $padding_right ) === absint( $padding_bottom ) ) && ( absint( $padding_bottom ) === absint( $padding_left ) ) ) {
+			return $padding_left;
+		}
+
+		return $padding_top . $padding_right . $padding_bottom . $padding_left;
+	}
+
+    // -------------------------------------------------------------
+
     /**
      * A fallback when no navigation is selected by default.
      *

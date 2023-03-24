@@ -15,7 +15,7 @@ final class Optimizer
 {
     public function __construct()
     {
-        $this->_cleanup();
+	    $this->_cleanup();
 
 	    //...
 	    if ( ! is_admin() ) {
@@ -23,94 +23,94 @@ final class Optimizer
 		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 	    }
 
-        //...
-        if (!WP_DEBUG) {
+	    //...
+	    if ( ! WP_DEBUG ) {
 
-            // Remove WP version from RSS.
-            add_filter('the_generator', '__return_empty_string');
+		    // Remove WP version from RSS.
+		    add_filter( 'the_generator', '__return_empty_string' );
 
-            add_filter('style_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
-            add_filter('script_loader_src', [&$this, 'remove_version_scripts_styles'], 11, 1);
-        }
+		    add_filter( 'style_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
+		    add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
+	    }
 
-        // wp_print_footer_scripts
-        add_action('wp_print_footer_scripts', [&$this, 'print_footer_scripts'], 99);
+	    // wp_print_footer_scripts
+	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
 
-        // fixed canonical
-        add_action('wp_head', [&$this, 'fixed_archive_canonical'], 10);
-        add_action('wp_head', [&$this, 'rel_next_prev'], 10);
+	    // fixed canonical
+	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ], 10 );
+	    add_action( 'wp_head', [ &$this, 'rel_next_prev' ], 10 );
 
-        // filter post search only by title
-        add_filter("posts_search", [&$this, 'post_search_by_title'], 500, 2);
+	    // filter post search only by title
+	    add_filter( "posts_search", [ &$this, 'post_search_by_title' ], 500, 2 );
 
-        // remove id li navigation
-        add_filter('nav_menu_item_id', '__return_null', 10, 3);
+	    // remove id li navigation
+	    add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
 
-        // Adding Shortcode in WordPress Using Custom HTML Widget
-        add_filter('widget_text', 'do_shortcode');
-        add_filter('widget_text', 'shortcode_unautop');
+	    // Adding Shortcode in WordPress Using Custom HTML Widget
+	    add_filter( 'widget_text', 'do_shortcode' );
+	    add_filter( 'widget_text', 'shortcode_unautop' );
 
-        // Hooks the wp action to insert some cache control max-age headers.
-        add_action('wp', function ($wp) {
-            if (is_feed()) {
-                if (!is_user_logged_in()) {
+	    // Hooks the wp action to insert some cache control max-age headers.
+	    add_action( 'wp', function ( $wp ) {
+		    if ( is_feed() ) {
+			    if ( ! is_user_logged_in() ) {
 
-                    // Set the max age for feeds to 5 minutes.
-                    header('Cache-Control: max-age=' . (5 * MINUTE_IN_SECONDS));
-                }
-            }
-        });
+				    // Set the max age for feeds to 5 minutes.
+				    header( 'Cache-Control: max-age=' . ( 5 * MINUTE_IN_SECONDS ) );
+			    }
+		    }
+	    } );
 
-        // normalize upload filename
-        add_filter('sanitize_file_name', function (string $filename) {
-            return sanitize_title($filename, '', 'save');
-        }, 10, 1);
+	    // normalize upload filename
+	    add_filter( 'sanitize_file_name', function ( string $filename ) {
+		    return sanitize_title( $filename, '', 'save' );
+	    }, 10, 1 );
 
-        // Disable XML-RPC authentication
-        add_filter('xmlrpc_enabled', '__return_false');
-        add_filter('pre_update_option_enable_xmlrpc', '__return_false');
-        add_filter('pre_option_enable_xmlrpc', '__return_zero');
-        add_filter('pings_open', '__return_false', 9999);
+	    // Disable XML-RPC authentication
+	    add_filter( 'xmlrpc_enabled', '__return_false' );
+	    add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
+	    add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
+	    add_filter( 'pings_open', '__return_false', 9999 );
 
-        add_filter('wp_headers', function ($headers) {
-            unset($headers['X-Pingback'], $headers['x-pingback']);
-            return $headers;
-        });
+	    add_filter( 'wp_headers', function ( $headers ) {
+		    unset( $headers['X-Pingback'], $headers['x-pingback'] );
 
-        //...
-        add_filter('excerpt_more', function () {
-            return ' ' . '&hellip;';
-        });
+		    return $headers;
+	    } );
 
-        // Remove admin bar
-        add_action('wp_before_admin_bar_render', function () {
-            global $wp_admin_bar;
-            $wp_admin_bar->remove_menu('wp-logo');
-        });
+	    //...
+	    add_filter( 'excerpt_more', function () {
+		    return ' ' . '&hellip;';
+	    } );
 
-        // Prevent Specific Plugins from Deactivation
-        add_filter('plugin_action_links', function ($actions, $plugin_file, $plugin_data, $context) {
-            $keys = ['deactivate', 'delete'];
-            foreach ($keys as $key) {
+	    // Remove admin bar
+	    add_action( 'wp_before_admin_bar_render', function () {
+		    global $wp_admin_bar;
+		    $wp_admin_bar->remove_menu( 'wp-logo' );
+	    } );
 
-                if (array_key_exists($key, $actions)
-                    && in_array(
-                        $plugin_file,
-                        [
-                            'ehd-core/ehd-core.php',
-                            //'advanced-custom-fields-pro/acf.php',
-                        ])
-                ) {
-                    unset($actions[$key]);
-                }
-            }
+	    // Prevent Specific Plugins from Deactivation
+	    add_filter( 'plugin_action_links', function ( $actions, $plugin_file, $plugin_data, $context ) {
+		    $keys = [ 'deactivate', 'delete' ];
+		    foreach ( $keys as $key ) {
 
-            return $actions;
+			    if ( array_key_exists( $key, $actions )
+			         && in_array(
+				         $plugin_file,
+				         [
+					         'ehd-core/ehd-core.php',
+					         //'advanced-custom-fields-pro/acf.php',
+				         ] )
+			    ) {
+				    unset( $actions[ $key ] );
+			    }
+		    }
 
-        }, 10, 4);
+		    return $actions;
+
+	    }, 10, 4 );
     }
 
-    /** ---------------------------------------- */
     /** ---------------------------------------- */
 
     /**
@@ -157,12 +157,9 @@ final class Optimizer
 
     // ------------------------------------------------------
 
-    /**
-     * This does not enqueue the script because it is tiny and because it is only for IE11,
-     * thus it does not warrant having an entire dedicated blocking script being loaded.
-     *
-     * @link https://git.io/vWdr2
-     */
+	/**
+	 * @return void
+	 */
     public function print_footer_scripts(): void {
         ?>
         <script>document.documentElement.classList.remove("no-js");
@@ -174,22 +171,26 @@ final class Optimizer
         if (file_exists($passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js')) {
             echo '<script>';
             include $passive_events;
-            echo '</script>';
+            echo '</script>' . "\n";
         }
 
         if (file_exists($skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js')) {
             echo '<script>';
             include $skip_link;
-            echo '</script>';
+            echo '</script>' . "\n";
         }
 
         if (file_exists($flex_gap = EHD_PLUGIN_PATH . 'assets/js/plugins/flex-gap.js')) {
             echo '<script>';
             include $flex_gap;
-            echo '</script>';
+            echo '</script>' . "\n";
         }
 
-        // The following is minified via `npx terser --compress --mangle -- assets/js/skip-link-focus-fix.js`.
+	    if (file_exists($load_scripts = EHD_PLUGIN_PATH . 'assets/js/plugins/load-scripts.js')) {
+		    echo '<script>';
+		    include $load_scripts;
+		    echo '</script>';
+	    }
     }
 
     // ------------------------------------------------------
@@ -257,7 +258,7 @@ final class Optimizer
 
         //...
         // add script handles to the array
-        $str_parsed = apply_filters('defer_script_loader_tag', []);
+        $str_parsed = apply_filters('ehd_defer_script', []);
         return Helper::lazyScriptTag($str_parsed, $tag, $handle, $src);
     }
 
@@ -272,7 +273,7 @@ final class Optimizer
     public function style_loader_tag(string $html, string $handle) : string
     {
         /* add style handles to the array below */
-        $styles = apply_filters('defer_style_loader_tag', []);
+        $styles = apply_filters('ehd_defer_style', []);
         return Helper::lazyStyleTag($styles, $html, $handle);
     }
 

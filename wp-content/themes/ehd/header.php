@@ -6,17 +6,22 @@
  * @package hd
  */
 
+use EHD\Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
-?>
-<!doctype html>
+?><!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
-    <?php do_action( 'before_header' );?>
-        body content test
+<body <?php body_class(); ?> <?php echo Helper::microdata( 'body' ); ?>>
+    <?php
+    /**
+     * ehd_before_header hook.
+     *
+     * @see __ehd_before_header - 2
+     */
+    do_action( 'ehd_before_header' );
+

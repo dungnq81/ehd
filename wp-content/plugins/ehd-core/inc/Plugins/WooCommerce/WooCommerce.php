@@ -60,14 +60,15 @@ final class WooCommerce
     {
         wp_enqueue_style('ehd-core-woocommerce-style', EHD_PLUGIN_URL . "assets/css/woocommerce.css", ["ehd-core-style"], EHD_PLUGIN_VERSION);
 
-        $gutenberg_widgets_off = Helper::getThemeMod('gutenberg_use_widgets_block_editor_setting');
-        $gutenberg_off = Helper::getThemeMod('use_block_editor_for_post_type_setting');
+	    /** customize */
+	    $block_editor_options = get_option( 'block_editor__options' );
 
-        if ($gutenberg_widgets_off && $gutenberg_off) {
-
+	    $block_style_off = $block_editor_options['block_style_off'] ?? '';
+	    if ( $block_style_off )
+	    {
             // Remove WooCommerce block CSS
-            wp_deregister_style('wc-blocks-vendors-style');
-            wp_deregister_style('wc-block-style');
+		    wp_deregister_style( 'wc-blocks-vendors-style' );
+		    wp_deregister_style( 'wc-block-style' );
         }
     }
 

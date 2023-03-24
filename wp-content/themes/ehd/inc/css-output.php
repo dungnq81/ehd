@@ -13,16 +13,16 @@ use EHD\Themes\CSS;
 // ------------------------------------------
 
 /** inline css */
-add_action('wp_enqueue_scripts', 'enqueue_inline_css', 31); // After WooCommerce.
-if (!function_exists('ehd_enqueue_inline_css')) {
+if (!function_exists('__enqueue_inline_css')) {
+	add_action('wp_enqueue_scripts', '__enqueue_inline_css', 31); // After WooCommerce.
     /**
      * Add CSS for third-party plugins.
      *
      * @return void
      */
-    function enqueue_inline_css() : void
+    function __enqueue_inline_css() : void
     {
-        $css = new Css();
+        $css = new CSS();
 
         // breadcrumbs bg
         $breadcrumb_bg = Helper::getThemeMod('breadcrumb_bg_setting');

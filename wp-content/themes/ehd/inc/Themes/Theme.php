@@ -19,8 +19,7 @@ final class Theme
 	{
 		add_action( 'init', [ &$this, 'init' ] );
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 11 );
-		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 99 );
-		add_action( 'wp_footer', [ &$this, 'wp_footer' ], 999 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 98 );
 
 		// add multiple for category dropdown
 		add_filter( 'wp_dropdown_cats', [ &$this, 'dropdown_cats_multiple' ], 10, 2 );
@@ -124,9 +123,9 @@ final class Theme
         wp_script_add_data("app", "defer", true);
 
         /** extra scripts */
-        wp_enqueue_script("back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], false, true);
-        wp_enqueue_script("o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], false, true);
-        wp_enqueue_script("social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], false, true);
+        wp_enqueue_script("back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], EHD_THEME_VERSION, true);
+        wp_enqueue_script("o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], EHD_THEME_VERSION, true);
+        wp_enqueue_script("social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], EHD_THEME_VERSION, true);
 
         /** inline js */
         $l10n = [
@@ -142,6 +141,12 @@ final class Theme
             ],
         ];
         wp_localize_script('jquery-core', EHD_TEXT_DOMAIN, $l10n);
+
+		/** custom css */
+	    $css = Helper::getCustomPostContent( 'ehd_css', false );
+		if ($css) {
+			wp_add_inline_style( 'app-style', $css );
+		}
 
         /** comments */
         if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -169,34 +174,6 @@ final class Theme
 
         /** Elementor */
         did_action('elementor/loaded') && (new Elementor());
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return void
-     */
-    public function wp_footer() : void
-    {
-        /** Build the back to top button */
-        $back_to_top = apply_filters('back_to_top', true);
-        if ($back_to_top) {
-            echo apply_filters( // phpcs:ignore
-                'back_to_top_output',
-                sprintf(
-                    '<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
-                    esc_attr__('Scroll back to top', EHD_TEXT_DOMAIN),
-                    absint(apply_filters('back_to_top_scroll_speed', 400)),
-                    absint(apply_filters('back_to_top_start_scroll', 300)),
-                )
-            );
-        }
-
-        /** Set delay timeout milisecond */
-        $timeout = 5000;
-        $inline_js = 'const loadScriptsTimer=setTimeout(loadScripts,' . $timeout . ');const userInteractionEvents=["mouseover","keydown","touchstart","touchmove","wheel"];userInteractionEvents.forEach(function(event){window.addEventListener(event,triggerScriptLoader,{passive:!0})});function triggerScriptLoader(){loadScripts();clearTimeout(loadScriptsTimer);userInteractionEvents.forEach(function(event){window.removeEventListener(event,triggerScriptLoader,{passive:!0})})}';
-        $inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");elem.removeAttribute(\"data-type\");})}";
-        echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
     }
 
     // ------------------------------------------------------
@@ -237,10 +214,10 @@ final class Theme
         // ------------------------------------------
 
         /** Add support for buttons in the top-bar menu */
-        add_filter('wp_nav_menu', function ($ulclass) {
+        add_filter('wp_nav_menu', function ($ul_class) {
             $find = ['/<a rel="button"/', '/<a title=".*?" rel="button"/'];
             $replace = ['<a rel="button" class="button"', '<a rel="button" class="button"'];
-            return preg_replace($find, $replace, $ulclass, 1);
+            return preg_replace($find, $replace, $ul_class, 1);
         });
 
         // -------------------------------------------------------------

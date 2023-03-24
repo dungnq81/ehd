@@ -41,11 +41,11 @@ function ehd_register_required_plugins(): void {
 			'slug'     => 'contact-form-7',
 			'required' => false, // required / recommended
 		],
-		[
-			'name'     => 'Elementor',
-			'slug'     => 'elementor',
-			'required' => false,
-		],
+//		[
+//			'name'     => 'Elementor',
+//			'slug'     => 'elementor',
+//			'required' => false,
+//		],
 		[
 			'name'     => 'WooCommerce',
 			'slug'     => 'woocommerce',
@@ -61,11 +61,11 @@ function ehd_register_required_plugins(): void {
 			'slug'     => 'seo-by-rank-math',
 			'required' => false,
 		],
-		[
-			'name'     => 'Comments – wpDiscuz',
-			'slug'     => 'wpdiscuz',
-			'required' => false,
-		],
+//		[
+//			'name'     => 'Comments – wpDiscuz',
+//			'slug'     => 'wpdiscuz',
+//			'required' => false,
+//		],
 		[
 			'name'     => 'Converter for Media',
 			'slug'     => 'webp-converter-for-media',

@@ -270,12 +270,14 @@ trait Str
 		return trim(preg_replace('/ {2,}/', $replace, $string));
 	}
 
-    /**
-     * @param      $string
-     * @param bool $strip_tags
-     * @return array|string|string[]|null
-     */
-    public static function stripSpace($string, bool $strip_tags = true)
+	/**
+	 * @param      $string
+	 * @param bool $strip_tags
+	 * @param string $replace
+	 *
+	 * @return array|string|string[]|null
+	 */
+    public static function stripSpace($string, bool $strip_tags = true, string $replace = '')
     {
 	    if (true === $strip_tags) {
 		    $string = strip_tags($string);
@@ -283,12 +285,11 @@ trait Str
 
         $string = preg_replace(
             '/(\v|\s){1,}/u',
-            '',
+	        $replace,
             $string
         );
 
-        $string = preg_replace('~\x{00a0}~', '', $string);
-
-	    return preg_replace('/\s+/', '', $string);
+        $string = preg_replace('~\x{00a0}~', $replace, $string);
+	    return preg_replace('/\s+/', $replace, $string);
     }
 }

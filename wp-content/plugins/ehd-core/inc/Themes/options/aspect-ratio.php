@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
+$ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'blogs' ] );
 $aspect_ratio_options = get_option( 'aspect_ratio__options' );
 
 ?>

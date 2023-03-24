@@ -16,10 +16,16 @@ final class Admin
 {
     public function __construct()
     {
-        /** Remove admin wp version */
-	    if ( ! WP_DEBUG ) {
+	    if ( ! WP_DEBUG )
+		{
+		    /** Remove admin wp version */
 		    add_filter( 'update_footer', '__return_empty_string', 11 );
 	    }
+
+	    /** Admin footer text */
+	    add_filter('admin_footer_text', function () {
+		    printf('<span id="footer-thankyou">%1$s <a href="https://webhd.vn" target="_blank">%2$s</a>.&nbsp;</span>', __('Powered by', EHD_PLUGIN_TEXT_DOMAIN), EHD_PLUGIN_AUTHOR);
+	    });
 
 	    add_action( 'admin_enqueue_scripts', [ &$this, 'admin_enqueue_scripts' ], 31 );
 

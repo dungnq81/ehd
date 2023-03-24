@@ -135,7 +135,7 @@ final class Options
 
 	        /** Aspect Ratio */
 	        $aspect_ratio_options = [];
-	        $ar_post_type_list    = apply_filters( 'ar_post_type_list', [ 'blogs' ] );
+	        $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'blogs' ] );
 	        foreach ( $ar_post_type_list as $i => $ar ) {
 		        $aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 3;
 		        $aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 2;
@@ -161,6 +161,8 @@ final class Options
                 'contact_title' => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
                 'contact_url' => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
                 'contact_window' => ! empty( $_POST['contact_window'] ) ? sanitize_text_field( $_POST['contact_window'] ) : '',
+                'contact_waiting_time' => ! empty( $_POST['contact_waiting_time'] ) ? sanitize_text_field( $_POST['contact_waiting_time'] ) : '',
+                'contact_show_repeat' => ! empty( $_POST['contact_show_repeat'] ) ? sanitize_text_field( $_POST['contact_show_repeat'] ) : '',
             ];
 
             self::_update_options( 'contact_btn__options', $contact_btn_options, true );
