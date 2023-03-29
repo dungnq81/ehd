@@ -44,11 +44,11 @@ trait Wp
             ]
         );
 
-        if (true === $args['echo']) {
-            echo wp_nav_menu($args);
-        } else {
-            return wp_nav_menu($args);
-        }
+	    if ( true === $args['echo'] ) {
+		    echo wp_nav_menu( $args );
+	    } else {
+		    return wp_nav_menu( $args );
+	    }
     }
 
     // -------------------------------------------------------------
@@ -62,26 +62,26 @@ trait Wp
      */
     public static function horizontalNav(array $args = [])
     {
-        $args = wp_parse_args(
-            (array) $args,
-            [
-                'container'      => false,
-                'menu_id'        => '',
-                'menu_class'     => 'dropdown menu horizontal horizontal-menu',
-                'theme_location' => '',
-                'depth'          => 4,
-                'fallback_cb'    => false,
-                'walker'         => new Horizontal_Nav_Walker(),
-                'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-dropdown-menu>%3$s</ul>',
-                'echo'           => false,
-            ]
-        );
+	    $args = wp_parse_args(
+		    (array) $args,
+		    [
+			    'container'      => false,
+			    'menu_id'        => '',
+			    'menu_class'     => 'dropdown menu horizontal horizontal-menu',
+			    'theme_location' => '',
+			    'depth'          => 4,
+			    'fallback_cb'    => false,
+			    'walker'         => new Horizontal_Nav_Walker(),
+			    'items_wrap'     => '<ul role="menubar" id="%1$s" class="%2$s" data-dropdown-menu>%3$s</ul>',
+			    'echo'           => false,
+		    ]
+	    );
 
-        if (true === $args['echo']) {
-            echo wp_nav_menu($args);
-        } else {
-            return wp_nav_menu($args);
-        }
+	    if ( true === $args['echo'] ) {
+		    echo wp_nav_menu( $args );
+	    } else {
+		    return wp_nav_menu( $args );
+	    }
     }
 
     // -------------------------------------------------------------
@@ -97,12 +97,12 @@ trait Wp
      */
     public static function doShortcode( string $tag, array $atts = [], $content = null)
     {
-        global $shortcode_tags;
-        if (!isset($shortcode_tags[$tag])) {
-            return false;
-        }
+	    global $shortcode_tags;
+	    if ( ! isset( $shortcode_tags[ $tag ] ) ) {
+		    return false;
+	    }
 
-        return call_user_func($shortcode_tags[$tag], $atts, $content, $tag);
+	    return call_user_func( $shortcode_tags[ $tag ], $atts, $content, $tag );
     }
 
     // -------------------------------------------------------------
@@ -115,17 +115,17 @@ trait Wp
     {
         global $wpdb;
 
-		$sql_prepare = $wpdb->prepare("SELECT ID FROM `{$wpdb->prefix}posts` WHERE `post_type` LIKE %s AND `guid` LIKE %s", "attachment", "%" . esc_sql($image_url));
-        $attachment = $wpdb->get_col($sql_prepare);
-        $img_id = reset($attachment);
-        if (!$img_id) {
-            if (str_contains($image_url, '-scaled.')) {
-                $image_url = str_replace('-scaled.', '.', $image_url);
-                $img_id = self::getImageId($image_url);
-            }
-        }
+	    $sql_prepare = $wpdb->prepare( "SELECT ID FROM `{$wpdb->prefix}posts` WHERE `post_type` LIKE %s AND `guid` LIKE %s", "attachment", "%" . esc_sql( $image_url ) );
+	    $attachment  = $wpdb->get_col( $sql_prepare );
+	    $img_id      = reset( $attachment );
+	    if ( ! $img_id ) {
+		    if ( str_contains( $image_url, '-scaled.' ) ) {
+			    $image_url = str_replace( '-scaled.', '.', $image_url );
+			    $img_id    = self::getImageId( $image_url );
+		    }
+	    }
 
-        return $img_id;
+	    return $img_id;
     }
 
     // -------------------------------------------------------------
@@ -139,8 +139,8 @@ trait Wp
      * @return string
      */
     public static function addQueryArg($url, $args): string {
-        $args = array_map('rawurlencode', $args);
-        return add_query_arg($args, $url);
+	    $args = array_map( 'rawurlencode', $args );
+	    return add_query_arg( $args, $url );
     }
 
     // -------------------------------------------------------------
@@ -152,25 +152,25 @@ trait Wp
      */
     public static function getAttachment($attachment_id, bool $return_object = true)
     {
-        $attachment = get_post($attachment_id);
-        if (!$attachment) {
-            return null;
-        }
+	    $attachment = get_post( $attachment_id );
+	    if ( ! $attachment ) {
+		    return null;
+	    }
 
-        $_return = [
-            'alt'         => get_post_meta($attachment->ID, '_wp_attachment_image_alt', true),
-            'caption'     => $attachment->post_excerpt,
-            'description' => $attachment->post_content,
-            'href'        => get_permalink($attachment->ID),
-            'src'         => $attachment->guid,
-            'title'       => $attachment->post_title,
-        ];
+	    $_return = [
+		    'alt'         => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
+		    'caption'     => $attachment->post_excerpt,
+		    'description' => $attachment->post_content,
+		    'href'        => get_permalink( $attachment->ID ),
+		    'src'         => $attachment->guid,
+		    'title'       => $attachment->post_title,
+	    ];
 
-        if (true === $return_object) {
-            $_return = self::toObject($_return);
-        }
+	    if ( true === $return_object ) {
+		    $_return = self::toObject( $_return );
+	    }
 
-        return $_return;
+	    return $_return;
     }
 
     // -------------------------------------------------------------
@@ -185,19 +185,19 @@ trait Wp
      */
     public static function lazyScriptTag(array $arr_parsed, string $tag, string $handle, string $src)
     {
-        foreach ($arr_parsed as $str => $value) {
-            if (str_contains($handle, $str)) {
-                if ('defer' === $value) {
-                    $tag = preg_replace('/\s+defer\s+/', ' ', $tag);
-                    return preg_replace('/\s+src=/', ' defer src=', $tag);
-                } elseif ('delay' === $value) {
-                    $tag = preg_replace('/\s+defer\s+/', ' ', $tag);
-                    return preg_replace('/\s+src=/', ' defer data-type=\'lazy\' data-src=', $tag);
-                }
-            }
-        }
+	    foreach ( $arr_parsed as $str => $value ) {
+		    if ( str_contains( $handle, $str ) ) {
+			    if ( 'defer' === $value ) {
+				    $tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
+				    return preg_replace( '/\s+src=/', ' defer src=', $tag );
+			    } elseif ( 'delay' === $value ) {
+				    $tag = preg_replace( '/\s+defer\s+/', ' ', $tag );
+				    return preg_replace( '/\s+src=/', ' defer data-type=\'lazy\' data-src=', $tag );
+			    }
+		    }
+	    }
 
-        return $tag;
+	    return $tag;
     }
 
     // -------------------------------------------------------------
@@ -211,13 +211,13 @@ trait Wp
      */
     public static function lazyStyleTag(array $arr_styles, string $html, string $handle)
     {
-        foreach ($arr_styles as $style) {
-            if (str_contains($handle, $style)) {
-                return preg_replace('/media=\'all\'/', 'media=\'print\' onload=\'this.media="all"\'', $html);
-            }
-        }
+	    foreach ( $arr_styles as $style ) {
+		    if ( str_contains( $handle, $style ) ) {
+			    return preg_replace( '/media=\'all\'/', 'media=\'print\' onload=\'this.media="all"\'', $html );
+		    }
+	    }
 
-        return $html;
+	    return $html;
     }
 
     // -------------------------------------------------------------
@@ -230,28 +230,28 @@ trait Wp
      */
     public static function getThemeMod( string $mod_name, $default = false)
     {
-        static $_is_loaded;
-        if (empty($_is_loaded)) {
+	    static $_is_loaded;
+	    if ( empty( $_is_loaded ) ) {
 
-            // references cannot be directly assigned to static variables, so we use an array
-            $_is_loaded[0] = [];
-        }
+		    // references cannot be directly assigned to static variables, so we use an array
+		    $_is_loaded[0] = [];
+	    }
 
-        if ($mod_name) {
-            if (!isset($_is_loaded[0][strtolower($mod_name)])) {
-                $_mod = get_theme_mod($mod_name, $default);
-                if (is_ssl()) {
-                    $_is_loaded[0][strtolower($mod_name)] = str_replace(['http://'], 'https://', $_mod);
-                }
+	    if ( $mod_name ) {
+		    if ( ! isset( $_is_loaded[0][ strtolower( $mod_name ) ] ) ) {
+			    $_mod = get_theme_mod( $mod_name, $default );
+			    if ( is_ssl() ) {
+				    $_is_loaded[0][ strtolower( $mod_name ) ] = str_replace( [ 'http://' ], 'https://', $_mod );
+			    }
 //				else {
 //                    $_is_loaded[0][strtolower($mod_name)] = str_replace(['https://'], 'http://', $_mod);
 //                }
-            }
+		    }
 
-            return $_is_loaded[0][strtolower($mod_name)];
-        }
+		    return $_is_loaded[0][ strtolower( $mod_name ) ];
+	    }
 
-        return $default;
+	    return $default;
     }
 
     // -------------------------------------------------------------
@@ -263,18 +263,18 @@ trait Wp
      */
     public static function getTerm($term_id, string $taxonomy = 'category')
     {
-        $term = false;
-        if (is_numeric($term_id)) {
-            $term_id = intval($term_id);
-            $term = get_term($term_id);
-        } else {
-            $term = get_term_by('slug', $term_id, $taxonomy);
-            if (!$term) {
-                $term = get_term_by('name', $term_id, $taxonomy);
-            }
-        }
+	    $term = false;
+	    if ( is_numeric( $term_id ) ) {
+		    $term_id = intval( $term_id );
+		    $term    = get_term( $term_id );
+	    } else {
+		    $term = get_term_by( 'slug', $term_id, $taxonomy );
+		    if ( ! $term ) {
+			    $term = get_term_by( 'name', $term_id, $taxonomy );
+		    }
+	    }
 
-        return $term;
+	    return $term;
     }
 
     // -------------------------------------------------------------
@@ -346,19 +346,19 @@ trait Wp
         }
 
         // woocommerce_hide_out_of_stock_items
-        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce') && 'product' == $post_type) {
+	    if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
 
-            $product_visibility_term_ids = wc_get_product_visibility_term_ids();
+		    $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
-            $_args['tax_query'][] = [
-                [
-                    'taxonomy' => 'product_visibility',
-                    'field'    => 'term_taxonomy_id',
-                    'terms'    => $product_visibility_term_ids['outofstock'],
-                    'operator' => 'NOT IN',
-                ],
-            ]; // WPCS: slow query ok.
-        }
+		    $_args['tax_query'][] = [
+			    [
+				    'taxonomy' => 'product_visibility',
+				    'field'    => 'term_taxonomy_id',
+				    'terms'    => $product_visibility_term_ids['outofstock'],
+				    'operator' => 'NOT IN',
+			    ],
+		    ]; // WPCS: slow query ok.
+	    }
 
         $_query = new WP_Query($_args);
         if (!$_query->have_posts()) {
@@ -381,17 +381,17 @@ trait Wp
      */
     public static function queryByTerms(array $term_ids = [], string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, $strtotime_str = false)
     {
-        $_args = [
-            'post_type'              => $post_type ?: 'post',
-            'post_status'            => 'publish',
-            'orderby'                => ['date' => 'DESC'],
-            'tax_query'              => ['relation' => 'AND'],
-            'no_found_rows'          => true,
-            'ignore_sticky_posts'    => true,
-            'posts_per_page'         => $posts_per_page ?: 12,
-            'update_post_meta_cache' => false,
-            'update_post_term_cache' => false,
-        ];
+	    $_args = [
+		    'post_type'              => $post_type ?: 'post',
+		    'post_status'            => 'publish',
+		    'orderby'                => [ 'date' => 'DESC' ],
+		    'tax_query'              => [ 'relation' => 'AND' ],
+		    'no_found_rows'          => true,
+		    'ignore_sticky_posts'    => true,
+		    'posts_per_page'         => $posts_per_page ?: 12,
+		    'update_post_meta_cache' => false,
+		    'update_post_term_cache' => false,
+	    ];
 
 //        if (!is_array($term_ids)) {
 //            $term_ids = self::separatedToArray($term_ids, ',');
@@ -402,31 +402,31 @@ trait Wp
         }
 
         //...
-        $term_ids = Helper::removeEmptyValues($term_ids);
-        if (count($term_ids) > 0) {
-            $_args['tax_query'][] = [
-                'taxonomy'         => $taxonomy,
-                'terms'            => $term_ids,
-                'field'            => 'term_id',
-                'include_children' => (bool) $include_children,
-                'operator'         => 'IN',
-            ];
-        }
+	    $term_ids = Helper::removeEmptyValues( $term_ids );
+	    if ( count( $term_ids ) > 0 ) {
+		    $_args['tax_query'][] = [
+			    'taxonomy'         => $taxonomy,
+			    'terms'            => $term_ids,
+			    'field'            => 'term_id',
+			    'include_children' => (bool) $include_children,
+			    'operator'         => 'IN',
+		    ];
+	    }
 
         // ...
         if ($strtotime_str) {
 
             // constrain to just posts in $strtotime_str
-            $recent = strtotime($strtotime_str);
-            if (self::isInteger($recent)) {
-                $_args['date_query'] = [
-                    'after' => [
-                        'year'  => date('Y', $recent),
-                        'month' => date('n', $recent),
-                        'day'   => date('j', $recent),
-                    ],
-                ];
-            }
+	        $recent = strtotime( $strtotime_str );
+	        if ( self::isInteger( $recent ) ) {
+		        $_args['date_query'] = [
+			        'after' => [
+				        'year'  => date( 'Y', $recent ),
+				        'month' => date( 'n', $recent ),
+				        'day'   => date( 'j', $recent ),
+			        ],
+		        ];
+	        }
         }
 
         // woocommerce_hide_out_of_stock_items
@@ -434,14 +434,14 @@ trait Wp
 
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
-            $_args['tax_query'][] = [
-                [
-                    'taxonomy' => 'product_visibility',
-                    'field'    => 'term_taxonomy_id',
-                    'terms'    => $product_visibility_term_ids['outofstock'],
-                    'operator' => 'NOT IN',
-                ],
-            ]; // WPCS: slow query ok.
+	        $_args['tax_query'][] = [
+		        [
+			        'taxonomy' => 'product_visibility',
+			        'field'    => 'term_taxonomy_id',
+			        'terms'    => $product_visibility_term_ids['outofstock'],
+			        'operator' => 'NOT IN',
+		        ],
+	        ]; // WPCS: slow query ok.
         }
 
         // query
@@ -459,22 +459,30 @@ trait Wp
      * @param string $home_heading
      * @return string|void
      */
-    public static function siteTitleOrLogo(bool $echo = true, string $home_heading = 'h1')
+    public static function siteTitleOrLogo(bool $echo = true, string $home_heading = 'div')
     {
-        if (function_exists('the_custom_logo') && has_custom_logo()) {
-            $logo = get_custom_logo();
-            $html = (is_home() || is_front_page()) ? '<' . $home_heading . ' class="logo">' . $logo . '</' . $home_heading . '>' : $logo;
-        } else {
-            $tag = is_home() ? $home_heading : 'div';
-            $html = '<' . esc_attr($tag) . ' class="site-title"><a title href="' . self::home() . '" rel="home">' . esc_html(get_bloginfo('name')) . '</a></' . esc_attr($tag) . '>';
-            if ('' !== get_bloginfo('description')) {
-                $html .= '<p class="site-description">' . esc_html(get_bloginfo('description', 'display')) . '</p>';
-            }
-        }
+		$is_home_or_front_page = is_home() || is_front_page();
+	    $tag  = $is_home_or_front_page ? $home_heading : 'div';
 
-        if (!$echo) {
-            return $html;
-        }
+	    if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) {
+		    $logo = get_custom_logo();
+		    $html = $is_home_or_front_page ? '<' . $home_heading . ' class="logo">' . $logo . '</' . $home_heading . '>' : $logo;
+	    } else {
+		    $html = '<' . esc_attr( $tag ) . ' class="site-title"><a title href="' . self::home() . '" rel="home">' . esc_html( get_bloginfo( 'name' ) ) . '</a></' . esc_attr( $tag ) . '>';
+		    if ( '' !== get_bloginfo( 'description' ) ) {
+			    $html .= '<p class="site-description">' . esc_html( get_bloginfo( 'description', 'display' ) ) . '</p>';
+		    }
+	    }
+
+	    $logo_heading = self::getThemeMod( 'logo_title_setting' );
+	    if ( $logo_heading && $is_home_or_front_page ) {
+		    $_tag = ( 'h1' == $home_heading ) ? 'span' : 'h1';
+		    $html .= '<' . esc_attr( $_tag ) . ' class="hidden-text">' . $logo_heading . '</' . esc_attr( $_tag ) . '>';
+	    }
+
+	    if ( ! $echo ) {
+		    return $html;
+	    }
 
         echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
@@ -490,11 +498,11 @@ trait Wp
         $html = '';
         $custom_logo_id = null;
 
-        if ('default' !== $theme && $theme_logo = self::getThemeMod($theme . '_logo')) {
-            $custom_logo_id = attachment_url_to_postid($theme_logo);
-        } else if (has_custom_logo()) {
-            $custom_logo_id = self::getThemeMod('custom_logo');
-        }
+	    if ( 'default' !== $theme && $theme_logo = self::getThemeMod( $theme . '_logo' ) ) {
+		    $custom_logo_id = attachment_url_to_postid( $theme_logo );
+	    } else if ( has_custom_logo() ) {
+		    $custom_logo_id = self::getThemeMod( 'custom_logo' );
+	    }
 
         // We have a logo. Logo is go.
         if ($custom_logo_id) {
@@ -518,12 +526,12 @@ trait Wp
              * If the alt attribute is not empty, there's no need to explicitly pass it
              * because wp_get_attachment_image() already adds the alt attribute.
              */
-            $logo = wp_get_attachment_image($custom_logo_id, 'full', false, $custom_logo_attr);
-            if ($class) {
-                $html = '<div class="' . $class . '"><a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a></div>';
-            } else {
-                $html = '<a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a>';
-            }
+	        $logo = wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr );
+	        if ( $class ) {
+		        $html = '<div class="' . $class . '"><a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a></div>';
+	        } else {
+		        $html = '<a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a>';
+	        }
         }
 
         return $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -536,19 +544,19 @@ trait Wp
      * @param string $class
      * @return string|null
      */
-    public static function loopExcerpt($post = null, string $class = 'excerpt'): ?string {
-        $excerpt = get_the_excerpt($post);
-        if (!self::stripSpace($excerpt)) {
-            return null;
-        }
+	public static function loopExcerpt( $post = null, string $class = 'excerpt' ): ?string {
+		$excerpt = get_the_excerpt( $post );
+		if ( ! self::stripSpace( $excerpt ) ) {
+			return null;
+		}
 
-        $excerpt = strip_tags($excerpt);
-        if (!$class) {
-            return $excerpt;
-        }
+		$excerpt = strip_tags( $excerpt );
+		if ( ! $class ) {
+			return $excerpt;
+		}
 
-        return "<p class=\"$class\">{$excerpt}</p>";
-    }
+		return "<p class=\"$class\">{$excerpt}</p>";
+	}
 
     // -------------------------------------------------------------
 
@@ -628,34 +636,37 @@ trait Wp
 //            }
         }
 
+	    // get list terms
+	    $post_terms = get_the_terms( $post, $taxonomy );
+	    $term_ids   = wp_list_pluck( $post_terms, 'term_id' );
+
         // Rank Math SEO
         // https://vi.wordpress.org/plugins/seo-by-rank-math/
         $primary_term_id = get_post_meta(get_the_ID(), 'rank_math_primary_' . $taxonomy, true);
-        if ($primary_term_id) {
-            $term = get_term($primary_term_id, $taxonomy);
-            if ($term) {
-                return $term;
-            }
-        }
+	    if ( $primary_term_id && in_array( $primary_term_id, $term_ids ) ) {
+		    $term = get_term( $primary_term_id, $taxonomy );
+		    if ( $term ) {
+			    return $term;
+		    }
+	    }
 
         // Yoast SEO
         // https://vi.wordpress.org/plugins/wordpress-seo/
         if (class_exists('\WPSEO_Primary_Term')) {
 
             // Show the post's 'Primary' category, if this Yoast feature is available, & one is set
-            $wpseo_primary_term = new \WPSEO_Primary_Term($taxonomy, $post);
-            $wpseo_primary_term = $wpseo_primary_term->get_primary_term();
-            $term = get_term($wpseo_primary_term, $taxonomy);
-            if ($term) {
-                return $term;
-            }
+	        $wpseo_primary_term = new \WPSEO_Primary_Term( $taxonomy, $post );
+	        $wpseo_primary_term = $wpseo_primary_term->get_primary_term();
+	        $term               = get_term( $wpseo_primary_term, $taxonomy );
+	        if ( $term && in_array( $term->term_id, $term_ids ) ) {
+		        return $term;
+	        }
         }
 
-        // Default, first category
-        $post_terms = get_the_terms($post, $taxonomy);
-        if (is_array($post_terms)) {
-            return $post_terms[0];
-        }
+	    // Default, first category
+	    if (is_array($post_terms)) {
+		    return $post_terms[0];
+	    }
 
         return false;
     }
@@ -671,17 +682,17 @@ trait Wp
      * @return string|null
      */
     public static function getPrimaryTerm($post = null, string $taxonomy = '', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>'): ?string {
-        $term = self::primaryTerm($post, $taxonomy);
-        if (!$term) {
-            return null;
-        }
+	    $term = self::primaryTerm( $post, $taxonomy );
+	    if ( ! $term ) {
+		    return null;
+	    }
 
-        $link = '<a href="' . esc_url(get_term_link($term, $taxonomy)) . '" title="' . esc_attr($term->name) . '">' . $term->name . '</a>';
-        if ($wrapper_open && $wrapper_close) {
-            $link = $wrapper_open . $link . $wrapper_close;
-        }
+	    $link = '<a href="' . esc_url( get_term_link( $term, $taxonomy ) ) . '" title="' . esc_attr( $term->name ) . '">' . $term->name . '</a>';
+	    if ( $wrapper_open && $wrapper_close ) {
+		    $link = $wrapper_open . $link . $wrapper_close;
+	    }
 
-        return $link;
+	    return $link;
     }
 
     // -------------------------------------------------------------
@@ -696,32 +707,32 @@ trait Wp
      */
     public static function postTerms($post, string $taxonomy = 'category', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>')
     {
-        if (!$taxonomy) {
-            $post_type = get_post_type($post);
-            $taxonomy = $post_type . '_cat';
+	    if ( ! $taxonomy ) {
+		    $post_type = get_post_type( $post );
+		    $taxonomy  = $post_type . '_cat';
 
-            if ('post' == $post_type) {
-                $taxonomy = 'category';
-            }
-        }
+		    if ( 'post' == $post_type ) {
+			    $taxonomy = 'category';
+		    }
+	    }
 
-        $link = '';
-        $post_terms = get_the_terms($post, $taxonomy);
-        if (empty($post_terms)) {
-            return false;
-        }
+	    $link       = '';
+	    $post_terms = get_the_terms( $post, $taxonomy );
+	    if ( empty( $post_terms ) ) {
+		    return false;
+	    }
 
-        foreach ($post_terms as $term) {
-            if ($term->slug) {
-                $link .= '<a href="' . esc_url(get_term_link($term)) . '" title="' . esc_attr($term->name) . '">' . $term->name . '</a>';
-            }
-        }
+	    foreach ( $post_terms as $term ) {
+		    if ( $term->slug ) {
+			    $link .= '<a href="' . esc_url( get_term_link( $term ) ) . '" title="' . esc_attr( $term->name ) . '">' . $term->name . '</a>';
+		    }
+	    }
 
-        if ($wrapper_open && $wrapper_close) {
-            $link = $wrapper_open . $link . $wrapper_close;
-        }
+	    if ( $wrapper_open && $wrapper_close ) {
+		    $link = $wrapper_open . $link . $wrapper_close;
+	    }
 
-        return $link;
+	    return $link;
     }
 
     // -------------------------------------------------------------
@@ -819,21 +830,21 @@ trait Wp
      */
     public static function humanizeTime($post = null, $from = null, $to = null)
     {
-        $_ago = __('ago', EHD_PLUGIN_TEXT_DOMAIN);
+	    $_ago = __( 'ago', EHD_PLUGIN_TEXT_DOMAIN );
 
-        if (empty($to)) {
-            $to = current_time('U');
-        }
-        if (empty($from)) {
-            $from = get_the_time('U', $post);
-        }
+	    if ( empty( $to ) ) {
+		    $to = current_time( 'U' );
+	    }
+	    if ( empty( $from ) ) {
+		    $from = get_the_time( 'U', $post );
+	    }
 
-        $diff = (int) abs($to - $from);
+	    $diff = (int) abs( $to - $from );
 
-        $since = human_time_diff($from, $to);
-        $since = $since . ' ' . $_ago;
+	    $since = human_time_diff( $from, $to );
+	    $since = $since . ' ' . $_ago;
 
-        return apply_filters('humanize_time', $since, $diff, $from, $to);
+	    return apply_filters( 'humanize_time', $since, $diff, $from, $to );
     }
 
     // -------------------------------------------------------------
@@ -955,13 +966,13 @@ trait Wp
             }
 
             //...
-            if (get_query_var('paged')) {
-                echo '<li class="paged">';
-                echo ' (';
-                echo __('page', EHD_PLUGIN_TEXT_DOMAIN) . ' ' . get_query_var('paged');
-                echo ')';
-                echo $after;
-            }
+	        if ( get_query_var( 'paged' ) ) {
+		        echo '<li class="paged">';
+		        echo ' (';
+		        echo __( 'page', EHD_PLUGIN_TEXT_DOMAIN ) . ' ' . get_query_var( 'paged' );
+		        echo ')';
+		        echo $after;
+	        }
 
             echo '</ul>';
         }
@@ -1332,10 +1343,10 @@ trait Wp
 	 */
 	public static function paddingCss( $top, $right, $bottom, $left ): string
 	{
-		$padding_top = ( isset( $top ) && '' !== $top ) ? absint( $top ) . 'px ' : '0 ';
-		$padding_right = ( isset( $right ) && '' !== $right ) ? absint( $right ) . 'px ' : '0 ';
+		$padding_top    = ( isset( $top ) && '' !== $top ) ? absint( $top ) . 'px ' : '0 ';
+		$padding_right  = ( isset( $right ) && '' !== $right ) ? absint( $right ) . 'px ' : '0 ';
 		$padding_bottom = ( isset( $bottom ) && '' !== $bottom ) ? absint( $bottom ) . 'px ' : '0 ';
-		$padding_left = ( isset( $left ) && '' !== $left ) ? absint( $left ) . 'px' : '0';
+		$padding_left   = ( isset( $left ) && '' !== $left ) ? absint( $left ) . 'px' : '0';
 
 		if ( ( absint( $padding_top ) === absint( $padding_right ) ) && ( absint( $padding_right ) === absint( $padding_bottom ) ) && ( absint( $padding_bottom ) === absint( $padding_left ) ) ) {
 			return $padding_left;

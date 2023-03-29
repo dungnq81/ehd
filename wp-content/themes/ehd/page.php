@@ -17,4 +17,9 @@ get_header();
 
 echo 'pages';
 
+// homepage widget
+if (is_active_sidebar('w-home-sidebar')) :
+	dynamic_sidebar('w-home-sidebar');
+endif;
+
 get_footer();

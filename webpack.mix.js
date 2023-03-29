@@ -21,8 +21,8 @@ mix
 // Source maps when not in production.
 if (!mix.inProduction()) {
     mix
-        .sourceMaps()
-        .webpackConfig({devtool: 'source-map'})
+        .sourceMaps(false, 'source-map');
+        //.webpackConfig({devtool: 'source-map'});
 }
 
 // Run only for a plugin.

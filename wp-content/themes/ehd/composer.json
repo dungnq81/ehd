@@ -18,7 +18,7 @@
 			"inc/css-output.php",
 			"inc/helpers.php",
 			"inc/themes.php",
-			"inc/Themes/tgmpa/tgmpa-config.php",
+			"inc/Plugins/tgmpa/tgmpa-config.php",
 			"structures/header.php",
 			"structures/footer.php",
 			"structures/template-hooks.php"

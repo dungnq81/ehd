@@ -8,7 +8,53 @@
 
 \defined( 'ABSPATH' ) || die;
 
-    wp_footer();
 ?>
+            </div><!-- // .site-content -->
+        </div><!-- // .site-page -->
+        <?php
+
+        /**
+         * ehd_before_footer hook.
+         *
+         */
+        do_action( 'ehd_before_footer' );
+
+        ?>
+        <div class="site-footer">
+            <?php
+
+            /**
+             * ehd_before_footer_content hook.
+             *
+             */
+            do_action( 'ehd_before_footer_content' );
+
+            /**
+             * ehd_footer hook.
+             *
+             */
+            do_action( 'ehd_footer' );
+
+            /**
+             * ehd_after_footer_content hook.
+             *
+             */
+            do_action( 'ehd_after_footer_content' );
+
+            ?>
+        </div>
+    </div><!-- // .site-outer -->
+    <?php
+
+    /**
+     * ehd_after_footer hook.
+     *
+     * @see __ehd_after_footer - 10
+     */
+    do_action( 'ehd_after_footer' );
+
+    wp_footer();
+
+    ?>
 </body>
 </html>

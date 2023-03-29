@@ -256,7 +256,7 @@
 
 @mixin flex-self($total_n: 1, $self_n: 1, $gap: 0) {
     @if $gap < 0 {
-        $gap: abs($gap);
+        $gap: 0;
     }
 
     @if is-int($total_n) and is-int($self_n) and $self_n > 0 {
@@ -264,7 +264,7 @@
             width: percentage(1);
         } @else if $gap == 0 and $total_n > $self_n {
             width: percentage(divide($self_n, $total_n));
-        } @else if $gap > 0 and $total_n > $self_n {
+        } @else if is-int($gap) and $total_n > $self_n {
             width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
         }
     }
@@ -289,8 +289,7 @@
 }
 
 @mixin gap($g: 0) {
-    @if is-int($g) {
-        $g: abs($g);
+    @if type-of($g) != bool {
         grid-gap: fs($g);
         gap: fs($g);
     }
@@ -681,14 +680,15 @@
 
 @mixin hidden-text {
     border: 0;
-    clip: rect(0, 0, 0, 0);
+    clip: rect(1px,1px,1px,1px);
+    clip-path: inset(50%);
     height: 1px;
-    width: 1px;
     margin: -1px;
     overflow: hidden;
     padding: 0;
     position: absolute;
-    top: -10000em;
+    width: 1px;
+    word-wrap: normal !important;
 }
 
 @mixin centering-self($width: 300, $height: $width) {

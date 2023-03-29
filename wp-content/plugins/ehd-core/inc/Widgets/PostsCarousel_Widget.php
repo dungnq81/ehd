@@ -215,9 +215,9 @@ if (!class_exists('PostsCarousel_Widget')) {
             $this->registered = true;
 
             // load styles and scripts
-            if (is_active_widget(false, false, $this->id_base)) {
-                add_action('wp_enqueue_scripts', [&$this, 'styles_and_scripts'], 12);
-            }
+	        if ( is_active_widget( false, false, $this->id_base, true ) ) {
+		        add_action( 'wp_enqueue_scripts', [ &$this, 'styles_and_scripts' ], 12 );
+	        }
         }
 
         /**

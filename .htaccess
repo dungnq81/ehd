@@ -1,22 +1,26 @@
 
 # BEGIN WordPress
 # Các nội dung nằm giữa "BEGIN WordPress" và "END WordPress" được tạo ra tự động, và chỉ nên được thay đổi thông qua các filter của WordPress. Mọi thay đổi tới thành phần này có thể sẽ bị mất và ghi đè.
+<IfModule mod_rewrite.c>
+
+	RewriteEngine On
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	RewriteBase /
+	RewriteRule ^index\.php$ - [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . /index.php [L]
+
+</IfModule>
 
 # END WordPress
 
 # BEGIN ng
 
-# START of Rank Math Sitemap Rewrite Rules
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    #RewriteBase /
-    #RewriteRule ^sitemap_index.xml$ /index.php?sitemap=1 [L]
-    #RewriteRule ^([^/]+?)-sitemap([0-9]+)?.xml$ /index.php?sitemap=$1&sitemap_n=$2 [L]
-    #RewriteRule ^([a-z]+)?-?sitemap.xsl$ /index.php?xsl=$1 [L]
-</IfModule>
-# END of Rank Math Sitemap Rewrite Rules
-
 SetEnv HTACCESS on
+
+# Disable Directory Browsing
+Options -Indexes
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
@@ -25,6 +29,16 @@ SetEnv HTACCESS on
     RewriteCond %{HTTPS} !=off
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^(.*)$ https://%1/$1/ [R=301,L]
+
+    # Disable PHP in Uploads
+    RewriteRule ^wp\-content/uploads/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
+
+    # Disable PHP in Plugins
+    RewriteRule ^wp\-content/plugins/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
+
+    # Disable PHP in Themes
+    RewriteRule ^wp\-content/themes/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
+
 </IfModule>
 
 <IfModule mod_headers.c>

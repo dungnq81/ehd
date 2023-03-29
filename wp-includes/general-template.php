@@ -1971,7 +1971,8 @@ function get_archives_link( $url, $text, $format = 'html', $before = '', $after 
  * }
  * @return void|string Void if 'echo' argument is true, archive links if 'echo' is false.
  */
-function wp_get_archives( $args = '' ) {
+function
+wp_get_archives( $args = '' ) {
 	global $wpdb, $wp_locale;
 
 	$defaults = array(

@@ -44,11 +44,11 @@ if ( ! function_exists( '__extra_wp_footer' ) ) {
 	 */
 	function __extra_wp_footer() : void
 	{
-		/** Footer scripts */
+		/** Body scripts - BOTTOM */
 		echo "\n";
-		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
-		if ($html_footer) {
-			echo $html_footer;
+		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
+		if ($html_body_bottom) {
+			echo $html_body_bottom;
 		}
 		echo "\n";
 
@@ -58,5 +58,25 @@ if ( ! function_exists( '__extra_wp_footer' ) ) {
 		//$inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");elem.removeAttribute(\"data-type\");})}";
 		//echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
 		//echo "\n";
+	}
+}
+
+// -----------------------------------------------
+// ehd_after_footer
+// -----------------------------------------------
+
+if ( ! function_exists( '__ehd_after_footer' ) ) {
+	add_action( 'ehd_after_footer', '__ehd_after_footer', 10 );
+	/**
+	 * @return void
+	 */
+	function __ehd_after_footer() : void
+	{
+		/** Footer scripts */
+		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
+		if ($html_footer) {
+			echo $html_footer;
+		}
+		echo "\n";
 	}
 }
