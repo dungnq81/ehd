@@ -11,9 +11,9 @@ trait Arr {
 	 * @param $string
 	 * @param string $separator
 	 *
-	 * @return string[]
+	 * @return array
 	 */
-	public static function separatedToArray( $string, string $separator = ',' ): array {
+	public static function separatedToArray( $string, string $separator = ',' ) : array {
 		// Explode on comma
 		$vals = explode( $separator, $string );
 

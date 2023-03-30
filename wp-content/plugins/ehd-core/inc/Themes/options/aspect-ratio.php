@@ -2,8 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'blogs' ] );
-$aspect_ratio_options = get_option( 'aspect_ratio__options' );
+$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [ 'posts' ] );
 
 ?>
 <h2><?php _e( 'Aspect Ratio Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>
@@ -11,8 +10,10 @@ $aspect_ratio_options = get_option( 'aspect_ratio__options' );
 foreach ( $ar_post_type_list as $ar ) :
 	$title = Helper::mbUcFirst( $ar );
 
-	$width  = $aspect_ratio_options[ 'ar-' . $ar . '-width' ] ?? '';
-	$height = $aspect_ratio_options[ 'ar-' . $ar . '-height' ] ?? '';
+	$w_h    = Helper::getAspectRatioOption( $ar, 'aspect_ratio__options' );
+	$width  = $w_h[0];
+	$height = $w_h[1];
+
 ?>
 <div class="section section-text" id="section_aspect_ratio">
     <span class="heading"><?php _e( $title, EHD_PLUGIN_TEXT_DOMAIN ); ?></span>
@@ -33,4 +34,5 @@ foreach ( $ar_post_type_list as $ar ) :
         <div class="explain"><?php echo $title?> images will be viewed at a custom aspect ratio.</div>
     </div>
 </div>
-<?php endforeach; ?>
+<?php
+endforeach;

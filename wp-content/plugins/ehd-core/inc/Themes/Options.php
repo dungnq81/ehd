@@ -135,7 +135,7 @@ final class Options
 
 	        /** Aspect Ratio */
 	        $aspect_ratio_options = [];
-	        $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'blogs' ] );
+	        $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'posts' ] );
 	        foreach ( $ar_post_type_list as $i => $ar ) {
 		        $aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 3;
 		        $aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 2;

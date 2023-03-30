@@ -27,7 +27,7 @@ if ( ! function_exists( '__wp_footer' ) ) {
 			echo apply_filters( // phpcs:ignore
 				'end_back_to_top_output',
 				sprintf(
-					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop o_draggable" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
+					'<a title="%1$s" aria-label="%1$s" rel="nofollow" href="#" class="back-to-top toTop" data-scroll-speed="%2$s" data-start-scroll="%3$s" data-glyph=""></a>',
 					esc_attr__('Scroll back to top', EHD_TEXT_DOMAIN),
 					absint(apply_filters('ehd_back_to_top_scroll_speed', 400)),
 					absint(apply_filters('ehd_back_to_top_start_scroll', 300)),
@@ -57,7 +57,6 @@ if ( ! function_exists( '__extra_wp_footer' ) ) {
 		//$inline_js = 'const loadScriptsTimer=setTimeout(loadScripts,' . $timeout . ');const userInteractionEvents=["mouseover","keydown","touchstart","touchmove","wheel"];userInteractionEvents.forEach(function(event){window.addEventListener(event,triggerScriptLoader,{passive:!0})});function triggerScriptLoader(){loadScripts();clearTimeout(loadScriptsTimer);userInteractionEvents.forEach(function(event){window.removeEventListener(event,triggerScriptLoader,{passive:!0})})}';
 		//$inline_js .= "function loadScripts(){document.querySelectorAll(\"script[data-type='lazy']\").forEach(function(elem){elem.setAttribute(\"src\",elem.getAttribute(\"data-src\"));elem.removeAttribute(\"data-src\");elem.removeAttribute(\"data-type\");})}";
 		//echo '<script src="data:text/javascript;base64,' . base64_encode($inline_js) . '"></script>';
-		//echo "\n";
 	}
 }
 

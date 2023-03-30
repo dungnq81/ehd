@@ -12,6 +12,7 @@ use EHD\Cores\Helper;
 
 if (!function_exists('__after_setup_theme')) {
 	add_action('after_setup_theme', '__after_setup_theme', 11);
+
     /**
      * @link http://codex.wordpress.org/Function_Reference/register_nav_menus#Examples
      *
@@ -35,6 +36,7 @@ if (!function_exists('__after_setup_theme')) {
 
 if (!function_exists('__register_sidebars')) {
 	add_action('widgets_init', '__register_sidebars', 11);
+
     /**
      * Register widget area.
      *
@@ -122,6 +124,7 @@ if (!function_exists('__register_sidebars')) {
 
 if ( ! function_exists( '__wp_default_scripts' ) ) {
 	add_action( 'wp_default_scripts', '__wp_default_scripts' );
+
 	/**
 	 * @param $scripts
 	 * @return void
@@ -144,6 +147,7 @@ if ( ! function_exists( '__wp_default_scripts' ) ) {
 
 if (!function_exists('__body_classes')) {
 	add_filter('body_class', '__body_classes', 11, 1);
+
 	/**
 	 * Adds custom classes to the array of body classes.
 	 *
@@ -185,6 +189,7 @@ if (!function_exists('__body_classes')) {
 
 if (!function_exists('__post_classes')) {
 	add_filter('post_class', '__post_classes', 11, 1);
+
 	/**
 	 * Adds custom classes to the array of post classes.
 	 *
@@ -217,6 +222,7 @@ if (!function_exists('__post_classes')) {
 
 if (!function_exists('__nav_menu_css_classes')) {
 	add_filter('nav_menu_css_class', '__nav_menu_css_classes', 11, 2);
+
 	/**
 	 * @param $classes
 	 * @param $item
@@ -320,7 +326,7 @@ add_filter( 'ehd_defer_style', function ( $arr ) {
 /** Aspect Ratio */
 add_filter( 'ehd_aspect_ratio_post_type', function ( $arr ) {
 	$arr = [
-		'blogs',
+		'posts',
 		'products',
 		//'videos',
 	];

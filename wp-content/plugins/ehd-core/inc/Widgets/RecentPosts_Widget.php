@@ -57,7 +57,7 @@ if (!class_exists('RecentPosts_Widget')) {
                     'type'  => 'text',
                     'std'   => '',
                     'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc'  => __('Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN),
+                    'desc' => sprintf( __( "A date/time string, restrict to only posts within a specific time period. %s", EHD_PLUGIN_TEXT_DOMAIN ), "\n<a target='_blank' href=\"https://www.php.net/manual/en/function.strtotime.php\">php.net/manual/en/function.strtotime.php</a>" ),
                 ],
                 'css_class' => [
                     'type' => 'text',
@@ -134,18 +134,21 @@ if (!class_exists('RecentPosts_Widget')) {
             );
 
             // class
-            $_class = $this->widget_classname . ' ' . $this->id;
+            //$_class = $this->widget_classname . ' ' . $this->id;
+	        $_class = $this->widget_classname;
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
             }
+
+	        $uniqid = esc_attr(uniqid($this->widget_classname . '-'));
 
             if (!$r->have_posts()) return;
 
             ob_start();
 
             ?>
-            <div class="<?php echo $_class; ?>">
+            <div class="<?php echo $_class; ?>" id="<?= $uniqid ?>">
                 <?php if ($title) : ?>
                 <span class="sidebar-title"><?php echo $title; ?></span>
                 <?php endif;
@@ -155,7 +158,7 @@ if (!class_exists('RecentPosts_Widget')) {
                 $aria_label = $title ?: __('Recent Posts', EHD_PLUGIN_TEXT_DOMAIN);;
 
                 ?>
-                <nav aria-label="<?php echo esc_attr($aria_label); ?>">
+                <nav class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($aria_label); ?>">
                     <ul>
                         <?php
                         foreach ($r->posts as $recent_post) :

@@ -151,7 +151,8 @@ if (!class_exists('Posts_Widget')) {
             ];
 
             // class
-            $_class = $this->widget_classname . ' ' . $this->id;
+            //$_class = $this->widget_classname . ' ' . $this->id;
+	        $_class = $this->widget_classname;
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
             if ($css_class) {
                 $_class = $_class . ' ' . $css_class;
@@ -183,7 +184,6 @@ if (!class_exists('Posts_Widget')) {
             <?php
 
             if ($show_viewmore_button) {
-
                 $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
                 $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
 

@@ -73,7 +73,7 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param bool $condition
+	 * @param mixed $condition
 	 * @param mixed $ifTrue
 	 * @param mixed $ifFalse
 	 *
@@ -112,11 +112,20 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @param array $array
+	 * @param array|string $array
 	 *
 	 * @return array
 	 */
-	public static function removeEmptyValues( array $array = [] ): array {
+	public static function removeEmptyValues( $array = [] ) : array {
+
+		if (!is_array($array) && $array) {
+			return [ $array ];
+		}
+
+		if (empty($array)) {
+			return __return_empty_array();
+		}
+
 		$result = [];
 		foreach ( $array as $key => $value ) {
 			if ( self::isEmpty( $value ) ) {
@@ -140,7 +149,7 @@ trait Base {
 	 *
 	 * @return bool
 	 */
-	public static function inRange( $value, $min, $max ): bool {
+	public static function inRange( $value, $min, $max ) : bool {
 		$inRange = filter_var( $value, FILTER_VALIDATE_INT, [
 			'options' => [
 				'min_range' => intval( $min ),
@@ -184,7 +193,7 @@ trait Base {
 	 *
 	 * @return string
 	 */
-	public static function youtubeImage( $url, array $resolution = [] ): string {
+	public static function youtubeImage( $url, array $resolution = [] ) : string {
 		if ( ! $url ) {
 			return '';
 		}

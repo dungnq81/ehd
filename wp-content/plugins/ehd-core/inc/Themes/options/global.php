@@ -2,9 +2,9 @@
 
 use EHD\Cores\Helper;
 
-$html_header = Helper::getCustomPostContent( 'html_header', true );
-$html_footer = Helper::getCustomPostContent( 'html_footer', true );
-$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
+$html_header      = Helper::getCustomPostContent( 'html_header', true );
+$html_footer      = Helper::getCustomPostContent( 'html_footer', true );
+$html_body_top    = Helper::getCustomPostContent( 'html_body_top', true );
 $html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
 
 ?>

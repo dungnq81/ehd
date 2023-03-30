@@ -1,5 +1,5 @@
-let mix = require('laravel-mix');
-let glob = require('glob');
+const mix = require('laravel-mix');
+const { glob, globSync } = require('glob');
 
 mix
     .webpackConfig({
@@ -29,4 +29,4 @@ if (!mix.inProduction()) {
 require('./wp-content/plugins/ehd-core/webpack.mix.js');
 
 // Run only for themes.
-glob.sync('./wp-content/themes/**/webpack.mix.js').forEach(item => require(item));
+globSync('./wp-content/themes/**/webpack.mix.js').forEach(file => require(`./${file}`));

@@ -71,18 +71,15 @@ final class Shortcode
         );
 
         //...
-        $post_type = $atts['post_type'] ?: 'post';
-        $taxonomy = $atts['taxonomy'] ?: 'category';
-
         $term_ids = $atts['term_ids'] ?: '';
-        $term_ids = Helper::separatedToArray($term_ids, '-');
-
         $posts_per_page = $atts['posts_per_page'] ? absint($atts['posts_per_page']) : 12;
         $include_children = Helper::toBool($atts['include_children']);
         $strtotime_str = $atts['limit_time'] ? Helper::toString($atts['limit_time']) : false;
 
-        $r = Helper::queryByTerms($term_ids, $taxonomy, $post_type, $include_children, $posts_per_page, $strtotime_str);
-        if (!$r) return null;
+        $r = Helper::queryByTerms($term_ids, $atts['taxonomy'], $atts['post_type'], $include_children, $posts_per_page, $strtotime_str);
+	    if ( ! $r ) {
+		    return null;
+	    }
 
         // ok !
         $wrapper_open = $atts['wrapper'] ? '<' . $atts['wrapper'] . ' class="' . $atts['wrapper_class'] . '">' : '';
@@ -110,15 +107,12 @@ final class Shortcode
             // thumbnail
             if ($atts['show']['thumbnail'] && $post_thumbnail) :
 
-                $scale_class = $atts['show']['scale'] ? 'scale ' : '';
-                $ratio = Helper::getThemeMod('news_menu_setting');
-                $ratio_class = $ratio;
-                if ('default' == $ratio or !$ratio) {
-                    $ratio_class = '3-2';
-                }
+                $scale_class = isset( $atts['show']['scale'] ) ? 'scale ' : '';
+	            $ratio = Helper::getAspectRatioOption( 'posts', 'aspect_ratio__options' );
+	            $ratio = empty( $ratio ) ? '3-2' : $ratio[0] . '-' . $ratio[1];
 
                 echo '<a class="d-block cover" href="' . get_permalink($post->ID) . '" aria-label="' . esc_attr($title) . '" tabindex="0">';
-                echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio_class . '">' . $post_thumbnail . '</span>';
+                echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio . '">' . $post_thumbnail . '</span>';
                 echo '</a>';
 
             endif;

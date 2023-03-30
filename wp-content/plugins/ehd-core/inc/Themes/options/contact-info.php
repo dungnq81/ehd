@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$contact_info_options = get_option( 'contact_info__options' );
+$contact_info_options = Helper::getOption( 'contact_info__options' );
 
 $hotline = $contact_info_options['hotline'] ?? '';
 $address = ! empty( $contact_info_options['address'] ) ? wp_unslash($contact_info_options['address']) : '';

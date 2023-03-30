@@ -218,7 +218,7 @@ abstract class Widget extends WP_Widget
                         ?>
                         <input class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="text" value="<?php echo esc_attr($value); ?>"/>
                         <?php if (isset($setting['desc'])) : ?>
-                        <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small class="help-text"><?php echo $setting['desc']; ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -230,7 +230,7 @@ abstract class Widget extends WP_Widget
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                         <input class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" type="number" min="<?php echo esc_attr($setting['min']); ?>" max="<?php echo esc_attr($setting['max']); ?>" value="<?php echo esc_attr($value); ?>"/>
                         <?php if (isset($setting['desc'])) : ?>
-                        <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small class="help-text"><?php echo $setting['desc']; ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -246,7 +246,7 @@ abstract class Widget extends WP_Widget
                             <?php endforeach; ?>
                         </select>
                         <?php if (isset($setting['desc'])) : ?>
-                        <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small class="help-text"><?php echo $setting['desc']; ?></small>
                         <?php endif; ?>
                     </p>
                     <?php
@@ -258,7 +258,7 @@ abstract class Widget extends WP_Widget
                         <label for="<?php echo esc_attr($this->get_field_id($key)); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                         <textarea class="widefat <?php echo esc_attr($class); ?>" id="<?php echo esc_attr($this->get_field_id($key)); ?>" name="<?php echo esc_attr($this->get_field_name($key)); ?>" cols="20" rows="2"><?php echo esc_textarea($value); ?></textarea>
                         <?php if (isset($setting['desc'])) : ?>
-                        <small><?php echo esc_html($setting['desc']); ?></small>
+                        <small class="help-text"><?php echo $setting['desc']; ?></small>
                         <?php endif; ?>
                     </p>
                     <?php

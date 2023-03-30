@@ -18,6 +18,11 @@ $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Aria
     @include hide-text;
 }
 
+.help-text {
+    display: block;
+    margin-top: 10px;
+}
+
 /** login form */
 body.login {
     background-size: cover;

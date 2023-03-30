@@ -1,6 +1,8 @@
 <?php
 
-$smtp_options = get_option( 'smtp__options' );
+use EHD\Cores\Helper;
+
+$smtp_options = Helper::getOption( 'smtp__options' );
 
 $smtp_host                     = $smtp_options['smtp_host'] ?? '';
 $smtp_auth                     = $smtp_options['smtp_auth'] ?? '';
