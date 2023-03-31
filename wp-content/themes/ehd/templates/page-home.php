@@ -9,7 +9,7 @@
 
 use EHD\Cores\Helper;
 
-get_header('home');
+get_header( 'home' );
 
 if (have_posts()) the_post();
 

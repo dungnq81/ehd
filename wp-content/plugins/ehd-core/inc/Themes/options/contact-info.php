@@ -5,9 +5,9 @@ use EHD\Cores\Helper;
 $contact_info_options = Helper::getOption( 'contact_info__options' );
 
 $hotline = $contact_info_options['hotline'] ?? '';
-$address = ! empty( $contact_info_options['address'] ) ? wp_unslash($contact_info_options['address']) : '';
-$phones = $contact_info_options['phones'] ?? '';
-$emails = $contact_info_options['emails'] ?? '';
+$address = ! empty( $contact_info_options['address'] ) ? wp_unslash( $contact_info_options['address'] ) : '';
+$phones  = $contact_info_options['phones'] ?? '';
+$emails  = $contact_info_options['emails'] ?? '';
 
 $contact_info_others = Helper::getCustomPostContent( 'html_others', false );
 

@@ -4,11 +4,11 @@ use EHD\Cores\Helper;
 
 $contact_options = Helper::getOption( 'contact_btn__options' );
 
-$contact_title = $contact_options['contact_title'] ?? '';
-$contact_url = $contact_options['contact_url'] ?? '';
-$contact_window = $contact_options['contact_window'] ?? '';
+$contact_title        = $contact_options['contact_title'] ?? '';
+$contact_url          = $contact_options['contact_url'] ?? '';
+$contact_window       = $contact_options['contact_window'] ?? '';
 $contact_waiting_time = $contact_options['contact_waiting_time'] ?? '';
-$contact_show_repeat = $contact_options['contact_show_repeat'] ?? '';
+$contact_show_repeat  = $contact_options['contact_show_repeat'] ?? '';
 
 $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
 

@@ -42,16 +42,16 @@ trait WooCommerce
      */
     public static function wc_cart_link()
     {
-        if (!self::wc_cart_available()) {
-            return;
-        }
-        ?>
-        <a class="shopping-cart-contents" href="<?php echo esc_url(wc_get_cart_url()); ?>"
-           title="<?php echo esc_attr__('View your shopping cart', EHD_PLUGIN_TEXT_DOMAIN); ?>">
-            <?php echo wp_kses_post(WC()->cart->get_cart_subtotal()); ?>
+	    if ( ! self::wc_cart_available() ) {
+		    return;
+	    }
+	    ?>
+        <a class="shopping-cart-contents" href="<?php echo esc_url( wc_get_cart_url() ); ?>"
+           title="<?php echo esc_attr__( 'View your shopping cart', EHD_PLUGIN_TEXT_DOMAIN ); ?>">
+		    <?php echo wp_kses_post( WC()->cart->get_cart_subtotal() ); ?>
             <span class="icon" data-glyph=""></span>
-            <span class="count"><?php echo wp_kses_data(sprintf('%d', WC()->cart->get_cart_contents_count())); ?></span>
-            <span class="txt"><?php echo __('Cart', EHD_PLUGIN_TEXT_DOMAIN) ?></span>
+            <span class="count"><?php echo wp_kses_data( sprintf( '%d', WC()->cart->get_cart_contents_count() ) ); ?></span>
+            <span class="txt"><?php echo __( 'Cart', EHD_PLUGIN_TEXT_DOMAIN ) ?></span>
         </a>
         <?php
     }

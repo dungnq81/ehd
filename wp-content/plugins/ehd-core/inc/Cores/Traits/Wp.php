@@ -5,6 +5,8 @@ namespace EHD\Cores\Traits;
 use EHD\Cores\Helper;
 use EHD\Walkers\Horizontal_Nav_Walker;
 use EHD\Walkers\Vertical_Nav_Walker;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;
 use WP_Query;
@@ -107,10 +109,11 @@ trait Wp
 
     // -------------------------------------------------------------
 
-    /**
-     * @param $image_url
-     * @return false|mixed
-     */
+	/**
+	 * @param $image_url
+	 *
+	 * @return false|mixed
+	 */
     public static function getImageId($image_url)
     {
         global $wpdb;
@@ -223,6 +226,31 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
+	 * @param string $option_name
+	 * @param $new_options
+	 * @param bool $merge_arr
+	 *
+	 * @return void
+	 */
+	public static function updateOption( string $option_name, $new_options, bool $merge_arr = true ) : void
+	{
+		if ( true === $merge_arr ) {
+			$options = self::getOption( $option_name );
+			if ( is_array( $options ) && is_array( $new_options ) ) {
+				$updated_options = array_merge( $options, $new_options );
+			} else {
+				$updated_options = $new_options;
+			}
+		} else {
+			$updated_options = $new_options;
+		}
+
+		update_site_option( $option_name, $updated_options );
+	}
+
+    // -------------------------------------------------------------
+
+	/**
 	 * @param string $option
 	 * @param mixed $default
 	 *
@@ -239,7 +267,7 @@ trait Wp
 
 		if ( $option ) {
 			if ( ! isset( $_is_option_loaded[0][ strtolower( $option ) ] ) ) {
-				$_is_option_loaded[0][ strtolower( $option ) ] = get_option( $option, $default );
+				$_is_option_loaded[0][ strtolower( $option ) ] = get_site_option( $option, $default );
 			}
 
 			return $_is_option_loaded[0][ strtolower( $option ) ];
@@ -852,30 +880,30 @@ trait Wp
      * @param $to
      * @return mixed|void
      */
-    public static function humanizeTime($post = null, $from = null, $to = null)
-    {
-	    $_ago = __( 'ago', EHD_PLUGIN_TEXT_DOMAIN );
+	public static function humanizeTime( $post = null, $from = null, $to = null )
+	{
+		$_ago = __( 'ago', EHD_PLUGIN_TEXT_DOMAIN );
 
-	    if ( empty( $to ) ) {
-		    $to = current_time( 'U' );
-	    }
-	    if ( empty( $from ) ) {
-		    $from = get_the_time( 'U', $post );
-	    }
+		if ( empty( $to ) ) {
+			$to = current_time( 'U' );
+		}
+		if ( empty( $from ) ) {
+			$from = get_the_time( 'U', $post );
+		}
 
-	    $diff = (int) abs( $to - $from );
+		$diff = (int) abs( $to - $from );
 
-	    $since = human_time_diff( $from, $to );
-	    $since = $since . ' ' . $_ago;
+		$since = human_time_diff( $from, $to );
+		$since = $since . ' ' . $_ago;
 
-	    return apply_filters( 'humanize_time', $since, $diff, $from, $to );
-    }
+		return apply_filters( 'humanize_time', $since, $diff, $from, $to );
+	}
 
     // -------------------------------------------------------------
 
-    /**
-     * @return void
-     */
+	/**
+	 * @return void
+	 */
     public static function breadcrumbs()
     {
         global $post, $wp_query;
@@ -1032,8 +1060,8 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $obj
-     * @param $fallback
+     * @param mixed $obj
+     * @param mixed $fallback
      * @return array|false|int|mixed|string|WP_Error|WP_Term|null
      */
     public static function getPermalink($obj = null, $fallback = false)
@@ -1078,8 +1106,8 @@ trait Wp
     // -------------------------------------------------------------
 
     /**
-     * @param $obj
-     * @param $fallback
+     * @param mixed $obj
+     * @param mixed $fallback
      * @return false|int|mixed
      */
     public static function getId($obj = null, $fallback = false)
@@ -1300,6 +1328,71 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
+	 * @param $phpmailer
+	 * @param string|null $option_name
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public static function PHPMailerInit( $phpmailer, ?string $option_name = null ) : void
+	{
+		// (Re)create it, if it's gone missing.
+		if ( ! ( $phpmailer instanceof PHPMailer ) ) {
+			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+			$phpmailer = new PHPMailer( true );
+
+			$phpmailer::$validator = static function ( $email ) {
+				return (bool) is_email( $email );
+			};
+		}
+
+		$option_name = $option_name ?: 'smtp__options';
+		$smtp_options = Helper::getOption( $option_name );
+
+		$phpmailer->isSMTP();
+		$phpmailer->Host = $smtp_options['smtp_host'];
+
+		// Whether to use SMTP authentication
+		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
+			$phpmailer->SMTPAuth = true;
+			$phpmailer->Username = $smtp_options['smtp_username'];
+			$phpmailer->Password = base64_decode( $smtp_options['smtp_password'] );
+		}
+
+		// Additional settings
+
+		$type_of_encryption = $smtp_options['smtp_encryption'];
+		if ( $type_of_encryption == "none" ) {
+			$type_of_encryption = '';
+		}
+		$phpmailer->SMTPSecure = $type_of_encryption;
+
+		$phpmailer->Port        = $smtp_options['smtp_port'];
+		$phpmailer->SMTPAutoTLS = false;
+
+		// disable ssl certificate verification if checked
+		if ( isset( $smtp_options['smtp_disable_ssl_verification'] ) && ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
+			$phpmailer->SMTPOptions = [
+				'ssl' => [
+					'verify_peer'       => false,
+					'verify_peer_name'  => false,
+					'allow_self_signed' => true,
+				]
+			];
+		}
+
+		$from_email = apply_filters( 'wp_mail_from', $smtp_options['smtp_from_email'] );
+		$from_name  = apply_filters( 'wp_mail_from_name', $smtp_options['smtp_from_name'] );
+
+		$phpmailer->setFrom( $from_email, $from_name, false );
+		$phpmailer->CharSet = apply_filters( 'wp_mail_charset', get_bloginfo( 'charset' ) );
+	}
+
+    // -------------------------------------------------------------
+
+	/**
 	 * Get any necessary microdata.
 	 *
 	 * @param string $context The element to target.
@@ -1383,7 +1476,8 @@ trait Wp
 	 *
 	 * @return string
 	 *
-	 * GeneratePress
+	 * @author GeneratePress
+	 * Modified by HD Team
 	 */
 	public static function paddingCss( $top, $right, $bottom, $left ): string
 	{
@@ -1401,6 +1495,38 @@ trait Wp
 
     // -------------------------------------------------------------
 
+	/**
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	public static function messageSuccess( $message ) : void
+	{
+		$message = $message ?: 'Values saved';
+		$message = __( $message, EHD_PLUGIN_TEXT_DOMAIN );
+
+		$class   = 'notice notice-success is-dismissible';
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
+	}
+
+    // -------------------------------------------------------------
+
+	/**
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	public static function messageError( $message ) : void
+	{
+		$message = $message ?: 'Values error';
+		$message = __( $message, EHD_PLUGIN_TEXT_DOMAIN );
+
+		$class   = 'notice notice-error is-dismissible';
+		printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
+	}
+
+    // -------------------------------------------------------------
+
     /**
      * A fallback when no navigation is selected by default.
      *
@@ -1410,9 +1536,9 @@ trait Wp
     public static function menuFallback(string $container = '')
     {
         echo '<div class="menu-fallback">';
-        if ($container) {
-            echo '<div class="' . $container . '">';
-        }
+	    if ( $container ) {
+		    echo '<div class="' . $container . '">';
+	    }
 
         /* translators: %1$s: link to menus, %2$s: link to customize. */
         printf(
@@ -1428,9 +1554,10 @@ trait Wp
                 get_admin_url(get_current_blog_id(), 'customize.php')
             )
         );
-        if ($container) {
-            echo '</div>';
-        }
-        echo '</div>';
+
+	    if ( $container ) {
+		    echo '</div>';
+	    }
+	    echo '</div>';
     }
 }

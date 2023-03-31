@@ -20,7 +20,6 @@ final class Helper
 {
     use File;
     use Plugin;
-    use Wp;
     use WooCommerce;
     use Elementor;
 

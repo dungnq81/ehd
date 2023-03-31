@@ -48,7 +48,7 @@ if (!function_exists('__register_sidebars')) {
         register_sidebar(
             [
                 'container'     => false,
-                'id'            => 'w-home-sidebar',
+                'id'            => 'ehd-home-sidebar',
                 'name'          => __('Home Page', EHD_TEXT_DOMAIN),
                 'description'   => __('Widgets added here will appear in homepage.', EHD_TEXT_DOMAIN),
                 'before_widget' => '<div class="%2$s">',
@@ -62,7 +62,7 @@ if (!function_exists('__register_sidebars')) {
         register_sidebar(
             [
                 'container'     => false,
-                'id'            => 'w-header-sidebar',
+                'id'            => 'ehd-header-sidebar',
                 'name'          => __('Header', EHD_TEXT_DOMAIN),
                 'description'   => __('Widgets added here will appear in header.', EHD_TEXT_DOMAIN),
                 'before_widget' => '<div class="header-widgets %2$s">',
@@ -100,7 +100,7 @@ if (!function_exists('__register_sidebars')) {
 
                 $footer_args[$footer] = [
                     'name'        => $footer_region_name,
-                    'id'          => sprintf('w-footer-%d', $footer_n),
+                    'id'          => sprintf('ehd-footer-%d', $footer_n),
                     'description' => $footer_region_description,
                 ];
             }
@@ -168,7 +168,7 @@ if (!function_exists('__body_classes')) {
 				|| str_contains( $class, 'page-template-default' )
 				|| str_contains( $class, 'no-customize-support' )
 				|| str_contains( $class, 'page-id-' )
-				|| str_contains( $class, 'wvs-theme-' )
+				//|| str_contains( $class, 'wvs-theme-' )
 			) {
 				$classes = array_diff( $classes, [ $class ] );
 			}
@@ -272,7 +272,9 @@ add_filter('wp_insert_post_data', function ($data) {
 		//$data['comment_status'] = 0;
 		$data['ping_status'] = 0;
 	}
+
 	return $data;
+
 }, 99, 1);
 
 /** ---------------------------------------- */
@@ -306,7 +308,9 @@ add_filter( 'ehd_defer_script', function ( $arr ) {
 		'o-draggable'   => 'delay',
 
 	];
+
 	return $arr;
+
 }, 11, 1 );
 
 // ------------------------------------------
@@ -314,21 +318,36 @@ add_filter( 'ehd_defer_script', function ( $arr ) {
 /** defer styles */
 add_filter( 'ehd_defer_style', function ( $arr ) {
 	$arr = [
+
 		'dashicons',
 		'contact-form-7',
 		//'rank-math',
+
 	];
+
 	return $arr;
+
 }, 11, 1 );
 
 /** ---------------------------------------- */
 
 /** Aspect Ratio */
-add_filter( 'ehd_aspect_ratio_post_type', function ( $arr ) {
-	$arr = [
-		'posts',
-		'products',
+add_filter( 'ehd_aspect_ratio_post_type', function ( $arr )
+{
+	$new_arr = array_merge( $arr, [ 'posts' ] );
+	if ( class_exists( '\WooCommerce' ) ) {
+		$new_arr = array_merge( $new_arr, [ 'products' ] );
+	}
+
+	// custom value
+	$update_arr = [
 		//'videos',
 	];
-	return $arr;
+
+	if ($update_arr) {
+		$new_arr = array_merge( $new_arr, $update_arr );
+	}
+
+	return $new_arr;
+
 }, 99, 1 );

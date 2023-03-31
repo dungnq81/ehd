@@ -33,7 +33,7 @@ final class Admin
 	    add_action( 'admin_menu', [ &$this, 'dashboard_meta_box' ], 11 );
 
 		/** Custom options */
-	    $block_editor_options = get_option( 'block_editor__options' );
+	    $block_editor_options = Helper::getOption( 'block_editor__options' );
 
 	    $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
 	    $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
@@ -81,7 +81,8 @@ final class Admin
     /**
      * Add admin column
      */
-    public function admin_init(): void {
+    public function admin_init(): void
+    {
         $this->_remove_menu();
 
         // Add customize column taxonomy
@@ -145,7 +146,8 @@ final class Admin
      *
      * @return mixed
      */
-    public function post_exclude_header($columns) {
+    public function post_exclude_header($columns)
+    {
         unset($columns['post_thumb']);
         return $columns;
     }
@@ -159,7 +161,8 @@ final class Admin
 	 *
 	 * @return int|mixed|string|null
 	 */
-    public function term_column($out, $column, $term_id) {
+    public function term_column($out, $column, $term_id)
+    {
         switch ($column) {
             case 'term_thumb':
                 $term_thumb = Helper::acfTermThumb($term_id, $column, "thumbnail", true);
@@ -172,7 +175,7 @@ final class Admin
 
             case 'term_order':
                 if (function_exists('get_field')) {
-                    $term_order = get_field('term_order', get_term($term_id));
+                    $term_order = \get_field('term_order', get_term($term_id));
                     return $out = $term_order ?: 0;
                 }
 
@@ -192,7 +195,8 @@ final class Admin
 	 *
 	 * @return array|mixed
 	 */
-    public function term_header($columns) {
+    public function term_header($columns)
+    {
         if (class_exists('\ACF')) {
 
             // thumb
@@ -217,7 +221,8 @@ final class Admin
      * @param $column_name
      * @param $post_id
      */
-    public function post_column($column_name, $post_id): void {
+    public function post_column($column_name, $post_id): void
+    {
         switch ($column_name) {
             case 'post_thumb':
                 $post_type = get_post_type($post_id);
@@ -229,7 +234,7 @@ final class Admin
                 } else if ('video' == $post_type) {
                     if (has_post_thumbnail($post_id)) {
                         echo get_the_post_thumbnail($post_id, 'thumbnail');
-                    } else if (function_exists('get_field') && $url = get_field('url', $post_id)) {
+                    } else if (function_exists('get_field') && $url = \get_field('url', $post_id)) {
                         $img_src = Helper::youtubeImage(esc_url($url), ['default']);
                         echo "<img alt src=\"" . $img_src . "\" />";
                     }
@@ -249,7 +254,8 @@ final class Admin
      *
      * @return array
      */
-    public function post_header($columns): array {
+    public function post_header($columns): array
+    {
         $in = [
             "post_thumb" => sprintf('<span class="wc-image tips">%1$s</span>', __("Thumb", EHD_PLUGIN_TEXT_DOMAIN)),
         ];
@@ -265,7 +271,8 @@ final class Admin
      *
      * @return mixed
      */
-    public function post_type_action_links($actions, $_object) {
+    public function post_type_action_links($actions, $_object)
+    {
         if (!in_array($_object->post_type, ['product', 'site-review'])) {
             Helper::prepend($actions, 'Id:' . $_object->ID, 'action_id');
         }
@@ -281,7 +288,8 @@ final class Admin
      *
      * @return mixed
      */
-    public function term_action_links($actions, $_object) {
+    public function term_action_links($actions, $_object)
+    {
         Helper::prepend($actions, 'Id: ' . $_object->term_id, 'action_id');
         return $actions;
     }
@@ -293,7 +301,8 @@ final class Admin
      *
      * @return void
      */
-    public function dashboard_meta_box(): void {
+    public function dashboard_meta_box(): void
+    {
         /*Incoming Links Widget*/
         remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
 
@@ -306,7 +315,8 @@ final class Admin
     /**
      * @return void
      */
-    public function admin_enqueue_scripts(): void {
+    public function admin_enqueue_scripts(): void
+    {
 	    wp_enqueue_style( "admin-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
 	    wp_enqueue_script( "admin", EHD_PLUGIN_URL . "assets/js/admin.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
     }

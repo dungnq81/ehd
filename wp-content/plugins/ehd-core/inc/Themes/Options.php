@@ -4,7 +4,6 @@ namespace EHD\Themes;
 
 use EHD\Cores\Helper;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 
 \defined('ABSPATH') || die;
 
@@ -89,10 +88,10 @@ final class Options
 	        }
 
             /** Global */
-            $html_header = $_POST['html_header'] ?? '';
-            $html_footer = $_POST['html_footer'] ?? '';
-            $html_body_top = $_POST['html_body_top'] ?? '';
-            $html_body_bottom = $_POST['html_body_bottom'] ?? '';
+	        $html_header      = $_POST['html_header'] ?? '';
+	        $html_footer      = $_POST['html_footer'] ?? '';
+	        $html_body_top    = $_POST['html_body_top'] ?? '';
+	        $html_body_bottom = $_POST['html_body_bottom'] ?? '';
 
 	        Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
 	        Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
@@ -131,61 +130,61 @@ final class Options
 		        $smtp_options['smtp_password'] = $smtp_password;
 	        }
 
-            self::_update_options( 'smtp__options', $smtp_options, true );
+            Helper::updateOption( 'smtp__options', $smtp_options, true );
 
 	        /** Aspect Ratio */
 	        $aspect_ratio_options = [];
-	        $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [ 'posts' ] );
+	        $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 	        foreach ( $ar_post_type_list as $i => $ar ) {
 		        $aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 3;
 		        $aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 2;
 	        }
 
-            self::_update_options( 'aspect_ratio__options', $aspect_ratio_options, false );
+	        Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options, false );
 
             /** Contact info */
 	        $contact_info_options = [
-                'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
-                'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
-                'phones' => ! empty( $_POST['contact_info_phones'] ) ? sanitize_text_field( $_POST['contact_info_phones'] ) : '',
-                'emails' => ! empty( $_POST['contact_info_emails'] ) ? sanitize_text_field( $_POST['contact_info_emails'] ) : '',
-            ];
+		        'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
+		        'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
+		        'phones'  => ! empty( $_POST['contact_info_phones'] ) ? sanitize_text_field( $_POST['contact_info_phones'] ) : '',
+		        'emails'  => ! empty( $_POST['contact_info_emails'] ) ? sanitize_text_field( $_POST['contact_info_emails'] ) : '',
+	        ];
 
-            self::_update_options( 'contact_info__options', $contact_info_options, true );
+	        Helper::updateOption( 'contact_info__options', $contact_info_options, true );
 
 	        $html_contact_info_others = $_POST['contact_info_others'] ?? '';
 	        Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
 
             /** Contact Button */
 	        $contact_btn_options = [
-                'contact_title' => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
-                'contact_url' => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
-                'contact_window' => ! empty( $_POST['contact_window'] ) ? sanitize_text_field( $_POST['contact_window'] ) : '',
-                'contact_waiting_time' => ! empty( $_POST['contact_waiting_time'] ) ? sanitize_text_field( $_POST['contact_waiting_time'] ) : '',
-                'contact_show_repeat' => ! empty( $_POST['contact_show_repeat'] ) ? sanitize_text_field( $_POST['contact_show_repeat'] ) : '',
-            ];
+		        'contact_title'        => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
+		        'contact_url'          => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
+		        'contact_window'       => ! empty( $_POST['contact_window'] ) ? sanitize_text_field( $_POST['contact_window'] ) : '',
+		        'contact_waiting_time' => ! empty( $_POST['contact_waiting_time'] ) ? sanitize_text_field( $_POST['contact_waiting_time'] ) : '',
+		        'contact_show_repeat'  => ! empty( $_POST['contact_show_repeat'] ) ? sanitize_text_field( $_POST['contact_show_repeat'] ) : '',
+	        ];
 
-            self::_update_options( 'contact_btn__options', $contact_btn_options, true );
+	        Helper::updateOption( 'contact_btn__options', $contact_btn_options, true );
 
             $html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
 	        Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html', false );
 
             /** block editor */
 	        $block_editor_options = [
-                'use_widgets_block_editor_off' => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
-                'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
-                'use_block_editor_for_post_type_off' => ! empty( $_POST['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $_POST['use_block_editor_for_post_type_off'] ) : '',
-                'block_style_off' => ! empty( $_POST['block_style_off'] ) ? sanitize_text_field( $_POST['block_style_off'] ) : '',
-            ];
+		        'use_widgets_block_editor_off'           => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
+		        'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
+		        'use_block_editor_for_post_type_off'     => ! empty( $_POST['use_block_editor_for_post_type_off'] ) ? sanitize_text_field( $_POST['use_block_editor_for_post_type_off'] ) : '',
+		        'block_style_off'                        => ! empty( $_POST['block_style_off'] ) ? sanitize_text_field( $_POST['block_style_off'] ) : '',
+	        ];
 
-	        self::_update_options( 'block_editor__options', $block_editor_options, true );
+	        Helper::updateOption( 'block_editor__options', $block_editor_options, true );
 
 	        /** Custom CSS */
 	        $html_custom_css = $_POST['html_custom_css'] ?? '';
 	        Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
 
 	        /** echo message success */
-	        self::_message_success();
+	        Helper::messageSuccess( 'Settings saved' );
         }
         ?>
         <div class="wrap" id="ehd_container">
@@ -332,59 +331,9 @@ final class Options
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setup_phpmailer_init( $phpmailer ): void {
-
-		// (Re)create it, if it's gone missing.
-		if ( ! ( $phpmailer instanceof PHPMailer ) ) {
-			require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-			require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-			require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-			$phpmailer = new PHPMailer( true );
-
-			$phpmailer::$validator = static function ( $email ) {
-				return (bool) is_email( $email );
-			};
-		}
-
-		$smtp_options = get_option( 'smtp__options' );
-
-		$phpmailer->isSMTP();
-		$phpmailer->Host = $smtp_options['smtp_host'];
-
-		// Whether to use SMTP authentication
-		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
-			$phpmailer->SMTPAuth = true;
-			$phpmailer->Username = $smtp_options['smtp_username'];
-			$phpmailer->Password = base64_decode( $smtp_options['smtp_password'] );
-		}
-
-		// Additional settings
-
-		$type_of_encryption = $smtp_options['smtp_encryption'];
-		if ( $type_of_encryption == "none" ) {
-			$type_of_encryption = '';
-		}
-		$phpmailer->SMTPSecure = $type_of_encryption;
-
-		$phpmailer->Port        = $smtp_options['smtp_port'];
-		$phpmailer->SMTPAutoTLS = false;
-
-		// disable ssl certificate verification if checked
-		if ( isset( $smtp_options['smtp_disable_ssl_verification'] ) && ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
-			$phpmailer->SMTPOptions = [
-				'ssl' => [
-					'verify_peer'       => false,
-					'verify_peer_name'  => false,
-					'allow_self_signed' => true,
-				]
-			];
-		}
-
-		$from_email = apply_filters( 'wp_mail_from', $smtp_options['smtp_from_email'] );
-		$from_name  = apply_filters( 'wp_mail_from_name', $smtp_options['smtp_from_name'] );
-
-		$phpmailer->setFrom( $from_email, $from_name, false );
-		$phpmailer->CharSet = apply_filters( 'wp_mail_charset', get_bloginfo( 'charset' ) );
+	public function setup_phpmailer_init( $phpmailer ): void
+    {
+        Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
 	}
 
 	/** ---------------------------------------- */
@@ -407,37 +356,12 @@ final class Options
 
     /** ---------------------------------------- */
 
-	/**
-	 * @param string $option_name
-	 * @param mixed $new_options
-	 * @param bool $merge_arr
-	 *
-	 * @return void
-	 */
-	private function _update_options( string $option_name, $new_options, bool $merge_arr = true ): void
-    {
-	    if ( true === $merge_arr ) {
-		    $options = get_option( $option_name );
-		    if ( is_array( $options ) ) {
-			    $updated_options = array_merge( $options, $new_options );
-		    } else {
-			    $updated_options = $new_options;
-		    }
-	    } else {
-		    $updated_options = $new_options;
-	    }
-
-	    update_option( $option_name, $updated_options );
-	}
-
-    /** ---------------------------------------- */
-
     /**
      * @return bool
      */
     private function _smtp__is_configured() : bool
     {
-	    $smtp_options    = get_option( 'smtp__options' );
+	    $smtp_options    = Helper::getOption( 'smtp__options' );
 	    $smtp_configured = true;
 
 	    if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
@@ -459,31 +383,5 @@ final class Options
 	    }
 
         return $smtp_configured;
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return void
-     */
-    private function _message_success() : void
-    {
-	    $class   = 'notice notice-success is-dismissible';
-	    $message = __( 'Settings saved.', EHD_PLUGIN_TEXT_DOMAIN );
-
-	    printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
-    }
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return void
-     */
-    private function _message_error() : void
-    {
-	    $class   = 'notice notice-error is-dismissible';
-	    $message = __( 'Settings error.', EHD_PLUGIN_TEXT_DOMAIN );
-
-	    printf( '<div class="%1$s"><p><strong>%2$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>', esc_attr( $class ), $message );
     }
 }

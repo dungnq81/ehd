@@ -38,7 +38,6 @@ final class Optimizer
 
 	    // fixed canonical
 	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ], 10 );
-	    add_action( 'wp_head', [ &$this, 'rel_next_prev' ], 10 );
 
 	    // filter post search only by title
 	    add_filter( "posts_search", [ &$this, 'post_search_by_title' ], 500, 2 );
@@ -99,7 +98,7 @@ final class Optimizer
 				         $plugin_file,
 				         [
 					         'ehd-core/ehd-core.php',
-					         //'advanced-custom-fields-pro/acf.php',
+					         'advanced-custom-fields-pro/acf.php',
 				         ] )
 			    ) {
 				    unset( $actions[ $key ] );
@@ -118,41 +117,36 @@ final class Optimizer
      *
      * @return void
      */
-    protected function _cleanup(): void {
+    protected function _cleanup() : void
+    {
         remove_action('welcome_panel', 'wp_welcome_panel');
 
-        // wp_head
-        remove_action('wp_head', 'rsd_link');                        // Remove the EditURI/RSD link
-        remove_action('wp_head', 'wlwmanifest_link');                // Remove Windows Live Writer Manifest link
-        remove_action('wp_head', 'wp_shortlink_wp_head');            // Remove the shortlink
-        remove_action('wp_head', 'wp_generator');                    // remove WordPress Generator
-        remove_action('wp_head', 'feed_links_extra', 3);             //remove comments feed.
-        remove_action('wp_head', 'adjacent_posts_rel_link');         // Remove relational links for the posts adjacent to the current post.
-        remove_action('wp_head', 'adjacent_posts_rel_link_wp_head'); // Remove prev and next links
-        remove_action('wp_head', 'parent_post_rel_link');
-        remove_action('wp_head', 'start_post_rel_link');
-        remove_action('wp_head', 'index_rel_link');
-        remove_action('wp_head', 'feed_links', 2);
-        remove_action('wp_head', 'print_emoji_detection_script', 7); // Emoji detection script.
+	    // wp_head
+	    remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
+	    remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
+	    remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
+	    remove_action( 'wp_head', 'feed_links_extra', 3 );             //remove comments feed.
+	    remove_action( 'wp_head', 'feed_links', 2 );
+	    remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
-        // all actions related to emojis
-        remove_action('wp_print_styles', 'print_emoji_styles');
-        remove_action('admin_print_styles', 'print_emoji_styles');
-        remove_action('admin_print_scripts', 'print_emoji_detection_script');
+	    // all actions related to emojis
+	    remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	    remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
         /**
          * Remove wp-json header from WordPress
          * Note that the REST API functionality will still be working as it used to;
          * this only removes the header code that is being inserted.
          */
-        remove_action('wp_head', 'rest_output_link_wp_head');
-        remove_action('wp_head', 'wp_oembed_add_discovery_links');
-        remove_action('template_redirect', 'rest_output_link_header', 11);
+	    remove_action( 'wp_head', 'rest_output_link_wp_head' );
+	    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+	    remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 
-        // staticize_emoji
-        remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-        remove_filter('the_content_feed', 'wp_staticize_emoji');
-        remove_filter('comment_text_rss', 'wp_staticize_emoji');
+	    // staticize_emoji
+	    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
     }
 
     // ------------------------------------------------------
@@ -201,25 +195,6 @@ final class Optimizer
     public function fixed_archive_canonical(): void {
         if (is_archive()) {
             echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
-        }
-    }
-
-    // ------------------------------------------------------
-
-    /**
-     * Add rel="next" and rel="prev" to paginated page
-     *
-     * @return void
-     */
-    public function rel_next_prev(): void {
-        global $paged;
-
-        if (get_previous_posts_link()) { ?>
-            <link rel="prev" href="<?php echo get_pagenum_link($paged - 1); ?>" /><?php
-        }
-
-        if (get_next_posts_link()) { ?>
-            <link rel="next" href="<?php echo get_pagenum_link($paged + 1); ?>" /><?php
         }
     }
 

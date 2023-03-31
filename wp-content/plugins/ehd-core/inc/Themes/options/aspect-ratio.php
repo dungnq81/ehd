@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [ 'posts' ] );
+$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 
 ?>
 <h2><?php _e( 'Aspect Ratio Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>

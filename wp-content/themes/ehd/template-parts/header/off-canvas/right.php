@@ -31,7 +31,6 @@ endif;
 	    <?php
 	    if (is_active_sidebar('w-language-sidebar'))
 		    dynamic_sidebar('w-language-sidebar');
-
 	    ?>
     </div>
 </div>

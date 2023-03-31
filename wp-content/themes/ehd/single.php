@@ -8,4 +8,8 @@
 
 \defined( 'ABSPATH' ) || die;
 
+get_header();
+
 echo 'single posts';
+
+get_footer();

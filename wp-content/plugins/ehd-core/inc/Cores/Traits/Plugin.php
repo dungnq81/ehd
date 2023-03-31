@@ -6,6 +6,10 @@ namespace EHD\Cores\Traits;
 
 trait Plugin
 {
+	use Wp;
+
+	// --------------------------------------------------
+
     /**
      * @var array
      */
@@ -20,7 +24,7 @@ trait Plugin
             return self::$checkedPlugins[$plugin];
         }
 
-        $is_active = self::isAcfPro($plugin) || self::isPluginMustUse($plugin) || self::isPluginActiveForLocal($plugin) || self::isPluginActiveForNetwork($plugin);
+        $is_active = self::isPluginMustUse($plugin) || self::isPluginActiveForLocal($plugin) || self::isPluginActiveForNetwork($plugin);
         self::$checkedPlugins[$plugin] = $is_active;
 
         return $is_active;
@@ -84,7 +88,7 @@ trait Plugin
      * @return bool
      */
     public static function isPluginActiveForLocal($plugin ): bool {
-        $active_plugins = get_option('active_plugins', []);
+        $active_plugins = self::getOption('active_plugins', []);
         return self::checkPlugin($plugin, $active_plugins);
     }
 
@@ -93,7 +97,7 @@ trait Plugin
      * @return false
      */
     public static function isPluginActiveForNetwork($plugin): bool {
-        $active_plugins = get_site_option('active_sitewide_plugins');
+        $active_plugins = self::getOption('active_sitewide_plugins');
         if (!empty($active_plugins)) {
             $active_plugins = array_keys($active_plugins);
             return self::checkPlugin($plugin, $active_plugins);
