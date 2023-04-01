@@ -168,12 +168,12 @@
 }
 
 @mixin responsive-wrapper($width: 100%) {
-
     position: relative;
     display: block;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     width: $width;
+
     & > img {
         display: block;
         height: 100% !important;
@@ -190,6 +190,7 @@
     transform: scale(1.0001);
     will-change: transform;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s;
+
     &:hover {
         transform: scale($scale);
         opacity: $opacity;
@@ -216,7 +217,6 @@
             padding-bottom: $padding;
         }
     } @else {
-
         @supports (aspect-ratio: 1) {
             aspect-ratio: list.slash($ratio-width, $ratio-height);
         }
@@ -288,10 +288,13 @@
     }
 }
 
-@mixin gap($g: 0) {
-    @if type-of($g) != bool {
-        grid-gap: fs($g);
-        gap: fs($g);
+@mixin gap($x: 0, $y: $x) {
+    @if ($x == $y) and (type-of($x) != bool) {
+        grid-gap: fs($x);
+        gap: fs($x);
+    } @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
+        grid-gap: fs($x) fs($y);
+        gap: fs($x) fs($y);
     }
 }
 
@@ -333,8 +336,13 @@
 
     @if is-int($gutter) and $gutter >= 0 {
         @include mq-min(mobile) {
-            margin-left: -#{fs($gutter)};
-            margin-right: -#{fs($gutter)};
+            @if 0 == $gutter {
+                margin-left: 0;
+                margin-right: 0;
+            } @else {
+                margin-left: -#{fs($gutter)};
+                margin-right: -#{fs($gutter)};
+            }
         }
     }
 }
@@ -347,8 +355,13 @@
 
     @if is-int($gutter) and $gutter >= 0 {
         @include mq-min(mobile) {
-            margin-top: -#{fs($gutter)};
-            margin-bottom: -#{fs($gutter)};
+            @if 0 == $gutter {
+                margin-top: 0;
+                margin-bottom: 0;
+            } @else {
+                margin-top: -#{fs($gutter)};
+                margin-bottom: -#{fs($gutter)};
+            }
         }
     }
 }
@@ -359,7 +372,7 @@
         padding-right: fs($gutter_m);
     }
 
-    @if is-int($gutter) and $gutter > 0 {
+    @if is-int($gutter) and $gutter >= 0 {
         @include mq-min(mobile) {
             padding-left: fs($gutter);
             padding-right: fs($gutter);
@@ -373,7 +386,7 @@
         padding-bottom: fs($gutter_m);
     }
 
-    @if is-int($gutter) and $gutter > 0 {
+    @if is-int($gutter) and $gutter >= 0 {
         @include mq-min(mobile) {
             padding-top: fs($gutter);
             padding-bottom: fs($gutter);
@@ -397,7 +410,7 @@
         padding-right: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding > 0 {
+    @if is-int($padding) and $padding >= 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
             padding-right: fs($padding);
@@ -483,7 +496,7 @@
         padding-left: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding > 0 {
+    @if is-int($padding) and $padding >= 0 {
         @include mq-min(mobile) {
             padding-left: fs($padding);
         }
@@ -508,7 +521,7 @@
         padding-right: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding > 0 {
+    @if is-int($padding) and $padding >= 0 {
         @include mq-min(mobile) {
             padding-right: fs($padding);
         }
@@ -626,11 +639,9 @@
         content: "";
         display: inline-block;
         @include box($width, $height);
-        /*width: $width;*/
-        /*height: $height;*/
         position: absolute;
-        bottom: $bottom;
-        left: $left;
+        bottom: fs($bottom);
+        left: fs($left);
         background-color: $color;
         transform-origin: right center;
         transform: scaleX(0);
@@ -673,14 +684,14 @@
 //}
 
 @mixin list-reset($margin: 0, $padding: 0) {
-    margin: $margin;
-    padding: $padding;
+    margin: fs($margin);
+    padding: fs($padding);
     list-style: none;
 }
 
 @mixin hidden-text {
     border: 0;
-    clip: rect(1px,1px,1px,1px);
+    clip: rect(1px, 1px, 1px, 1px);
     clip-path: inset(50%);
     height: 1px;
     margin: -1px;
@@ -802,18 +813,15 @@
 
     // Icon bars
     &::after {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
-
         display: block;
         width: 100%;
         height: $weight;
-
         background: $color;
         box-shadow: $shadow;
-
-        content: '';
     }
 
     // Hover state
@@ -885,9 +893,9 @@
     position: relative;
     overflow: hidden;
     &::before {
+        content: "";
         @include absolute-center;
         display: block;
-        content: "";
         width: 0;
         height: 0;
         background: $bg_color;
@@ -908,7 +916,7 @@
     }
 }
 
-/** */
+/** keyframes */
 @mixin keyframes($name) {
     @-webkit-keyframes #{$name} {
         @content;
