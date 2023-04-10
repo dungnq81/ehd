@@ -14,25 +14,24 @@ final class Shortcode
     /**
      * @return void
      */
-    public static function init() : void
-    {
-        $shortcodes = [
-            'safe_mail'         => __CLASS__ . '::safe_mail',
-            'site_logo'         => __CLASS__ . '::site_logo',
-            'inline_search'     => __CLASS__ . '::inline_search',
-            'dropdown_search'   => __CLASS__ . '::dropdown_search',
-            'off_canvas_button' => __CLASS__ . '::off_canvas_button',
+	public static function init(): void {
+		$shortcodes = [
+			'safe_mail'         => __CLASS__ . '::safe_mail',
+			'site_logo'         => __CLASS__ . '::site_logo',
+			'inline_search'     => __CLASS__ . '::inline_search',
+			'dropdown_search'   => __CLASS__ . '::dropdown_search',
+			'off_canvas_button' => __CLASS__ . '::off_canvas_button',
 
-            'horizontal_menu' => __CLASS__ . '::horizontal_menu',
-            'vertical_menu'   => __CLASS__ . '::vertical_menu',
+			'horizontal_menu' => __CLASS__ . '::horizontal_menu',
+			'vertical_menu'   => __CLASS__ . '::vertical_menu',
 
-            'posts' => __CLASS__ . '::posts',
-        ];
+			'posts' => __CLASS__ . '::posts',
+		];
 
-        foreach ($shortcodes as $shortcode => $function) {
-            add_shortcode(apply_filters("{$shortcode}_shortcode_tag", $shortcode), $function);
-        }
-    }
+		foreach ( $shortcodes as $shortcode => $function ) {
+			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
+		}
+	}
 
     // ------------------------------------------------------
 
@@ -40,8 +39,7 @@ final class Shortcode
      * @param array $atts
      * @return false|string|null
      */
-    public static function posts(array $atts = [])
-    {
+    public static function posts(array $atts = []) {
         $default_atts = [
             'post_type'        => 'post',
             'term_ids'         => '',
@@ -108,11 +106,12 @@ final class Shortcode
             if ($atts['show']['thumbnail'] && $post_thumbnail) :
 
                 $scale_class = isset( $atts['show']['scale'] ) ? 'scale ' : '';
-	            $ratio = Helper::getAspectRatioOption( 'posts', 'aspect_ratio__options' );
-	            $ratio = empty( $ratio ) ? '3-2' : $ratio[0] . '-' . $ratio[1];
+
+                $ratio_obj = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
+                $ratio_class = $ratio_obj->class ?? '';
 
                 echo '<a class="d-block cover" href="' . get_permalink($post->ID) . '" aria-label="' . esc_attr($title) . '" tabindex="0">';
-                echo '<span class="' . $scale_class . 'after-overlay res ar-' . $ratio . '">' . $post_thumbnail . '</span>';
+                echo '<span class="' . $scale_class . 'after-overlay res ' . $ratio_class . '">' . $post_thumbnail . '</span>';
                 echo '</a>';
 
             endif;

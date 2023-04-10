@@ -150,7 +150,6 @@ if (!class_exists('Posts_Widget')) {
                 ],
             ];
 
-            // class
             //$_class = $this->widget_classname . ' ' . $this->id;
 	        $_class = $this->widget_classname;
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';

@@ -402,7 +402,7 @@ if (!class_exists('ProductsCarousel_Widget')) {
             }
 
             // woocommerce_hide_out_of_stock_items
-            if ('yes' === get_option('woocommerce_hide_out_of_stock_items')) {
+            if ('yes' === Helper::getOption('woocommerce_hide_out_of_stock_items')) {
                 $query_args['tax_query'][] = [
                     [
                         'taxonomy' => 'product_visibility',

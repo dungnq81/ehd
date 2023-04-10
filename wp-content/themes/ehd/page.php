@@ -18,8 +18,8 @@ get_header();
 echo 'pages';
 
 // homepage widget
-if (is_active_sidebar('w-home-sidebar')) :
-	dynamic_sidebar('w-home-sidebar');
+if (is_active_sidebar('ehd-home-sidebar')) :
+	dynamic_sidebar('ehd-home-sidebar');
 endif;
 
 get_footer();

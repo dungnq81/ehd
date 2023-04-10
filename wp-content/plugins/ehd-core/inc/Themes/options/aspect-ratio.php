@@ -10,9 +10,13 @@ $ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 foreach ( $ar_post_type_list as $ar ) :
 	$title = Helper::mbUcFirst( $ar );
 
+	if ( ! $title ) {
+		break;
+	}
+
 	$w_h    = Helper::getAspectRatioOption( $ar, 'aspect_ratio__options' );
-	$width  = $w_h[0];
-	$height = $w_h[1];
+	$width  = $w_h[0] ?? '';
+	$height = $w_h[1] ?? '';
 
 ?>
 <div class="section section-text" id="section_aspect_ratio">

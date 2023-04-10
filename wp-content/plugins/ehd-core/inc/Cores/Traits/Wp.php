@@ -3,6 +3,7 @@
 namespace EHD\Cores\Traits;
 
 use EHD\Cores\Helper;
+use EHD\Themes\CSS;
 use EHD\Walkers\Horizontal_Nav_Walker;
 use EHD\Walkers\Vertical_Nav_Walker;
 use PHPMailer\PHPMailer\Exception;
@@ -16,11 +17,11 @@ use WP_Term;
 
 trait Wp
 {
-    use Arr;
-    use Base;
-    use Str;
-    use Url;
-    use Cast;
+	use Arr;
+	use Base;
+	use Str;
+	use Url;
+	use Cast;
 
     // -------------------------------------------------------------
 
@@ -141,10 +142,10 @@ trait Wp
      * @param $args
      * @return string
      */
-    public static function addQueryArg($url, $args): string {
-	    $args = array_map( 'rawurlencode', $args );
-	    return add_query_arg( $args, $url );
-    }
+	public static function addQueryArg( $url, $args ): string {
+		$args = array_map( 'rawurlencode', $args );
+		return add_query_arg( $args, $url );
+	}
 
     // -------------------------------------------------------------
 
@@ -278,12 +279,12 @@ trait Wp
 
     // -------------------------------------------------------------
 
-    /**
-     * @param string $mod_name
-     * @param mixed $default
-     *
-     * @return mixed|string|string[]
-     */
+	/**
+	 * @param string $mod_name
+	 * @param mixed $default
+	 *
+	 * @return false|mixed
+	 */
     public static function getThemeMod( string $mod_name, $default = false)
     {
 	    static $_is_loaded;
@@ -402,7 +403,7 @@ trait Wp
         }
 
         // woocommerce_hide_out_of_stock_items
-	    if ( 'yes' === get_option( 'woocommerce_hide_out_of_stock_items' ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
+	    if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items' ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
 
 		    $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
@@ -482,7 +483,7 @@ trait Wp
         }
 
         // woocommerce_hide_out_of_stock_items
-        if ('yes' === get_option('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce') && 'product' == $post_type) {
+        if ('yes' === self::getOption('woocommerce_hide_out_of_stock_items') && class_exists('\WooCommerce') && 'product' == $post_type) {
 
             $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
@@ -917,16 +918,16 @@ trait Wp
             echo '<li><a class="home" href="' . self::home() . '">' . __('Home', EHD_PLUGIN_TEXT_DOMAIN) . '</a></li>';
 
             //...
-            if (class_exists('\WooCommerce') && @is_shop()) {
-                $shop_page_title = get_the_title(get_option('woocommerce_shop_page_id'));
-                echo $before . $shop_page_title . $after;
-            } elseif ($wp_query->is_posts_page) {
-                $posts_page_title = get_the_title(get_option('page_for_posts', true));
-                echo $before . $posts_page_title . $after;
-            } elseif ($wp_query->is_post_type_archive) {
-                $posts_page_title = post_type_archive_title('', false);
-                echo $before . $posts_page_title . $after;
-            } /** page, attachment */
+	        if ( class_exists( '\WooCommerce' ) && @is_shop() ) {
+		        $shop_page_title = get_the_title( self::getOption( 'woocommerce_shop_page_id' ) );
+		        echo $before . $shop_page_title . $after;
+	        } elseif ( $wp_query->is_posts_page ) {
+		        $posts_page_title = get_the_title( self::getOption( 'page_for_posts', true ) );
+		        echo $before . $posts_page_title . $after;
+	        } elseif ( $wp_query->is_post_type_archive ) {
+		        $posts_page_title = post_type_archive_title( '', false );
+		        echo $before . $posts_page_title . $after;
+	        } /** page, attachment */
             elseif (is_page() || is_attachment()) {
 
                 // parent page
@@ -1313,9 +1314,9 @@ trait Wp
 	 *
 	 * @return string|string[]
 	 */
-	public static function getAspectRatioOption( string $post_type = '', string $option = '')
+	public static function getAspectRatioOption( string $post_type = '', string $option = '' )
 	{
-		$post_type = $post_type ?: 'posts';
+		$post_type = $post_type ?: 'post';
 		$option = $option ?: 'aspect_ratio__options';
 
 		$aspect_ratio_options = Helper::getOption( $option );
@@ -1323,6 +1324,46 @@ trait Wp
 		$height = $aspect_ratio_options[ 'ar-' . $post_type . '-height' ] ?? '';
 
 		return ( $width && $height ) ? [ $width, $height ] : '';
+	}
+
+    // -------------------------------------------------------------
+
+	/**
+	 * @param string $post_type
+	 * @param string $option
+	 *
+	 * @return object
+	 */
+	public static function getAspectRatioClass(  string $post_type = '', string $option = '' ): object {
+		$ratio = Helper::getAspectRatioOption( $post_type, $option );
+
+		$ratio_x = $ratio[0] ?? '';
+		$ratio_y = $ratio[1] ?? '';
+
+		$ratio_style = '';
+		if ( ! $ratio_x || ! $ratio_y ) {
+			$ratio_class = 'ar-4-3';
+		} else {
+			$ratio_class     = 'ar-' . $ratio_x . '-' . $ratio_y;
+			$ar_default_list = apply_filters( 'ehd_aspect_ratio_default_list', [] );
+
+			if ( is_array( $ar_default_list ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_default_list ) ) {
+
+				$css = new CSS();
+				$css->set_selector( '.' . $ratio_class );
+				$css->add_property( 'height', 0 );
+
+				$pb = ( $ratio_y / $ratio_x ) * 100;
+				$css->add_property( 'padding-bottom', $pb . '%' );
+
+				$ratio_style = $css->css_output();
+			}
+		}
+
+		return (object) [
+			'class' => $ratio_class,
+			'style' => $ratio_style,
+		];
 	}
 
     // -------------------------------------------------------------

@@ -20,10 +20,10 @@ mix
 
     .sass(resources + '/sass/app.scss', assets + '/css')
     .sass(resources + '/sass/woocommerce.scss', assets + '/css')
-    .sass(resources + '/sass/elementor.scss', assets + '/css')
+    //.sass(resources + '/sass/elementor.scss', assets + '/css')
 
-    .js(resources + '/js/plugins-dev/back-to-top.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins-dev/draggable.js', assets + '/js/plugins')
-    .js(resources + '/js/plugins-dev/social-share.js', assets + '/js/plugins')
+    // .js(resources + '/js/plugins-dev/back-to-top.js', assets + '/js/plugins')
+    // .js(resources + '/js/plugins-dev/draggable.js', assets + '/js/plugins')
+    // .js(resources + '/js/plugins-dev/social-share.js', assets + '/js/plugins')
 
     .js(resources + '/js/app.js', assets + '/js');

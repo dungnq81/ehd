@@ -4,6 +4,7 @@ namespace EHD\Widgets;
 
 use EHD\Cores\Helper;
 use EHD\Cores\Widget;
+use EHD\Themes\CSS;
 use WP_Query;
 
 \defined('ABSPATH') || die;
@@ -94,7 +95,6 @@ if (!class_exists('RecentPosts_Widget')) {
             $query_args = [
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
-
                 'post_type'        => 'post',
                 'post_status' => 'publish',
                 'posts_per_page' => $number,
@@ -133,7 +133,6 @@ if (!class_exists('RecentPosts_Widget')) {
                 )
             );
 
-            // class
             //$_class = $this->widget_classname . ' ' . $this->id;
 	        $_class = $this->widget_classname;
             $css_class = (!empty($instance['css_class'])) ? sanitize_title($instance['css_class']) : '';
@@ -155,16 +154,20 @@ if (!class_exists('RecentPosts_Widget')) {
 
                 // The title may be filtered: Strip out HTML and make sure the aria-label is never empty.
                 $title = trim(strip_tags($title));
-                $aria_label = $title ?: __('Recent Posts', EHD_PLUGIN_TEXT_DOMAIN);;
+                $aria_label = $title ?: __( 'Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );
 
                 ?>
                 <nav class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($aria_label); ?>">
                     <ul>
                         <?php
+
+                        $ratio_obj = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
+                        $ratio_class = $ratio_obj->class ?? '';
+
                         foreach ($r->posts as $recent_post) :
                             $post_title = get_the_title($recent_post->ID);
-                            $title = (!empty($post_title)) ? $post_title : __('(no title)', EHD_PLUGIN_TEXT_DOMAIN);
-                            $post_thumbnail = get_the_post_thumbnail($recent_post, 'post-thumbnail');
+                            $title = (!empty($post_title)) ? $post_title : __( '(no title)', EHD_PLUGIN_TEXT_DOMAIN );
+                            $post_thumbnail = get_the_post_thumbnail($recent_post, 'medium');
 
                             $aria_current = '';
                             if (get_queried_object_id() === $recent_post->ID) {
@@ -172,16 +175,9 @@ if (!class_exists('RecentPosts_Widget')) {
                             }
                             ?>
                             <li>
-                                <?php
-                                if ($show_thumbnail && $post_thumbnail) :
-                                    $ratio = Helper::getThemeMod('news_menu_setting');
-                                    $ratio_class = $ratio;
-                                    if ('default' == $ratio or !$ratio) {
-                                        $ratio_class = '3-2';
-                                    }
-                                ?>
+                                <?php if ($show_thumbnail && $post_thumbnail) : ?>
                                 <a class="d-block cover" href="<?php the_permalink($recent_post->ID); ?>" aria-label="<?php echo esc_attr($title); ?>" tabindex="0">
-                                    <span class="after-overlay res ar-<?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
+                                    <span class="after-overlay res <?= $ratio_class ?>"><?php echo $post_thumbnail; ?></span>
                                 </a>
                                 <?php endif; ?>
                                 <div class="cover-content">

@@ -281,24 +281,27 @@ abstract class Widget extends WP_Widget
         }
     }
 
-    /** ---------------------------------------------------- */
-
     /**
-     * @param $id
-     *
-     * @return object|null
+     * @param int $number
      */
-    protected function acfFields($id)
+    public function _register_one($number = -1) : void
     {
-        if (class_exists('\ACF')) {
-            $fields = \get_fields($id);
-            if ($fields) {
-                return Helper::toObject($fields);
-            }
+        parent::_register_one($number);
+        if ($this->registered) {
+            return;
         }
 
-        return null;
+        $this->registered = true;
+
+        if ( is_active_widget( false, false, $this->id_base, true ) ) {
+            add_action( 'wp_enqueue_scripts', [ &$this, 'styles_and_scripts' ], 12 );
+        }
     }
+
+    /**
+     * styles_and_scripts
+     */
+    public function styles_and_scripts() {}
 
     /**
      * @param $instance
@@ -382,5 +385,21 @@ abstract class Widget extends WP_Widget
             'class' => $swiper_class,
             'data' => json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE),
         ];
+    }
+
+    /**
+     * @param $id
+     *
+     * @return object|null
+     */
+    protected function acfFields($id): ?object {
+        if (class_exists('\ACF') && function_exists('get_fields')) {
+            $fields = \get_fields($id);
+            if ($fields) {
+                return Helper::toObject($fields);
+            }
+        }
+
+        return null;
     }
 }

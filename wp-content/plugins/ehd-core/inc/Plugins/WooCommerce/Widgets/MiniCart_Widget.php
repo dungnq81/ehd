@@ -18,20 +18,20 @@ if (!class_exists('MiniCart_Widget')) {
          */
         public function widget($args, $instance)
         {
-            if (apply_filters('woocommerce_widget_cart_is_hidden', is_cart() || is_checkout())) {
+            if ( apply_filters( 'woocommerce_widget_cart_is_hidden', is_cart() || is_checkout() ) ) {
                 return;
             }
 
-            $hide_if_empty = empty($instance['hide_if_empty']) ? 0 : 1;
-            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+            $hide_if_empty = empty( $instance['hide_if_empty'] ) ? 0 : 1;
+            $title         = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
 
             echo $args['before_widget']; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-            if ($title) {
+            if ( $title ) {
                 echo '<span class="cart-title">' . $title . '</span>';
             }
 
             $class = 'menu-item';
-            if (is_cart() || is_checkout()) {
+            if ( is_cart() || is_checkout() ) {
                 $class .= ' current-menu-item';
             }
 

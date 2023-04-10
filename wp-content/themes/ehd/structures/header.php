@@ -127,7 +127,7 @@ if ( ! function_exists( '__ehd_construct_header' ) ) {
 	{
 	?>
 	<header class="site-header">
-
+        <div class="top-header"></div>
 	</header>
 	<?php
 	}

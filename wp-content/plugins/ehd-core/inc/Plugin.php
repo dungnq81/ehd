@@ -151,14 +151,15 @@ final class Plugin {
 
 		wp_register_style( 'ehd-core-style', EHD_PLUGIN_URL . "assets/css/ehd.css", [], EHD_PLUGIN_VERSION );
 		wp_register_script( "ehd-core", EHD_PLUGIN_URL . "assets/js/ehd.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
+		wp_script_add_data( "ehd-core", "defer", true );
 
 		/** dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
 
 		/** customize */
-		$block_editor_options = get_option( 'block_editor__options' );
+		$block_editor_options = Helper::getOption( 'block_editor__options' );
+		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
-		$block_style_off = $block_editor_options['block_style_off'] ?? '';
 		if ( $block_style_off )
 		{
 			/** Remove block CSS */

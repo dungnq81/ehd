@@ -14,7 +14,7 @@ use EHD\Themes\CSS;
 
 /** inline css */
 if (!function_exists('__enqueue_inline_css')) {
-	add_action('wp_enqueue_scripts', '__enqueue_inline_css', 31); // After WooCommerce.
+	add_action('wp_enqueue_scripts', '__enqueue_inline_css', 32); // After WooCommerce.
     /**
      * Add CSS for third-party plugins.
      *
@@ -25,14 +25,14 @@ if (!function_exists('__enqueue_inline_css')) {
         $css = new CSS();
 
         // breadcrumbs bg
-        $breadcrumb_bg = Helper::getThemeMod('breadcrumb_bg_setting');
-        if ($breadcrumb_bg) {
-            $css->set_selector('section.section-title>.title-bg');
-            $css->add_property('background-image', 'url(' . $breadcrumb_bg . ')');
-        }
+	    $breadcrumb_bg = Helper::getThemeMod( 'breadcrumb_bg_setting' );
+	    if ( $breadcrumb_bg ) {
+		    $css->set_selector( 'section.section-title>.title-bg' );
+		    $css->add_property( 'background-image', 'url(' . $breadcrumb_bg . ')' );
+	    }
 
-        if ($css->css_output()) {
-            wp_add_inline_style('app-style', $css->css_output());
-        }
+	    if ( $css->css_output() ) {
+		    wp_add_inline_style( 'app-style', $css->css_output() );
+	    }
     }
 }

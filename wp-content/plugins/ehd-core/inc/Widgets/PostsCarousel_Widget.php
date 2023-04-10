@@ -202,22 +202,14 @@ if (!class_exists('PostsCarousel_Widget')) {
         }
 
         /**
-         * @param $number
          * @return void
          */
-        public function _register_one($number = -1) : void
+        public function styles_and_scripts()
         {
-            parent::_register_one($number);
-            if ($this->registered) {
-                return;
-            }
+            wp_enqueue_style('ehd-swiper-style');
 
-            $this->registered = true;
-
-            // load styles and scripts
-	        if ( is_active_widget( false, false, $this->id_base, true ) ) {
-		        add_action( 'wp_enqueue_scripts', [ &$this, 'styles_and_scripts' ], 12 );
-	        }
+            wp_enqueue_script('ehd-swiper');
+            wp_script_add_data("ehd-swiper", "defer", true);
         }
 
         /**
@@ -324,17 +316,6 @@ if (!class_exists('PostsCarousel_Widget')) {
             <?php
 
             echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
-        }
-
-        /**
-         * @return void
-         */
-        public function styles_and_scripts() : void
-        {
-            wp_enqueue_style('ehd-swiper-style');
-
-            wp_enqueue_script('ehd-swiper');
-            wp_script_add_data("ehd-swiper", "defer", true);
         }
     }
 }

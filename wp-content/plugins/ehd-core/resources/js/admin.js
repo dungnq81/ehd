@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
 const $ = jQuery;
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
+import Cookies from 'js-cookie';
 
 'use strict';
 $(function () {
@@ -15,7 +16,7 @@ $(function () {
         $(el).addClass(_rand);
 
         let _id = $(el).attr('id');
-        if (_id === undefined || _id === '') {
+        if (_id === 'undefined' || _id === '') {
             _id = _rand;
             $(el).attr('id', _id);
         }
@@ -78,17 +79,15 @@ $(function () {
         _content.find('.tabs-panel').hide();
         let _cookie = 'cookie_' + _id + '_' + index;
 
-        if (_getCookie(_cookie) === '' || _getCookie(_cookie) === 'undefined') {
+        if (Cookies.get(_cookie) === '' || Cookies.get(_cookie) === 'undefined') {
             let _hash = _nav.find('a:first').attr("href");
-            _setCookie(_cookie, _hash, 100);
+            Cookies.set(_cookie, _hash, { expires: 7, path: '' });
         }
 
-        _nav.find('a[href="' + _getCookie(_cookie) + '"]').addClass("current");
+        _nav.find('a[href="' + Cookies.get(_cookie) + '"]').addClass("current");
         _nav.find('a').on("click", function (e) {
             e.preventDefault();
-
-            let _hash = $(this).attr("href");
-            _setCookie(_cookie, _hash, 100);
+            Cookies.set(_cookie, $(this).attr("href"), { expires: 7, path: '' });
 
             _nav.find('a.current').removeClass("current");
             _content.find('.tabs-panel:visible').removeClass('show').hide();
@@ -106,34 +105,3 @@ $(function () {
     $("input[value=\"advanced-custom-fields-pro/acf.php\"]").remove();
     $("input[value=\"ehd-core/ehd-core.php\"]").remove();
 });
-
-/**
- * @param cname
- * @param cvalue
- * @param exdays
- */
-function _setCookie(cname, cvalue, exdays) {
-    let d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-/**
- * @param cname
- * @returns {string}
- */
-function _getCookie(cname) {
-    let name = cname + "=";
-    let ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) === 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
