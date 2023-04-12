@@ -116,8 +116,8 @@ body {
         &.widescreen {
             @include mq-min(xxxdesktop) {
                 max-width: 100%;
-                padding-left: fs(165 + $gutter);
-                padding-right: fs(165 + $gutter);
+                padding-left: fs($large_gutter + $gutter);
+                padding-right: fs($large_gutter + $gutter);
             }
         }
 
@@ -305,11 +305,6 @@ body {
     color: $color-red !important;
 }
 
-/** */
-.btn-effect3 {
-    @include _effect3();
-}
-
 @include keyframes(circle) {
     0% {
         opacity: 1;
@@ -429,7 +424,6 @@ body {
     @include flex-center;
 
     &::before, &::after {
-        /*display: none;*/
         @include hidden-text;
     }
 

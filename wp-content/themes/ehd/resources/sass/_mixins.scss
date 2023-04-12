@@ -172,7 +172,7 @@
     display: block;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
-    width: $width;
+    width: fs($width);
 
     & > img {
         display: block;
@@ -203,8 +203,6 @@
     object-fit: contain;
     max-width: 100%;
     max-height: 100%;
-    //min-width: 70%;
-    //min-height: 70%;
 }
 
 @mixin responsive-ratio($ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100%) {
@@ -213,8 +211,8 @@
         &::before {
             content: '';
             position: relative;
-            width: $width_percent;
-            padding-bottom: $padding;
+            width: fs($width_percent);
+            padding-bottom: fs($padding);
         }
     } @else {
         @supports (aspect-ratio: 1) {
@@ -223,7 +221,7 @@
 
         @supports not (aspect-ratio: 1) {
             height: 0;
-            padding-bottom: $padding;
+            padding-bottom: fs($padding);
         }
     }
 }
@@ -394,10 +392,11 @@
     }
 }
 
-@mixin cell() {
+@mixin cell($w: 100%) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
+    width: fs($w);
 }
 
 @mixin grid-container($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
@@ -426,8 +425,8 @@
     @if true == $widescreen {
         @include mq-min(xxxdesktop) {
             max-width: 100%;
-            padding-left: fs(165 + $gutter);
-            padding-right: fs(165 + $gutter);
+            padding-left: fs($large_gutter + $gutter);
+            padding-right: fs($large_gutter + $gutter);
         }
     }
 

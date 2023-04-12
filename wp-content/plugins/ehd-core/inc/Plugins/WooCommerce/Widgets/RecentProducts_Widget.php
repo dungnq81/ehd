@@ -224,7 +224,7 @@ if (!class_exists('RecentProducts_Widget')) {
                 <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
 
                 <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
-                    <div class="grid-products">
+                    <div class="grid-products grid-x">
                         <?php
                         $i = 0;
 
