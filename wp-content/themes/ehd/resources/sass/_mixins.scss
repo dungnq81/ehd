@@ -32,15 +32,15 @@
 }
 
 @mixin media-css($css_property: font-size, $m: 16, $t: false, $d: false) {
-    @if false != $m {
+    @if type-of($m) != bool {
         #{$css_property}: fs($m);
     }
-    @if false != $t {
+    @if type-of($t) != bool {
         @include mq-min(mobile) {
             #{$css_property}: fs($t);
         }
     }
-    @if false != $d {
+    @if type-of($d) != bool {
         @include mq-min(desktop) {
             #{$css_property}: fs($d);
         }
@@ -48,7 +48,6 @@
 }
 
 @mixin box($width: 300, $height: $width, $border_radius: false) {
-
     width: fs($width);
     height: fs($height);
 
@@ -57,16 +56,16 @@
     }
 }
 
-@mixin media-box($m: 150, $t: false, $d: false, $border_radius: false) {
-    @if false != $m {
+@mixin media-box($m: false, $t: false, $d: false, $border_radius: false) {
+    @if type-of($m) != bool {
         @include box($m);
     }
-    @if false != $t {
+    @if type-of($t) != bool {
         @include mq-min(mobile) {
             @include box($t);
         }
     }
-    @if false != $d {
+    @if type-of($d) != bool {
         @include mq-min(desktop) {
             @include box($d);
         }
@@ -97,7 +96,7 @@
     @include media-css(padding-left, $m, $t, $d);
 }
 
-@mixin media-pr($m: 30, $t: false, $d: false) {
+@mixin media-pr($m: 20, $t: false, $d: false) {
     @include media-css(padding-right, $m, $t, $d);
 }
 
@@ -172,7 +171,10 @@
     display: block;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
-    width: fs($width);
+
+    @if type-of($width) != bool {
+        width: fs($width);
+    }
 
     & > img {
         display: block;
@@ -211,7 +213,7 @@
         &::before {
             content: '';
             position: relative;
-            width: fs($width_percent);
+            width: $width_percent;
             padding-bottom: fs($padding);
         }
     } @else {
@@ -252,33 +254,30 @@
     @include linear-gradient($angle, $c1, $c1);
 }
 
-@mixin flex-self($total_n: 1, $self_n: 1, $gap: 0) {
-    @if $gap < 0 {
+@mixin flex-self($total: 1, $n: 1, $gap: false) {
+    @if type-of($gap) == bool {
         $gap: 0;
     }
-
-    @if is-int($total_n) and is-int($self_n) and $self_n > 0 {
-        @if $total_n == $self_n {
+    @if is-int($total) and is-int($n) and $n > 0 {
+        @if $total == $n {
             width: percentage(1);
-        } @else if $gap == 0 and $total_n > $self_n {
-            width: percentage(divide($self_n, $total_n));
-        } @else if is-int($gap) and $total_n > $self_n {
-            width: calc(#{percentage(divide($self_n, $total_n))} - #{fs(($total_n - $self_n) * divide($gap, $total_n))});
+        } @else if 0 == $gap and $total > $n {
+            width: percentage(divide($n, $total));
+        } @else if is-int($gap) and $total > $n {
+            width: calc(#{percentage(divide($n, $total))} - #{fs(($total - $n) * divide($gap, $total))});
         }
     }
 }
 
-@mixin media-flex-self($m: 1, $t: false, $d: false, $gap_m: 0, $gap: 0) {
+@mixin media-flex-self($m: 1, $t: false, $d: false, $gap_m: false, $gap: false) {
     @if is-int($m) and $m > 0 {
         @include flex-self($m, 1, $gap_m);
     }
-
     @if is-int($t) and $t > 0 {
         @include mq-min(mobile) {
             @include flex-self($t, 1, $gap);
         }
     }
-
     @if is-int($d) and $d > 0 {
         @include mq-min(desktop) {
             @include flex-self($d, 1, $gap);
@@ -286,53 +285,48 @@
     }
 }
 
-@mixin gap($x: 0, $y: $x) {
+@mixin gap($x: false, $y: $x) {
     @if ($x == $y) and (type-of($x) != bool) {
         grid-gap: fs($x);
         gap: fs($x);
-    } @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
+    }
+    @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
         grid-gap: fs($x) fs($y);
         gap: fs($x) fs($y);
     }
 }
 
-@mixin media-gap($m: 0, $t: false, $d: false) {
-    @if is-int($m) and $m > 0 {
-        @include gap($m);
-    }
-
-    @if is-int($t) and $t >= 0 {
+@mixin media-gap($m: false, $t: false, $d: false) {
+    @include gap($m);
+    @if type-of($t) != bool {
         @include mq-min(mobile) {
             @include gap($t);
         }
     }
-
-    @if is-int($d) and $d >= 0 {
+    @if type-of($d) != bool {
         @include mq-min(desktop) {
             @include gap($d);
         }
     }
 }
 
-@mixin flex-grid($m: 1, $t: false, $d: false, $gap_m: 0, $gap: 0, $class_cell: '.cell') {
+@mixin flex-grid($m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $class_cell: '.cell') {
     @include media-gap($gap_m, $gap, false);
-
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell(false);
         }
-
         @include media-flex-self($m, $t, $d, $gap_m, $gap);
     }
 }
 
 @mixin mx-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    @if is-int($gutter_m) or unit($gutter_m) == '%' {
         margin-left: -#{fs($gutter_m)};
         margin-right: -#{fs($gutter_m)};
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if is-int($gutter) or unit($gutter) == '%' {
         @include mq-min(mobile) {
             @if 0 == $gutter {
                 margin-left: 0;
@@ -346,12 +340,12 @@
 }
 
 @mixin my-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    @if is-int($gutter_m) or unit($gutter_m) == '%' {
         margin-top: -#{fs($gutter_m)};
         margin-bottom: -#{fs($gutter_m)};
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if is-int($gutter) or unit($gutter) == '%' {
         @include mq-min(mobile) {
             @if 0 == $gutter {
                 margin-top: 0;
@@ -365,12 +359,12 @@
 }
 
 @mixin px-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    @if is-int($gutter_m) or unit($gutter_m) == '%' {
         padding-left: fs($gutter_m);
         padding-right: fs($gutter_m);
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if is-int($gutter) or unit($gutter) == '%' {
         @include mq-min(mobile) {
             padding-left: fs($gutter);
             padding-right: fs($gutter);
@@ -379,12 +373,12 @@
 }
 
 @mixin py-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
+    @if is-int($gutter_m) or unit($gutter_m) == '%' {
         padding-top: fs($gutter_m);
         padding-bottom: fs($gutter_m);
     }
 
-    @if is-int($gutter) and $gutter >= 0 {
+    @if is-int($gutter) or unit($gutter) == '%' {
         @include mq-min(mobile) {
             padding-top: fs($gutter);
             padding-bottom: fs($gutter);
@@ -396,29 +390,68 @@
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
-    width: fs($w);
+
+    @if type-of($w) != bool {
+        width: fs($w);
+    }
 }
 
 @mixin grid-container($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
-    max-width: $global-screen;
     margin-left: auto;
     margin-right: auto;
 
-    @if is-int($padding_m) and $padding_m > 0 {
+    &:not(.full) {
+        max-width: $global-screen;
+
+        @if is-int($padding_m) or unit($padding_m) == '%' {
+            padding-left: fs($padding_m);
+            padding-right: fs($padding_m);
+        }
+
+        @if is-int($padding) or unit($padding) == '%' {
+            @include mq-min(mobile) {
+                padding-left: fs($padding);
+                padding-right: fs($padding);
+            }
+        }
+
+        @if true == $grid_extra {
+            @include mq-min(xxdesktop) {
+                max-width: $global-screen-large;
+            }
+        }
+
+        @if true == $widescreen {
+            @include mq-min(xxxdesktop) {
+                max-width: 100%;
+                padding-left: fs($large_gutter + $gutter);
+                padding-right: fs($large_gutter + $gutter);
+            }
+        }
+
+        @include mq-max(xxdesktop) {
+            max-width: $global-screen-medium;
+        }
+    }
+}
+
+@mixin right-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
+    margin: 0 0 0 auto;
+    max-width: calc(50% + #{divide($global-screen, 2)});
+
+    @if is-int($padding_m) or unit($padding_m) == '%' {
         padding-left: fs($padding_m);
-        padding-right: fs($padding_m);
     }
 
-    @if is-int($padding) and $padding >= 0 {
+    @if is-int($padding) or unit($padding) == '%' {
         @include mq-min(mobile) {
             padding-left: fs($padding);
-            padding-right: fs($padding);
         }
     }
 
     @if true == $grid_extra {
         @include mq-min(xxdesktop) {
-            max-width: $global-screen-large;
+            max-width: calc(50% + #{divide($global-screen-large, 2)});
         }
     }
 
@@ -426,14 +459,43 @@
         @include mq-min(xxxdesktop) {
             max-width: 100%;
             padding-left: fs($large_gutter + $gutter);
+        }
+    }
+
+    @include mq-max(xxdesktop) {
+        max-width: calc(50% + #{divide($global-screen-medium, 2)});
+    }
+}
+
+@mixin left-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
+    margin: 0 auto 0 0;
+    max-width: calc(50% + #{divide($global-screen, 2)});
+
+    @if is-int($padding_m) or unit($padding_m) == '%' {
+        padding-right: fs($padding_m);
+    }
+
+    @if is-int($padding) or unit($padding) == '%' {
+        @include mq-min(mobile) {
+            padding-right: fs($padding);
+        }
+    }
+
+    @if true == $grid_extra {
+        @include mq-min(xxdesktop) {
+            max-width: calc(50% + #{divide($global-screen-large, 2)});
+        }
+    }
+
+    @if true == $widescreen {
+        @include mq-min(xxxdesktop) {
+            max-width: 100%;
             padding-right: fs($large_gutter + $gutter);
         }
     }
 
-    &:not(.full) {
-        @include mq-max(xxdesktop) {
-            max-width: $global-screen-medium;
-        }
+    @include mq-max(xxdesktop) {
+        max-width: calc(50% + #{divide($global-screen-medium, 2)});
     }
 }
 
@@ -451,7 +513,7 @@
     //@include mx-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
-            @include cell;
+            @include cell();
         }
 
         @include px-gutter($padding_m, $padding);
@@ -462,7 +524,7 @@
     //@include my-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
-            @include cell;
+            @include cell();
         }
         @include py-gutter($padding_m, $padding);
     }
@@ -487,115 +549,23 @@
     }
 }
 
-@mixin right-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false) {
-    margin: 0 0 0 auto;
-    max-width: calc(50% + #{divide($global-screen, 2)});
-
-    @if is-int($padding_m) and $padding_m > 0 {
-        padding-left: fs($padding_m);
-    }
-
-    @if is-int($padding) and $padding >= 0 {
-        @include mq-min(mobile) {
-            padding-left: fs($padding);
-        }
-    }
-
-    @if true == $grid_extra {
-        @include mq-min(xxdesktop) {
-            max-width: calc(50% + #{divide($global-screen-large, 2)});
-        }
-    }
-
-    @include mq-max(xxdesktop) {
-        max-width: calc(50% + #{divide($global-screen-medium, 2)});
-    }
-}
-
-@mixin left-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false) {
-    margin: 0 auto 0 0;
-    max-width: calc(50% + #{divide($global-screen, 2)});
-
-    @if is-int($padding_m) and $padding_m > 0 {
-        padding-right: fs($padding_m);
-    }
-
-    @if is-int($padding) and $padding >= 0 {
-        @include mq-min(mobile) {
-            padding-right: fs($padding);
-        }
-    }
-
-    @if true == $grid_extra {
-        @include mq-min(xxdesktop) {
-            max-width: calc(50% + #{divide($global-screen-large, 2)});
-        }
-    }
-
-    @include mq-max(xxdesktop) {
-        max-width: calc(50% + #{divide($global-screen-medium, 2)});
-    }
-}
-
-/** padding-left, padding-right, left, right ... */
-@mixin position-screen($css_property: padding-left, $gutter_m: 10, $gutter: 15, $grid_extra: false) {
-    @if is-int($gutter_m) and $gutter_m > 0 {
-        #{$css_property}: fs($gutter_m);
-    }
-
-    @if is-int($gutter) and $gutter >= 0 {
-        @include mq-min(mobile) {
-            #{$css_property}: fs($gutter);
-        }
-    }
-
-    @if is-int($gutter) and $gutter > 0 {
-        @media only screen and (min-width: $global-screen-medium) {
-            $_property: calc(50vw - #{divide($global-screen-medium, 2)} + #{fs($gutter)});
-            #{$css_property}: $_property;
-        }
-
-        @if true == $grid_extra {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen-large, 2)} + #{fs($gutter)});
-                #{$css_property}: $_property;
-            }
-        } @else {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen, 2)} + #{fs($gutter)});
-                #{$css_property}: $_property;
-            }
-        }
-
-    } @else {
-        @media only screen and (min-width: $global-screen-medium) {
-            $_property: calc(50vw - #{divide($global-screen-medium, 2)});
-            #{$css_property}: $_property;
-        }
-
-        @if true == $grid_extra {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen-large, 2)});
-                #{$css_property}: $_property;
-            }
-        } @else {
-            @include mq-min(xxdesktop) {
-                $_property: calc(50vw - #{divide($global-screen, 2)});
-                #{$css_property}: $_property;
-            }
-        }
-    }
-}
-
-@mixin flex-align-center {
+@mixin flex-align-center ( $direction: row ) {
     display: flex;
     align-items: center;
+
+    @if ( '' != $direction && type-of($direction) != bool ) {
+        flex-direction: $direction;
+    }
 }
 
-@mixin flex-center {
+@mixin flex-center( $direction: row ) {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @if ( '' != $direction && type-of($direction) != bool ) {
+        flex-direction: $direction;
+    }
 }
 
 @mixin inline-flex-center {
@@ -682,7 +652,7 @@
 //    perspective: $perspective;
 //}
 
-@mixin list-reset($margin: 0, $padding: 0) {
+@mixin reset-list($margin: 0, $padding: 0) {
     margin: fs($margin);
     padding: fs($padding);
     list-style: none;
