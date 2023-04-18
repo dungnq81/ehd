@@ -3,7 +3,11 @@
 :root {
     --color1: #{$color1};
     --color2: #{$color2};
+    --color3: #{$color3};
+
     --color-red: #{$color-red};
+    --color-blue: #{$color-blue};
+    --color-green: #{$color-green};
 
     --black-color: #{$black-color};
     --medium-color: #{$medium-color};
@@ -32,6 +36,8 @@
 
     --gutter: #{$gutter};
     --gutter-mobile: #{$gutter-mobile};
+    --large_gutter: #{$large_gutter};
+
     --unique-id: #{$unique_id};
 }
 
@@ -51,10 +57,92 @@
 //    @include box($scrollbar-with, $scrollbar-height);
 //}
 
+html {
+    font-family: sans-serif;
+    font-variant-ligatures: no-common-ligatures;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-touch-callout: none;
+}
+
 body {
     background: $body-background-color;
     font-size: $body-font-size;
     font-weight: 400;
+}
+
+input, textarea, button, main {
+    &:focus {
+        outline: none;
+    }
+}
+
+* > p:last-child {
+    margin-bottom: 0;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 700;
+
+    a {
+        display: block;
+    }
+
+    p {
+        color: currentColor;
+        line-height: inherit;
+        margin-bottom: 0;
+    }
+}
+
+a {
+    display: inline-block;
+
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        font-size: inherit;
+        color: currentColor;
+    }
+}
+
+img {
+    display: inline-block;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+
+    &.aligncenter, &.align-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+button[type="submit"], button[type="reset"], button[type="button"] {
+    cursor: pointer;
+}
+
+figure.wp-caption, figure.caption {
+    max-width: 100% !important;
+
+    img {
+        display: inline-block;
+    }
+
+    .wp-caption-text, .caption-text {
+        padding-top: 10px;
+        color: #454545;
+    }
+
+    &.aligncenter, &.align-center {
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
 }
 
 .screen-reader-text, .submenu-toggle-text, .hidden-text {
@@ -75,7 +163,7 @@ body {
     font-family: $font-awesome;
 }
 
-/** */
+/** @todo flexbox */
 .grid-x {
     @include grid-x;
 }
@@ -86,6 +174,18 @@ body {
 
 .cell {
     @include cell();
+
+    &.auto {
+        @include flex-auto;
+    }
+
+    &.shrink {
+        @include flex-shrink;
+    }
+}
+
+.grid-gap {
+    @include media-gap($gap-mobile, $gap, false);
 }
 
 .grid-padding-x {
@@ -96,15 +196,8 @@ body {
     @include grid-padding-y($gutter-mobile, $gutter);
 }
 
-/** */
 .grid-container {
     @include grid-container($gutter-mobile, $gutter, false, false);
-
-    &.full {
-        max-width: 100%;
-        padding-left: 0;
-        padding-right: 0;
-    }
 
     &:not(.full) {
         &.grid-extra {
@@ -120,34 +213,59 @@ body {
                 padding-right: fs($large_gutter + $gutter);
             }
         }
+    }
 
-        & > .grid-gap {
-            @include media-gap($gap-mobile, $gap);
+    &.full {
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
 
-            // not support aspect-ratio tag, there will also skip the gap
-            @supports not ((aspect-ratio: 1) and (grid-gap: 1rem)) {
-                & > .cell {
-                    @include px-gutter($gutter-mobile, $gutter);
-                    @include py-gutter($gutter-mobile, $gutter);
-                }
-            }
+    &.fluid {
+        max-width: 100%;
+    }
+}
+
+/** @todo flexbox grid */
+@for $i from 1 through 12 {
+    .small-up-#{$i} > .cell, .cell.small-#{$i} {
+        @include flex-self($i, 1, false);
+    }
+
+    .small-up-#{$i}.grid-gap > .cell, .grid-gap > .cell.small-#{$i} {
+        @include flex-self($i, 1, $gap-mobile);
+    }
+}
+
+@include mq-min(mobile) {
+    @for $i from 1 through 12 {
+        .medium-up-#{$i} > .cell, .cell.medium-#{$i} {
+            @include flex-self($i, 1, false);
         }
 
-        & > .grid-padding-x {
-            @include mx-gutter($gutter-mobile, $gutter);
-        }
-
-        & > .grid-padding-y {
-            @include my-gutter($gutter-mobile, $gutter);
+        .medium-up-#{$i}.grid-gap > .cell, .grid-gap > .cell.medium-#{$i} {
+            @include flex-self($i, 1, $gap);
         }
     }
 }
 
-/** */
+@include mq-min(desktop) {
+    @for $i from 1 through 12 {
+        .large-up-#{$i} > .cell, .cell.large-#{$i} {
+            @include flex-self($i, 1, false);
+        }
+
+        .large-up-#{$i}.grid-gap > .cell, .grid-gap > .cell.large-#{$i} {
+            @include flex-self($i, 1, $gap);
+        }
+    }
+}
+
+/** @todo responsive viewport */
 .overlay {
     position: relative;
 
-    .overlay-bg, .overlay-link {
+    .overlay-bg {
         @include absolute-full;
         background: transparent;
     }
@@ -158,7 +276,7 @@ body {
     overflow: hidden;
     position: relative;
 
-    .cover-link, .cover-bg {
+    .cover-bg {
         @include absolute-full;
         background: transparent;
     }
@@ -185,7 +303,7 @@ body {
     }
 }
 
-/** */
+/** @todo aspect ratio */
 .ar-1, .ar-1-1 {
     @include responsive-ratio(1, 1);
 }
@@ -194,24 +312,12 @@ body {
     @include responsive-ratio(3, 2);
 }
 
-.ar-2-3 {
-    @include responsive-ratio(2, 3);
-}
-
 .ar-4-3 {
     @include responsive-ratio(4, 3);
 }
 
-.ar-3-4 {
-    @include responsive-ratio(3, 4);
-}
-
 .ar-16-9 {
     @include responsive-ratio(16, 9);
-}
-
-.ar-21-9 {
-    @include responsive-ratio(21, 9);
 }
 
 .ar-2-1 {
@@ -222,57 +328,93 @@ body {
     @include responsive-ratio(3, 1);
 }
 
-/** */
-.art-1, .art-1-1 {
-    @include mq-max(desktop) {
-        @include responsive-ratio(1, 1);
+/** @todo gutter */
+$count: 0;
+$count_max: 30;
+
+@while $count <= $count_max {
+    .mt-#{$count} {
+        margin-top: fs($count) !important;
     }
+    .mb-#{$count} {
+        margin-bottom: fs($count) !important;
+    }
+    .pt-#{$count} {
+        padding-top: fs($count) !important;
+    }
+    .pb-#{$count} {
+        padding-bottom: fs($count) !important;
+    }
+
+    $count: $count + 5;
 }
 
-.art-3-2 {
-    @include mq-max(desktop) {
-        @include responsive-ratio(3, 2);
+/** @todo font weight */
+$fw: 300;
+$fw_max: 700;
+
+@while $fw <= $fw_max {
+    .fw-#{$fw} {
+        font-weight: $fw !important;
     }
+
+    $fw: $fw + 100;
 }
 
-.art-4-3 {
-    @include mq-max(desktop) {
-        @include responsive-ratio(4, 3);
-    }
+/** @todo display */
+.hide, .hidden {
+    display: none !important;
 }
 
-.art-16-9 {
-    @include mq-max(desktop) {
-        @include responsive-ratio(16, 9);
-    }
+.o-hidden {
+    overflow: hidden !important;
 }
 
-/** */
-.arm-1, .arm-1-1 {
-    @include mq-max(mobile) {
-        @include responsive-ratio(1, 1);
-    }
+.p-relative {
+    position: relative !important;
 }
 
-.arm-3-2 {
-    @include mq-max(mobile) {
-        @include responsive-ratio(3, 2);
-    }
+.p-absolute {
+    position: absolute !important;
 }
 
-.arm-4-3 {
-    @include mq-max(mobile) {
-        @include responsive-ratio(4, 3);
-    }
+.d-block {
+    display: block !important;
 }
 
-.arm-16-9 {
-    @include mq-max(mobile) {
-        @include responsive-ratio(16, 9);
-    }
+.d-inline-block {
+    display: inline-block !important;
 }
 
-/** */
+.d-flex {
+    display: flex !important;
+}
+
+.d-inline-flex {
+    display: inline-flex !important;
+}
+
+.d-inline {
+    display: inline !important;
+}
+
+.d-grid {
+    display: grid !important;
+}
+
+.d-inline-grid {
+    display: inline-grid !important;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+/** @todo color */
 .black-color {
     color: $black-color !important;
 }
@@ -298,25 +440,11 @@ body {
 }
 
 .color2 {
-    color: $color1 !important;
+    color: $color2 !important;
 }
 
-.color-red {
-    color: $color-red !important;
-}
-
-@include keyframes(circle) {
-    0% {
-        opacity: 1;
-    }
-    40% {
-        opacity: 1;
-    }
-    100% {
-        width: 200%;
-        height: 200%;
-        opacity: 0;
-    }
+.color3 {
+    color: $color3 !important;
 }
 
 /** @todo section */
@@ -329,14 +457,6 @@ body {
                 @include fs-heading(h#{$i});
                 line-height: $header-line-height;
             }
-        }
-    }
-
-    &._full {
-        & > .grid-container {
-            max-width: 100%;
-            padding-left: 0;
-            padding-right: 0;
         }
     }
 
@@ -353,51 +473,35 @@ body {
             & > .grid-container {
                 @include mq-min(xxxdesktop) {
                     max-width: 100%;
-                    padding-left: fs(165 + $gutter);
-                    padding-right: fs(165 + $gutter);
+                    padding-left: fs($large_gutter + $gutter);
+                    padding-right: fs($large_gutter + $gutter);
                 }
             }
         }
+    }
 
-        &._light {
-            .heading-title {
-                font-weight: 300;
-            }
+    &._full {
+        & > .grid-container {
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
         }
+    }
 
-        &._regular {
-            .heading-title {
-                font-weight: 400;
-            }
-        }
-
-        &._medium {
-            .heading-title {
-                font-weight: 500;
-            }
-        }
-
-        &._semi-bold {
-            .heading-title {
-                font-weight: 600;
-            }
-        }
-
-        &._bold {
-            .heading-title {
-                font-weight: 700;
-            }
+    &_fluid {
+        & > .grid-container {
+            max-width: 100%;
         }
     }
 }
 
 /** @todo gallery */
 [id^=gallery-] {
-    margin: -5px;
+    $gap: 5;
     @include grid-x;
+    @include gap($gap);
 
     & > .gallery-item {
-        padding: 5px;
         @include cell();
 
         a {
@@ -409,13 +513,13 @@ body {
     @for $i from 1 through 9 {
         &.gallery-columns-#{$i} {
             & > .gallery-item {
-                @include flex-self($i, 1);
+                @include flex-self($i, 1, $gap);
             }
         }
     }
 }
 
-/* @todo .pagination */
+/** @todo .pagination */
 .pagination {
     text-align: center;
     border: 0;
@@ -477,8 +581,7 @@ body {
     }
 }
 
-/** */
-/* @todo .hotline-mobile */
+/** @todo .hotline-mobile */
 .hotline-mobile {
     position: fixed;
     background-color: transparent;
@@ -607,27 +710,20 @@ body {
     }
 }
 
-/* @todo .up-seo-list */
+/** @todo .up-seo-list */
 .up-seo-list {
     list-style: none;
     margin: 0 1% 30px 1%;
     color: $header-color;
 
     li {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         padding-bottom: 8px;
         padding-top: 8px;
         display: flex;
         align-items: baseline;
 
-        &:last-child {
-            border-bottom: none;
-        }
-
-        &::before {
-        }
-
-        .thumb {
+        &:not(:last-child) {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .txt {
@@ -639,7 +735,7 @@ body {
     }
 }
 
-/* @todo .toTop */
+/** @todo .toTop */
 .toTop {
     @include box(32);
     font-size: fs(17);
@@ -686,7 +782,7 @@ body {
     }
 }
 
-/* @todo .inline-share */
+/** @todo .inline-share */
 .inline-share {
     border: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
@@ -726,7 +822,7 @@ body {
     }
 }
 
-/* @todo .share-icon */
+/** @todo .share-icon */
 .share-icon {
     background: rgb(240 240 240 / 10%);
     border: 1px solid transparentize($header-color, 0.4);
@@ -777,7 +873,7 @@ body {
     }
 }
 
-/* @todo .sharing-toolbox */
+/** @todo .sharing-toolbox */
 .sharing-toolbox {
     .share-title {
         bottom: 35px;
@@ -806,7 +902,7 @@ body {
         ul.share-actions {
             display: flex;
             flex-direction: column;
-            @include list-reset();
+            @include reset-list();
 
             & > li.share-action {
                 display: flex;
@@ -826,7 +922,7 @@ body {
     }
 }
 
-/* @todo off-canvas */
+/** @todo off-canvas */
 .position-top {
     transform: translateY(-100%);
     height: 100%;
@@ -1303,8 +1399,6 @@ body {
                     backdrop-filter: blur(5px);
                     position: absolute;
                     box-shadow: 0 0 6px rgb(0 0 0 / 10%);
-                    @include position-screen(left, 10, 15, false);
-                    @include position-screen(right, 10, 15, false);
                 }
             }
         }
@@ -1772,10 +1866,10 @@ body {
 
 /** ... */
 ul.reset, ol.reset {
-    @include list-reset();
+    @include reset-list();
 
     li {
-        & > i {
+        & > i, & > svg {
             margin-right: 8px;
         }
     }
@@ -1798,10 +1892,6 @@ ul.reset, ol.reset {
         top: 2px;
         right: 10px;
     }
-}
-
-.fancybox-container {
-    z-index: 100000;
 }
 
 .menu-fallback {

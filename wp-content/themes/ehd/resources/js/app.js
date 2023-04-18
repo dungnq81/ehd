@@ -11,7 +11,7 @@ const is_mobile = () => device.mobile();
 const is_tablet = () => device.tablet();
 
 /** Fancybox */
-import { Fancybox } from "@fancyapps/ui";
+//import { Fancybox } from "@fancyapps/ui";
 
 /** AOS */
 //import AOS from 'aos';
@@ -59,26 +59,6 @@ function getViewportSize(w) {
 
     /* For browsers in Quirks mode*/
     return {w: d.body.clientWidth, h: d.body.clientHeight};
-}
-
-/**
- * @param cname
- * @returns {unknown}
- */
-const getCookie = (cname) => (
-    document.cookie.match('(^|;)\\s*' + cname + '\\s*=\\s*([^;]+)')?.pop() || ''
-)
-
-/**
- * @param cname
- * @param cvalue
- * @param exdays
- */
-function setCookie(cname, cvalue, exdays) {
-    let d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
 }
 
 /**

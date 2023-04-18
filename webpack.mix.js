@@ -1,10 +1,14 @@
 const mix = require('laravel-mix');
-const { glob, globSync } = require('glob');
+const {glob, globSync} = require('glob');
 
 mix
     .webpackConfig({
         stats: {
             children: true,
+        },
+        watchOptions: {
+            ignored: '/node_modules/',
+            poll: false,
         }
     })
     .options({
@@ -22,7 +26,7 @@ mix
 if (!mix.inProduction()) {
     mix
         .sourceMaps(false, 'source-map');
-        //.webpackConfig({devtool: 'source-map'});
+    //.webpackConfig({devtool: 'source-map'});
 }
 
 // Run only for a plugin.

@@ -20,7 +20,7 @@ final class CSS
      * @access protected
      * @var string
      */
-    protected $_selector = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected string $_selector = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Stores the final css output with all of its rules for the current selector.
@@ -28,7 +28,7 @@ final class CSS
      * @access protected
      * @var string
      */
-    protected $_selector_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected string $_selector_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Stores all of the rules that will be added to the selector
@@ -36,7 +36,7 @@ final class CSS
      * @access protected
      * @var string
      */
-    protected $_css = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected string $_css = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * The string that holds all of the css to output
@@ -44,7 +44,7 @@ final class CSS
      * @access protected
      * @var string
      */
-    protected $_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected string $_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Stores media queries
@@ -59,18 +59,20 @@ final class CSS
      * @access protected
      * @var string
      */
-    protected $_media_query_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected string $_media_query_output = ''; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Sets a selector to the object and changes the current selector to a new one
      *
      * @access public
+     *
      * @param string $selector - the css identifier of the html that you wish to target.
+     *
      * @return $this
      * @since  1.0
      *
      */
-    public function set_selector($selector = '')
+    public function set_selector(string $selector = '')
     {
         // Render the css in the output string everytime the selector changes.
         if ('' !== $this->_selector) {

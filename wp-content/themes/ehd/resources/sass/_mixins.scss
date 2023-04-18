@@ -188,7 +188,7 @@
     }
 }
 
-@mixin responsive-scale($scale: 1.06, $opacity: 1) {
+@mixin responsive-scale($scale: 1.07, $opacity: 1) {
     transform: scale(1.0001);
     will-change: transform;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s;
@@ -203,6 +203,7 @@
     height: auto !important;
     width: auto !important;
     object-fit: contain;
+    object-position: center;
     max-width: 100%;
     max-height: 100%;
 }
@@ -510,7 +511,7 @@
 }
 
 @mixin grid-padding-x($padding_m: 10, $padding: 15, $class_cell: '.cell') {
-    //@include mx-gutter($padding_m, $padding);
+    @include mx-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell();
@@ -521,7 +522,7 @@
 }
 
 @mixin grid-padding-y($padding_m: 10, $padding: 15, $class_cell: '.cell') {
-    //@include my-gutter($padding_m, $padding);
+    @include my-gutter($padding_m, $padding);
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell();
@@ -553,7 +554,7 @@
     display: flex;
     align-items: center;
 
-    @if ( '' != $direction && type-of($direction) != bool ) {
+    @if ( '' != $direction and type-of($direction) != bool ) {
         flex-direction: $direction;
     }
 }
@@ -563,7 +564,7 @@
     align-items: center;
     justify-content: center;
 
-    @if ( '' != $direction && type-of($direction) != bool ) {
+    @if ( '' != $direction and type-of($direction) != bool ) {
         flex-direction: $direction;
     }
 }
@@ -576,12 +577,12 @@
 
 @mixin flex-shrink {
     flex: 0 0 auto;
-    max-width: 100%;
+    width: auto;
 }
 
 @mixin flex-auto {
     flex: 1 1 0;
-    min-width: 0;
+    width: auto;
 }
 
 @mixin hover-color($c1: $color1, $c2: $c1, $text-decoration: false) {

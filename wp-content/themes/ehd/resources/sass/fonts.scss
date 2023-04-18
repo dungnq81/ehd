@@ -1,4 +1,3 @@
-/** font-face */
 @mixin font-face (
     $font-family,
     $font-style: normal,
@@ -24,10 +23,10 @@
 
 /** Poppins fonts */
 //$poppins_base: unquote("../fonts/SVN-Poppins");
-//
+
 //@include font-face(Poppins, normal, 300, SVN-Poppins-Light, $poppins_base);
 //@include font-face(Poppins, italic, 300, SVN-Poppins-LightItalic, $poppins_base);
-//
+
 //@include font-face(Poppins, normal, 400, SVN-Poppins-Regular, $poppins_base);
 //@include font-face(Poppins, italic, 400, SVN-Poppins-RegularItalic, $poppins_base);
 

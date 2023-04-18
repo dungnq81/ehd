@@ -14,16 +14,16 @@
  */
 
 $headers = [
-    'Name'       => 'Plugin Name',
-    'Version'    => 'Version',
-    'TextDomain' => 'Text Domain',
+	'Name'       => 'Plugin Name',
+	'Version'    => 'Version',
+	'TextDomain' => 'Text Domain',
 ];
 
-$plugin_data = get_file_data(__FILE__, $headers, 'plugin');
+$plugin_data = get_file_data( __FILE__, $headers, 'plugin' );
 
-define('EHD_MU_PLUGIN_VERSION', $plugin_data['Version']);
-define('EHD_MU_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain']);
+define( 'EHD_MU_PLUGIN_VERSION', $plugin_data['Version'] );
+define( 'EHD_MU_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
 }

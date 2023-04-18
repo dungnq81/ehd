@@ -358,10 +358,7 @@ final class Shortcode
         ob_start();
 
         ?>
-        <a class="trigger-s" title="<?= esc_attr($title); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>"
-           data-glyph="">
-            <span><?php echo $title; ?></span>
-        </a>
+        <a class="trigger-s" title="<?= esc_attr($title); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph=""><span><?php echo $title; ?></span></a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $atts['id']; ?>" data-dropdown data-auto-focus="true">
             <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">

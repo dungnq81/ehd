@@ -146,12 +146,12 @@ final class Plugin {
 	 */
 	public function enqueue(): void
 	{
-		wp_register_style( 'ehd-swiper-style', EHD_PLUGIN_URL . "assets/css/swiper.css", [], EHD_PLUGIN_VERSION );
-		wp_register_script( "ehd-swiper", EHD_PLUGIN_URL . "assets/js/plugins/swiper.js", [], EHD_PLUGIN_VERSION, true );
+		wp_register_style( 'ehd-swiper-style', EHD_PLUGIN_URL . 'assets/css/swiper.css', [], EHD_PLUGIN_VERSION );
+		wp_register_script( 'ehd-swiper', EHD_PLUGIN_URL . 'assets/js/plugins/swiper.js', [], EHD_PLUGIN_VERSION, true );
 
-		wp_register_style( 'ehd-core-style', EHD_PLUGIN_URL . "assets/css/ehd.css", [], EHD_PLUGIN_VERSION );
-		wp_register_script( "ehd-core", EHD_PLUGIN_URL . "assets/js/ehd.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
-		wp_script_add_data( "ehd-core", "defer", true );
+		wp_register_style( 'ehd-core-style', EHD_PLUGIN_URL . 'assets/css/ehd.css', [], EHD_PLUGIN_VERSION );
+		wp_register_script( 'ehd-core', EHD_PLUGIN_URL . 'assets/js/ehd.js', [ "jquery" ], EHD_PLUGIN_VERSION, true );
+		wp_script_add_data( 'ehd-core', 'defer', true );
 
 		/** dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );

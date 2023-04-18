@@ -4,7 +4,7 @@
 $unique_id: unique_id();
 
 /** */
-$black-color: #000;
+$black-color: #000000;
 $medium-color: #555555;
 $white-color: #ffffff;
 
@@ -13,8 +13,11 @@ $anchor-color: #333333;
 
 $color1: #1c68b3;
 $color2: #ef4023;
+$color3: #ffc404;
 
-$color-red: #ff0000;
+$color-red: #FF0000;
+$color-blue: #0000FF;
+$color-green: #008000;
 
 /** */
 $scrollbar-with: rem-calc(4);
@@ -84,12 +87,10 @@ $paragraph-line-height: 1.7;
 /** */
 $gutter: 15;
 $gutter-mobile: 10;
+$large_gutter: 165;
 
 $gap: $gutter * 2;
 $gap-mobile: $gutter-mobile * 2;
-
-/** */
-$large_gutter: 165;
 
 /** */
 $header-font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;

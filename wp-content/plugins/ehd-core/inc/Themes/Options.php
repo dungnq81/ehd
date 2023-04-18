@@ -40,7 +40,7 @@ final class Options
 		    'manage_options',
 		    'ehd-settings',
 		    [ &$this, 'options_page' ],
-            'dashicons-admin-settings',
+		    'dashicons-admin-settings',
 		    80
 	    );
 
