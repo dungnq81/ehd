@@ -415,36 +415,24 @@ $fw_max: 700;
 }
 
 /** @todo color */
-.black-color {
-    color: $black-color !important;
+$basic-colors: (
+    'black': var(--black-color),
+    'medium': var(--medium-color),
+    'white': var(--white-color),
+    'header': var(--header-color),
+    'anchor': var(--anchor-color),
+);
+
+@each $key, $color in $basic-colors {
+    .#{$key}-color {
+        color: $color !important;
+    }
 }
 
-.medium-color {
-    color: $medium-color !important;
-}
-
-.white-color {
-    color: $white-color !important;
-}
-
-.header-color {
-    color: $header-color !important;
-}
-
-.anchor-color {
-    color: $anchor-color !important;
-}
-
-.color1 {
-    color: $color1 !important;
-}
-
-.color2 {
-    color: $color2 !important;
-}
-
-.color3 {
-    color: $color3 !important;
+@for $i from 1 through 3 {
+    .color#{$i} {
+        color: var(--color#{$i}) !important;
+    }
 }
 
 /** @todo section */

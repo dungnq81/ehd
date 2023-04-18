@@ -290,8 +290,7 @@
     @if ($x == $y) and (type-of($x) != bool) {
         grid-gap: fs($x);
         gap: fs($x);
-    }
-    @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
+    } @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
         grid-gap: fs($x) fs($y);
         gap: fs($x) fs($y);
     }
@@ -550,11 +549,11 @@
     }
 }
 
-@mixin flex-align-center ( $direction: row ) {
+@mixin flex-align-center( $direction: row ) {
     display: flex;
     align-items: center;
 
-    @if ( '' != $direction and type-of($direction) != bool ) {
+    @if ('' != $direction and bool != type-of($direction)) {
         flex-direction: $direction;
     }
 }
@@ -564,7 +563,7 @@
     align-items: center;
     justify-content: center;
 
-    @if ( '' != $direction and type-of($direction) != bool ) {
+    @if ('' != $direction and bool != type-of($direction)) {
         flex-direction: $direction;
     }
 }

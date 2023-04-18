@@ -4,20 +4,20 @@
 $unique_id: unique_id();
 
 /** */
-$black-color: #000000;
-$medium-color: #555555;
-$white-color: #ffffff;
+$black-color: #000000 !default;
+$medium-color: #555555 !default;
+$white-color: #ffffff !default;
 
-$header-color: #333333;
-$anchor-color: #333333;
+$header-color: #333333 !default;
+$anchor-color: #333333 !default;
 
-$color1: #1c68b3;
-$color2: #ef4023;
-$color3: #ffc404;
+$color1: #1c68b3 !default;
+$color2: #ef4023 !default;
+$color3: #ffc404 !default;
 
-$color-red: #FF0000;
-$color-blue: #0000FF;
-$color-green: #008000;
+$color-red: #FF0000 !default;
+$color-blue: #0000FF !default;
+$color-green: #008000 !default;
 
 /** */
 $scrollbar-with: rem-calc(4);
@@ -70,8 +70,8 @@ $header-styles-medium: (
 );
 
 /** */
-$body-background-color: #ffffff;
-$body-font-color: #333333;
+$body-background-color: #ffffff !default;
+$body-font-color: #333333 !default;
 
 $body-font-size: rem-calc(16);
 
