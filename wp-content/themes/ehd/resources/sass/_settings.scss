@@ -1,6 +1,5 @@
 @import "functions";
 
-/** */
 $unique_id: unique_id();
 
 /** */
@@ -15,9 +14,9 @@ $color1: #1c68b3 !default;
 $color2: #ef4023 !default;
 $color3: #ffc404 !default;
 
-$color-red: #FF0000 !default;
-$color-blue: #0000FF !default;
-$color-green: #008000 !default;
+$red-color: #FF0000 !default;
+$blue-color: #0000FF !default;
+$green-color: #008000 !default;
 
 /** */
 $scrollbar-with: rem-calc(4);

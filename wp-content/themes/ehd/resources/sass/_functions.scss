@@ -46,11 +46,6 @@
     @return url('data:image/svg+xml;utf8,#{url-encode($string)}');
 }
 
-/** add unique id image url */
-@function inline-image($url) {
-    @return url("#{$url}?v=#{$unique_id}");
-}
-
 /** https://github.com/pentzzsolt/sass-is-int/blob/master/_is-int.scss */
 @function is-int($value) {
     @if type-of($value) != number {

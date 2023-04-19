@@ -5,9 +5,9 @@
     --color2: #{$color2};
     --color3: #{$color3};
 
-    --color-red: #{$color-red};
-    --color-blue: #{$color-blue};
-    --color-green: #{$color-green};
+    --red-color: #{$red-color};
+    --blue-color: #{$blue-color};
+    --green-color: #{$green-color};
 
     --black-color: #{$black-color};
     --medium-color: #{$medium-color};
@@ -416,11 +416,11 @@ $fw_max: 700;
 
 /** @todo color */
 $basic-colors: (
-    'black': var(--black-color),
-    'medium': var(--medium-color),
-    'white': var(--white-color),
-    'header': var(--header-color),
-    'anchor': var(--anchor-color),
+        'black': var(--black-color),
+        'medium': var(--medium-color),
+        'white': var(--white-color),
+        'header': var(--header-color),
+        'anchor': var(--anchor-color),
 );
 
 @each $key, $color in $basic-colors {

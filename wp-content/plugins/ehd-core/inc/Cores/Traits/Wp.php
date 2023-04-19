@@ -254,10 +254,11 @@ trait Wp
 	/**
 	 * @param string $option
 	 * @param mixed $default
+	 * @param bool $static_cache
 	 *
 	 * @return false|mixed
 	 */
-	public static function getOption( string $option, $default = false )
+	public static function getOption( string $option, $default = false, bool $static_cache = true )
 	{
 		static $_is_option_loaded;
 		if ( empty( $_is_option_loaded ) ) {
@@ -267,7 +268,11 @@ trait Wp
 		}
 
 		if ( $option ) {
-			if ( ! isset( $_is_option_loaded[0][ strtolower( $option ) ] ) ) {
+			if ( true === $static_cache ) {
+				if ( ! isset( $_is_option_loaded[0][ strtolower( $option ) ] ) ) {
+					$_is_option_loaded[0][ strtolower( $option ) ] = get_site_option( $option, $default );
+				}
+			} else {
 				$_is_option_loaded[0][ strtolower( $option ) ] = get_site_option( $option, $default );
 			}
 

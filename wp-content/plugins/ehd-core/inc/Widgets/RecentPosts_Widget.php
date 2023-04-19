@@ -14,56 +14,56 @@ if (!class_exists('RecentPosts_Widget')) {
     {
         public function __construct()
         {
-            $this->widget_description = __('Your site&#8217;s most recent Posts.');
-            $this->widget_name = __('W - Recent Posts', EHD_PLUGIN_TEXT_DOMAIN);
-            $this->settings = [
-                'title' => [
-                    'type' => 'text',
-                    'std' => __('Recent Posts'),
-                    'label' => __('Title'),
+            $this->widget_description = __( 'Your site&#8217;s most recent Posts.' );
+            $this->widget_name        = __( 'W - Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );
+            $this->settings           = [
+                'title'          => [
+                    'type'  => 'text',
+                    'std'   => __( 'Recent Posts' ),
+                    'label' => __( 'Title' ),
                 ],
-                'number' => [
-                    'type' => 'number',
-                    'min' => 0,
-                    'max' => 99,
-                    'std' => 5,
+                'number'         => [
+                    'type'  => 'number',
+                    'min'   => 0,
+                    'max'   => 99,
+                    'std'   => 5,
                     'class' => 'tiny-text',
-                    'label' => __('Number of posts to show:'),
+                    'label' => __( 'Number of posts to show:' ),
                 ],
-                'show_cat' => [
-                    'type' => 'checkbox',
-                    'std' => '',
-                    'class' => 'checkbox',
-                    'label' => __('Display post categories?', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'show_thumbnail' => [
-                    'type' => 'checkbox',
-                    'std' => '',
-                    'class' => 'checkbox',
-                    'label' => __('Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN),
-                ],
-                'show_date' => [
-                    'type' => 'checkbox',
-                    'std' => '',
-                    'class' => 'checkbox',
-                    'label' => __('Display post date?'),
-                ],
-                'show_desc'             => [
+                'show_cat'       => [
                     'type'  => 'checkbox',
                     'std'   => '',
                     'class' => 'checkbox',
-                    'label' => __('Display post description?', EHD_PLUGIN_TEXT_DOMAIN),
+                    'label' => __( 'Display post categories?', EHD_PLUGIN_TEXT_DOMAIN ),
                 ],
-                'limit_time'          => [
+                'show_thumbnail' => [
+                    'type'  => 'checkbox',
+                    'std'   => '',
+                    'class' => 'checkbox',
+                    'label' => __( 'Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN ),
+                ],
+                'show_date'      => [
+                    'type'  => 'checkbox',
+                    'std'   => '',
+                    'class' => 'checkbox',
+                    'label' => __( 'Display post date?' ),
+                ],
+                'show_desc'      => [
+                    'type'  => 'checkbox',
+                    'std'   => '',
+                    'class' => 'checkbox',
+                    'label' => __( 'Display post description?', EHD_PLUGIN_TEXT_DOMAIN ),
+                ],
+                'limit_time'     => [
                     'type'  => 'text',
                     'std'   => '',
-                    'label' => __('Time limit', EHD_PLUGIN_TEXT_DOMAIN),
-                    'desc' => sprintf( __( "A date/time string, restrict to only posts within a specific time period. %s", EHD_PLUGIN_TEXT_DOMAIN ), "\n<a target='_blank' href=\"https://www.php.net/manual/en/function.strtotime.php\">php.net/manual/en/function.strtotime.php</a>" ),
+                    'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
+                    'desc'  => sprintf( __( "A date/time string, restrict to only posts within a specific time period. %s", EHD_PLUGIN_TEXT_DOMAIN ), "\n<a target='_blank' href=\"https://www.php.net/manual/en/function.strtotime.php\">php.net/manual/en/function.strtotime.php</a>" ),
                 ],
-                'css_class' => [
-                    'type' => 'text',
-                    'std' => '',
-                    'label' => __('Css class', EHD_PLUGIN_TEXT_DOMAIN),
+                'css_class'      => [
+                    'type'  => 'text',
+                    'std'   => '',
+                    'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
                 ],
             ];
 
@@ -82,24 +82,24 @@ if (!class_exists('RecentPosts_Widget')) {
                 return;
             }
 
-            $title = apply_filters('widget_title', $this->get_instance_title($instance), $instance, $this->id_base);
+            $title = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
 
-            $number = (!empty($instance['number'])) ? absint($instance['number']) : 5;
-            $show_cat = !empty($instance['show_cat']);
-            $show_thumbnail = !empty($instance['show_thumbnail']);
-            $show_date = !empty($instance['show_date']);
-            $show_desc = !empty($instance['show_desc']);
+            $number         = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;
+            $show_cat       = ! empty( $instance['show_cat'] );
+            $show_thumbnail = ! empty( $instance['show_thumbnail'] );
+            $show_date      = ! empty( $instance['show_date'] );
+            $show_desc      = ! empty( $instance['show_desc'] );
 
-            $limit_time = $instance['limit_time'] ? trim($instance['limit_time']) : '';
+            $limit_time = $instance['limit_time'] ? trim( $instance['limit_time'] ) : '';
 
             $query_args = [
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
-                'post_type'        => 'post',
-                'post_status' => 'publish',
-                'posts_per_page' => $number,
-                'no_found_rows' => true,
-                'ignore_sticky_posts' => true,
+                'post_type'              => 'post',
+                'post_status'            => 'publish',
+                'posts_per_page'         => $number,
+                'no_found_rows'          => true,
+                'ignore_sticky_posts'    => true,
             ];
 
             // ...

@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$smtp_options = Helper::getOption( 'smtp__options' );
+$smtp_options = Helper::getOption( 'smtp__options', false, false );
 
 $smtp_host                     = $smtp_options['smtp_host'] ?? '';
 $smtp_auth                     = $smtp_options['smtp_auth'] ?? '';
