@@ -3,6 +3,7 @@
 namespace EHD\Themes;
 
 use EHD\Cores\Helper;
+use EHD\Libs\Browser;
 use PHPMailer\PHPMailer\Exception;
 
 \defined('ABSPATH') || die;
@@ -266,7 +267,8 @@ final class Options
      * @return void
      */
     public function server_info() : void {
-    ?>
+
+	?>
     <div class="wrap">
         <div id="main">
             <h2 class="hide-text"></h2>
@@ -275,13 +277,13 @@ final class Options
                 <p class="desc">System configuration information</p>
                 <div class="server-info-inner code">
                     <ul>
-                        <li><?php echo sprintf('<span>OS:</span> %s', php_uname()); ?></li>
-                        <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
-                        <li><?php echo sprintf('<span>SERVER:</span> %s', $server_software); ?></li>
-                        <?php endif; ?>
-                        <li><?php echo sprintf('<span>PHP version:</span> %s', PHP_VERSION); ?></li>
-                        <li><?php echo sprintf('<span>WordPress version:</span> %s', get_bloginfo('version')); ?></li>
-                        <li><?php echo sprintf('<span>WordPress multisite:</span> %s', (is_multisite() ? 'Yes' : 'No')); ?></li>
+	                    <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
+	                    <?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
+	                    <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
+	                    <?php endif; ?>
+	                    <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>
+	                    <li><?php echo sprintf( '<span>WordPress version:</span> %s', get_bloginfo( 'version' ) ); ?></li>
+	                    <li><?php echo sprintf( '<span>WordPress multisite:</span> %s', ( is_multisite() ? 'Yes' : 'No' ) ); ?></li>
 	                    <?php
 	                    $openssl_status = 'Available';
 	                    $openssl_text   = '';
@@ -314,8 +316,9 @@ final class Options
                         <li><?php echo sprintf('<span>stream_socket_client:</span> %s', $stream_socket_client_status); ?></li>
                         <li><?php echo sprintf('<span>fsockopen:</span> %s%s', $fsockopen_status, $socket_text); ?></li>
 	                    <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
-                        <li><?php echo sprintf('<span>Browser:</span> %s', $agent); ?></li>
+	                    <li><?php echo sprintf('<span>User agent:</span> %s', $agent); ?></li>
 	                    <?php endif; ?>
+                        <li><?php echo sprintf('<span>IP:</span> %s', Helper::getClientIp() ); ?></li>
                     </ul>
                 </div>
             </div>

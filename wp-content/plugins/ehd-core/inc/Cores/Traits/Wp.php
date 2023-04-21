@@ -3,7 +3,7 @@
 namespace EHD\Cores\Traits;
 
 use EHD\Cores\Helper;
-use EHD\Themes\CSS;
+use EHD\Libs\CSS;
 use EHD\Walkers\Horizontal_Nav_Walker;
 use EHD\Walkers\Vertical_Nav_Walker;
 use PHPMailer\PHPMailer\Exception;

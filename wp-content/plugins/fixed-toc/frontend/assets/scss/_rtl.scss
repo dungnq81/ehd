@@ -1,0 +1,85 @@
+.rtl #ftwp-container.ftwp-wrap {
+
+  #ftwp-header {
+    &-control {
+      float: right;
+      margin-right: 0;
+      margin-left: 5px;
+    }
+
+    &-minimize {
+      float: left;
+      margin-left: 0;
+      margin-right: 5px;
+    }
+  }
+
+  #ftwp-list {
+
+    .ftwp-anchor::before {
+      float: right;
+      margin-right: auto;
+      margin-left: $list_type_offset;
+      unicode-bidi: bidi-override;
+    }
+
+  }
+
+  #ftwp-list.ftwp-list-nest {
+    &.ftwp-liststyle-none .ftwp-anchor::before {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    // Set the nested list margin-left
+    @for $n from 1 through 5 {
+      $selectors: selectorDuplicateNest('.ftwp-sub', $n);
+      #{$selectors} .ftwp-anchor::before {
+        margin-left: $list_type_offset;
+        margin-right: $n * $list_nested_offset;
+      }
+    }
+
+    // Chain the list number
+    &.ftwp-liststyle-decimal {
+      ul,
+      ol {
+        counter-reset: List;
+      }
+    }
+
+    &.ftwp-colexp {
+
+      &-icon {
+        .ftwp-anchor {
+          padding-left: $list_anchor_hpadding;
+          padding-right: 2 * $list_anchor_hpadding + $list_font_size;
+        }
+      }
+
+
+      .ftwp-icon {
+        &-collapse,
+        &-expand {
+          left: auto;
+          right: 0;
+        }
+      }
+
+      // Set the icon left of the nested position
+      @for $n from 1 through 4 {
+        $selectors: selectorDuplicateNest('.ftwp-has-sub', $n + 1);
+        #{$selectors} > .ftwp-icon {
+          &-collapse,
+          &-expand {
+            left: auto;
+            right: $n * $list_nested_offset;
+          }
+        }
+      }
+
+    }
+
+  }
+
+}

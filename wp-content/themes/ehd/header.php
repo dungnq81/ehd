@@ -26,7 +26,6 @@ use EHD\Cores\Helper;
      * ehd_before_header hook.
      *
      * @see __ehd_skip_to_content_link - 2
-     * @see __ehd_html_body_top - 5
      * @see __off_canvas_menu - 10
      */
     do_action( 'ehd_before_header' );

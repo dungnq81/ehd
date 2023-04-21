@@ -4,7 +4,6 @@ namespace EHD\Widgets;
 
 use EHD\Cores\Helper;
 use EHD\Cores\Widget;
-use EHD\Themes\CSS;
 use WP_Query;
 
 \defined('ABSPATH') || die;

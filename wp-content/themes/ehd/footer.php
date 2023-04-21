@@ -15,7 +15,6 @@
 
         /**
          * ehd_before_footer hook.
-         *
          */
         do_action( 'ehd_before_footer' );
 
@@ -25,36 +24,32 @@
 
             /**
              * ehd_before_footer_content hook.
-             *
              */
             do_action( 'ehd_before_footer_content' );
 
             /**
              * ehd_footer hook.
-             *
              */
             do_action( 'ehd_footer' );
 
             /**
              * ehd_after_footer_content hook.
-             *
              */
             do_action( 'ehd_after_footer_content' );
 
             ?>
         </div>
+        <?php
+
+        /**
+         * ehd_after_footer hook.
+         */
+        do_action( 'ehd_after_footer' );
+
+        ?>
     </div><!-- // .site-outer -->
-    <?php
 
-    /**
-     * ehd_after_footer hook.
-     *
-     * @see __ehd_after_footer - 10
-     */
-    do_action( 'ehd_after_footer' );
+    <?php wp_footer(); ?>
 
-    wp_footer();
-
-    ?>
 </body>
 </html>

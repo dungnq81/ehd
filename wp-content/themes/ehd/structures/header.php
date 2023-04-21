@@ -10,7 +10,7 @@ use EHD\Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 // -----------------------------------------------
-// wp_head
+// wp_head hook
 // -----------------------------------------------
 
 if ( ! function_exists( '__wp_head' ) ) {
@@ -37,24 +37,8 @@ if ( ! function_exists( '__wp_head' ) ) {
 	}
 }
 
-if ( ! function_exists( '__extra_wp_head' ) ) {
-	add_action( 'wp_head', '__extra_wp_head', 99 );
-
-	/**
-	 * @return void
-	 */
-	function __extra_wp_head() : void
-	{
-		// Header scripts
-		$html_header = Helper::getCustomPostContent( 'html_header', true );
-		if ( $html_header ) {
-			echo $html_header;
-		}
-	}
-}
-
 // -----------------------------------------------
-// ehd_before_header
+// ehd_before_header hook
 // -----------------------------------------------
 
 if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
@@ -73,23 +57,6 @@ if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
 			esc_html__( 'Skip to content', EHD_TEXT_DOMAIN )
 		);
     }
-}
-
-if ( ! function_exists( '__ehd_html_body_top' ) ) {
-	add_action( 'ehd_before_header', '__ehd_html_body_top', 5 );
-
-	/**
-	 * @return void
-	 */
-	function __ehd_html_body_top(): void
-    {
-		/** Body scripts - TOP */
-		echo "\n";
-		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
-		if ( $html_body_top ) {
-			echo $html_body_top;
-		}
-	}
 }
 
 if ( ! function_exists( '__off_canvas_menu' ) ) {

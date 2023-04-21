@@ -11,7 +11,7 @@ namespace EHD\Themes;
  */
 
 use EHD\Cores\Helper;
-
+use EHD\Libs\CSS;
 use WP_Customize_Color_Control;
 use WP_Customize_Image_Control;
 use WP_Customize_Manager;

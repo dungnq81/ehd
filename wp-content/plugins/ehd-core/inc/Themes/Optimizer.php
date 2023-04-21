@@ -17,6 +17,14 @@ final class Optimizer
     {
 	    $this->_cleanup();
 
+	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
+	    add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // Header scripts
+
+	    add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // Body scripts - TOP
+
+	    add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // Footer scripts
+	    add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // Body scripts - BOTTOM
+
 	    //...
 	    if ( ! is_admin() ) {
 		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
@@ -33,54 +41,12 @@ final class Optimizer
 		    add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
 	    }
 
-		// wp_enqueue_scripts
-	    add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 );
 
-	    // wp_print_footer_scripts
-	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
+	    add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 ); // wp_enqueue_scripts
+	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
 
-	    // fixed canonical
-	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ], 10 );
-
-	    // filter post search only by title
-	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 );
-
-	    // custom posts where, filter post search only by title
-	    //add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 );
-
-	    // remove id li navigation
-	    add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
-
-	    // Adding Shortcode in WordPress Using Custom HTML Widget
-	    add_filter( 'widget_text', 'do_shortcode' );
-	    add_filter( 'widget_text', 'shortcode_unautop' );
-
-	    // Hooks the wp action to insert some cache control max-age headers.
-//	    add_action( 'wp', function ( $wp ) {
-//		    if ( is_feed() ) {
-//			    if ( ! is_user_logged_in() ) {
-//
-//				    // Set the max age for feeds to 5 minutes.
-//				    header( 'Cache-Control: max-age=' . ( 5 * MINUTE_IN_SECONDS ) );
-//			    }
-//		    }
-//	    } );
-
-	    // normalize upload filename
-	    add_filter( 'sanitize_file_name', function ( $filename ) {
-		    return remove_accents( $filename );
-	    }, 10, 1 );
-
-	    // Disable XML-RPC authentication
-	    add_filter( 'xmlrpc_enabled', '__return_false' );
-	    add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
-	    add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
-	    add_filter( 'pings_open', '__return_false', 9999 );
-
-	    add_filter( 'wp_headers', function ( $headers ) {
-		    unset( $headers['X-Pingback'], $headers['x-pingback'] );
-		    return $headers;
-	    } );
+	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
+	    //add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
 
 	    //...
 	    add_filter( 'excerpt_more', function () {
@@ -93,34 +59,11 @@ final class Optimizer
 		    $wp_admin_bar->remove_menu( 'wp-logo' );
 	    } );
 
-	    // Prevent Specific Plugins from Deactivation
-	    add_filter( 'plugin_action_links', function ( $actions, $plugin_file, $plugin_data, $context ) {
-
-			// action keys
-		    $keys = [
-				'deactivate',
-			    'delete'
-		    ];
-
-		    foreach ( $keys as $key ) {
-			    if ( array_key_exists( $key, $actions )
-			         && in_array(
-				         $plugin_file,
-				         [
-					         'ehd-core/ehd-core.php',
-					         //'advanced-custom-fields-pro/acf.php',
-				         ] )
-			    ) {
-				    unset( $actions[ $key ] );
-			    }
-		    }
-
-		    return $actions;
-
-	    }, 10, 4 );
+	    // Prevent Specific Plugins from deactivation, delete, v.v...
+	    add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
     }
 
-    /** ---------------------------------------- */
+	// ------------------------------------------------------
 
     /**
      * Launching operation cleanup.
@@ -156,7 +99,120 @@ final class Optimizer
 	    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 	    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
 	    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
+	    // remove id li navigation
+	    add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
+
+	    // Adding Shortcode in WordPress Using Custom HTML Widget
+	    add_filter( 'widget_text', 'do_shortcode' );
+	    add_filter( 'widget_text', 'shortcode_unautop' );
+
+	    // Disable XML-RPC authentication
+	    add_filter( 'xmlrpc_enabled', '__return_false' );
+	    add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
+	    add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
+	    add_filter( 'pings_open', '__return_false', 9999 );
+
+		// X-Pingback
+	    add_filter( 'wp_headers', function ( $headers ) {
+		    unset( $headers['X-Pingback'], $headers['x-pingback'] );
+		    return $headers;
+	    } );
+
+	    // normalize upload filename
+	    add_filter( 'sanitize_file_name', function ( $filename ) {
+		    return remove_accents( $filename );
+	    }, 10, 1 );
     }
+
+    // ------------------------------------------------------
+
+	/**
+	 * @param $actions
+	 * @param $plugin_file
+	 * @param $plugin_data
+	 * @param $context
+	 *
+	 * @return mixed
+	 */
+	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context )
+	{
+		$keys = [
+			'deactivate',
+			'delete'
+		];
+
+		foreach ( $keys as $key ) {
+			if ( array_key_exists( $key, $actions )
+			     && in_array(
+				     $plugin_file,
+				     [
+					     'ehd-core/ehd-core.php',
+					     //'advanced-custom-fields-pro/acf.php',
+				     ] )
+			) {
+				unset( $actions[ $key ] );
+			}
+		}
+
+		return $actions;
+	}
+
+    // ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function header_scripts__hook() : void
+	{
+		// Header scripts
+		$html_header = Helper::getCustomPostContent( 'html_header', true );
+		if ( $html_header ) {
+			echo $html_header;
+		}
+	}
+
+    // ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function body_scripts_top__hook()
+	{
+		// Body scripts - TOP
+		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
+		if ( $html_body_top ) {
+			echo "\n" . $html_body_top;
+		}
+	}
+
+    // ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function footer_scripts__hook()
+	{
+		// Footer scripts
+		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
+		if ($html_footer) {
+			echo $html_footer . "\n";
+		}
+	}
+
+    // ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function body_scripts_bottom__hook()
+	{
+		// Body scripts - BOTTOM
+		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
+		if ($html_body_bottom) {
+			echo "\n" . $html_body_bottom . "\n";
+		}
+	}
 
     // ------------------------------------------------------
 
@@ -165,19 +221,23 @@ final class Optimizer
 	 */
 	public function enqueue_scripts()
 	{
-		$style = '';
+		$classes           = [];
+		$styles            = '';
 		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
-		foreach ($ar_post_type_list as $ar_post_type)
-		{
+
+		foreach ( $ar_post_type_list as $ar_post_type ) {
 			$ratio_obj = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
+			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
-			if ($ratio_style) {
-				$style .= $ratio_style;
+
+			if ( ! in_array( $ratio_class, $classes ) && $ratio_style ) {
+				$classes[] = $ratio_class;
+				$styles    .= $ratio_style;
 			}
 		}
 
-		if ($style) {
-			wp_add_inline_style( 'ehd-core-style', $style );
+		if ( $styles ) {
+			wp_add_inline_style( 'ehd-core-style', $styles );
 		}
 	}
 

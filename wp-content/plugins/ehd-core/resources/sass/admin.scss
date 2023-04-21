@@ -588,8 +588,10 @@ body.toplevel_page_ehd-settings {
 }
 
 .server-info-body {
-    max-width: 800px;
+    max-width: 100%;
+    width: 1000px;
     margin: 0 auto;
+    padding: 25px 20px 15px 22px;
     .server-info-inner {
         background: #fff;
         padding: 1em 1.5em;
