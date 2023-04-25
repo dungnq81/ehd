@@ -178,14 +178,28 @@
 
     & > img {
         display: block;
-        height: 100% !important;
-        width: auto;
-        min-width: 100%;
-        max-width: unset;
-        object-fit: cover;
-        object-position: center;
         @include absolute-center;
     }
+
+    &:not(.auto) {
+        & > img {
+            height: 100% !important;
+            width: auto;
+            min-width: 100%;
+            max-width: unset;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
+@mixin responsive-image-auto {
+    height: auto !important;
+    width: auto !important;
+    object-fit: contain;
+    object-position: center;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 @mixin responsive-scale($scale: 1.07, $opacity: 1) {
@@ -197,15 +211,6 @@
         transform: scale($scale);
         opacity: $opacity;
     }
-}
-
-@mixin responsive-image-auto {
-    height: auto !important;
-    width: auto !important;
-    object-fit: contain;
-    object-position: center;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 @mixin responsive-ratio($ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100%) {
@@ -853,7 +858,7 @@
 }
 
 // http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect3($bg_color: rgba(255, 255, 255, 0.2), $border-radius: false) {
+@mixin _effect3($border-radius: false, $bg_color: rgba(255, 255, 255, 0.2)) {
     @if type-of($border_radius) != bool {
         border-radius: fs($border_radius);
     }

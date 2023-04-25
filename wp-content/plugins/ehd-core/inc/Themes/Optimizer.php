@@ -16,6 +16,7 @@ final class Optimizer
     public function __construct()
     {
 	    $this->_cleanup();
+	    $this->_disable_XMLRPC();
 
 	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
 	    add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // Header scripts
@@ -72,7 +73,7 @@ final class Optimizer
      */
     protected function _cleanup() : void
     {
-        remove_action('welcome_panel', 'wp_welcome_panel');
+	    remove_action( 'welcome_panel', 'wp_welcome_panel' );
 
 	    // wp_head
 	    remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
@@ -86,11 +87,11 @@ final class Optimizer
 	    remove_action( 'admin_print_styles', 'print_emoji_styles' );
 	    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
-        /**
-         * Remove wp-json header from WordPress
-         * Note that the REST API functionality will still be working as it used to;
-         * this only removes the header code that is being inserted.
-         */
+	    /**
+	     * Remove wp-json header from WordPress
+	     * Note that the REST API functionality will still be working as it used to;
+	     * this only removes the header code that is being inserted.
+	     */
 	    remove_action( 'wp_head', 'rest_output_link_wp_head' );
 	    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 	    remove_action( 'template_redirect', 'rest_output_link_header', 11 );
@@ -107,23 +108,50 @@ final class Optimizer
 	    add_filter( 'widget_text', 'do_shortcode' );
 	    add_filter( 'widget_text', 'shortcode_unautop' );
 
-	    // Disable XML-RPC authentication
-	    add_filter( 'xmlrpc_enabled', '__return_false' );
-	    add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
-	    add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
-	    add_filter( 'pings_open', '__return_false', 9999 );
-
-		// X-Pingback
-	    add_filter( 'wp_headers', function ( $headers ) {
-		    unset( $headers['X-Pingback'], $headers['x-pingback'] );
-		    return $headers;
-	    } );
-
 	    // normalize upload filename
 	    add_filter( 'sanitize_file_name', function ( $filename ) {
 		    return remove_accents( $filename );
 	    }, 10, 1 );
     }
+
+    // ------------------------------------------------------
+
+	protected function _disable_XMLRPC()
+	{
+		// Disable XML-RPC authentication
+		if ( is_admin() ) {
+			update_option( 'default_ping_status', 'closed' );
+		}
+
+		add_filter( 'xmlrpc_enabled', '__return_false' );
+		add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
+		add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
+
+		/**
+		 * Unsets xmlrpc headers
+		 *
+		 * @param array $headers The array of wp headers
+		 */
+		add_filter( 'wp_headers', function ( $headers ) {
+			if ( isset( $headers['X-Pingback'] ) ) {
+				unset( $headers['X-Pingback'] );
+			}
+
+			return $headers;
+		}, 10, 1 );
+
+		/**
+		 * Unsets xmlrpc methods for pingbacks
+		 *
+		 * @param array $methods The array of xmlrpc methods
+		 */
+		add_filter( 'xmlrpc_methods', function ( $methods ) {
+			unset( $methods['pingback.ping'] );
+			unset( $methods['pingback.extensions.getPingbacks'] );
+
+			return $methods;
+		}, 10, 1 );
+	}
 
     // ------------------------------------------------------
 
@@ -195,7 +223,7 @@ final class Optimizer
 	{
 		// Footer scripts
 		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
-		if ($html_footer) {
+		if ( $html_footer ) {
 			echo $html_footer . "\n";
 		}
 	}
@@ -209,7 +237,7 @@ final class Optimizer
 	{
 		// Body scripts - BOTTOM
 		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
-		if ($html_body_bottom) {
+		if ( $html_body_bottom ) {
 			echo "\n" . $html_body_bottom . "\n";
 		}
 	}
@@ -226,7 +254,7 @@ final class Optimizer
 		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 
 		foreach ( $ar_post_type_list as $ar_post_type ) {
-			$ratio_obj = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
+			$ratio_obj   = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
 			$ratio_class = $ratio_obj->class ?? '';
 			$ratio_style = $ratio_obj->style ?? '';
 

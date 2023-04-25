@@ -305,9 +305,9 @@ trait Wp
 			    if ( is_ssl() ) {
 				    $_is_loaded[0][ strtolower( $mod_name ) ] = str_replace( [ 'http://' ], 'https://', $_mod );
 			    }
-//				else {
-//                    $_is_loaded[0][strtolower($mod_name)] = str_replace(['https://'], 'http://', $_mod);
-//                }
+				else {
+                    $_is_loaded[0][strtolower($mod_name)] = $_mod;
+                }
 		    }
 
 		    return $_is_loaded[0][ strtolower( $mod_name ) ];

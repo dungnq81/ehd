@@ -6,9 +6,8 @@ use EHD\Cores\Helper;
 use EHD\Cores\Widget;
 use WP_Query;
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
-if (!class_exists('RecentProducts_Widget')) {
     class RecentProducts_Widget extends Widget
     {
         public function __construct()
@@ -258,4 +257,3 @@ if (!class_exists('RecentProducts_Widget')) {
             echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
         }
     }
-}

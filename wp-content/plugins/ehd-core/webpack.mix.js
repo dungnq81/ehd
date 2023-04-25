@@ -17,9 +17,9 @@ mix
     //.sass(resources + '/sass/editor-style.scss', assets + '/css')
     .sass(resources + '/sass/admin.scss', assets + '/css')
     .sass(resources + '/sass/ehd.scss', assets + '/css')
-    .sass(resources + '/sass/swiper.scss', assets + '/css')
     .sass(resources + '/sass/woocommerce.scss', assets + '/css')
     //.sass(resources + '/sass/elementor.scss', assets + '/css')
+    .sass(resources + '/sass/swiper.scss', assets + '/css')
 
     .js(resources + '/js/plugins-dev/swiper.js', assets + '/js/plugins')
 

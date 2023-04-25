@@ -15,6 +15,7 @@ use EHD\Libs\CSS;
 /** inline css */
 if (!function_exists('__enqueue_inline_css')) {
 	add_action('wp_enqueue_scripts', '__enqueue_inline_css', 32); // After WooCommerce.
+
     /**
      * Add CSS for third-party plugins.
      *
@@ -22,9 +23,9 @@ if (!function_exists('__enqueue_inline_css')) {
      */
     function __enqueue_inline_css() : void
     {
-        $css = new CSS();
+	    $css = new CSS();
 
-        // breadcrumbs bg
+	    // breadcrumbs bg
 	    $breadcrumb_bg = Helper::getThemeMod( 'breadcrumb_bg_setting' );
 	    if ( $breadcrumb_bg ) {
 		    $css->set_selector( 'section.section-title>.title-bg' );

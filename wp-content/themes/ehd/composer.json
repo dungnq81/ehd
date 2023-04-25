@@ -20,8 +20,7 @@
 			"inc/themes.php",
 			"inc/Plugins/tgmpa/tgmpa-config.php",
 			"structures/header.php",
-			"structures/footer.php",
-			"structures/template-hooks.php"
+			"structures/footer.php"
 		]
 	},
 	"require": {

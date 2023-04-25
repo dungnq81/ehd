@@ -331,7 +331,6 @@ figure.wp-caption, figure.caption {
 /** @todo gutter */
 $count: 0;
 $count_max: 30;
-
 @while $count <= $count_max {
     .mt-#{$count} {
         margin-top: fs($count) !important;
@@ -352,7 +351,6 @@ $count_max: 30;
 /** @todo font weight */
 $fw: 300;
 $fw_max: 700;
-
 @while $fw <= $fw_max {
     .fw-#{$fw} {
         font-weight: $fw !important;
@@ -589,7 +587,7 @@ $basic-colors: (
     .hl-circle {
         @include box(86, 86, 50%);
         background-color: transparent;
-        border: 2px solid $color-red;
+        border: 2px solid $red-color;
         animation: ng-circle-anim 1.2s infinite ease-in-out;
         transition: all 0.5s;
         transform-origin: 50% 50%;
@@ -605,7 +603,7 @@ $basic-colors: (
         animation: ng-circle-fill-anim 2.3s infinite ease-in-out;
         transition: all 0.5s;
         transform-origin: 50% 50%;
-        @include linear-gradient(90deg, $color-red);
+        @include linear-gradient(90deg, $red-color);
         backface-visibility: hidden;
     }
 
@@ -613,7 +611,7 @@ $basic-colors: (
         @include box(42, 42, 50%);
         animation: ng-circle-icon-anim 1s infinite ease-in-out;
         transform-origin: 50% 50%;
-        @include linear-gradient(90deg, $color-red);
+        @include linear-gradient(90deg, $red-color);
         position: absolute;
         top: 22px;
         left: 22px;
@@ -632,6 +630,22 @@ $basic-colors: (
         cursor: default;
         border-bottom: none;
         font-weight: inherit;
+    }
+}
+
+/** */
+
+@include keyframes(circle) {
+    0% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 200%;
+        height: 200%;
+        opacity: 0;
     }
 }
 
@@ -1864,10 +1878,10 @@ ul.reset, ol.reset {
 }
 
 .is-invalid-input {
-    color: $color-red !important;
+    color: $red-color !important;
 
     &::placeholder {
-        color: $color-red !important;
+        color: $red-color !important;
     }
 }
 

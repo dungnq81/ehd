@@ -25,15 +25,15 @@ abstract class Widget extends WP_Widget
 
     public function __construct()
     {
-        $className = (new ReflectionClass($this))->getShortName();
-        $this->widget_classname = str_replace(['_widget', '-widget'], '', Helper::dashCase(strtolower($className)));
+        $className = ( new ReflectionClass( $this ) )->getShortName();
+        $this->widget_classname = str_replace( [ '_widget', '-widget' ], '', Helper::dashCase( strtolower( $className ) ) );
         $this->widget_id = $this->prefix . $this->widget_classname;
 
-        parent::__construct($this->widget_id, $this->widget_name, $this->widget_options());
+        parent::__construct( $this->widget_id, $this->widget_name, $this->widget_options() );
 
-        add_action('save_post', [&$this, 'flush_widget_cache']);
-        add_action('deleted_post', [&$this, 'flush_widget_cache']);
-        add_action('switch_theme', [&$this, 'flush_widget_cache']);
+        add_action( 'save_post', [ &$this, 'flush_widget_cache' ] );
+        add_action( 'deleted_post', [ &$this, 'flush_widget_cache' ] );
+        add_action( 'switch_theme', [ &$this, 'flush_widget_cache' ] );
     }
 
     /**
@@ -56,8 +56,8 @@ abstract class Widget extends WP_Widget
      */
     public function flush_widget_cache() : void
     {
-        foreach (['https', 'http'] as $scheme) {
-            wp_cache_delete($this->get_widget_id_for_cache($this->widget_id, $scheme), 'widget');
+        foreach ( [ 'https', 'http' ] as $scheme ) {
+            wp_cache_delete( $this->get_widget_id_for_cache( $this->widget_id, $scheme ), 'widget' );
         }
     }
 
@@ -68,36 +68,37 @@ abstract class Widget extends WP_Widget
      */
     protected function get_widget_id_for_cache($widget_id, string $scheme = '')
     {
-        if ($scheme) {
+        if ( $scheme ) {
             $widget_id_for_cache = $widget_id . '-' . $scheme;
         } else {
-            $widget_id_for_cache = $widget_id . '-' . (is_ssl() ? 'https' : 'http');
+            $widget_id_for_cache = $widget_id . '-' . ( is_ssl() ? 'https' : 'http' );
         }
 
-        return apply_filters('w_cached_widget_id', $widget_id_for_cache);
+        return apply_filters( 'w_cached_widget_id', $widget_id_for_cache );
     }
 
     /**
      * Cache the widget
      *
-     * @param array  $args    Arguments
+     * @param array $args    Arguments
      * @param string $content Content
+     *
      * @return string the content that was cached
      */
-    public function cache_widget($args, $content) : string
+    public function cache_widget(array $args, string $content) : string
     {
         // Don't set any cache if widget_id doesn't exist
-        if (empty($args['widget_id'])) {
+        if ( empty( $args['widget_id'] ) ) {
             return $content;
         }
 
-        $cache = wp_cache_get($this->get_widget_id_for_cache($this->widget_id), 'widget');
-        if (!is_array($cache)) {
+        $cache = wp_cache_get( $this->get_widget_id_for_cache( $this->widget_id ), 'widget' );
+        if ( ! is_array( $cache ) ) {
             $cache = [];
         }
 
-        $cache[$this->get_widget_id_for_cache($args['widget_id'])] = $content;
-        wp_cache_set($this->get_widget_id_for_cache($this->widget_id), $cache, 'widget');
+        $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ] = $content;
+        wp_cache_set( $this->get_widget_id_for_cache( $this->widget_id ), $cache, 'widget' );
 
         return $content;
     }
@@ -106,22 +107,24 @@ abstract class Widget extends WP_Widget
      * Get cached widget
      *
      * @param array $args Arguments
+     *
      * @return bool true if the widget is cached otherwise false
      */
-    public function get_cached_widget($args) : bool
+    public function get_cached_widget(array $args) : bool
     {
         // Don't get cache if widget_id doesn't exists
-        if (empty($args['widget_id'])) {
+        if ( empty( $args['widget_id'] ) ) {
             return false;
         }
 
-        $cache = wp_cache_get($this->get_widget_id_for_cache($this->widget_id), 'widget');
-        if (!is_array($cache)) {
+        $cache = wp_cache_get( $this->get_widget_id_for_cache( $this->widget_id ), 'widget' );
+        if ( ! is_array( $cache ) ) {
             $cache = [];
         }
 
-        if (isset($cache[$this->get_widget_id_for_cache($args['widget_id'])])) {
-            echo $cache[$this->get_widget_id_for_cache($args['widget_id'])]; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        if ( isset( $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ] ) ) {
+            echo $cache[ $this->get_widget_id_for_cache( $args['widget_id'] ) ]; // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+
             return true;
         }
 
@@ -130,15 +133,16 @@ abstract class Widget extends WP_Widget
 
     /**
      * @param array $instance Array of instance options.
+     *
      * @return string
      */
-    protected function get_instance_title($instance) : string
+    protected function get_instance_title(array $instance) : string
     {
-        if (isset($instance['title'])) {
+        if ( isset( $instance['title'] ) ) {
             return $instance['title'];
         }
 
-        if (isset($this->settings, $this->settings['title'], $this->settings['title']['std'])) {
+        if ( isset( $this->settings, $this->settings['title'], $this->settings['title']['std'] ) ) {
             return $this->settings['title']['std'];
         }
 
@@ -153,45 +157,48 @@ abstract class Widget extends WP_Widget
     public function update($new_instance, $old_instance) : array
     {
         $instance = $old_instance;
-        if (empty($this->settings)) {
+        if ( empty( $this->settings ) ) {
             return $instance;
         }
 
         // Loop settings and get values to save
-        foreach ($this->settings as $key => $setting) {
-            if (!isset($setting['type'])) {
+        foreach ( $this->settings as $key => $setting ) {
+
+            $setting_type = $setting['type'] ?? '';
+            if ( ! $setting_type ) {
                 continue;
             }
 
             // Format the value based on settings type.
-            switch ($setting['type']) {
+            switch ( $setting_type ) {
                 case 'number':
-                    $instance[$key] = absint($new_instance[$key]);
+                    $instance[ $key ] = absint( $new_instance[ $key ] );
 
-                    if (isset($setting['min']) && '' !== $setting['min']) {
-                        $instance[$key] = max($instance[$key], $setting['min']);
+                    if ( isset( $setting['min'] ) && '' !== $setting['min'] ) {
+                        $instance[ $key ] = max( $instance[ $key ], $setting['min'] );
                     }
 
-                    if (isset($setting['max']) && '' !== $setting['max']) {
-                        $instance[$key] = min($instance[$key], $setting['max']);
+                    if ( isset( $setting['max'] ) && '' !== $setting['max'] ) {
+                        $instance[ $key ] = min( $instance[ $key ], $setting['max'] );
                     }
                     break;
                 case 'textarea':
-                    $instance[$key] = wp_kses(trim(wp_unslash($new_instance[$key])), wp_kses_allowed_html('post'));
+                    $instance[ $key ] = wp_kses( trim( wp_unslash( $new_instance[ $key ] ) ), wp_kses_allowed_html( 'post' ) );
                     break;
                 case 'checkbox':
-                    $instance[$key] = empty($new_instance[$key]) ? 0 : 1;
+                    $instance[ $key ] = empty( $new_instance[ $key ] ) ? 0 : 1;
                     break;
                 default:
-                    $instance[$key] = isset($new_instance[$key]) ? sanitize_text_field($new_instance[$key]) : $setting['std'];
+                    $instance[ $key ] = isset( $new_instance[ $key ] ) ? sanitize_text_field( $new_instance[ $key ] ) : $setting['std'];
                     break;
             }
 
             // Sanitize the value of a setting.
-            $instance[$key] = apply_filters('w_widget_settings_sanitize_option', $instance[$key], $new_instance, $key, $setting);
+            $instance[ $key ] = apply_filters( 'w_widget_settings_sanitize_option', $instance[ $key ], $new_instance, $key, $setting );
         }
 
         $this->flush_widget_cache();
+
         return $instance;
     }
 
@@ -275,7 +282,7 @@ abstract class Widget extends WP_Widget
 
                 // Default: run an action.
                 default:
-                    do_action('widget_field_' . $setting['type'], $key, $value, $setting, $instance);
+                    do_action( 'widget_field_' . $setting['type'], $key, $value, $setting, $instance );
                     break;
             }
         }
@@ -286,8 +293,8 @@ abstract class Widget extends WP_Widget
      */
     public function _register_one($number = -1) : void
     {
-        parent::_register_one($number);
-        if ($this->registered) {
+        parent::_register_one( $number );
+        if ( $this->registered ) {
             return;
         }
 
@@ -310,80 +317,100 @@ abstract class Widget extends WP_Widget
      */
     protected function swiperOptions($instance, $default_settings) : array
     {
-        $rows = Helper::notEmpty($instance['rows']) ? absint($instance['rows']) : $default_settings['rows']['std'];
+        $rows = Helper::notEmpty( $instance['rows'] ) ? absint( $instance['rows'] ) : $default_settings['rows']['std'];
 
         $_columns_number = $instance['columns_number'] ?? $default_settings['columns_number']['std'];
-        $_gap = $instance['gap'] ?? $default_settings['gap']['std'];
-        $_columns_number = Helper::separatedToArray($_columns_number, '-');
-        $_gap = Helper::separatedToArray($_gap, '-');
+        $_gap            = $instance['gap'] ?? $default_settings['gap']['std'];
+        $_columns_number = Helper::separatedToArray( $_columns_number, '-' );
+        $_gap            = Helper::separatedToArray( $_gap, '-' );
 
-        $pagination = isset($instance['pagination']) ? sanitize_title($instance['pagination']) : $default_settings['pagination']['std'];
-        $direction = isset($instance['direction']) ? sanitize_title($instance['direction']) : $default_settings['direction']['std'];
-        $effect = isset($instance['effect']) ? sanitize_title($instance['effect']) : $default_settings['effect']['std'];
+        $pagination = isset( $instance['pagination'] ) ? sanitize_title( $instance['pagination'] ) : $default_settings['pagination']['std'];
+        $direction  = isset( $instance['direction'] ) ? sanitize_title( $instance['direction'] ) : $default_settings['direction']['std'];
+        $effect     = isset( $instance['effect'] ) ? sanitize_title( $instance['effect'] ) : $default_settings['effect']['std'];
 
-        $navigation = Helper::notEmpty($instance['navigation']);
-        $autoplay = Helper::notEmpty($instance['autoplay']);
-        $loop = Helper::notEmpty($instance['loop']);
-        $marquee = Helper::notEmpty($instance['marquee']);
-        $scrollbar = Helper::notEmpty($instance['scrollbar']);
+        $navigation = Helper::notEmpty( $instance['navigation'] );
+        $autoplay   = Helper::notEmpty( $instance['autoplay'] );
+        $loop       = Helper::notEmpty( $instance['loop'] );
+        $marquee    = Helper::notEmpty( $instance['marquee'] );
+        $scrollbar  = Helper::notEmpty( $instance['scrollbar'] );
 
-        $delay = Helper::notEmpty($instance['delay']) ? absint($instance['delay']) : $default_settings['delay']['std'];
-        $speed = Helper::notEmpty($instance['speed']) ? absint($instance['speed']) : $default_settings['speed']['std'];
+        $delay = Helper::notEmpty( $instance['delay'] ) ? absint( $instance['delay'] ) : $default_settings['delay']['std'];
+        $speed = Helper::notEmpty( $instance['speed'] ) ? absint( $instance['speed'] ) : $default_settings['speed']['std'];
 
         //...
-        $desktop_gap = $_gap[0] ?? 0;
-        $mobile_gap = $_gap[1] ?? 0;
+        $desktop_gap     = $_gap[0] ?? 0;
+        $mobile_gap      = $_gap[1] ?? 0;
         $columns_desktop = $_columns_number[0] ?? 0;
-        $columns_tablet = $_columns_number[1] ?? 0;
-        $columns_mobile = $_columns_number[2] ?? 0;
+        $columns_tablet  = $_columns_number[1] ?? 0;
+        $columns_mobile  = $_columns_number[2] ?? 0;
 
         //...
         $swiper_class = '';
-        $_data = [
+        $_data        = [
             'observer' => true,
         ];
 
-        if ($desktop_gap) $_data['desktop_gap'] = absint($desktop_gap);
-        if ($mobile_gap) $_data['mobile_gap'] = absint($mobile_gap);
+        if ( $desktop_gap ) {
+            $_data['desktop_gap'] = absint( $desktop_gap );
+        }
+        if ( $mobile_gap ) {
+            $_data['mobile_gap'] = absint( $mobile_gap );
+        }
 
-        if ($delay > 0) $_data['delay'] = $delay;
-        if ($speed > 0) $_data['speed'] = $speed;
+        if ( $delay > 0 ) {
+            $_data['delay'] = $delay;
+        }
+        if ( $speed > 0 ) {
+            $_data['speed'] = $speed;
+        }
 
-        if ($pagination) $_data['pagination'] = $pagination;
-        if ($direction) $_data['direction'] = $direction;
-        if ($effect) $_data['effect'] = $effect;
+        if ( $pagination ) {
+            $_data['pagination'] = $pagination;
+        }
+        if ( $direction ) {
+            $_data['direction'] = $direction;
+        }
+        if ( $effect ) {
+            $_data['effect'] = $effect;
+        }
 
-        if ($navigation) $_data['navigation'] = true;
-        if ($autoplay) $_data['autoplay'] = true;
-        if ($loop) $_data['loop'] = true;
+        if ( $navigation ) {
+            $_data['navigation'] = true;
+        }
+        if ( $autoplay ) {
+            $_data['autoplay'] = true;
+        }
+        if ( $loop ) {
+            $_data['loop'] = true;
+        }
 
-        if ($marquee) {
+        if ( $marquee ) {
             $_data['marquee'] = true;
-            $swiper_class .= ' marquee';
+            $swiper_class     .= ' marquee';
         }
-        if ($scrollbar) {
+        if ( $scrollbar ) {
             $_data['scrollbar'] = true;
-            $swiper_class .= ' scrollbar';
+            $swiper_class       .= ' scrollbar';
         }
 
-        if (!$columns_desktop || !$columns_tablet || !$columns_mobile) {
+        if ( ! $columns_desktop || ! $columns_tablet || ! $columns_mobile ) {
             $_data['autoview'] = true;
-            $swiper_class .= ' autoview';
+            $swiper_class      .= ' autoview';
         } else {
-            $_data['desktop'] = absint($columns_desktop);
-            $_data['tablet'] = absint($columns_tablet);
-            $_data['mobile'] = absint($columns_mobile);
+            $_data['desktop'] = absint( $columns_desktop );
+            $_data['tablet']  = absint( $columns_tablet );
+            $_data['mobile']  = absint( $columns_mobile );
         }
 
-        if ($rows > 1) {
-            $_data['row'] = $rows;
+        if ( $rows > 1 ) {
+            $_data['row']  = $rows;
             $_data['loop'] = false;
-            $swiper_class .= ' multirow';
+            $swiper_class  .= ' multirow';
         }
 
         return [
             'class' => $swiper_class,
-            'data' => json_encode($_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE),
+            'data'  => json_encode( $_data, JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE ),
         ];
     }
 
@@ -392,11 +419,11 @@ abstract class Widget extends WP_Widget
      *
      * @return object|null
      */
-    protected function acfFields($id): ?object {
-        if (class_exists('\ACF') && function_exists('get_fields')) {
-            $fields = \get_fields($id);
-            if ($fields) {
-                return Helper::toObject($fields);
+    protected function acfFields( $id ): ?object {
+        if ( class_exists( '\ACF' ) && function_exists( 'get_fields' ) ) {
+            $fields = \get_fields( $id );
+            if ( $fields ) {
+                return Helper::toObject( $fields );
             }
         }
 

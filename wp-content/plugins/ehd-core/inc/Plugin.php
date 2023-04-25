@@ -84,6 +84,13 @@ final class Plugin {
 	{
 		unregister_widget( 'WP_Widget_Search' );
 		unregister_widget( 'WP_Widget_Recent_Posts' );
+
+		// Removes the styling added to the header for recent comments
+		global $wp_widget_factory;
+		remove_action( 'wp_head', [
+			$wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
+			'recent_comments_style'
+		] );
 	}
 
 	/**
@@ -160,8 +167,8 @@ final class Plugin {
 		$block_editor_options = Helper::getOption( 'block_editor__options' );
 		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
-		if ( $block_style_off )
-		{
+		if ( $block_style_off ) {
+
 			/** Remove block CSS */
 			wp_dequeue_style( 'wp-block-library' );
 			wp_dequeue_style( 'wp-block-library-theme' );

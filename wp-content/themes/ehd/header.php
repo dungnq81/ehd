@@ -19,7 +19,11 @@ use EHD\Cores\Helper;
 <body <?php body_class(); ?> <?php echo Helper::microdata( 'body' ); ?>>
     <?php
 
-    /** Triggered after the opening body tag. */
+    /**
+     * Triggered after the opening body tag.
+     *
+     * @see body_scripts_top__hook - 99
+     */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 
     /**
