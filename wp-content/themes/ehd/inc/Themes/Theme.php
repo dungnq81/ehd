@@ -15,10 +15,8 @@ use MatthiasMullie\Minify;
  *
  * @author EHD
  */
-final class Theme
-{
-	public function __construct()
-	{
+final class Theme {
+	public function __construct() {
 		add_action( 'init', [ &$this, 'init' ] );
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 11 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 98 );

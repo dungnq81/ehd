@@ -4,21 +4,19 @@ namespace EHD\Sites\Themes;
 
 \defined( 'ABSPATH' ) || die;
 
-final class Shortcode
-{
-    /**
-     * @return void
-     */
-    public static function init() : void
-    {
-        $shortcodes = [
-            'demo_shortcode'         => __CLASS__ . '::demo_shortcode',
-        ];
+final class Shortcode {
+	/**
+	 * @return void
+	 */
+	public static function init(): void {
+		$shortcodes = [
+			'demo_shortcode' => __CLASS__ . '::demo_shortcode',
+		];
 
-        foreach ($shortcodes as $shortcode => $function) {
-            add_shortcode(apply_filters("{$shortcode}_shortcode_tag", $shortcode), $function);
-        }
-    }
+		foreach ( $shortcodes as $shortcode => $function ) {
+			add_shortcode( apply_filters( "{$shortcode}_shortcode_tag", $shortcode ), $function );
+		}
+	}
 
     // ------------------------------------------------------
 

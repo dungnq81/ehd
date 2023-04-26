@@ -1507,6 +1507,10 @@ trait Wp
 			$data = 'itemtype="https://schema.org/WPFooter" itemscope';
 		}
 
+		if ( 'text' === $context ) {
+			$data = 'itemprop="text"';
+		}
+
 		return apply_filters( "ehd_{$context}_microdata", $data );
 	}
 

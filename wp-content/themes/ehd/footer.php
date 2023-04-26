@@ -29,6 +29,8 @@
 
             /**
              * ehd_footer hook.
+             *
+             * @see __construct_footer_widgets - 5
              */
             do_action( 'ehd_footer' );
 

@@ -1,8 +1,8 @@
 <?php
-
 /**
- * Header elements.
+ * Header elements
  *
+ * @author WEBHD
  * @package ehd
  */
 
@@ -20,9 +20,9 @@ if ( ! function_exists( '__wp_head' ) ) {
 	/**
 	 * @return void
 	 */
-	function __wp_head() : void
-	{
-		// Add viewport to wp_head.
+	function __wp_head() : void {
+
+		// Add viewport to wp_head
 		echo apply_filters( 'ehd_meta_viewport', '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Add a pingback url auto-discovery header for singularly identifiable articles.
@@ -46,43 +46,45 @@ if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
 	add_action( 'ehd_before_header', '__ehd_skip_to_content_link', 2 );
 
 	/**
+	 * Add skip to content link before the header.
+	 *
 	 * @return void
 	 */
-	function __ehd_skip_to_content_link() : void
-	{
-		/** Add skip to content link before the header. */
+	function __ehd_skip_to_content_link(): void {
+
 		echo "\n";
 		printf(
 			'<a class="screen-reader-text skip-link" href="#content" title="%1$s">%2$s</a>',
 			esc_attr__( 'Skip to content', EHD_TEXT_DOMAIN ),
 			esc_html__( 'Skip to content', EHD_TEXT_DOMAIN )
 		);
-    }
+	}
 }
 
 if ( ! function_exists( '__off_canvas_menu' ) ) {
 	add_action( 'ehd_before_header', '__off_canvas_menu', 10 );
 
 	/**
+	 * Position canvas menu
+	 *
 	 * @return void
 	 */
-    function __off_canvas_menu() : void
-    {
-	    // position
-	    $position = Helper::getThemeMod( 'offcanvas_menu_setting' );
-	    if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ] ) ) {
-		    $position = 'right';
-	    }
+	function __off_canvas_menu(): void {
 
-	    // check if offCanvas_Widget active
-	    if ( is_active_widget( false, false, 'w-offcanvas', true ) ) {
-		    get_template_part( 'template-parts/header/off-canvas/' . $position );
-	    }
-    }
+		$position = Helper::getThemeMod( 'offcanvas_menu_setting' );
+		if ( ! in_array( $position, [ 'left', 'right', 'top', 'bottom' ] ) ) {
+			$position = 'right';
+		}
+
+		// check if offCanvas_Widget active
+		if ( is_active_widget( false, false, 'w-offcanvas', true ) ) {
+			get_template_part( 'template-parts/header/off-canvas/' . $position );
+		}
+	}
 }
 
 // -----------------------------------------------
-// ehd_header
+// ehd_header hook
 // -----------------------------------------------
 
 if ( ! function_exists( '__ehd_construct_header' ) ) {
@@ -91,12 +93,11 @@ if ( ! function_exists( '__ehd_construct_header' ) ) {
 	/**
 	 * @return void
 	 */
-	function __ehd_construct_header() : void
-	{
-	?>
-	<header class="site-header">
-        <div class="top-header"></div>
-	</header>
-	<?php
+	function __ehd_construct_header(): void {
+		?>
+		<header class="site-header">
+			<div class="top-header"></div>
+		</header>
+		<?php
 	}
 }

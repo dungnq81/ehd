@@ -11,58 +11,55 @@ use EHD\Cores\Helper;
  *
  * @author eHD
  */
-final class Optimizer
-{
-    public function __construct()
-    {
-	    $this->_cleanup();
-	    $this->_disable_XMLRPC();
+final class Optimizer {
+	public function __construct() {
 
-	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
-	    add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // Header scripts
+		$this->_cleanup();
+		$this->_disable_XMLRPC();
 
-	    add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // Body scripts - TOP
+		add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
+		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // Header scripts
 
-	    add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // Footer scripts
-	    add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // Body scripts - BOTTOM
+		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // Body scripts - TOP
 
-	    //...
-	    if ( ! is_admin() ) {
-		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
-		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
-	    }
+		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // Footer scripts
+		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // Body scripts - BOTTOM
 
-	    //...
-	    if ( ! WP_DEBUG ) {
+		// only front-end
+		if ( ! is_admin() ) {
+			add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
+		}
 
-		    // Remove WP version from RSS.
-		    add_filter( 'the_generator', '__return_empty_string' );
+		// debug false
+		if ( ! WP_DEBUG ) {
 
-		    add_filter( 'style_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
-		    add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
-	    }
+			// Remove WP version from RSS.
+			add_filter( 'the_generator', '__return_empty_string' );
 
+			add_filter( 'style_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
+			add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
+		}
 
-	    add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 ); // wp_enqueue_scripts
-	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
+		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 ); // wp_enqueue_scripts
+		add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
 
-	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
-	    //add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
+		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
+		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
 
-	    //...
-	    add_filter( 'excerpt_more', function () {
-		    return ' ' . '&hellip;';
-	    } );
+		add_filter( 'excerpt_more', function () {
+			return ' ' . '&hellip;';
+		} );
 
-	    // Remove admin bar
-	    add_action( 'wp_before_admin_bar_render', function () {
-		    global $wp_admin_bar;
-		    $wp_admin_bar->remove_menu( 'wp-logo' );
-	    } );
+		// Remove admin bar
+		add_action( 'wp_before_admin_bar_render', function () {
+			global $wp_admin_bar;
+			$wp_admin_bar->remove_menu( 'wp-logo' );
+		} );
 
-	    // Prevent Specific Plugins from deactivation, delete, v.v...
-	    add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
-    }
+		// Prevent Specific Plugins from deactivation, delete, v.v...
+		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+	}
 
 	// ------------------------------------------------------
 
@@ -82,7 +79,7 @@ final class Optimizer
 	    remove_action( 'wp_head', 'feed_links_extra', 3 );             //remove comments feed.
 	    remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
-	    // all actions related to emojis
+	    // All actions related to emojis
 	    remove_action( 'wp_print_styles', 'print_emoji_styles' );
 	    remove_action( 'admin_print_styles', 'print_emoji_styles' );
 	    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
@@ -96,19 +93,19 @@ final class Optimizer
 	    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 	    remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 
-	    // staticize_emoji
+	    // Staticize emoji
 	    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
 	    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
 	    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 
-	    // remove id li navigation
+	    // Remove id li navigation
 	    add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
 
 	    // Adding Shortcode in WordPress Using Custom HTML Widget
 	    add_filter( 'widget_text', 'do_shortcode' );
 	    add_filter( 'widget_text', 'shortcode_unautop' );
 
-	    // normalize upload filename
+	    // Normalize upload filename
 	    add_filter( 'sanitize_file_name', function ( $filename ) {
 		    return remove_accents( $filename );
 	    }, 10, 1 );
@@ -128,7 +125,7 @@ final class Optimizer
 		add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
 
 		/**
-		 * Unsets xmlrpc headers
+		 * Unset xmlrpc headers
 		 *
 		 * @param array $headers The array of wp headers
 		 */
@@ -141,7 +138,7 @@ final class Optimizer
 		}, 10, 1 );
 
 		/**
-		 * Unsets xmlrpc methods for pingbacks
+		 * Unset xmlrpc methods for pingbacks
 		 *
 		 * @param array $methods The array of xmlrpc methods
 		 */
@@ -348,12 +345,12 @@ final class Optimizer
 
 		// Custom filter which adds proper attributes
 
-		// fontawesome kit
+		// Fontawesome kit
 		if ( ( 'fontawesome-kit' == $handle ) && ! preg_match( ":\scrossorigin(=|>|\s):", $tag ) ) {
 			$tag = preg_replace( ':(?=></script>):', " crossorigin='anonymous'", $tag, 1 );
 		}
 
-		// add script handles to the array
+		// Add script handles to the array
 		$str_parsed = apply_filters( 'ehd_defer_script', [] );
 
 		return Helper::lazyScriptTag( $str_parsed, $tag, $handle, $src );
