@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$block_editor_options = Helper::getOption( 'block_editor__options' );
+$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 
 $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
 $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';

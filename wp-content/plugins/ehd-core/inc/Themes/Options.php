@@ -3,7 +3,6 @@
 namespace EHD\Themes;
 
 use EHD\Cores\Helper;
-use EHD\Libs\Browser;
 use PHPMailer\PHPMailer\Exception;
 
 \defined('ABSPATH') || die;
@@ -13,27 +12,24 @@ use PHPMailer\PHPMailer\Exception;
  *
  * @author eHD
  */
-final class Options
-{
-    public function __construct()
-    {
-	    add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
-	    add_action( 'admin_menu', [ &$this, 'options_admin_menu' ] );
-	    add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
+final class Options {
+	public function __construct() {
+		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
+		add_action( 'admin_menu', [ &$this, 'options_admin_menu' ] );
+		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
 
-	    /** SMTP Settings */
-	    if ( self::_smtp__is_configured() ) {
-		    add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
-	    }
-    }
+		/** SMTP Settings */
+		if ( self::_smtp__is_configured() ) {
+			add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
+		}
+	}
 
     /** ---------------------------------------- */
 
     /**
      * @return void
      */
-    public function options_admin_menu() : void
-    {
+    public function options_admin_menu() : void {
 	    // menu page
 	    add_menu_page(
 		    __( 'eHD Settings', EHD_PLUGIN_TEXT_DOMAIN ),
@@ -57,8 +53,7 @@ final class Options
 	 *
 	 * @return void
 	 */
-	public function options_enqueue_assets( $hook )
-    {
+	public function options_enqueue_assets( $hook ) {
 		$allowed_pages = array(
 			'toplevel_page_ehd-settings',
 		);
@@ -79,8 +74,7 @@ final class Options
     /**
      * @return void
      */
-    public function options_page(): void
-    {
+    public function options_page(): void {
 	    if ( isset( $_POST['ehd_update_settings'] ) ) {
 
 		    $nonce = $_REQUEST['_wpnonce'];
@@ -170,7 +164,7 @@ final class Options
 		    $html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
 		    Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html', false );
 
-		    /** block editor */
+		    /** Block editor */
 		    $block_editor_options = [
 			    'use_widgets_block_editor_off'           => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
 			    'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
@@ -184,7 +178,7 @@ final class Options
 		    $html_custom_css = $_POST['html_custom_css'] ?? '';
 		    Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
 
-		    /** echo message success */
+		    /** Echo message success */
 		    Helper::messageSuccess( 'Settings saved' );
 	    }
         ?>
@@ -334,19 +328,18 @@ final class Options
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setup_phpmailer_init( $phpmailer ): void
-    {
+	public function setup_phpmailer_init( $phpmailer ): void {
         Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
 	}
 
 	/** ---------------------------------------- */
 
 	/**
+	 * SMTP notices
+	 *
 	 * @return void
 	 */
-	public function options_admin_notice() : void
-	{
-		// SMTP notices
+	public function options_admin_notice() : void {
 		if ( ! self::_smtp__is_configured() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN );
@@ -362,15 +355,12 @@ final class Options
     /**
      * @return bool
      */
-    private function _smtp__is_configured() : bool
-    {
+    private function _smtp__is_configured() : bool {
 	    $smtp_options    = Helper::getOption( 'smtp__options' );
 	    $smtp_configured = true;
 
 	    if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
-		    if ( empty( $smtp_options['smtp_username'] ) ||
-		         empty( $smtp_options['smtp_password'] )
-		    ) {
+		    if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
 			    $smtp_configured = false;
 		    }
 	    }

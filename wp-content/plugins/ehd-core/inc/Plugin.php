@@ -29,8 +29,7 @@ use EHD\Widgets\Shortcode_Widget;
 \defined( 'ABSPATH' ) || die;
 
 final class Plugin {
-	public function __construct()
-	{
+	public function __construct() {
 		add_action( 'init', [ &$this, 'i18n' ] );
 		add_action( 'init', [ &$this, 'init' ] );
 
@@ -41,8 +40,8 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
-	public function plugins_loaded(): void
-	{
+	public function plugins_loaded(): void {
+
 		/** Widgets wordpress */
 		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 11 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 11 );
@@ -80,8 +79,7 @@ final class Plugin {
 	 *
 	 * @return void
 	 */
-	public function unregister_default_widgets(): void
-	{
+	public function unregister_default_widgets(): void {
 		unregister_widget( 'WP_Widget_Search' );
 		unregister_widget( 'WP_Widget_Recent_Posts' );
 
@@ -98,8 +96,7 @@ final class Plugin {
 	 *
 	 * @return void
 	 */
-	public function register_widgets(): void
-	{
+	public function register_widgets(): void {
 		class_exists( offCanvas_Widget::class ) && register_widget( new offCanvas_Widget() );
 
 		class_exists( Search_Widget::class ) && register_widget( new Search_Widget() );
@@ -112,11 +109,11 @@ final class Plugin {
 	}
 
 	/**
+	 * Load localization file
+	 *
 	 * @return void
 	 */
-	public function i18n(): void
-	{
-		/** Load localization file */
+	public function i18n(): void {
 		load_plugin_textdomain( EHD_PLUGIN_TEXT_DOMAIN );
 		load_plugin_textdomain( EHD_PLUGIN_TEXT_DOMAIN, false, EHD_PLUGIN_PATH . 'languages' );
 	}
@@ -126,8 +123,7 @@ final class Plugin {
 	 *
 	 * @return void
 	 */
-	public function admin_notice_missing_acf(): void
-	{
+	public function admin_notice_missing_acf(): void {
 		$class   = 'notice notice-error';
 		$message = sprintf( __( 'You need %1$s"Advanced Custom Fields"%2$s for the %1$s"eHD-core"%2$s plugin to work and updated.', EHD_PLUGIN_TEXT_DOMAIN ), '<strong>', '</strong>' );
 
@@ -151,8 +147,7 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
-	public function enqueue(): void
-	{
+	public function enqueue(): void {
 		wp_register_style( 'ehd-swiper-style', EHD_PLUGIN_URL . 'assets/css/swiper.css', [], EHD_PLUGIN_VERSION );
 		wp_register_script( 'ehd-swiper', EHD_PLUGIN_URL . 'assets/js/plugins/swiper.js', [], EHD_PLUGIN_VERSION, true );
 
@@ -167,9 +162,8 @@ final class Plugin {
 		$block_editor_options = Helper::getOption( 'block_editor__options' );
 		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
+		/** Remove block CSS */
 		if ( $block_style_off ) {
-
-			/** Remove block CSS */
 			wp_dequeue_style( 'wp-block-library' );
 			wp_dequeue_style( 'wp-block-library-theme' );
 		}
@@ -178,8 +172,7 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
-	public function init(): void
-	{
+	public function init(): void {
 		if ( is_admin() ) {
 			( new Admin() );
 		}

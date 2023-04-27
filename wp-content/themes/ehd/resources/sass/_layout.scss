@@ -166,10 +166,31 @@ figure.wp-caption, figure.caption {
 /** @todo flexbox */
 .grid-x {
     @include grid-x;
+
+    & > .auto, & > .shrink {
+        width: auto;
+    }
+
+    @include mq-min(mobile) {
+        & > .medium-auto, & > .medium-shrink {
+            width: auto;
+        }
+    }
+
+    @include mq-min(desktop) {
+        & > .large-auto, & > .large-shrink {
+            width: auto;
+        }
+    }
 }
 
 .grid-y {
     @include grid-y;
+
+    & > .cell {
+        height: auto;
+        max-height: none;
+    }
 }
 
 .cell {
@@ -181,6 +202,26 @@ figure.wp-caption, figure.caption {
 
     &.shrink {
         @include flex-shrink;
+    }
+
+    @include mq-min(mobile) {
+        &.medium-auto {
+            @include flex-auto;
+        }
+
+        &.medium-shrink {
+            @include flex-shrink;
+        }
+    }
+
+    @include mq-min(desktop) {
+        &.large-auto {
+            @include flex-auto;
+        }
+
+        &.large-shrink {
+            @include flex-shrink;
+        }
     }
 }
 
@@ -331,6 +372,7 @@ figure.wp-caption, figure.caption {
 /** @todo gutter */
 $count: 0;
 $count_max: 30;
+
 @while $count <= $count_max {
     .mt-#{$count} {
         margin-top: fs($count) !important;
@@ -351,6 +393,7 @@ $count_max: 30;
 /** @todo font weight */
 $fw: 300;
 $fw_max: 700;
+
 @while $fw <= $fw_max {
     .fw-#{$fw} {
         font-weight: $fw !important;
@@ -474,7 +517,7 @@ $basic-colors: (
         }
     }
 
-    &_fluid {
+    &._fluid {
         & > .grid-container {
             max-width: 100%;
         }
@@ -633,8 +676,7 @@ $basic-colors: (
     }
 }
 
-/** */
-
+/** @todo keyframes */
 @include keyframes(circle) {
     0% {
         opacity: 1;

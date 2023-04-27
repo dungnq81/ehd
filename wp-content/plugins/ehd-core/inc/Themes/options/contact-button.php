@@ -2,7 +2,7 @@
 
 use EHD\Cores\Helper;
 
-$contact_options = Helper::getOption( 'contact_btn__options' );
+$contact_options = Helper::getOption( 'contact_btn__options', false, false );
 
 $contact_title        = $contact_options['contact_title'] ?? '';
 $contact_url          = $contact_options['contact_url'] ?? '';

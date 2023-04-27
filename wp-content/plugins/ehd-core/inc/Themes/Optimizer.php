@@ -68,15 +68,14 @@ final class Optimizer {
      *
      * @return void
      */
-    protected function _cleanup() : void
-    {
+    private function _cleanup() : void {
 	    remove_action( 'welcome_panel', 'wp_welcome_panel' );
 
 	    // wp_head
 	    remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
 	    remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
 	    remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
-	    remove_action( 'wp_head', 'feed_links_extra', 3 );             //remove comments feed.
+	    remove_action( 'wp_head', 'feed_links_extra', 3 );             // remove comments feed.
 	    remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
 	    // All actions related to emojis
@@ -113,41 +112,60 @@ final class Optimizer {
 
     // ------------------------------------------------------
 
-	protected function _disable_XMLRPC()
-	{
-		// Disable XML-RPC authentication
-		if ( is_admin() ) {
-			update_option( 'default_ping_status', 'closed' );
+	/**
+	 * @return void
+	 */
+	private function _disable_XMLRPC() {
+
+		// Array containing all plugins using XML-RPC.
+		$xml_rpc_plugins = apply_filters( 'ehd_xml_rpc_plugins', [] );
+		$active_plugins = Helper::getOption( 'active_plugins', [] );
+
+		$has_active_plugin = false;
+		foreach ( $active_plugins as $plugin ) {
+			if ( in_array( $plugin, $xml_rpc_plugins ) ) {
+				$has_active_plugin = true;
+				break;
+			}
 		}
 
-		add_filter( 'xmlrpc_enabled', '__return_false' );
-		add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
-		add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
+		// the plugin is not in the list.
+		if ( ! $has_active_plugin ) {
 
-		/**
-		 * Unset xmlrpc headers
-		 *
-		 * @param array $headers The array of wp headers
-		 */
-		add_filter( 'wp_headers', function ( $headers ) {
-			if ( isset( $headers['X-Pingback'] ) ) {
-				unset( $headers['X-Pingback'] );
+			// Disable XML-RPC authentication
+			if ( is_admin() ) {
+				update_option( 'default_ping_status', 'closed' );
 			}
 
-			return $headers;
-		}, 10, 1 );
+			add_filter( 'xmlrpc_enabled', '__return_false' );
+			add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
+			add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
 
-		/**
-		 * Unset xmlrpc methods for pingbacks
-		 *
-		 * @param array $methods The array of xmlrpc methods
-		 */
-		add_filter( 'xmlrpc_methods', function ( $methods ) {
-			unset( $methods['pingback.ping'] );
-			unset( $methods['pingback.extensions.getPingbacks'] );
+			/**
+			 * unset XML-RPC headers
+			 *
+			 * @param array $headers The array of wp headers
+			 */
+			add_filter( 'wp_headers', function ( $headers ) {
+				if ( isset( $headers['X-Pingback'] ) ) {
+					unset( $headers['X-Pingback'] );
+				}
 
-			return $methods;
-		}, 10, 1 );
+				return $headers;
+			}, 10, 1 );
+
+			/**
+			 * unset XML-RPC methods for ping-backs
+			 *
+			 * @param array $methods The array of xml-rpc methods
+			 */
+			add_filter( 'xmlrpc_methods', function ( $methods ) {
+				unset( $methods['pingback.ping'] );
+				unset( $methods['pingback.extensions.getPingbacks'] );
+
+				return $methods;
+			}, 10, 1 );
+		}
 	}
 
     // ------------------------------------------------------
@@ -160,8 +178,7 @@ final class Optimizer {
 	 *
 	 * @return mixed
 	 */
-	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context )
-	{
+	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
 		$keys = [
 			'deactivate',
 			'delete'
@@ -186,11 +203,11 @@ final class Optimizer {
     // ------------------------------------------------------
 
 	/**
+	 * Header scripts
+	 *
 	 * @return void
 	 */
-	public function header_scripts__hook() : void
-	{
-		// Header scripts
+	public function header_scripts__hook() : void {
 		$html_header = Helper::getCustomPostContent( 'html_header', true );
 		if ( $html_header ) {
 			echo $html_header;
@@ -200,11 +217,11 @@ final class Optimizer {
     // ------------------------------------------------------
 
 	/**
+	 * Body scripts - TOP
+	 *
 	 * @return void
 	 */
-	public function body_scripts_top__hook()
-	{
-		// Body scripts - TOP
+	public function body_scripts_top__hook() {
 		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
 		if ( $html_body_top ) {
 			echo "\n" . $html_body_top;
@@ -214,11 +231,11 @@ final class Optimizer {
     // ------------------------------------------------------
 
 	/**
+	 * Footer scripts
+	 *
 	 * @return void
 	 */
-	public function footer_scripts__hook()
-	{
-		// Footer scripts
+	public function footer_scripts__hook() {
 		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
 		if ( $html_footer ) {
 			echo $html_footer . "\n";
@@ -228,11 +245,11 @@ final class Optimizer {
     // ------------------------------------------------------
 
 	/**
+	 * Body scripts - BOTTOM
+	 *
 	 * @return void
 	 */
-	public function body_scripts_bottom__hook()
-	{
-		// Body scripts - BOTTOM
+	public function body_scripts_bottom__hook() {
 		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
 		if ( $html_body_bottom ) {
 			echo "\n" . $html_body_bottom . "\n";
@@ -244,8 +261,7 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts() {
 		$classes           = [];
 		$styles            = '';
 		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
@@ -271,47 +287,45 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-    public function print_footer_scripts(): void
-    {
-        ?>
-        <script>document.documentElement.classList.remove("no-js");
+	public function print_footer_scripts(): void {
+		?>
+		<script>document.documentElement.classList.remove("no-js");
             if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {
                 document.documentElement.classList.add('is-IE');
             }</script>
-        <?php
+		<?php
 
-        if (file_exists($passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js')) {
-            echo '<script>';
-            include $passive_events;
-            echo '</script>' . "\n";
-        }
+		if ( file_exists( $passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js' ) ) {
+			echo '<script>';
+			include $passive_events;
+			echo '</script>' . "\n";
+		}
 
-        if (file_exists($skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js')) {
-            echo '<script>';
-            include $skip_link;
-            echo '</script>' . "\n";
-        }
+		if ( file_exists( $skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js' ) ) {
+			echo '<script>';
+			include $skip_link;
+			echo '</script>' . "\n";
+		}
 
-        if (file_exists($flex_gap = EHD_PLUGIN_PATH . 'assets/js/plugins/flex-gap.js')) {
-            echo '<script>';
-            include $flex_gap;
-            echo '</script>' . "\n";
-        }
+		if ( file_exists( $flex_gap = EHD_PLUGIN_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
+			echo '<script>';
+			include $flex_gap;
+			echo '</script>' . "\n";
+		}
 
-	    if (file_exists($load_scripts = EHD_PLUGIN_PATH . 'assets/js/plugins/load-scripts.js')) {
-		    echo '<script>';
-		    include $load_scripts;
-		    echo '</script>';
-	    }
-    }
+		if ( file_exists( $load_scripts = EHD_PLUGIN_PATH . 'assets/js/plugins/load-scripts.js' ) ) {
+			echo '<script>';
+			include $load_scripts;
+			echo '</script>';
+		}
+	}
 
     // ------------------------------------------------------
 
 	/**
 	 * @return void
 	 */
-	public function fixed_archive_canonical(): void
-	{
+	public function fixed_archive_canonical(): void {
 		if ( is_archive() ) {
 			echo '<link rel="canonical" href="' . get_pagenum_link() . '" />';
 		}
@@ -326,8 +340,8 @@ final class Optimizer {
 	 *
 	 * @return string
 	 */
-	public function script_loader_tag( string $tag, string $handle, string $src ): string
-	{
+	public function script_loader_tag( string $tag, string $handle, string $src ): string {
+
 		// Adds `async`, `defer` and attribute support for scripts registered or enqueued by the theme.
 		foreach ( [ 'async', 'defer' ] as $attr ) {
 			if ( ! wp_scripts()->get_data( $handle, $attr ) ) {
@@ -359,14 +373,14 @@ final class Optimizer {
 	/** ---------------------------------------- */
 
 	/**
+	 * Add style handles to the array below
+	 *
 	 * @param string $html
 	 * @param string $handle
 	 *
 	 * @return string
 	 */
-	public function style_loader_tag( string $html, string $handle ): string
-	{
-		/** Add style handles to the array below */
+	public function style_loader_tag( string $html, string $handle ): string {
 		$styles = apply_filters( 'ehd_defer_style', [] );
 
 		return Helper::lazyStyleTag( $styles, $html, $handle );
@@ -381,8 +395,7 @@ final class Optimizer {
 	 *
 	 * @return false|mixed|string
 	 */
-	public function remove_version_scripts_styles( $src )
-	{
+	public function remove_version_scripts_styles( $src ) {
 		if ( $src && str_contains( $src, 'ver=' ) ) {
 			$src = remove_query_arg( 'ver', $src );
 		}
@@ -400,8 +413,7 @@ final class Optimizer {
 	 *
 	 * @return mixed|string
 	 */
-	public function post_search_by_title( $search, $wp_query )
-	{
+	public function post_search_by_title( $search, $wp_query ) {
 		global $wpdb;
 
 		if ( empty( $search ) ) {
@@ -440,8 +452,7 @@ final class Optimizer {
 	 *
 	 * @return mixed|string
 	 */
-//	public function posts_title_filter( $where, $wp_query )
-// {
+//	public function posts_title_filter( $where, $wp_query ) {
 //		global $wpdb;
 //
 //		if ( $search_term = $wp_query->get( 'title_filter' ) ) {

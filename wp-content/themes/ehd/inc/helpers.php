@@ -10,11 +10,11 @@
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'dump_query' ) ) {
+if ( ! function_exists( 'q_dump' ) ) {
 	/**
 	 * @return void
 	 */
-	function dump_query() {
+	function q_dump() {
 		global $wpdb;
 		if ( function_exists( 'dump' ) ) {
 			dump( $wpdb->last_query );

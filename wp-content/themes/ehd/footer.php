@@ -6,6 +6,8 @@
  * @package hd
  */
 
+use EHD\Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
 ?>
@@ -19,7 +21,7 @@
         do_action( 'ehd_before_footer' );
 
         ?>
-        <div class="site-footer">
+        <div class="site-footer" <?php echo Helper::microdata( 'footer' ); ?>>
             <?php
 
             /**
@@ -31,6 +33,7 @@
              * ehd_footer hook.
              *
              * @see __construct_footer_widgets - 5
+             * @see __construct_footer - 10
              */
             do_action( 'ehd_footer' );
 

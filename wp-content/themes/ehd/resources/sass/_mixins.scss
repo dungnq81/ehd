@@ -581,12 +581,10 @@
 
 @mixin flex-shrink {
     flex: 0 0 auto;
-    width: auto;
 }
 
 @mixin flex-auto {
     flex: 1 1 0;
-    width: auto;
 }
 
 @mixin hover-color($c1: $color1, $c2: $c1, $text-decoration: false) {

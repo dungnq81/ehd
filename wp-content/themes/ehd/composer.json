@@ -19,8 +19,9 @@
 			"inc/helpers.php",
 			"inc/themes.php",
 			"inc/Plugins/tgmpa/tgmpa-config.php",
-			"structures/header.php",
-			"structures/footer.php"
+
+			"template-structures/header.php",
+			"template-structures/footer.php"
 		]
 	},
 	"require": {

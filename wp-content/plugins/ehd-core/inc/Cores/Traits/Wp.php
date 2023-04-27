@@ -171,7 +171,7 @@ trait Wp
 	    ];
 
 	    if ( true === $return_object ) {
-		    $_return = self::toObject( $_return );
+		    $_return = Helper::toObject( $_return );
 	    }
 
 	    return $_return;
@@ -231,10 +231,9 @@ trait Wp
 	 * @param $new_options
 	 * @param bool $merge_arr
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public static function updateOption( string $option_name, $new_options, bool $merge_arr = true ) : void
-	{
+	public static function updateOption( string $option_name, $new_options, bool $merge_arr = true ) : bool {
 		if ( true === $merge_arr ) {
 			$options = self::getOption( $option_name );
 			if ( is_array( $options ) && is_array( $new_options ) ) {
@@ -246,7 +245,7 @@ trait Wp
 			$updated_options = $new_options;
 		}
 
-		update_site_option( $option_name, $updated_options );
+		return false === is_multisite() ? update_option( $option_name, $updated_options ) : update_site_option( $option_name, $updated_options );
 	}
 
     // -------------------------------------------------------------
@@ -258,7 +257,7 @@ trait Wp
 	 *
 	 * @return false|mixed
 	 */
-	public static function getOption( string $option, $default = false, bool $static_cache = true )
+	public static function getOption( string $option, $default = false, bool $static_cache = false )
 	{
 		static $_is_option_loaded;
 		if ( empty( $_is_option_loaded ) ) {
@@ -268,12 +267,14 @@ trait Wp
 		}
 
 		if ( $option ) {
+			$_value = false === is_multisite() ? get_option( $option, $default ) : get_site_option( $option, $default );
+
 			if ( true === $static_cache ) {
 				if ( ! isset( $_is_option_loaded[0][ strtolower( $option ) ] ) ) {
-					$_is_option_loaded[0][ strtolower( $option ) ] = get_site_option( $option, $default );
+					$_is_option_loaded[0][ strtolower( $option ) ] = $_value;
 				}
 			} else {
-				$_is_option_loaded[0][ strtolower( $option ) ] = get_site_option( $option, $default );
+				$_is_option_loaded[0][ strtolower( $option ) ] = $_value;
 			}
 
 			return $_is_option_loaded[0][ strtolower( $option ) ];
@@ -370,7 +371,7 @@ trait Wp
 
         //...
         if (!is_object($term)) {
-            $term = self::toObject($term);
+            $term = Helper::toObject($term);
         }
 
         //
@@ -384,7 +385,7 @@ trait Wp
         }
 
         if (is_array($orderby)) {
-            $orderby = self::removeEmptyValues($orderby);
+            $orderby = Helper::removeEmptyValues($orderby);
         } else {
             $orderby = ['date' => 'DESC'];
         }
@@ -396,7 +397,7 @@ trait Wp
 
             // constrain to just posts in $strtotime_recent
             $recent = strtotime($strtotime_recent);
-            if (self::isInteger($recent)) {
+            if (Helper::isInteger($recent)) {
                 $_args['date_query'] = [
                     'after' => [
                         'year'  => date('Y', $recent),
@@ -476,7 +477,7 @@ trait Wp
 
             // constrain to just posts in $strtotime_str
 	        $recent = strtotime( $strtotime_str );
-	        if ( self::isInteger( $recent ) ) {
+	        if ( Helper::isInteger( $recent ) ) {
 		        $_args['date_query'] = [
 			        'after' => [
 				        'year'  => date( 'Y', $recent ),
@@ -586,9 +587,9 @@ trait Wp
              */
 	        $logo = wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr );
 	        if ( $class ) {
-		        $html = '<div class="' . $class . '"><a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a></div>';
+		        $html = '<div class="' . $class . '"><a class="after-overlay" title="' . $image_alt . '" href="' . Helper::home() . '">' . $logo . '</a></div>';
 	        } else {
-		        $html = '<a class="after-overlay" title="' . $image_alt . '" href="' . self::home() . '">' . $logo . '</a>';
+		        $html = '<a class="after-overlay" title="' . $image_alt . '" href="' . Helper::home() . '">' . $logo . '</a>';
 	        }
         }
 
@@ -604,7 +605,7 @@ trait Wp
      */
 	public static function loopExcerpt( $post = null, string $class = 'excerpt' ): ?string {
 		$excerpt = get_the_excerpt( $post );
-		if ( ! self::stripSpace( $excerpt ) ) {
+		if ( ! Helper::stripSpace( $excerpt ) ) {
 			return null;
 		}
 
@@ -626,7 +627,7 @@ trait Wp
      */
     public static function postExcerpt($post = null, string $class = 'excerpt', bool $glyph_icon = false): ?string {
         $post = get_post($post);
-        if (!self::stripSpace($post->post_excerpt)) {
+        if (!Helper::stripSpace($post->post_excerpt)) {
             return null;
         }
 
@@ -654,7 +655,7 @@ trait Wp
      */
     public static function termExcerpt($term = 0, string $class = 'excerpt'): ?string {
         $description = term_description($term);
-        if (!self::stripSpace($description)) {
+        if (!Helper::stripSpace($description)) {
             return null;
         }
 
@@ -920,7 +921,7 @@ trait Wp
         if (!is_front_page()) {
 
             echo '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">';
-            echo '<li><a class="home" href="' . self::home() . '">' . __('Home', EHD_PLUGIN_TEXT_DOMAIN) . '</a></li>';
+            echo '<li><a class="home" href="' . Helper::home() . '">' . __('Home', EHD_PLUGIN_TEXT_DOMAIN) . '</a></li>';
 
             //...
 	        if ( class_exists( '\WooCommerce' ) && @is_shop() ) {
@@ -960,7 +961,7 @@ trait Wp
                     $post_type = get_post_type_object(get_post_type());
                     $slug = $post_type->rewrite;
                     if (!is_bool($slug)) {
-                        echo '<li><a href="' . self::home() . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a></span>';
+                        echo '<li><a href="' . Helper::home() . $slug['slug'] . '/">' . $post_type->labels->singular_name . '</a></span>';
                     }
                 } else {
                     $term = self::primaryTerm($post);
@@ -1192,7 +1193,7 @@ trait Wp
 		];
 
 		$post    = null;
-		$post_id = Helper::getThemeMod( $post_type . '_option_id' );
+		$post_id = self::getThemeMod( $post_type . '_option_id' );
 
 		if ( $post_id > 0 && get_post( $post_id ) ) {
 			$post = get_post( $post_id );
@@ -1324,7 +1325,7 @@ trait Wp
 		$post_type = $post_type ?: 'post';
 		$option = $option ?: 'aspect_ratio__options';
 
-		$aspect_ratio_options = Helper::getOption( $option );
+		$aspect_ratio_options = self::getOption( $option );
 		$width  = $aspect_ratio_options[ 'ar-' . $post_type . '-width' ] ?? '';
 		$height = $aspect_ratio_options[ 'ar-' . $post_type . '-height' ] ?? '';
 
@@ -1340,7 +1341,7 @@ trait Wp
 	 * @return object
 	 */
 	public static function getAspectRatioClass(  string $post_type = '', string $option = '' ): object {
-		$ratio = Helper::getAspectRatioOption( $post_type, $option );
+		$ratio = self::getAspectRatioOption( $post_type, $option );
 
 		$ratio_x = $ratio[0] ?? '';
 		$ratio_y = $ratio[1] ?? '';
@@ -1353,8 +1354,8 @@ trait Wp
 			$ar_default_list = apply_filters( 'ehd_aspect_ratio_default_list', [] );
 
 			if ( is_array( $ar_default_list ) && ! in_array( $ratio_x . '-' . $ratio_y, $ar_default_list ) ) {
-
 				$css = new CSS();
+
 				$css->set_selector( '.' . $ratio_class );
 				$css->add_property( 'height', 0 );
 
@@ -1395,7 +1396,7 @@ trait Wp
 		}
 
 		$option_name = $option_name ?: 'smtp__options';
-		$smtp_options = Helper::getOption( $option_name );
+		$smtp_options = self::getOption( $option_name );
 
 		$phpmailer->isSMTP();
 		$phpmailer->Host = $smtp_options['smtp_host'];
@@ -1511,6 +1512,10 @@ trait Wp
 			$data = 'itemprop="text"';
 		}
 
+		if ( 'url' === $context ) {
+			$data = 'itemprop="url"';
+		}
+
 		return apply_filters( "ehd_{$context}_microdata", $data );
 	}
 
@@ -1525,9 +1530,6 @@ trait Wp
 	 * @param $left
 	 *
 	 * @return string
-	 *
-	 * @author GeneratePress
-	 * Modified by HD Team
 	 */
 	public static function paddingCss( $top, $right, $bottom, $left ): string
 	{
