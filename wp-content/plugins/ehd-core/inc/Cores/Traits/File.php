@@ -6,19 +6,119 @@ namespace EHD\Cores\Traits;
 
 trait File
 {
+	/**
+	 * @return mixed
+	 */
+	public static function wpFileSystem() {
+		global $wp_filesystem;
+
+		// Initialize the WP filesystem, no more using 'file-put-contents' function.
+		// Front-end only. In the back-end; its already included
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		return $wp_filesystem;
+	}
+
+	/**
+	 * Checks if the current request is a WP REST API request.
+	 *
+	 * Case #1: After WP_REST_Request initialisation
+	 * Case #2: Support "plain" permalink settings
+	 * Case #3: URL Path begins with wp-json/ (your REST prefix). Also supports WP installations in subfolders
+	 *
+	 * @return bool True if it's rest request, false otherwise.
+	 */
+	public static function isRest(): bool {
+		$prefix = rest_get_url_prefix();
+		if (
+			defined( 'REST_REQUEST' ) && REST_REQUEST ||
+			(
+				isset( $_GET['rest_route'] ) &&
+				0 === @strpos( trim( $_GET['rest_route'], '\\/' ), $prefix, 0 )
+			)
+		) {
+			return true;
+		}
+
+		$rest_url    = wp_parse_url( site_url( $prefix ) );
+		$current_url = wp_parse_url( add_query_arg( [] ) );
+
+		return 0 === @strpos( $current_url['path'], $rest_url['path'], 0 );
+	}
+
+	/**
+	 * @param $path
+	 *
+	 * @return true
+	 */
+	public static function fileCreate( $path ): bool {
+		// Setup wp_filesystem.
+		$wp_filesystem = self::wpFileSystem();
+
+		// Bail if the file already exists.
+		if ( $wp_filesystem->exists( $path ) ) {
+			return true;
+		}
+
+		// Create the file.
+		return $wp_filesystem->touch( $path );
+	}
+
+	/**
+	 * Reads entire file into a string
+	 *
+	 * @param string $file Name of the file to read.
+	 * @return string|false Read data on success, false on failure.
+	 */
+	public static function fileRead( string $file ) {
+		// Setup wp_filesystem.
+		$wp_filesystem = self::wpFileSystem();
+
+		// Bail if we are unable to create the file.
+		if ( false === self::fileCreate( $file ) ) {
+			return null;
+		}
+
+		// Read file
+		return $wp_filesystem->get_contents( $file );
+	}
+
+	/**
+	 * Update a file
+	 *
+	 * @param string $path    Full path to the file
+	 * @param string $content File content
+	 */
+	public static function fileUpdate( string $path, string $content ) {
+		// Setup wp_filesystem.
+		$wp_filesystem = self::wpFileSystem();
+
+		// Bail if we are unable to create the file.
+		if ( false === self::fileCreate( $path ) ) {
+			return;
+		}
+
+		// Add the new content into the file.
+		$wp_filesystem->put_contents( $path, json_encode( $content ) );
+	}
+
     /**
      * @param      $filename
      * @param bool $include_dot
      *
      * @return string
      */
-    public static function fileExtension($filename, bool $include_dot = false): string {
-        $dot = '';
-        if ($include_dot === true) {
-            $dot = '.';
-        }
-        return $dot . strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-    }
+	public static function fileExtension( $filename, bool $include_dot = false ): string {
+		$dot = '';
+		if ( $include_dot === true ) {
+			$dot = '.';
+		}
+
+		return $dot . strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+	}
 
     /**
      * @param      $filename
@@ -26,98 +126,58 @@ trait File
      *
      * @return string
      */
-    public static function fileName($filename, bool $include_ext = false): string {
-        return $include_ext ? pathinfo(
-                $filename,
-                PATHINFO_FILENAME
-            ) . self::fileExtension($filename) : pathinfo($filename, PATHINFO_FILENAME);
-    }
-
-    /**
-     * @param      $file
-     * @param bool $convert_to_array
-     *
-     * @return false|mixed|string
-     */
-    public static function Read($file, bool $convert_to_array = true) {
-        $file = @file_get_contents($file);
-        if (!empty($file)) {
-            if ($convert_to_array) {
-                return json_decode($file, true);
-            }
-            return $file;
-        }
-        return false;
-    }
-
-    /**
-     * @param      $path
-     * @param      $data
-     * @param bool $json
-     *
-     * @return bool
-     */
-    public static function Save($path, $data, bool $json = true): bool {
-        try {
-            if ($json) {
-                $data = self::jsonEncodePrettify($data);
-            }
-            @file_put_contents($path, $data);
-            return true;
-        } catch (\Exception $ex) {
-            return false;
-        }
-    }
-
-    /**
-     * @param $data
-     *
-     * @return false|string
-     */
-    public static function jsonEncodePrettify($data)
-    {
-        return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    }
+	public static function fileName( $filename, bool $include_ext = false ): string {
+		return $include_ext ? pathinfo(
+			                      $filename,
+			                      PATHINFO_FILENAME
+		                      ) . self::fileExtension( $filename ) : pathinfo( $filename, PATHINFO_FILENAME );
+	}
 
     /**
      * @param $dir
-     * @param $hidden
+     * @param bool $hidden
      * @param $files
+     *
      * @return array
      */
-    public static function arrayDir($dir, $hidden = false, $files = true): array {
-        $result = [];
-        $cdir = scandir($dir);
+	public static function arrayDir( $dir, bool $hidden = false, $files = true ): array {
+		$result = [];
+		$dirs   = scandir( $dir );
 
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, ['.', '..'])) {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-                    $result[$value] = self::arrayDir($dir . DIRECTORY_SEPARATOR . $value, $hidden, $files);
-                } else {
-                    if ($files) {
-                        if (!str_starts_with($value, '.')) {
+		foreach ( $dirs as $key => $value ) {
+			if ( ! in_array( $value, [ '.', '..' ] ) ) {
+				if ( is_dir( $dir . DIRECTORY_SEPARATOR . $value ) ) {
+					$result[ $value ] = self::arrayDir( $dir . DIRECTORY_SEPARATOR . $value, $hidden, $files );
+				}
+				elseif ( $files ) {
+					// hidden file
+					if ( ! str_starts_with( $value, '.' ) ) {
+						$result[] = $value;
+					}
+				}
+			}
+		}
 
-                            // hidden file
-                            $result[] = $value;
-                        }
-                    }
-                }
-            }
-        }
+		return $result;
+	}
 
-        return $result;
-    }
+	/**
+	 * @param $dirname
+	 *
+	 * @return bool
+	 */
+	public static function isEmptyDir( $dirname ): bool {
+		if ( ! is_dir( $dirname ) ) {
+			return false;
+		}
 
-    public static function isEmptyDir($dirname): bool {
-        if (!is_dir($dirname)) {
-            return false;
-        }
-        foreach (scandir($dirname) as $file) {
-            if (!in_array($file, ['.', '..', '.svn', '.git'])) {
-                return false;
-            }
-        }
+		$dirs = scandir( $dirname );
+		foreach ( $dirs as $file ) {
+			if ( ! in_array( $file, [ '.', '..', '.svn', '.git' ] ) ) {
+				return false;
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

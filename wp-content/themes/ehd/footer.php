@@ -11,8 +11,8 @@ use EHD\Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 ?>
-            </div><!-- // .site-content -->
-        </div><!-- // .site-page -->
+            </div><!-- .site-content -->
+        </div><!-- .site-page -->
         <?php
 
         /**
@@ -52,7 +52,7 @@ use EHD\Cores\Helper;
         do_action( 'ehd_after_footer' );
 
         ?>
-    </div><!-- // .site-outer -->
+    </div><!-- .site-outer -->
 
     <?php wp_footer(); ?>
 

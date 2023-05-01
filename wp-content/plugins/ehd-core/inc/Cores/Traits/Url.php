@@ -2,10 +2,17 @@
 
 namespace EHD\Cores\Traits;
 
+use EHD\Cores\Helper;
+
 \defined('ABSPATH') || die;
 
 trait Url
 {
+	/**
+	 * @param $url
+	 *
+	 * @return string
+	 */
     public static function urlToPath($url): string {
         return substr(get_home_path(), 0, -1) . wp_make_link_relative($url);
     }
@@ -27,9 +34,9 @@ trait Url
      *
      * @return string
      */
-    public static function home(string $path = ''): string {
-        return trailingslashit(network_home_url($path));
-    }
+	public static function home( string $path = '' ): string {
+		return trailingslashit( network_home_url( $path ) );
+	}
 
     /**
      * @param boolean $query_vars

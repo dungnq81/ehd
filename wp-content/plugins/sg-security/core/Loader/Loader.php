@@ -548,7 +548,7 @@ class Loader {
 	 */
 	public function add_block_service_hooks() {
 		// Block user by ip.
-		add_action( 'init', array( $this->block_service, 'block_user_by_ip' ) );
+//		add_action( 'init', array( $this->block_service, 'block_user_by_ip' ) );
 	}
 
 	/**

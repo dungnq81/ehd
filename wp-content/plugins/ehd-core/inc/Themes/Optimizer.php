@@ -224,7 +224,7 @@ final class Optimizer {
 	public function body_scripts_top__hook() {
 		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
 		if ( $html_body_top ) {
-			echo "\n" . $html_body_top;
+			echo $html_body_top;
 		}
 	}
 
@@ -238,7 +238,7 @@ final class Optimizer {
 	public function footer_scripts__hook() {
 		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
 		if ( $html_footer ) {
-			echo $html_footer . "\n";
+			echo $html_footer;
 		}
 	}
 
@@ -252,7 +252,7 @@ final class Optimizer {
 	public function body_scripts_bottom__hook() {
 		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
 		if ( $html_body_bottom ) {
-			echo "\n" . $html_body_bottom . "\n";
+			echo $html_body_bottom;
 		}
 	}
 
@@ -298,19 +298,19 @@ final class Optimizer {
 		if ( file_exists( $passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js' ) ) {
 			echo '<script>';
 			include $passive_events;
-			echo '</script>' . "\n";
+			echo '</script>';
 		}
 
 		if ( file_exists( $skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js' ) ) {
 			echo '<script>';
 			include $skip_link;
-			echo '</script>' . "\n";
+			echo '</script>';
 		}
 
 		if ( file_exists( $flex_gap = EHD_PLUGIN_PATH . 'assets/js/plugins/flex-gap.js' ) ) {
 			echo '<script>';
 			include $flex_gap;
-			echo '</script>' . "\n";
+			echo '</script>';
 		}
 
 		if ( file_exists( $load_scripts = EHD_PLUGIN_PATH . 'assets/js/plugins/load-scripts.js' ) ) {

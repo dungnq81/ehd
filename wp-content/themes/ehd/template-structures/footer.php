@@ -54,20 +54,48 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 	 */
 	function __construct_footer_widgets() {
 
-		$row = (int) Helper::getThemeMod( 'footer_row_setting' );
+		$rows = (int) Helper::getThemeMod( 'footer_row_setting' );
 		$regions = (int) Helper::getThemeMod( 'footer_col_setting' );
 
 		// If no footer widgets exist, we don't need to continue
-		if ( 1  > $row || 1 > $regions) {
+		if ( 1  > $rows || 1 > $regions) {
 			return;
 		}
 
 		?>
 		<div id="footer-widgets" class="footer-widgets">
-			<div class="inside-footer-widgets">
+			<?php
+			for ( $row = 1; $row <= $rows; $row ++ ) :
 
+				// Defines the number of active columns in this footer row.
+				for ( $region = $regions; 0 < $region; $region -- ) {
+					if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $region + $regions * ( $row - 1 ) ) ) ) {
+						$columns = $region;
+						break;
+					}
+				}
+
+				if ( isset( $columns ) ) :
+			?>
+			<div class="inside-footer-widgets footer-rows footer-row-<?php echo $row; ?>">
+				<div class="grid-x">
+					<?php
+					for ( $column = 1; $column <= $columns; $column ++ ) :
+						$footer_n = $column + $regions * ( $row - 1 );
+						if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) ) ) :
+
+							echo sprintf( '<div class="cell footer-cell cell-%1$s">', esc_attr( $column ) );
+							dynamic_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) );
+							echo "</div>";
+
+						endif;
+					endfor;
+
+					?>
+				</div>
 			</div>
-		</div>
+			<?php endif; endfor; ?>
+		</div><!-- #footer-widgets-->
 	<?php
 	}
 }

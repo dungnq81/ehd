@@ -4,7 +4,7 @@ Tags: security, firewall, malware scanner, web application firewall, two factor 
 Requires at least: 4.7
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 

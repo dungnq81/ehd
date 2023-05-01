@@ -2,6 +2,8 @@
 
 namespace EHD\Cores\Traits;
 
+use Vectorface\Whip\Whip;
+
 \defined( 'ABSPATH' ) || die;
 
 trait Base {
@@ -165,20 +167,12 @@ trait Base {
 	/**
 	 * @return string
 	 */
-	public static function getClientIp(): string {
-		$server_ip_keys = [
-			'HTTP_CLIENT_IP',
-			'HTTP_X_FORWARDED_FOR',
-			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR'
-		];
-		foreach ( $server_ip_keys as $key ) {
-			if ( isset( $_SERVER[ $key ] ) && filter_var( $_SERVER[ $key ], \FILTER_VALIDATE_IP ) ) {
-				return sanitize_text_field( $_SERVER[ $key ] );
-			}
+	public static function getIpAddress(): string {
+		$whip = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
+		$clientAddress = $whip->getValidIpAddress();
+
+		if ( false !== $clientAddress ) {
+			return $clientAddress;
 		}
 
 		// Fallback local ip.

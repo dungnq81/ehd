@@ -312,7 +312,7 @@ final class Options {
 	                    <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
 	                    <li><?php echo sprintf('<span>User agent:</span> %s', $agent); ?></li>
 	                    <?php endif; ?>
-                        <li><?php echo sprintf('<span>IP:</span> %s', Helper::getClientIp() ); ?></li>
+                        <li><?php echo sprintf('<span>IP:</span> %s', Helper::getIpAddress() ); ?></li>
                     </ul>
                 </div>
             </div>
