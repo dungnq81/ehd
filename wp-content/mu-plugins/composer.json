@@ -13,7 +13,6 @@
 	},
 	"require": {
 		"php": ">=7.4",
-		"roots/wp-password-bcrypt": "^1.1.0",
-		"symfony/var-dumper": "^v5.4.22"
+		"roots/wp-password-bcrypt": "^1.1.0"
 	}
 }

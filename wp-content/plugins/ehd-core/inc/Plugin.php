@@ -7,6 +7,7 @@ use EHD\Cores\Shortcode;
 
 use EHD\Themes\Admin;
 use EHD\Themes\Customizer;
+use EHD\Themes\Login;
 use EHD\Themes\Optimizer;
 use EHD\Themes\Options;
 
@@ -155,10 +156,10 @@ final class Plugin {
 		wp_register_script( 'ehd-core', EHD_PLUGIN_URL . 'assets/js/ehd.js', [ "jquery" ], EHD_PLUGIN_VERSION, true );
 		wp_script_add_data( 'ehd-core', 'defer', true );
 
-		/** dequeue classic theme styles */
+		/** Dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
 
-		/** customize */
+		/** Customize */
 		$block_editor_options = Helper::getOption( 'block_editor__options' );
 		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
 
@@ -177,6 +178,7 @@ final class Plugin {
 			( new Admin() );
 		}
 
+		( new Login() );
 		( new Customizer() );
 		( new Optimizer() );
 		( new Options() );

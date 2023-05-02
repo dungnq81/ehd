@@ -27,13 +27,13 @@ if ( ! function_exists( '__wp_head' ) ) {
 
 		// Add a pingback url auto-discovery header for singularly identifiable articles.
 		if ( is_singular() && pings_open() ) {
-			printf( '<link rel="pingback" href="%s">' . "\n", esc_url( get_bloginfo( 'pingback_url' ) ) );
+			printf( '<link rel="pingback" href="%s" />', esc_url( get_bloginfo( 'pingback_url' ) ) );
 		}
 
 		// Theme color
 		$theme_color = Helper::getThemeMod( 'theme_color_setting' );
 		if ( $theme_color ) {
-			echo '<meta name="theme-color" content="' . $theme_color . '" />' . "\n";
+			echo '<meta name="theme-color" content="' . $theme_color . '" />';
 		}
 	}
 }
@@ -51,8 +51,6 @@ if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
 	 * @return void
 	 */
 	function __ehd_skip_to_content_link(): void {
-
-		echo "\n";
 		printf(
 			'<a class="screen-reader-text skip-link" href="#content" title="%1$s">%2$s</a>',
 			esc_attr__( 'Skip to content', EHD_TEXT_DOMAIN ),

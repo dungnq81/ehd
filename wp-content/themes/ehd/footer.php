@@ -21,7 +21,7 @@ use EHD\Cores\Helper;
         do_action( 'ehd_before_footer' );
 
         ?>
-        <div class="site-footer" <?php echo Helper::microdata( 'footer' ); ?>>
+        <div class="site-footer">
             <?php
 
             /**

@@ -19,22 +19,10 @@ use WP_Customize_Manager;
 final class Customizer {
 	public function __construct()
 	{
-		// Theme Customizer settings and controls.
-		add_action( 'customize_register', [ &$this, 'customize_register' ], 29 );
-
-		//...
-		add_action( 'login_enqueue_scripts', [ &$this, 'login_enqueue_script' ], 31 );
 		add_action( 'enqueue_block_editor_assets', [ &$this, 'enqueue_block_editor_assets' ] );
 
-		// Changing the alt text on the logo to show your site name
-		add_filter( 'login_headertext', function () {
-			return get_bloginfo( 'name' );
-		} );
-
-		// Changing the logo link from wordpress.org to your site
-		add_filter( 'login_headerurl', function () {
-			return Helper::home();
-		} );
+		// Theme Customizer settings and controls.
+		add_action( 'customize_register', [ &$this, 'customize_register' ], 29 );
 	}
 
 	/**
@@ -294,38 +282,6 @@ final class Customizer {
 				'description' => __( 'The menu list will be hidden', EHD_PLUGIN_TEXT_DOMAIN ),
 			]
 		);
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * @retun void
-	 */
-	public function login_enqueue_script(): void
-	{
-		wp_enqueue_style( "login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
-		wp_enqueue_script( "login", EHD_PLUGIN_URL . "assets/js/login.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
-
-		// custom script/style
-		$logo    = EHD_PLUGIN_URL . "assets/img/logo.png";
-		$logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
-
-		$css = new CSS();
-		if ( $logo_bg ) {
-			$css->set_selector( 'body.login' );
-			$css->add_property( 'background-image', 'url(' . $logo_bg . ')' );
-		}
-
-		$css->set_selector( 'body.login #login h1 a' );
-		if ( $logo ) {
-			$css->add_property( 'background-image', 'url(' . $logo . ')' );
-		} else {
-			$css->add_property( 'background-image', 'unset' );
-		}
-
-		if ( $css->css_output() ) {
-			wp_add_inline_style( 'login-style', $css->css_output() );
-		}
 	}
 
 	/** ---------------------------------------- */

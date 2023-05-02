@@ -13,7 +13,7 @@ use EHD\Cores\Helper;
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
 <head>
-    <meta charset="<?php bloginfo( 'charset' ); ?>">
+    <meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?> <?php echo Helper::microdata( 'body' ); ?>>
@@ -22,7 +22,7 @@ use EHD\Cores\Helper;
     /**
      * Triggered after the opening body tag.
      *
-     * @see body_scripts_top__hook - 99
+     * @see \EHD\Themes\Optimizer::body_scripts_top__hook - 99
      */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 

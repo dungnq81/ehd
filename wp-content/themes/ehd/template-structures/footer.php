@@ -53,7 +53,6 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 	 * @return void
 	 */
 	function __construct_footer_widgets() {
-
 		$rows = (int) Helper::getThemeMod( 'footer_row_setting' );
 		$regions = (int) Helper::getThemeMod( 'footer_col_setting' );
 
@@ -109,15 +108,68 @@ if ( ! function_exists( '__construct_footer' ) ) {
 	 * @return void
 	 */
 	function __construct_footer() {
-
 		?>
-		<footer class="site-info" role="contentinfo">
-			<div class="inside-site-info">
+		<footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
+			<div class="inside-footer-info">
 				<?php
-
+				/**
+				 * ehd_before_credit hook
+				 *
+				 * @see __ehd_before_credits - 15
+				 */
+				do_action( 'ehd_before_credits' );
 				?>
+				<div class="footer-copyright">
+					<?php
+					/**
+					 * ehd_credits hook
+					 *
+					 * @see __ehd_credits - 10
+					 */
+					do_action( 'ehd_credits' );
+					?>
+				</div>
 			</div>
 		</footer>
 	<?php
+	}
+}
+
+if ( ! function_exists( '__ehd_before_credits' ) ) {
+	add_action( 'ehd_before_credits', '__ehd_before_credits', 15 );
+	/**
+	 * @return void
+	 */
+	function __ehd_before_credits() {
+		if ( ! is_active_sidebar( 'footer-credits' ) ) {
+			return;
+		}
+		?>
+		<div class="footer-credits">
+			<?php dynamic_sidebar( 'footer-credits' ); ?>
+		</div>
+		<?php
+	}
+}
+
+if ( ! function_exists( '__ehd_credits' ) ) {
+	add_action( 'ehd_credits', '__ehd_credits', 10 );
+	/**
+	 * Add the copyright to the footer
+	 *
+	 * @return void
+	 */
+	function __ehd_credits() {
+		$copyright = sprintf(
+			'<span class="copyright">&copy; %1$s %2$s</span><span class="hd">, %3$s <a class="_blank" title="%6$s" href="%4$s"%5$s>%6$s</a></span>',
+			date( 'Y' ), // phpcs:ignore
+			get_bloginfo( 'name' ),
+			__( 'design by', EHD_TEXT_DOMAIN ),
+			esc_url( 'https://webhd.vn' ),
+			Helper::microdata( 'url' ),
+			__( 'HD Agency', EHD_TEXT_DOMAIN )
+		);
+
+		echo apply_filters( 'ehd_copyright', $copyright ); // phpcs:ignore
 	}
 }

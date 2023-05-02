@@ -22,8 +22,8 @@ final class Fonts {
      */
     public function pre_connect() : void
     {
-        echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
-        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+        echo '<link rel="preconnect" href="https://fonts.googleapis.com" />';
+        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />';
     }
 
     /** ---------------------------------------- */

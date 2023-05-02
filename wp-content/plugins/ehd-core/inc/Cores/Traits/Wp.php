@@ -410,7 +410,7 @@ trait Wp
 	    }
 
 	    // woocommerce_hide_out_of_stock_items
-	    if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items' ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
+	    if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
 
 		    $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
@@ -490,7 +490,7 @@ trait Wp
 	    }
 
 	    // woocommerce_hide_out_of_stock_items
-	    if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items' ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
+	    if ( 'yes' === self::getOption( 'woocommerce_hide_out_of_stock_items', false, true ) && class_exists( '\WooCommerce' ) && 'product' == $post_type ) {
 
 		    $product_visibility_term_ids = wc_get_product_visibility_term_ids();
 
