@@ -50,7 +50,7 @@ class Install_1_3_7 extends Install {
 
 		// Check if file exists.
 		if ( ! $wp_filesystem->is_file( $this->sg2fa->encryption_key_file ) ) {
-			return update_option( 'sgs_install_1_3_7', 1 );
+			return true;
 		}
 
 		// Get the file content.
@@ -67,9 +67,6 @@ class Install_1_3_7 extends Install {
 
 		// Encrypt the secrets.
 		$this->encryption_all_users_secrets();
-
-		// Update install service option.
-		update_option( 'sgs_install_1_3_7', 1 );
 	}
 
 	/**

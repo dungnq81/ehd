@@ -8,13 +8,11 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"EHD\\": "inc",
-			"EHD\\Cores\\": "inc/Cores",
-			"EHD\\Libs\\": "inc/Libs",
-			"EHD\\Plugins\\": "inc/Plugins",
-			"EHD\\Themes\\": "inc/Themes",
-			"EHD\\Walkers\\": "inc/Walkers",
-			"EHD\\Widgets\\": "inc/Widgets"
+			"EHD_Cores\\": "src/Cores",
+			"EHD_Plugins\\": "src/Plugins",
+			"EHD_Themes\\": "src/Themes",
+			"EHD_Walkers\\": "src/Walkers",
+			"EHD_Widgets\\": "src/Widgets"
 		},
 		"exclude-from-classmap": [],
 		"files": []
@@ -25,6 +23,8 @@
 		"guzzlehttp/guzzle": "^7.5.1",
 		"matthiasmullie/minify": "^1.3.70",
 		"vectorface/whip": "^v0.4.0",
-		"deliciousbrains/wp-background-processing": "^1.1.0"
+		"deliciousbrains/wp-background-processing": "^1.1.0",
+		"mobiledetect/mobiledetectlib": "^3.74.0",
+		"ehd/ehd-css": "^v1.0.0"
 	}
 }

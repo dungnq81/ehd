@@ -4,7 +4,7 @@ Tags: security, firewall, malware scanner, web application firewall, two factor 
 Requires at least: 4.7
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 1.4.3
+Stable tag: 1.4.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -228,6 +228,22 @@ In version 1.0.2 we've added full WP-CLI support for all plugin options and func
 1. Go to Plugins -> Installed Plugins and click the 'Activate' link under the WordPress SiteGround Security listing
 
 == Changelog ==
+
+= Version 1.4.5 =
+Release Date: May 4th, 2023
+
+* Improved log cleanup
+
+= Version 1.4.4 =
+Release Date: May 3rd, 2023
+
+* Improved Visitors DB table indexing
+* Block service restored
+
+= Version 1.4.3 =
+Release Date: Apr 27th, 2023
+
+* Block service temporally disabled
 
 = Version 1.4.2 =
 Release Date: Apr 27th, 2023

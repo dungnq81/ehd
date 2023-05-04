@@ -41,5 +41,6 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-// require_once EHD_PLUGIN_PATH . 'inc/Plugin.php';
+require_once EHD_PLUGIN_PATH . 'src/Plugin.php';
+
 ( new Plugin() );

@@ -46,8 +46,5 @@ class Install_1_4_2 extends Install {
 
 		// Index the tables.
 		$this->activity_log_helper->add_log_visitor_indexes();
-
-		// Update install service option.
-		update_option( 'sgs_install_1_4_2', 1 );
 	}
 }

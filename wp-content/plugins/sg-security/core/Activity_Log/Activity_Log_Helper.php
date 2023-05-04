@@ -93,8 +93,8 @@ class Activity_Log_Helper {
 					  `block` int(11) NOT NULL DEFAULT 0,
 					  `blocked_on` int(11) NOT NULL DEFAULT 0,
 					  PRIMARY KEY (`id`),
-					  INDEX `user_id_index` (`user_id`),
-					  INDEX `ip_index` (`ip`)
+					  INDEX `ip_index` (`ip`),
+					  INDEX `block_user_index` (`block`, `user_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;";
 		dbDelta( $visitors_sql );
 	}
@@ -277,7 +277,6 @@ class Activity_Log_Helper {
 		// Check if the indexes are already set.
 		$log_event_index = $wpdb->get_var( "SHOW INDEX FROM `{$wpdb->prefix}sgs_log_events` WHERE `Key_name` = 'log_event_index'" );
 		$ip_index_exists = $wpdb->get_var( "SHOW INDEX FROM `{$wpdb->prefix}sgs_log_visitors` WHERE `Key_name` = 'ip_index'" );
-		$user_id_index_exists = $wpdb->get_var( "SHOW INDEX FROM `{$wpdb->prefix}sgs_log_visitors` WHERE `Key_name` = 'user_id_index'" );
 
 		// Add log event index if not set.
 		if ( is_null( $log_event_index ) ) {
@@ -288,11 +287,32 @@ class Activity_Log_Helper {
 		if ( is_null( $ip_index_exists ) ) {
 			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}sgs_log_visitors` ADD INDEX `ip_index` (`ip`)" );
 		}
-
-		// Add the user id index if not set.
-		if ( is_null( $user_id_index_exists ) ) {
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}sgs_log_visitors` ADD INDEX `user_id_index` (`user_id`)" );
-		}
 	}
 
+	/**
+	 * Adjust visitors table indexes.
+	 *
+	 * @since 1.4.4
+	 */
+	public function adjust_visitors_indexes() {
+		global $wpdb;
+
+		// Bail if table does not exist.
+		if ( ! Helper::table_exists( $wpdb->sgs_visitors ) ) {
+			return;
+		}
+
+		$user_id_index_exists = $wpdb->get_var( "SHOW INDEX FROM `{$wpdb->prefix}sgs_log_visitors` WHERE `Key_name` = 'user_id_index'" );
+		$block_user_index_exists = $wpdb->get_var( "SHOW INDEX FROM `{$wpdb->prefix}sgs_log_visitors` WHERE `Key_name` = 'block_user_index'" );
+
+		// Drop the user id index.
+		if ( ! is_null( $user_id_index_exists ) ) {
+			$wpdb->query( "DROP INDEX `user_id_index` ON `{$wpdb->prefix}sgs_log_visitors`" );
+		}
+
+		// Add the Block/User complex index if not set.
+		if ( is_null( $block_user_index_exists ) ) {
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}sgs_log_visitors` ADD INDEX `block_user_index` (`block`, `user_id`)" );
+		}
+	}
 }

@@ -187,24 +187,8 @@ class Activity_Log {
 	 * @since  1.0.0
 	 */
 	public function delete_old_activity_logs() {
-		global $wpdb;
-
-		// Bail if table doesn't exist.
-		if ( ! Helper::table_exists( $wpdb->sgs_log ) ) {
-			return false;
-		}
-
-		// Get the activity log lifetime.
-		$log_lifetime = self::get_activity_log_lifetime();
-
-		$wpdb->query(
-			$wpdb->prepare(
-				'DELETE FROM `' . $wpdb->sgs_log . '`
-					WHERE `ts` < %s
-				;',
-				time() - $log_lifetime * DAY_IN_SECONDS
-			)
-		);
+		$this->delete_old_events_logs();
+		$this->delete_old_visitors_logs();
 	}
 
 	/**
@@ -251,5 +235,62 @@ class Activity_Log {
 		}
 
 		return $log_lifetime;
+	}
+
+	/**
+	 * Delete old logs from events table.
+	 *
+	 * @since 1.4.4
+	 *
+	 * @return  int|bool False if tables do not exists, number of rows deleted.
+	 */
+	public function delete_old_events_logs() {
+		global $wpdb;
+
+		// Bail if table doesn't exist.
+		if ( ! Helper::table_exists( $wpdb->sgs_log ) ) {
+			return false;
+		}
+
+		// Get the activity log lifetime.
+		$log_lifetime = self::get_activity_log_lifetime();
+
+		$wpdb->query(
+			$wpdb->prepare(
+				'DELETE FROM `' . $wpdb->sgs_log . '`
+					WHERE `ts` < %s
+				;',
+				time() - $log_lifetime * DAY_IN_SECONDS
+			)
+		);
+	}
+
+	/**
+	 * Delete old logs from visitors table.
+	 *
+	 * @since 1.4.4
+	 *
+	 * @return  int|bool False if tables do not exists, number of rows deleted.
+	 */
+	public function delete_old_visitors_logs() {
+		global $wpdb;
+
+		// Bail if table doesn't exist.
+		if (
+			! Helper::table_exists( $wpdb->sgs_log ) ||
+			! Helper::table_exists( $wpdb->sgs_visitors )
+		) {
+			return false;
+		}
+
+		$wpdb->query(
+			'DELETE `' . $wpdb->sgs_visitors . '`
+				FROM `' . $wpdb->sgs_visitors . '`
+				LEFT JOIN `' . $wpdb->sgs_log . '` ON `' . $wpdb->sgs_visitors . '`.id = `' . $wpdb->sgs_log . '`.visitor_id
+				WHERE `' . $wpdb->sgs_visitors . '`.user_id = 0
+				AND `' . $wpdb->sgs_visitors . '`.block = 0
+				AND `' . $wpdb->sgs_log . '`.visitor_id IS NULL
+			;'
+		);
 	}
 }

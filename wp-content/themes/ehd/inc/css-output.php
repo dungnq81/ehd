@@ -7,7 +7,7 @@
  */
 
 use EHD\Cores\Helper;
-use EHD\Libs\CSS;
+use EHD_CSS\CSS;
 
 \defined( 'ABSPATH' ) || die;
 

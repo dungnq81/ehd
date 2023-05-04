@@ -225,7 +225,7 @@ class Loader {
 		add_action( 'upgrader_process_complete', array( $this->install_service, 'install' ) );
 
 		// Force the installation process if it is not completed.
-		if ( false === get_option( 'sgs_install_1_4_2', false ) ) {
+		if ( false === get_option( 'sgs_install_1_4_4', false ) ) {
 			add_action( 'init', array( $this->install_service, 'install' ) );
 		}
 	}
@@ -548,7 +548,7 @@ class Loader {
 	 */
 	public function add_block_service_hooks() {
 		// Block user by ip.
-//		add_action( 'init', array( $this->block_service, 'block_user_by_ip' ) );
+		add_action( 'init', array( $this->block_service, 'block_user_by_ip' ) );
 	}
 
 	/**
