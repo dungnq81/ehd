@@ -1,10 +1,10 @@
 <?php
 
-namespace EHD\Sites\Themes;
+namespace EHD_Sites\Themes;
 
-use EHD\Cores\Helper;
-use EHD\Sites\Plugins\Elementor;
-use EHD\Sites\Plugins\Woocommerce;
+use EHD_Cores\Helper;
+use EHD_Sites\Plugins\Elementor;
+use EHD_Sites\Plugins\Woocommerce;
 
 use MatthiasMullie\Minify;
 

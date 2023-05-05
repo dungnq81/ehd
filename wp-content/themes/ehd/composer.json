@@ -8,9 +8,9 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"EHD\\Sites\\Plugins\\": "inc/Plugins",
-			"EHD\\Sites\\Themes\\": "inc/Themes",
-			"EHD\\Sites\\Widgets\\": "inc/Widgets"
+			"EHD_Sites\\Plugins\\": "inc/Plugins",
+			"EHD_Sites\\Themes\\": "inc/Themes",
+			"EHD_Sites\\Widgets\\": "inc/Widgets"
 		},
 		"exclude-from-classmap": [],
 		"files": [
@@ -18,10 +18,9 @@
 			"inc/css-output.php",
 			"inc/helpers.php",
 			"inc/themes.php",
-			"inc/Plugins/tgmpa/tgmpa-config.php",
-
 			"template-structures/header.php",
-			"template-structures/footer.php"
+			"template-structures/footer.php",
+			"inc/Plugins/tgmpa/tgmpa-config.php"
 		]
 	},
 	"require": {

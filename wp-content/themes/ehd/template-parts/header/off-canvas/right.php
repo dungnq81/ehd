@@ -1,6 +1,6 @@
 <?php
 
-use EHD\Cores\Helper;
+use EHD_Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 

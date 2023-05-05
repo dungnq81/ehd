@@ -6,7 +6,7 @@
  * @author   WEBHD
  */
 
-use EHD\Cores\Helper;
+use EHD_Cores\Helper;
 use EHD_CSS\CSS;
 
 \defined( 'ABSPATH' ) || die;

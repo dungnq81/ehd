@@ -7,7 +7,7 @@
 
 \defined( 'ABSPATH' ) || die;
 
-use EHD\Cores\Helper;
+use EHD_Cores\Helper;
 
 get_header( 'home' );
 
