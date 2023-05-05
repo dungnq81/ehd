@@ -10,6 +10,7 @@ use EHD_Themes\Customizer;
 use EHD_Themes\Login;
 use EHD_Themes\Optimizer;
 use EHD_Themes\Options;
+use EHD_Themes\Security;
 
 use EHD_Plugins\ACF;
 use EHD_Plugins\CF7;
@@ -182,6 +183,7 @@ final class Plugin {
 		( new Customizer() );
 		( new Optimizer() );
 		( new Options() );
+		( new Security() );
 
 		( new Shortcode() )::init();
 	}
