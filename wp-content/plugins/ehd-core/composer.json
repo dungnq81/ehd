@@ -11,7 +11,6 @@
 			"EHD_Cores\\": "src/Cores",
 			"EHD_Plugins\\": "src/Plugins",
 			"EHD_Themes\\": "src/Themes",
-			"EHD_Walkers\\": "src/Walkers",
 			"EHD_Widgets\\": "src/Widgets"
 		},
 		"exclude-from-classmap": [],
@@ -25,6 +24,7 @@
 		"vectorface/whip": "^v0.4.0",
 		"deliciousbrains/wp-background-processing": "^1.1.0",
 		"mobiledetect/mobiledetectlib": "^3.74.0",
-		"ehd/ehd-css": "^v1.0.0"
+		"ehd/ehd-css": "@dev",
+		"ehd/ehd-walkers": "@dev"
 	}
 }

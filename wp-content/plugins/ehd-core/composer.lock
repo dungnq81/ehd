@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e8975ecc14d13dd8344995b209d38bd",
+    "content-hash": "19bd074bc27732073a7c9a4ea6befe3b",
     "packages": [
         {
             "name": "deliciousbrains/wp-background-processing",
@@ -58,7 +58,7 @@
         },
         {
             "name": "ehd/ehd-css",
-            "version": "v1.0.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dungnq81/ehd-css.git",
@@ -70,6 +70,7 @@
                 "reference": "338f825866a2d45b409e2319a321300cd49cbf2d",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -92,6 +93,41 @@
                 "source": "https://github.com/dungnq81/ehd-css/tree/v1.0.0"
             },
             "time": "2023-05-04T09:24:01+00:00"
+        },
+        {
+            "name": "ehd/ehd-walkers",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dungnq81/ehd-walkers.git",
+                "reference": "1003f499bbb5fb55ceeca574b3810c402146ce3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dungnq81/ehd-walkers/zipball/1003f499bbb5fb55ceeca574b3810c402146ce3a",
+                "reference": "1003f499bbb5fb55ceeca574b3810c402146ce3a",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EHD_Walkers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "ehd",
+                    "email": "official.webhd@gmail.com"
+                }
+            ],
+            "description": "Nav Menu API",
+            "support": {
+                "issues": "https://github.com/dungnq81/ehd-walkers/issues",
+                "source": "https://github.com/dungnq81/ehd-walkers/tree/v1.0.0"
+            },
+            "time": "2023-05-05T03:03:18+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1192,7 +1228,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ehd/ehd-css": 20,
+        "ehd/ehd-walkers": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
