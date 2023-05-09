@@ -1,6 +1,7 @@
 <?php
 /**
- * themes functions
+ * Themes Functions
+ *
  * @author   WEBHD
  */
 
@@ -150,7 +151,6 @@ if ( ! function_exists( '__body_classes' ) ) {
 	 * Adds custom classes to the array of body classes.
 	 *
 	 * @param array $classes
-	 *
 	 * @return array
 	 */
 	function __body_classes( array $classes ): array {
@@ -193,7 +193,6 @@ if ( ! function_exists( '__post_classes' ) ) {
 	 * Adds custom classes to the array of post classes.
 	 *
 	 * @param array $classes Classes for the post element.
-	 *
 	 * @return array
 	 */
 	function __post_classes( array $classes ): array {
@@ -267,7 +266,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 /** ---------------------------------------- */
 
 /** comment off default */
-add_filter( 'wp_insert_post_data', function ( $data ) {
+add_filter( 'wp_insert_post_data', function ( array $data ) {
 	if ( $data['post_status'] == 'auto-draft' ) {
 		//$data['comment_status'] = 0;
 		$data['ping_status'] = 0;
@@ -292,8 +291,8 @@ add_filter( 'widget_tag_cloud_args', function ( array $args ) {
 /** ---------------------------------------- */
 
 /** defer scripts */
-add_filter( 'ehd_defer_script', function ( $arr ) {
-	$arr = [
+add_filter( 'ehd_defer_script', function ( array $arr ) {
+	$arr_new = [
 		// defer script
 		'wc-single-product' => 'defer',
 		'contact-form-7'    => 'defer',
@@ -307,28 +306,28 @@ add_filter( 'ehd_defer_script', function ( $arr ) {
 		'o-draggable'       => 'delay',
 	];
 
-	return $arr;
+	return array_merge( $arr, $arr_new );
 
 }, 11, 1 );
 
 // ------------------------------------------
 
 /** defer styles */
-add_filter( 'ehd_defer_style', function ( $arr ) {
-	$arr = [
+add_filter( 'ehd_defer_style', function ( array $arr ) {
+	$arr_new = [
 		'dashicons',
 		'contact-form-7',
 		//'rank-math',
 	];
 
-	return $arr;
+	return array_merge( $arr, $arr_new );
 
 }, 11, 1 );
 
 /** ---------------------------------------- */
 
 /** Aspect Ratio default list */
-add_filter( 'ehd_aspect_ratio_default_list', function ( $arr ) {
+add_filter( 'ehd_aspect_ratio_default_list', function ( array $arr ) {
 	$new_arr = array_merge( $arr, [ '1-1' ] );
 	$update_arr = [
 		'3-2',
@@ -345,7 +344,7 @@ add_filter( 'ehd_aspect_ratio_default_list', function ( $arr ) {
 /** ---------------------------------------- */
 
 /** Array containing all plugins using XML-RPC. */
-add_filter( 'ehd_xml_rpc_plugins', function ( $arr ) {
+add_filter( 'ehd_xml_rpc_plugins', function ( array $arr ) {
 	$update_arr = [
 		'jetpack/jetpack.php',
 	];
@@ -357,7 +356,7 @@ add_filter( 'ehd_xml_rpc_plugins', function ( $arr ) {
 /** ---------------------------------------- */
 
 /** Aspect Ratio */
-add_filter( 'ehd_aspect_ratio_post_type', function ( $arr ) {
+add_filter( 'ehd_aspect_ratio_post_type', function ( array $arr ) {
 	$new_arr = array_merge( $arr, [ 'post' ] );
 	if ( class_exists( '\WooCommerce' ) ) {
 		$new_arr = array_merge( $new_arr, [ 'product' ] );

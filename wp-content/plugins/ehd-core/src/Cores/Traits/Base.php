@@ -118,13 +118,13 @@ trait Base {
 	 *
 	 * @return array
 	 */
-	public static function removeEmptyValues( $array = [] ) : array {
+	public static function removeEmptyValues( $array = [] ): array {
 
-		if (!is_array($array) && $array) {
+		if ( ! is_array( $array ) && $array ) {
 			return [ $array ];
 		}
 
-		if (empty($array)) {
+		if ( empty( $array ) ) {
 			return __return_empty_array();
 		}
 
@@ -151,7 +151,7 @@ trait Base {
 	 *
 	 * @return bool
 	 */
-	public static function inRange( $value, $min, $max ) : bool {
+	public static function inRange( $value, $min, $max ): bool {
 		$inRange = filter_var( $value, FILTER_VALIDATE_INT, [
 			'options' => [
 				'min_range' => intval( $min ),
@@ -168,7 +168,7 @@ trait Base {
 	 * @return string
 	 */
 	public static function getIpAddress(): string {
-		$whip = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
+		$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
 		$clientAddress = $whip->getValidIpAddress();
 
 		if ( false !== $clientAddress ) {

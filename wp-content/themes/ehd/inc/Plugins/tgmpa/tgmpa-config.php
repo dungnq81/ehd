@@ -71,6 +71,11 @@ function ehd_register_required_plugins(): void {
 			'slug'     => 'webp-converter-for-media',
 			'required' => false,
 		],
+		[
+			'name'     => 'Easy Table of Contents',
+			'slug'     => 'easy-table-of-contents',
+			'required' => false,
+		],
 
 		//
 		// Include a plugin bundled with a theme.
@@ -83,14 +88,14 @@ function ehd_register_required_plugins(): void {
 			'force_activation' => false,
 			'external_url'     => 'https://www.advancedcustomfields.com/'
 		],
-		[
-			'name'             => 'Fixed TOC',
-			'slug'             => 'fixed-toc',
-			'source'           => __DIR__ . '/bundled/fixed-toc.zip',
-			'required'         => false,
-			'force_activation' => false,
-			'external_url'     => 'https://codecanyon.net/item/fixed-toc-wordpress-plugin/7264676'
-		],
+//		[
+//			'name'             => 'Fixed TOC',
+//			'slug'             => 'fixed-toc',
+//			'source'           => __DIR__ . '/bundled/fixed-toc.zip',
+//			'required'         => false,
+//			'force_activation' => false,
+//			'external_url'     => 'https://codecanyon.net/item/fixed-toc-wordpress-plugin/7264676'
+//		],
 	];
 
 	/*
@@ -111,5 +116,3 @@ function ehd_register_required_plugins(): void {
 
 	tgmpa( $plugins, $config );
 }
-
-/**  */

@@ -4,13 +4,14 @@ namespace EHD_Themes;
 
 use EHD_Cores\Helper;
 
-\defined('ABSPATH') || die;
-
 /**
  * Options Class
  *
  * @author eHD
  */
+
+\defined('ABSPATH') || die;
+
 final class Security {
 	public function __construct() {
 

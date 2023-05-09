@@ -5,13 +5,14 @@ namespace EHD_Themes;
 use EHD_Cores\Helper;
 use PHPMailer\PHPMailer\Exception;
 
-\defined('ABSPATH') || die;
-
 /**
  * Options Class
  *
  * @author eHD
  */
+
+\defined('ABSPATH') || die;
+
 final class Options {
 	public function __construct() {
 		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );

@@ -28,6 +28,12 @@ use EHD_Widgets\RecentPosts_Widget;
 use EHD_Widgets\Search_Widget;
 use EHD_Widgets\Shortcode_Widget;
 
+/**
+ * Plugin Class
+ *
+ * @author EHD
+ */
+
 \defined( 'ABSPATH' ) || die;
 
 final class Plugin {

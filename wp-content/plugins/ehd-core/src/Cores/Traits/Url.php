@@ -11,43 +11,44 @@ trait Url
 	 *
 	 * @return string
 	 */
-    public static function urlToPath($url): string {
-        return substr(get_home_path(), 0, -1) . wp_make_link_relative($url);
-    }
+	public static function urlToPath( $url ): string {
+		return substr( get_home_path(), 0, - 1 ) . wp_make_link_relative( $url );
+	}
 
-    /**
-     * @param $dir
-     * @return array|string|string[]
-     */
-    public static function pathToUrl($dir)
-    {
-        $dirs = wp_upload_dir();
-        $url = str_replace($dirs['basedir'], $dirs['baseurl'], $dir);
+	/**
+	 * @param $dir
+	 *
+	 * @return array|string|string[]
+	 */
+	public static function pathToUrl( $dir ) {
+		$dirs = wp_upload_dir();
+		$url  = str_replace( $dirs['basedir'], $dirs['baseurl'], $dir );
 
-        return str_replace(ABSPATH, self::home(), $url);
-    }
+		return str_replace( ABSPATH, self::home(), $url );
+	}
 
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
+	/**
+	 * @param string $path
+	 *
+	 * @return string
+	 */
 	public static function home( string $path = '' ): string {
 		return trailingslashit( network_home_url( $path ) );
 	}
 
-    /**
-     * @param boolean $query_vars
-     *
-     * @return string
-     */
-    public static function current( bool $query_vars = false): string {
-        global $wp;
-        if (true === $query_vars) {
-            return add_query_arg($wp->query_vars, network_home_url($wp->request));
-        }
-        return self::home($wp->request);
-    }
+	/**
+	 * @param boolean $query_vars
+	 *
+	 * @return string
+	 */
+	public static function current( bool $query_vars = false ): string {
+		global $wp;
+		if ( true === $query_vars ) {
+			return add_query_arg( $wp->query_vars, network_home_url( $wp->request ) );
+		}
+
+		return self::home( $wp->request );
+	}
 
     /**
      * Normalize the given path. On Windows servers backslash will be replaced

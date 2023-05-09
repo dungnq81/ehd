@@ -4,13 +4,14 @@ namespace EHD_Themes;
 
 use EHD_Cores\Helper;
 
-\defined('ABSPATH') || die;
-
 /**
  * Optimizer Class
  *
  * @author eHD
  */
+
+\defined('ABSPATH') || die;
+
 final class Optimizer {
 	public function __construct() {
 

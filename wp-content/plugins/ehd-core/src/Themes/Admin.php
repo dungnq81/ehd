@@ -12,10 +12,8 @@ use EHD_Cores\Helper;
 
 \defined('ABSPATH') || die;
 
-final class Admin
-{
-    public function __construct()
-    {
+final class Admin {
+	public function __construct() {
 	    if ( ! WP_DEBUG ) {
 		    /** Remove admin wp version */
 		    add_filter( 'update_footer', '__return_empty_string', 11 );

@@ -2,13 +2,13 @@
 
 namespace EHD_Themes;
 
-\defined( 'ABSPATH' ) || die;
-
 /**
  * Customizer Class
  *
  * @author eHD
  */
+
+\defined( 'ABSPATH' ) || die;
 
 use WP_Customize_Color_Control;
 use WP_Customize_Image_Control;

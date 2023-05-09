@@ -5,13 +5,14 @@ namespace EHD_Themes;
 use EHD_Cores\Helper;
 use EHD_CSS\CSS;
 
-\defined('ABSPATH') || die;
-
 /**
  * Custom Login Class
  *
  * @author eHD
  */
+
+\defined('ABSPATH') || die;
+
 final class Login {
 	public function __construct() {
 
