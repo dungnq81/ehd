@@ -6,7 +6,6 @@ use EHD_Cores\Helper;
 
 /**
  * Security Class
- *
  * @author eHD
  */
 
