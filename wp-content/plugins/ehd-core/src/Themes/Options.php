@@ -3,8 +3,16 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
-use EHD_Settings\Security;
 use PHPMailer\PHPMailer\Exception;
+
+use EHD_Settings\Editor;
+use EHD_Settings\Security;
+use EHD_Settings\AspectRatio;
+use EHD_Settings\ContactButton;
+use EHD_Settings\ContactInfo;
+use EHD_Settings\CustomCSS;
+use EHD_Settings\CustomScripts;
+use EHD_Settings\SMTP;
 
 /**
  * Options Class
@@ -33,7 +41,14 @@ final class Options {
     /** ---------------------------------------- */
 
 	private function _init() {
+		( new AspectRatio() );
+		( new ContactButton() );
+		( new ContactInfo() );
+		( new CustomCSS() );
+		( new CustomScripts() );
+		( new Editor() );
 		( new Security() );
+		( new SMTP() );
 	}
 
     /** ---------------------------------------- */
@@ -239,7 +254,7 @@ final class Options {
                         </div>
                         <ul class="ul-menu-list">
                             <li class="global-settings">
-                                <a class="current" title="Global Settings" href="#global_settings"><?php _e('Global Settings', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+                                <a class="current" title="Custom Scripts" href="#global_settings"><?php _e('Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="smtp smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
@@ -254,7 +269,7 @@ final class Options {
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e('Contact Button', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="gutenberg gutenberg-settings">
-                                <a title="Block Editor" href="#block_editor_settings"><?php _e('Block Editor', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e('Editor', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
 	                        <li class="security security-settings">
 		                        <a title="Security" href="#security_settings"><?php _e('Security', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
