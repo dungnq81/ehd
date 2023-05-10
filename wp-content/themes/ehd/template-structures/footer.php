@@ -26,7 +26,6 @@ if ( ! function_exists( '__wp_footer' ) ) {
 
 		$back_to_top = apply_filters( 'ehd_back_to_top', true );
 		if ( $back_to_top ) {
-			echo "\n";
 			echo apply_filters( // phpcs:ignore
 				'end_back_to_top_output',
 				sprintf(

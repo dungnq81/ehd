@@ -10,6 +10,7 @@
 		"psr-4": {
 			"EHD_Cores\\": "src/Cores",
 			"EHD_Plugins\\": "src/Plugins",
+			"EHD_Settings\\": "src/Settings",
 			"EHD_Themes\\": "src/Themes",
 			"EHD_Widgets\\": "src/Widgets"
 		},

@@ -18,12 +18,12 @@ final class Optimizer {
 		$this->_cleanup();
 
 		add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
-		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // Header scripts
+		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
 
-		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // Body scripts - TOP
+		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP
 
-		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // Footer scripts
-		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // Body scripts - BOTTOM
+		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // footer scripts
+		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // body scripts - BOTTOM
 
 		// only front-end
 		if ( ! is_admin() ) {

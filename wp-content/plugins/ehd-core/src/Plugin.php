@@ -4,14 +4,6 @@ namespace EHD;
 
 use EHD_Cores\Helper;
 use EHD_Cores\Shortcode;
-
-use EHD_Themes\Admin;
-use EHD_Themes\Customizer;
-use EHD_Themes\Login;
-use EHD_Themes\Optimizer;
-use EHD_Themes\Options;
-use EHD_Themes\Security;
-
 use EHD_Plugins\ACF;
 use EHD_Plugins\CF7;
 use EHD_Plugins\Elementor\Elementor;
@@ -19,7 +11,11 @@ use EHD_Plugins\LiteSpeed;
 use EHD_Plugins\RankMath;
 use EHD_Plugins\WooCommerce\WooCommerce;
 use EHD_Plugins\WpRocket;
-
+use EHD_Themes\Admin;
+use EHD_Themes\Customizer;
+use EHD_Themes\Login;
+use EHD_Themes\Optimizer;
+use EHD_Themes\Options;
 use EHD_Widgets\DropdownSearch_Widget;
 use EHD_Widgets\offCanvas_Widget;
 use EHD_Widgets\Posts_Widget;
@@ -189,7 +185,6 @@ final class Plugin {
 		( new Customizer() );
 		( new Optimizer() );
 		( new Options() );
-		( new Security() );
 
 		( new Shortcode() )::init();
 	}

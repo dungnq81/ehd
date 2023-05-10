@@ -67,7 +67,7 @@ $(function () {
        $(this).closest('.notice.is-dismissible').fadeOut();
     });
 
-    // tabs
+    // filter tabs
     const tabs_wrapper = $(".filter-tabs");
     tabs_wrapper.each((index, el) => {
         rand_element_init(el);
@@ -91,7 +91,7 @@ $(function () {
 
             _nav.find('a.current').removeClass("current");
             _content.find('.tabs-panel:visible').removeClass('show').hide();
-            $(this.hash).addClass("show").fadeIn();
+            $(this.hash).addClass("show").show();
             $(this).addClass("current");
 
         }).filter(".current").trigger('click');

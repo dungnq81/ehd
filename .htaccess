@@ -8,6 +8,8 @@
 
 SetEnv HTACCESS on
 
+Header unset Vary
+
 # Disable Directory Browsing
 Options -Indexes
 
@@ -31,17 +33,19 @@ Options -Indexes
 </IfModule>
 
 <IfModule mod_headers.c>
-    <FilesMatch "\.(php|html)$">
-        Header set X-Frame-Options "SAMEORIGIN"
-        Header set X-XSS-Protection "1; mode=block"
-    </FilesMatch>
+
+    Header always set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+
+    Header set X-Frame-Options "SAMEORIGIN"
     Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     Header always set Content-Security-Policy "upgrade-insecure-requests;"
-    Header always set X-Content-Type-Options "nosniff"
+
 </IfModule>
 
-# END ng
+#<Files xmlrpc.php>
+#	order deny,allow
+#	deny from all
+#</Files>
 
-# SGO Unset Vary
-  Header unset Vary
-# SGO Unset Vary END
+# END ng

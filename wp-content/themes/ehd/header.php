@@ -6,7 +6,7 @@
  * @package hd
  */
 
-use EHD\Cores\Helper;
+use EHD_Cores\Helper;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -22,7 +22,7 @@ use EHD\Cores\Helper;
     /**
      * Triggered after the opening body tag.
      *
-     * @see \EHD\Themes\Optimizer::body_scripts_top__hook - 99
+     * @see \EHD_Themes\Optimizer::body_scripts_top__hook - 99
      */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 

@@ -6,8 +6,6 @@
  * @package hd
  */
 
-use EHD\Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 ?>

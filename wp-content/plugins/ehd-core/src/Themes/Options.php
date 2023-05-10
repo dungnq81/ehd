@@ -3,6 +3,7 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
+use EHD_Settings\Security;
 use PHPMailer\PHPMailer\Exception;
 
 /**
@@ -17,12 +18,22 @@ final class Options {
 	public function __construct() {
 		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
 		add_action( 'admin_menu', [ &$this, 'options_admin_menu' ] );
+		//add_filter( 'custom_menu_order', '__return_true' );
+		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ]);
 		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
 
 		/** SMTP Settings */
 		if ( self::_smtp__is_configured() ) {
 			add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
 		}
+
+		$this->_init();
+	}
+
+    /** ---------------------------------------- */
+
+	private function _init() {
+		( new Security() );
 	}
 
     /** ---------------------------------------- */
@@ -34,7 +45,7 @@ final class Options {
 	    // menu page
 	    add_menu_page(
 		    __( 'eHD Settings', EHD_PLUGIN_TEXT_DOMAIN ),
-		    __( 'eHD Settings', EHD_PLUGIN_TEXT_DOMAIN ),
+		    __( 'eHD', EHD_PLUGIN_TEXT_DOMAIN ),
 		    'manage_options',
 		    'ehd-settings',
 		    [ &$this, 'options_page' ],
@@ -46,6 +57,26 @@ final class Options {
 	    add_submenu_page( 'ehd-settings', __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Advanced', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'customize.php' );
 	    add_submenu_page( 'ehd-settings', __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), __( 'Server Info', EHD_PLUGIN_TEXT_DOMAIN ), 'manage_options', 'server-info', [ &$this, 'server_info' ] );
     }
+
+    /** ---------------------------------------- */
+
+	/**
+	 * Reorder the submenu pages.
+	 *
+	 * @param array $menu_order The WP menu order.
+	 */
+	public function options_reorder_submenu( array $menu_order ): array {
+		// Load the global submenu.
+		global $submenu;
+
+		if ( empty( $submenu['ehd-settings'] ) ) {
+			return $menu_order;
+		}
+
+		$submenu['ehd-settings'][0][0] = __( 'Settings', EHD_PLUGIN_TEXT_DOMAIN );
+
+		return $menu_order;
+	}
 
     /** ---------------------------------------- */
 
@@ -175,6 +206,15 @@ final class Options {
 
 		    Helper::updateOption( 'block_editor__options', $block_editor_options, true );
 
+			/** Security */
+		    $security_options = [
+			    'xml_rpc_off'   => ! empty( $_POST['xml_rpc_off'] ) ? sanitize_text_field( $_POST['xml_rpc_off'] ) : '',
+			    'remove_readme' => ! empty( $_POST['remove_readme'] ) ? sanitize_text_field( $_POST['remove_readme'] ) : '',
+			    'rss_feed_off'  => ! empty( $_POST['rss_feed_off'] ) ? sanitize_text_field( $_POST['rss_feed_off'] ) : '',
+		    ];
+
+		    Helper::updateOption( 'security__options', $security_options, true );
+
 		    /** Custom CSS */
 		    $html_custom_css = $_POST['html_custom_css'] ?? '';
 		    Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
@@ -216,40 +256,46 @@ final class Options {
                             <li class="gutenberg gutenberg-settings">
                                 <a title="Block Editor" href="#block_editor_settings"><?php _e('Block Editor', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
+	                        <li class="security security-settings">
+		                        <a title="Security" href="#security_settings"><?php _e('Security', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+	                        </li>
                             <li class="custom-css custom-css-settings">
                                 <a title="Custom CSS" href="#custom_css_settings"><?php _e('Custom CSS', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                         </ul>
                     </div>
-                    <div id="ehd_content" class="tabs-content">
-                        <h2 class="hidden-text"></h2>
+	                <div id="ehd_content" class="tabs-content">
+		                <h2 class="hidden-text"></h2>
 
-                        <div id="global_settings" class="group tabs-panel show">
-                            <?php require __DIR__ . '/options/global.php'; ?>
-                        </div>
-                        <div id="smtp_settings" class="group tabs-panel">
-                            <?php require __DIR__ . '/options/smtp.php'; ?>
-                        </div>
-                        <div id="aspect_ratio_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
-                        </div>
-                        <div id="contact_info_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/contact-info.php'; ?>
-                        </div>
-                        <div id="contact_button_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/contact-button.php'; ?>
-                        </div>
-                        <div id="block_editor_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/block-editor.php'; ?>
-                        </div>
-                        <div id="custom_css_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/custom-css.php'; ?>
-                        </div>
+		                <div id="global_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/global.php'; ?>
+		                </div>
+		                <div id="smtp_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/smtp.php'; ?>
+		                </div>
+		                <div id="aspect_ratio_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+		                </div>
+		                <div id="contact_info_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/contact-info.php'; ?>
+		                </div>
+		                <div id="contact_button_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/contact-button.php'; ?>
+		                </div>
+		                <div id="block_editor_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/block-editor.php'; ?>
+		                </div>
+		                <div id="security_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/security.php'; ?>
+		                </div>
+		                <div id="custom_css_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/custom-css.php'; ?>
+		                </div>
 
-                        <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN) ?></button>
-                        </div>
-                    </div>
+		                <div class="save-bar">
+			                <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
+		                </div>
+	                </div>
                 </div>
             </form>
         </div>
@@ -330,7 +376,7 @@ final class Options {
 	 * @throws Exception
 	 */
 	public function setup_phpmailer_init( $phpmailer ): void {
-        Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
+		Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
 	}
 
 	/** ---------------------------------------- */
@@ -340,7 +386,7 @@ final class Options {
 	 *
 	 * @return void
 	 */
-	public function options_admin_notice() : void {
+	public function options_admin_notice(): void {
 		if ( ! self::_smtp__is_configured() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN );
@@ -356,26 +402,26 @@ final class Options {
     /**
      * @return bool
      */
-    private function _smtp__is_configured() : bool {
-	    $smtp_options    = Helper::getOption( 'smtp__options' );
-	    $smtp_configured = true;
+	private function _smtp__is_configured(): bool {
+		$smtp_options    = Helper::getOption( 'smtp__options' );
+		$smtp_configured = true;
 
-	    if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
-		    if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
-			    $smtp_configured = false;
-		    }
-	    }
+		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
+			if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
+				$smtp_configured = false;
+			}
+		}
 
-	    if ( empty( $smtp_options['smtp_host'] ) ||
-	         empty( $smtp_options['smtp_auth'] ) ||
-	         empty( $smtp_options['smtp_encryption'] ) ||
-	         empty( $smtp_options['smtp_port'] ) ||
-	         empty( $smtp_options['smtp_from_email'] ) ||
-	         empty( $smtp_options['smtp_from_name'] )
-	    ) {
-		    $smtp_configured = false;
-	    }
+		if ( empty( $smtp_options['smtp_host'] ) ||
+		     empty( $smtp_options['smtp_auth'] ) ||
+		     empty( $smtp_options['smtp_encryption'] ) ||
+		     empty( $smtp_options['smtp_port'] ) ||
+		     empty( $smtp_options['smtp_from_email'] ) ||
+		     empty( $smtp_options['smtp_from_name'] )
+		) {
+			$smtp_configured = false;
+		}
 
-        return $smtp_configured;
-    }
+		return $smtp_configured;
+	}
 }

@@ -2,6 +2,10 @@
 
 namespace EHD_Themes;
 
+use WP_Customize_Color_Control;
+use WP_Customize_Image_Control;
+use WP_Customize_Manager;
+
 /**
  * Customizer Class
  *
@@ -9,10 +13,6 @@ namespace EHD_Themes;
  */
 
 \defined( 'ABSPATH' ) || die;
-
-use WP_Customize_Color_Control;
-use WP_Customize_Image_Control;
-use WP_Customize_Manager;
 
 final class Customizer {
 	public function __construct() {
@@ -75,6 +75,86 @@ final class Customizer {
 				'theme_supports' => '',
 				'title'          => __( 'eHD', EHD_PLUGIN_TEXT_DOMAIN ),
 				'description'    => __( 'Controls the add-on menu', EHD_PLUGIN_TEXT_DOMAIN ),
+			]
+		);
+
+		// -------------------------------------------------------------
+		// Login page
+		// -------------------------------------------------------------
+
+		$wp_customize->add_section(
+			'login_page_section',
+			[
+				'title'    => __( 'Login page', EHD_PLUGIN_TEXT_DOMAIN ),
+				'panel'    => 'addon_menu_panel',
+				'priority' => 999,
+			]
+		);
+
+		$wp_customize->add_setting( 'login_page_bgcolor_setting', [ 'sanitize_callback' => 'sanitize_hex_color' ] );
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control( $wp_customize,
+				'login_page_bgcolor_control',
+				[
+					'label'    => __( 'Background color', EHD_PLUGIN_TEXT_DOMAIN ),
+					'section'  => 'login_page_section',
+					'settings' => 'login_page_bgcolor_setting',
+					'priority' => 8,
+				]
+			)
+		);
+
+		$wp_customize->add_setting( 'login_page_bgimage_setting', [ 'transport' => 'refresh' ] );
+		$wp_customize->add_control(
+			new WP_Customize_Image_Control(
+				$wp_customize,
+				'login_page_bgimage_control',
+				[
+					'label'    => __( 'Background image', EHD_PLUGIN_TEXT_DOMAIN ),
+					'section'  => 'login_page_section',
+					'settings' => 'login_page_bgimage_setting',
+					'priority' => 9,
+				]
+			)
+		);
+
+		$wp_customize->add_setting( 'login_page_logo_setting', [ 'transport' => 'refresh' ] );
+		$wp_customize->add_control(
+			new WP_Customize_Image_Control(
+				$wp_customize,
+				'login_page_logo_control',
+				[
+					'label'    => __( 'Logo', EHD_PLUGIN_TEXT_DOMAIN ),
+					'section'  => 'login_page_section',
+					'settings' => 'login_page_logo_setting',
+					'priority' => 10,
+				]
+			)
+		);
+
+		$wp_customize->add_setting( 'login_page_headertext_setting', [ 'sanitize_callback' => 'sanitize_text_field' ] );
+		$wp_customize->add_control(
+			'login_page_headertext_control',
+			[
+				'label'       => __( 'Header text', EHD_PLUGIN_TEXT_DOMAIN ),
+				'section'     => 'login_page_section',
+				'settings'    => 'login_page_headertext_setting',
+				'type'        => 'text',
+				'priority'    => 11,
+				'description' => __( 'Changing the alt text', EHD_PLUGIN_TEXT_DOMAIN ),
+			]
+		);
+
+		$wp_customize->add_setting( 'login_page_headerurl_setting', [ 'sanitize_callback' => 'sanitize_text_field' ] );
+		$wp_customize->add_control(
+			'login_page_headerurl_control',
+			[
+				'label'       => __( 'Header url', EHD_PLUGIN_TEXT_DOMAIN ),
+				'section'     => 'login_page_section',
+				'settings'    => 'login_page_headerurl_setting',
+				'type'        => 'url',
+				'priority'    => 12,
+				'description' => __( 'Changing the logo link', EHD_PLUGIN_TEXT_DOMAIN ),
 			]
 		);
 
