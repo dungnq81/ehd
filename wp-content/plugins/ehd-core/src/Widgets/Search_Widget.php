@@ -2,12 +2,12 @@
 
 namespace EHD_Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 
 \defined( 'ABSPATH' ) || die;
 
-class Search_Widget extends Widget {
+class Search_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'A search form for your site.', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->widget_name        = __( 'W - Search', EHD_PLUGIN_TEXT_DOMAIN );

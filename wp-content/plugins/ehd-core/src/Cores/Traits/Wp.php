@@ -1457,6 +1457,34 @@ trait Wp
     // -------------------------------------------------------------
 
 	/**
+	 * @return bool
+	 */
+	public static function smtpConfigured(): bool {
+		$smtp_options    = self::getOption( 'smtp__options' );
+		$smtp_configured = true;
+
+		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
+			if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
+				$smtp_configured = false;
+			}
+		}
+
+		if ( empty( $smtp_options['smtp_host'] ) ||
+		     empty( $smtp_options['smtp_auth'] ) ||
+		     empty( $smtp_options['smtp_encryption'] ) ||
+		     empty( $smtp_options['smtp_port'] ) ||
+		     empty( $smtp_options['smtp_from_email'] ) ||
+		     empty( $smtp_options['smtp_from_name'] )
+		) {
+			$smtp_configured = false;
+		}
+
+		return $smtp_configured;
+	}
+
+    // -------------------------------------------------------------
+
+	/**
 	 * Get any necessary microdata.
 	 *
 	 * @param string $context The element to target.

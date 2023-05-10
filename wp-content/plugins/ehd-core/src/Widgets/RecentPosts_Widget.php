@@ -2,13 +2,13 @@
 
 namespace EHD_Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 use WP_Query;
 
 \defined('ABSPATH') || die;
 
-class RecentPosts_Widget extends Widget {
+class RecentPosts_Widget extends Abstract_Widget {
     public function __construct() {
         $this->widget_description = __( 'Your site&#8217;s most recent Posts.' );
         $this->widget_name        = __( 'W - Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );

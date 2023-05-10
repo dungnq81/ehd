@@ -2,13 +2,13 @@
 
 namespace EHD_Plugins\WooCommerce\Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 use WP_Query;
 
 \defined( 'ABSPATH' ) || die;
 
-    class RecentProducts_Widget extends Widget
+    class RecentProducts_Widget extends Abstract_Widget
     {
         public function __construct()
         {

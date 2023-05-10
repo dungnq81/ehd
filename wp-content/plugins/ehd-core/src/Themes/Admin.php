@@ -28,28 +28,6 @@ final class Admin {
 
 	    add_action( 'admin_init', [ &$this, 'admin_init' ], 10 );
 	    add_action( 'admin_menu', [ &$this, 'dashboard_meta_box' ], 11 );
-
-		/** Custom options */
-	    $block_editor_options = Helper::getOption( 'block_editor__options' );
-
-	    $use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
-	    $gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
-	    $use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
-
-	    // Disables the block editor from managing widgets.
-	    if ( $use_widgets_block_editor_off ) {
-		    add_filter( 'use_widgets_block_editor', '__return_false' );
-	    }
-
-	    // Disables the block editor from managing widgets in the Gutenberg plugin.
-	    if ( $gutenberg_use_widgets_block_editor_off ) {
-		    add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
-	    }
-
-	    // Use Classic Editor - Disable Gutenberg Editor
-	    if ( $use_block_editor_for_post_type_off ) {
-		    add_filter( 'use_block_editor_for_post_type', '__return_false' );
-	    }
     }
 
     /** ---------------------------------------- */

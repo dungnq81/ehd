@@ -20,7 +20,7 @@ final class WooCommerce {
 		$this->_hooks();
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 31 );
-		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 99 );
+		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
 
 		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 31 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 31 );
@@ -53,17 +53,6 @@ final class WooCommerce {
 	 */
 	public function enqueue_scripts(): void {
 		wp_enqueue_style( 'ehd-core-woocommerce-style', EHD_PLUGIN_URL . "assets/css/woocommerce.css", [ "ehd-core-style" ], EHD_PLUGIN_VERSION );
-
-		/** customize */
-		$block_editor_options = Helper::getOption( 'block_editor__options' );
-
-		$block_style_off = $block_editor_options['block_style_off'] ?? '';
-
-		// Remove WooCommerce block CSS
-		if ( $block_style_off ) {
-			wp_deregister_style( 'wc-blocks-vendors-style' );
-			wp_deregister_style( 'wc-block-style' );
-		}
 	}
 
 	/**

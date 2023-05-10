@@ -3,8 +3,6 @@
 namespace EHD_Themes;
 
 use DirectoryIterator;
-use PHPMailer\PHPMailer\Exception;
-
 use EHD_Cores\Helper;
 
 /**
@@ -18,15 +16,12 @@ use EHD_Cores\Helper;
 final class Options {
 	public function __construct() {
 		add_action( 'admin_notices', [ &$this, 'options_admin_notice' ] );
+
 		add_action( 'admin_menu', [ &$this, 'options_admin_menu' ] );
 		//add_filter( 'custom_menu_order', '__return_true' );
 		add_filter( 'menu_order', [ &$this, 'options_reorder_submenu' ]);
-		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
 
-		/** SMTP Settings */
-		if ( self::_smtp__is_configured() ) {
-			add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
-		}
+		add_action( 'admin_enqueue_scripts', [ &$this, 'options_enqueue_assets' ], 32 );
 
 		$this->_init();
 	}
@@ -128,7 +123,7 @@ final class Options {
 			    wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN ) );
 		    }
 
-		    /** Global */
+		    /** Custom Scripts */
 		    $html_header      = $_POST['html_header'] ?? '';
 		    $html_footer      = $_POST['html_footer'] ?? '';
 		    $html_body_top    = $_POST['html_body_top'] ?? '';
@@ -384,58 +379,16 @@ final class Options {
 	/** ---------------------------------------- */
 
 	/**
-	 * @param $phpmailer
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function setup_phpmailer_init( $phpmailer ): void {
-		Helper::PHPMailerInit( $phpmailer, 'smtp__options' );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
 	 * SMTP notices
 	 *
 	 * @return void
 	 */
 	public function options_admin_notice(): void {
-		if ( ! self::_smtp__is_configured() ) {
+		if ( ! Helper::smtpConfigured() ) {
 			$class   = 'notice notice-error';
 			$message = __( 'You need to configure your SMTP credentials in the settings to send emails.', EHD_PLUGIN_TEXT_DOMAIN );
 
 			printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), $message );
 		}
-
-		// ...
-	}
-
-    /** ---------------------------------------- */
-
-    /**
-     * @return bool
-     */
-	private function _smtp__is_configured(): bool {
-		$smtp_options    = Helper::getOption( 'smtp__options' );
-		$smtp_configured = true;
-
-		if ( isset( $smtp_options['smtp_auth'] ) && $smtp_options['smtp_auth'] == "true" ) {
-			if ( empty( $smtp_options['smtp_username'] ) || empty( $smtp_options['smtp_password'] ) ) {
-				$smtp_configured = false;
-			}
-		}
-
-		if ( empty( $smtp_options['smtp_host'] ) ||
-		     empty( $smtp_options['smtp_auth'] ) ||
-		     empty( $smtp_options['smtp_encryption'] ) ||
-		     empty( $smtp_options['smtp_port'] ) ||
-		     empty( $smtp_options['smtp_from_email'] ) ||
-		     empty( $smtp_options['smtp_from_name'] )
-		) {
-			$smtp_configured = false;
-		}
-
-		return $smtp_configured;
 	}
 }

@@ -6,8 +6,6 @@ use EHD_Cores\Helper;
 use EHD_Sites\Plugins\Elementor;
 use EHD_Sites\Plugins\Woocommerce;
 
-use MatthiasMullie\Minify;
-
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -140,20 +138,7 @@ final class Theme {
 			    'view_detail' => __( 'Detail', EHD_TEXT_DOMAIN ),
 		    ],
 	    ];
-
 	    wp_localize_script( 'jquery-core', EHD_TEXT_DOMAIN, $l10n );
-
-	    /** Custom CSS */
-	    $css = Helper::getCustomPostContent( 'ehd_css', false );
-	    if ( $css ) {
-		    if ( ! WP_DEBUG ) {
-			    $minifier = new Minify\CSS();
-			    $minifier->add( $css );
-			    $css = $minifier->minify();
-		    }
-
-		    wp_add_inline_style( 'app-style', $css );
-	    }
 
 	    /** Comments */
 	    if ( is_singular() && comments_open() && Helper::getOption( 'thread_comments' ) ) {

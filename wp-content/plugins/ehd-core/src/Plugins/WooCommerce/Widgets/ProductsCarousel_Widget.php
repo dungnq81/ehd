@@ -2,13 +2,13 @@
 
 namespace EHD_Plugins\WooCommerce\Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 use WP_Query;
 
 \defined('ABSPATH') || die;
 
-class ProductsCarousel_Widget extends Widget {
+class ProductsCarousel_Widget extends Abstract_Widget {
     public function __construct() {
         $this->widget_description = __( "A slideshow list of your store's products.", EHD_PLUGIN_TEXT_DOMAIN );
         $this->widget_name        = __( 'W - Products Carousels', EHD_PLUGIN_TEXT_DOMAIN );

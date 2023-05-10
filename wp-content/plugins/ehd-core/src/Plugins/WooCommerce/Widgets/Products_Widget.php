@@ -2,12 +2,12 @@
 
 namespace EHD_Plugins\WooCommerce\Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 
 \defined('ABSPATH') || die;
 
-class Products_Widget extends Widget {
+class Products_Widget extends Abstract_Widget {
     public function __construct() {
         $this->widget_description = __( "A list of your store's products.", 'woocommerce' );
         $this->widget_name        = __( 'W - Products', EHD_PLUGIN_TEXT_DOMAIN );

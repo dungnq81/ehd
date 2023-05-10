@@ -234,7 +234,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 			$classes = [];
 		}
 
-		// remove menu-item-type-, menu-item-object- classes
+		// Remove menu-item-type-, menu-item-object- classes
 		foreach ( $classes as $class ) {
 			if ( str_contains( $class, 'menu-item-type-' )
 			     || str_contains( $class, 'menu-item-object-' )
@@ -247,7 +247,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 		     || $item->current_item_ancestor
 		     || $item->current_item_parent
 		) {
-			//$classes[] = 'is-active';
+			// $classes[] = 'is-active';
 			$classes[] = 'active';
 		}
 
@@ -257,18 +257,19 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 
 /** ---------------------------------------- */
 
-/** add class to anchor link */
-//add_filter('nav_menu_link_attributes', function ($atts) {
+/** Add class to anchor link */
+//add_filter( 'nav_menu_link_attributes', function ( $atts ) {
 //	$atts['class'] = "nav-link";
+//
 //	return $atts;
-//}, 100, 1);
+//}, 100, 1 );
 
 /** ---------------------------------------- */
 
 /** comment off default */
 add_filter( 'wp_insert_post_data', function ( array $data ) {
 	if ( $data['post_status'] == 'auto-draft' ) {
-		//$data['comment_status'] = 0;
+		// $data['comment_status'] = 0;
 		$data['ping_status'] = 0;
 	}
 
@@ -297,7 +298,7 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 		'wc-single-product' => 'defer',
 		'contact-form-7'    => 'defer',
 
-		// delay script, default 5s
+		// delay script - default 5s
 		'comment-reply'     => 'delay',
 		'wp-embed'          => 'delay',
 		'admin-bar'         => 'delay',
@@ -310,7 +311,7 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 
 }, 11, 1 );
 
-// ------------------------------------------
+/** ---------------------------------------- */
 
 /** defer styles */
 add_filter( 'ehd_defer_style', function ( array $arr ) {
@@ -343,7 +344,7 @@ add_filter( 'ehd_aspect_ratio_default_list', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
-/** Array containing all plugins using XML-RPC. */
+/** Array containing all plugins using XML-RPC */
 add_filter( 'ehd_xml_rpc_plugins', function ( array $arr ) {
 	$update_arr = [
 		'jetpack/jetpack.php',
@@ -357,20 +358,12 @@ add_filter( 'ehd_xml_rpc_plugins', function ( array $arr ) {
 
 /** Aspect Ratio */
 add_filter( 'ehd_aspect_ratio_post_type', function ( array $arr ) {
-	$new_arr = array_merge( $arr, [ 'post' ] );
-	if ( class_exists( '\WooCommerce' ) ) {
-		$new_arr = array_merge( $new_arr, [ 'product' ] );
-	}
 
 	// custom value
 	$update_arr = [
 		//'video',
 	];
 
-	if ( $update_arr ) {
-		$new_arr = array_merge( $new_arr, $update_arr );
-	}
-
-	return $new_arr;
+	return array_merge( $arr, $update_arr );
 
 }, 99, 1 );

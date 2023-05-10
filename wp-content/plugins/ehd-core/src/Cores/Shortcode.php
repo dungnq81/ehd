@@ -9,6 +9,7 @@ namespace EHD_Cores;
  *
  * @author WEBHD
  */
+
 final class Shortcode
 {
     /**

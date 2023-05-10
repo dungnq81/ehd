@@ -2,11 +2,11 @@
 
 namespace EHD_Widgets;
 
-use EHD_Cores\Widget;
+use EHD_Cores\Abstract_Widget;
 
 \defined( 'ABSPATH' ) || die;
 
-class Shortcode_Widget extends Widget {
+class Shortcode_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( "Display a shortcode section.", EHD_PLUGIN_TEXT_DOMAIN );
 		$this->widget_name        = __( 'W - Shortcode', EHD_PLUGIN_TEXT_DOMAIN );

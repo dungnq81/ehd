@@ -2,12 +2,12 @@
 
 namespace EHD_Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 
 \defined( 'ABSPATH' ) || die;
 
-class DropdownSearch_Widget extends Widget {
+class DropdownSearch_Widget extends Abstract_Widget {
 	/**
 	 * Sets up a widget instance.
 	 */

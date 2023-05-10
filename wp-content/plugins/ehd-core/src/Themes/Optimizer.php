@@ -18,12 +18,6 @@ final class Optimizer {
 		$this->_cleanup();
 
 		add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
-		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
-
-		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP
-
-		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // footer scripts
-		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // body scripts - BOTTOM
 
 		// only front-end
 		if ( ! is_admin() ) {
@@ -41,11 +35,10 @@ final class Optimizer {
 			add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
 		}
 
-		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 ); // wp_enqueue_scripts
 		add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
-		//add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
+		// add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
 
 		add_filter( 'excerpt_more', function () {
 			return ' ' . '&hellip;';
@@ -64,7 +57,7 @@ final class Optimizer {
 	// ------------------------------------------------------
 
     /**
-     * Launching operation cleanup.
+     * Launching operation cleanup
      *
      * @return void
      */
@@ -140,88 +133,6 @@ final class Optimizer {
 		}
 
 		return $actions;
-	}
-
-    // ------------------------------------------------------
-
-	/**
-	 * Header scripts
-	 *
-	 * @return void
-	 */
-	public function header_scripts__hook() : void {
-		$html_header = Helper::getCustomPostContent( 'html_header', true );
-		if ( $html_header ) {
-			echo $html_header;
-		}
-	}
-
-    // ------------------------------------------------------
-
-	/**
-	 * Body scripts - TOP
-	 *
-	 * @return void
-	 */
-	public function body_scripts_top__hook() {
-		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
-		if ( $html_body_top ) {
-			echo $html_body_top;
-		}
-	}
-
-    // ------------------------------------------------------
-
-	/**
-	 * Footer scripts
-	 *
-	 * @return void
-	 */
-	public function footer_scripts__hook() {
-		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
-		if ( $html_footer ) {
-			echo $html_footer;
-		}
-	}
-
-    // ------------------------------------------------------
-
-	/**
-	 * Body scripts - BOTTOM
-	 *
-	 * @return void
-	 */
-	public function body_scripts_bottom__hook() {
-		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
-		if ( $html_body_bottom ) {
-			echo $html_body_bottom;
-		}
-	}
-
-    // ------------------------------------------------------
-
-	/**
-	 * @return void
-	 */
-	public function enqueue_scripts() {
-		$classes           = [];
-		$styles            = '';
-		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
-
-		foreach ( $ar_post_type_list as $ar_post_type ) {
-			$ratio_obj   = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
-			$ratio_class = $ratio_obj->class ?? '';
-			$ratio_style = $ratio_obj->style ?? '';
-
-			if ( ! in_array( $ratio_class, $classes ) && $ratio_style ) {
-				$classes[] = $ratio_class;
-				$styles    .= $ratio_style;
-			}
-		}
-
-		if ( $styles ) {
-			wp_add_inline_style( 'ehd-core-style', $styles );
-		}
 	}
 
     // ------------------------------------------------------

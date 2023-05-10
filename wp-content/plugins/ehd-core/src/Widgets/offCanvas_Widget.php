@@ -2,12 +2,12 @@
 
 namespace EHD_Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 
 \defined( 'ABSPATH' ) || die;
 
-class offCanvas_Widget extends Widget {
+class offCanvas_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'Display offCanvas Button', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->widget_name        = __( 'W - OffCanvas Button', EHD_PLUGIN_TEXT_DOMAIN );

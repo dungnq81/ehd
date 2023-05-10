@@ -2,12 +2,12 @@
 
 namespace EHD_Widgets;
 
+use EHD_Cores\Abstract_Widget;
 use EHD_Cores\Helper;
-use EHD_Cores\Widget;
 
 \defined('ABSPATH') || die;
 
-class Posts_Widget extends Widget {
+class Posts_Widget extends Abstract_Widget {
     public function __construct() {
         $this->widget_description = __( 'Your site&#8217;s Posts.' );
         $this->widget_name        = __( 'W - Posts', EHD_PLUGIN_TEXT_DOMAIN );

@@ -92,7 +92,7 @@ trait File
 	 * @param string $path    Full path to the file
 	 * @param string $content File content
 	 */
-	public static function fileUpdate( string $path, string $content ) {
+	public static function fileUpdate( string $path, string $content = '' ) {
 		// Setup wp_filesystem.
 		$wp_filesystem = self::wpFileSystem();
 
@@ -102,7 +102,7 @@ trait File
 		}
 
 		// Add the new content into the file.
-		$wp_filesystem->put_contents( $path, json_encode( $content ) );
+		$wp_filesystem->put_contents( $path, $content );
 	}
 
     /**
@@ -179,5 +179,26 @@ trait File
 		}
 
 		return true;
+	}
+
+	/**
+	 * Lock file and write something in it.
+	 *
+	 * @param string $content Content to add.
+	 *
+	 * @return bool    True on success, false otherwise.
+	 */
+	public static function doLockWrite( $path, string $content = '' ): bool {
+		$fp = fopen( $path, 'w+' );
+
+		if ( flock( $fp, LOCK_EX ) ) {
+			fwrite( $fp, $content );
+			flock( $fp, LOCK_UN );
+			fclose( $fp );
+			return true;
+		}
+
+		fclose( $fp );
+		return false;
 	}
 }

@@ -2,7 +2,6 @@
 
 namespace EHD;
 
-use EHD_Cores\Helper;
 use EHD_Cores\Shortcode;
 use EHD_Plugins\ACF;
 use EHD_Plugins\CF7;
@@ -161,16 +160,6 @@ final class Plugin {
 
 		/** Dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
-
-		/** Customize */
-		$block_editor_options = Helper::getOption( 'block_editor__options' );
-		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
-
-		/** Remove block CSS */
-		if ( $block_style_off ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'wp-block-library-theme' );
-		}
 	}
 
 	/**

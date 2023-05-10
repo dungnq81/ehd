@@ -7,7 +7,7 @@ use WP_Widget;
 
 \defined('ABSPATH') || die;
 
-abstract class Widget extends WP_Widget
+abstract class Abstract_Widget extends WP_Widget
 {
     protected string $prefix = 'w-';
     protected string $widget_id;
