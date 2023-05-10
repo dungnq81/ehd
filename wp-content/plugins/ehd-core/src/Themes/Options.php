@@ -2,17 +2,10 @@
 
 namespace EHD_Themes;
 
-use EHD_Cores\Helper;
+use DirectoryIterator;
 use PHPMailer\PHPMailer\Exception;
 
-use EHD_Settings\Editor;
-use EHD_Settings\Security;
-use EHD_Settings\AspectRatio;
-use EHD_Settings\ContactButton;
-use EHD_Settings\ContactInfo;
-use EHD_Settings\CustomCSS;
-use EHD_Settings\CustomScripts;
-use EHD_Settings\SMTP;
+use EHD_Cores\Helper;
 
 /**
  * Options Class
@@ -40,15 +33,21 @@ final class Options {
 
     /** ---------------------------------------- */
 
+	/**
+	 * @return void
+	 */
 	private function _init() {
-		( new AspectRatio() );
-		( new ContactButton() );
-		( new ContactInfo() );
-		( new CustomCSS() );
-		( new CustomScripts() );
-		( new Editor() );
-		( new Security() );
-		( new SMTP() );
+		$iterator = new DirectoryIterator( EHD_PLUGIN_PATH . 'src/Settings/' );
+		foreach ( $iterator as $fileInfo ) {
+			if ( $fileInfo->isDot() ) {
+				continue;
+			}
+
+			$filename = Helper::fileName($fileInfo, false);
+			$filenameFQN = "EHD_Settings\\" . $filename;
+
+			class_exists( $filenameFQN ) && ( new $filenameFQN() );
+		}
 	}
 
     /** ---------------------------------------- */
@@ -253,14 +252,14 @@ final class Options {
                             <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e('Save Changes', EHD_PLUGIN_TEXT_DOMAIN); ?></button>
                         </div>
                         <ul class="ul-menu-list">
+	                        <li class="aspect-ratio aspect-ratio-settings">
+		                        <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+	                        </li>
                             <li class="global-settings">
-                                <a class="current" title="Custom Scripts" href="#global_settings"><?php _e('Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
+                                <a title="Custom Scripts" href="#global_settings"><?php _e('Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="smtp smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e('SMTP', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
-                            </li>
-                            <li class="aspect-ratio aspect-ratio-settings">
-                                <a title="Aspect ratio" href="#aspect_ratio_settings"><?php _e('Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
                             </li>
                             <li class="contact-info contact-info-settings">
                                 <a title="Contact Info" href="#contact_info_settings"><?php _e('Contact Info', EHD_PLUGIN_TEXT_DOMAIN); ?></a>
@@ -282,14 +281,14 @@ final class Options {
 	                <div id="ehd_content" class="tabs-content">
 		                <h2 class="hidden-text"></h2>
 
+		                <div id="aspect_ratio_settings" class="group tabs-panel">
+			                <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+		                </div>
 		                <div id="global_settings" class="group tabs-panel">
 			                <?php require __DIR__ . '/options/global.php'; ?>
 		                </div>
 		                <div id="smtp_settings" class="group tabs-panel">
 			                <?php require __DIR__ . '/options/smtp.php'; ?>
-		                </div>
-		                <div id="aspect_ratio_settings" class="group tabs-panel">
-			                <?php require __DIR__ . '/options/aspect-ratio.php'; ?>
 		                </div>
 		                <div id="contact_info_settings" class="group tabs-panel">
 			                <?php require __DIR__ . '/options/contact-info.php'; ?>
