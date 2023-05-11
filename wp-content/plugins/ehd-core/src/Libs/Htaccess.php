@@ -93,6 +93,49 @@ class Htaccess {
 	}
 
 	/**
+	 * Add rule to htaccess and enable it.
+	 *
+	 * @param string $old_rule
+	 * @param string $new_rule
+	 *
+	 * @return bool True on success, false otherwise.
+	 */
+	public function enable( string $old_rule = '', string $new_rule = ''): bool {
+		// Bail if htaccess doesn't exists.
+		if ( empty( $this->path ) ) {
+			return false;
+		}
+
+		// Bail if the rule is already enabled.
+		if ( $this->isEnabled() ) {
+			return true;
+		}
+
+		// Disable old rules first.
+		$content = preg_replace(
+			$old_rule,
+			'',
+			$this->wp_filesystem->get_contents( $this->path )
+		);
+
+		// Add the rule and write the new htaccess.
+		$content = $new_rule . PHP_EOL . $content;
+
+		// Return the result.
+		return Helper::doLockWrite( $this->path, $content );
+	}
+
+	/**
+	 * Toggle specific rule.
+	 *
+	 * @param  boolean $type Whether to enable or disable the rules.
+	 */
+	public function toggleRules( $type = 1 ): bool {
+		$this->setPath();
+		return ( 1 === $type ) ? $this->enable() : $this->disable();
+	}
+
+	/**
 	 * @param string $rules
 	 *
 	 * @return false|int
