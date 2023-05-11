@@ -17,6 +17,9 @@ final class AspectRatio {
 
 		// wp_enqueue_scripts
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 11 );
+
+		// set filter default
+		add_filter( 'ehd_aspect_ratio_post_type', [ &$this, 'aspect_ratio_post_type_default' ], 98, 1);
 	}
 
 	/**
@@ -26,12 +29,7 @@ final class AspectRatio {
 		$classes = [];
 		$styles  = '';
 
-		$post_type = [ 'post' ];
-		if ( class_exists( '\WooCommerce' ) ) {
-			$post_type = array_merge( $post_type, [ 'product' ] );
-		}
-
-		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', $post_type );
+		$ar_post_type_list = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 
 		foreach ( $ar_post_type_list as $ar_post_type ) {
 			$ratio_obj   = Helper::getAspectRatioClass( $ar_post_type, 'aspect_ratio__options' );
@@ -47,5 +45,19 @@ final class AspectRatio {
 		if ( $styles ) {
 			wp_add_inline_style( 'ehd-core-style', $styles );
 		}
+	}
+
+	/**
+	 * @param array $arr
+	 *
+	 * @return array
+	 */
+	public function aspect_ratio_post_type_default( array $arr ): array {
+		$new_arr = array_merge( $arr, [ 'post' ] );
+		if ( class_exists( '\WooCommerce' ) ) {
+			$new_arr = array_merge( $new_arr, [ 'product' ] );
+		}
+
+		return $new_arr;
 	}
 }

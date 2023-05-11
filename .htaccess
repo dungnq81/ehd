@@ -7,8 +7,6 @@
 # BEGIN ng
 SetEnv HTACCESS on
 
-Header unset Vary
-
 # Disable Directory Browsing
 Options -Indexes
 
@@ -42,6 +40,8 @@ Options -Indexes
 
 </IfModule>
 # END ng
+
+Header unset Vary
 
 # EHD XMLRPC Disable
 <Files xmlrpc.php>

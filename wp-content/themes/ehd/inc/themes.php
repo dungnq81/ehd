@@ -167,7 +167,6 @@ if ( ! function_exists( '__body_classes' ) ) {
 				|| str_contains( $class, 'page-template-default' )
 				|| str_contains( $class, 'no-customize-support' )
 				|| str_contains( $class, 'page-id-' )
-				//|| str_contains( $class, 'wvs-theme-' )
 			) {
 				$classes = array_diff( $classes, [ $class ] );
 			}

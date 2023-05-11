@@ -4,7 +4,7 @@ namespace EHD_Cores\Traits;
 
 use EHD_Walkers\Horizontal_Nav_Walker;
 use EHD_Walkers\Vertical_Nav_Walker;
-use EHD_CSS\CSS;
+use EHD_Libs\CSS;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;

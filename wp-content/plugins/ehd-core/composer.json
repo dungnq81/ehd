@@ -9,9 +9,11 @@
 	"autoload": {
 		"psr-4": {
 			"EHD_Cores\\": "src/Cores",
+			"EHD_Libs\\": "src/Libs",
 			"EHD_Plugins\\": "src/Plugins",
 			"EHD_Settings\\": "src/Settings",
 			"EHD_Themes\\": "src/Themes",
+			"EHD_Walkers\\": "src/Walkers",
 			"EHD_Widgets\\": "src/Widgets"
 		},
 		"exclude-from-classmap": [],
@@ -24,8 +26,6 @@
 		"matthiasmullie/minify": "^1.3.70",
 		"vectorface/whip": "^v0.4.0",
 		"deliciousbrains/wp-background-processing": "^1.1.0",
-		"mobiledetect/mobiledetectlib": "^3.74.0",
-		"ehd/ehd-css": "@dev",
-		"ehd/ehd-walkers": "@dev"
+		"mobiledetect/mobiledetectlib": "^3.74.0"
 	}
 }

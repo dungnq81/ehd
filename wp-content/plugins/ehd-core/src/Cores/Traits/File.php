@@ -133,34 +133,6 @@ trait File
 		                      ) . self::fileExtension( $filename ) : pathinfo( $filename, PATHINFO_FILENAME );
 	}
 
-    /**
-     * @param $dir
-     * @param bool $hidden
-     * @param $files
-     *
-     * @return array
-     */
-	public static function arrayDir( $dir, bool $hidden = false, $files = true ): array {
-		$result = [];
-		$dirs   = scandir( $dir );
-
-		foreach ( $dirs as $key => $value ) {
-			if ( ! in_array( $value, [ '.', '..' ] ) ) {
-				if ( is_dir( $dir . DIRECTORY_SEPARATOR . $value ) ) {
-					$result[ $value ] = self::arrayDir( $dir . DIRECTORY_SEPARATOR . $value, $hidden, $files );
-				}
-				elseif ( $files ) {
-					// hidden file
-					if ( ! str_starts_with( $value, '.' ) ) {
-						$result[] = $value;
-					}
-				}
-			}
-		}
-
-		return $result;
-	}
-
 	/**
 	 * @param $dirname
 	 *

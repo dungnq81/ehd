@@ -3,7 +3,7 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
-use EHD_CSS\CSS;
+use EHD_Libs\CSS;
 
 /**
  * Custom Login Class
@@ -11,7 +11,7 @@ use EHD_CSS\CSS;
  * @author eHD
  */
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
 final class Login {
 	public function __construct() {
