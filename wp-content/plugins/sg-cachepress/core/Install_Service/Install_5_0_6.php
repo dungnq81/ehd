@@ -7,6 +7,13 @@ use SiteGround_Optimizer\Memcache\Memcache;
 class Install_5_0_6 extends Install {
 
 	/**
+	 * Memcache instance.
+	 *
+	 * @var Memcache
+	 */
+	public $memcache;
+
+	/**
 	 * The default install version. Overridden by the installation packages.
 	 *
 	 * @since 5.0.5

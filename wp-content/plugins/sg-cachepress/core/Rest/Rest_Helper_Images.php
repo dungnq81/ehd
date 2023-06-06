@@ -9,6 +9,14 @@ use SiteGround_Optimizer\Message_Service\Message_Service;
  */
 class Rest_Helper_Images extends Rest_Helper {
 	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $options;
+	public $images_optimizer;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {

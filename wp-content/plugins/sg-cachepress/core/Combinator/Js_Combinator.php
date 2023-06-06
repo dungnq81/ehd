@@ -249,6 +249,7 @@ class Js_Combinator extends Abstract_Combinator {
 		'var jetReviewsWidget',
 		'var wpa_hidden_field',
 		'snaptr',
+		'function awbMapInit',
 	);
 
 	/**

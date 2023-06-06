@@ -2,10 +2,9 @@
 
 namespace EHD_Cores\Traits;
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
-trait File
-{
+trait File {
 	/**
 	 * @return mixed
 	 */
@@ -71,6 +70,7 @@ trait File
 	 * Reads entire file into a string
 	 *
 	 * @param string $file Name of the file to read.
+	 *
 	 * @return string|false Read data on success, false on failure.
 	 */
 	public static function fileRead( string $file ) {
@@ -89,7 +89,7 @@ trait File
 	/**
 	 * Update a file
 	 *
-	 * @param string $path    Full path to the file
+	 * @param string $path Full path to the file
 	 * @param string $content File content
 	 */
 	public static function fileUpdate( string $path, string $content = '' ) {
@@ -105,12 +105,35 @@ trait File
 		$wp_filesystem->put_contents( $path, $content );
 	}
 
-    /**
-     * @param      $filename
-     * @param bool $include_dot
-     *
-     * @return string
-     */
+	/**
+	 * Lock file and write something in it.
+	 *
+	 * @param string $content Content to add.
+	 *
+	 * @return bool    True on success, false otherwise.
+	 */
+	public static function doLockWrite( $path, string $content = '' ): bool {
+		$fp = fopen( $path, 'w+' );
+
+		if ( flock( $fp, LOCK_EX ) ) {
+			fwrite( $fp, $content );
+			flock( $fp, LOCK_UN );
+			fclose( $fp );
+
+			return true;
+		}
+
+		fclose( $fp );
+
+		return false;
+	}
+
+	/**
+	 * @param      $filename
+	 * @param bool $include_dot
+	 *
+	 * @return string
+	 */
 	public static function fileExtension( $filename, bool $include_dot = false ): string {
 		$dot = '';
 		if ( $include_dot === true ) {
@@ -120,12 +143,12 @@ trait File
 		return $dot . strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
 	}
 
-    /**
-     * @param      $filename
-     * @param bool $include_ext
-     *
-     * @return string
-     */
+	/**
+	 * @param      $filename
+	 * @param bool $include_ext
+	 *
+	 * @return string
+	 */
 	public static function fileName( $filename, bool $include_ext = false ): string {
 		return $include_ext ? pathinfo(
 			                      $filename,
@@ -151,26 +174,5 @@ trait File
 		}
 
 		return true;
-	}
-
-	/**
-	 * Lock file and write something in it.
-	 *
-	 * @param string $content Content to add.
-	 *
-	 * @return bool    True on success, false otherwise.
-	 */
-	public static function doLockWrite( $path, string $content = '' ): bool {
-		$fp = fopen( $path, 'w+' );
-
-		if ( flock( $fp, LOCK_EX ) ) {
-			fwrite( $fp, $content );
-			flock( $fp, LOCK_UN );
-			fclose( $fp );
-			return true;
-		}
-
-		fclose( $fp );
-		return false;
 	}
 }

@@ -7,6 +7,13 @@ use SiteGround_Helper\Helper_Service;
 class Install_5_7_4 extends Install {
 
 	/**
+	 * Htaccess instance.
+	 *
+	 * @var Htaccess
+	 */
+	public $htaccess;
+
+	/**
 	 * The default install version. Overridden by the installation packages.
 	 *
 	 * @since 5.7.4

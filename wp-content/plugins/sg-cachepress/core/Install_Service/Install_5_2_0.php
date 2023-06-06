@@ -5,6 +5,13 @@ use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Htaccess\Htaccess;
 
 class Install_5_2_0 extends Install {
+	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $htaccess;
+	public $options;
 
 	/**
 	 * The default install version. Overridden by the installation packages.

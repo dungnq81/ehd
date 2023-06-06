@@ -22,6 +22,7 @@ class Css_Combinator extends Abstract_Combinator {
 		'amelia_booking_styles',
 		'uag-style',
 		'buy_sell_ads_pro_template_stylesheet', // Too big file.
+		'fgt-public', // Flo Form Builder.
 	);
 
 	/**
@@ -198,7 +199,7 @@ class Css_Combinator extends Abstract_Combinator {
 	 * @return boolean     True if the style is excluded, false otherwise.
 	 */
 	public function is_excluded( $style ) {
-		if ( false !== @strpos( $style[0], 'media=' ) && ! preg_match( '/media=["\'](?:\s*|[^"\']*?\b(all|screen)\b[^"\']*?)["\']/i', $style[0] ) ) {
+		if ( false !== @strpos( $style[0], 'media=' ) && ! preg_match( '/(?<=\s)media=["\'](?:\s*|[^"\']*?\b(all|screen)\b[^"\']*?)["\']/i', $style[0] ) ) {
 			return true;
 		}
 

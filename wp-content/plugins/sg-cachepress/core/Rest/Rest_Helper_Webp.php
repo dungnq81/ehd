@@ -9,6 +9,14 @@ use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer_Webp;
  */
 class Rest_Helper_Webp extends Rest_Helper {
 	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $options;
+	public $webp_images_optimizer;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {

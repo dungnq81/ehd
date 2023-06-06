@@ -275,6 +275,7 @@ abstract class Abstract_Images_Optimizer {
 				WHERE `meta_key` = '" . $this->batch_skipped . "'
 				OR `meta_key` = '" . $this->process_map['attempts'] . "'
 				OR `meta_key` = '" . $this->process_map['failed'] . "'
+				OR `meta_key` = 'siteground_optimizer_original_filesize'
 			"
 		);
 	}

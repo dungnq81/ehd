@@ -7,6 +7,13 @@ namespace SiteGround_Optimizer\Heartbeat_Control;
 class Heartbeat_Control {
 
 	/**
+	 * Interval options
+	 *
+	 * @var array
+	 */
+	public $options;
+
+	/**
 	 * The default interval steps
 	 */
 	const INTERVAL_STEP = 30;

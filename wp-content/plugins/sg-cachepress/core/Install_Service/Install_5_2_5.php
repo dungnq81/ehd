@@ -6,6 +6,13 @@ use SiteGround_Optimizer\Options\Options;
 class Install_5_2_5 extends Install {
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	public $options;
+
+	/**
 	 * The default install version. Overridden by the installation packages.
 	 *
 	 * @since 5.2.5

@@ -18,6 +18,13 @@ class Campaign_Service {
 	public $campaign_steps;
 
 	/**
+	 * The campaign service email.
+	 *
+	 * @var Email_Service
+	 */
+	public $campaign_service_email;
+
+	/**
 	 * The Constructor.
 	 *
 	 * @since 7.1.0

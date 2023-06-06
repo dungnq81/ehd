@@ -45,6 +45,12 @@ use SiteGround_Optimizer\Supercacher\Supercacher;
  * @since  5.0.0
  */
 class Install_Service {
+	/**
+	 * Array, containing all installs.
+	 *
+	 * @var array
+	 */
+	public $installs;
 
 	public function __construct() {
 		// Get the install services.

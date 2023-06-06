@@ -1,0 +1,7 @@
+{
+    "0" : "= 6.0.6 24/05/2023 =",
+    "1" : "* FIXED - PRICES & CURRENCIES - Prices and Currencies by Country - Fixed price & currency when users apply the country from the URL.",
+    "2" : "* FIXED - SHIPPING & ORDERS - Shipping Options - Fixed the compatibility issue for the Shipping Methods by Users Module and Shipping Options Module.",
+    "3" : "* WooCommerce 7.7.0 Tested",
+    "4" : "* WordPress 6.2.2 Tested"
+}

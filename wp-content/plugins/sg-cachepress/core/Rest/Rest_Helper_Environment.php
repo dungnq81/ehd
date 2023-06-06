@@ -12,6 +12,15 @@ use SiteGround_Optimizer\File_Cacher\File_Cacher;
 class Rest_Helper_Environment extends Rest_Helper {
 
 	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $ssl;
+	public $options;
+	public $heartbeat_control;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {

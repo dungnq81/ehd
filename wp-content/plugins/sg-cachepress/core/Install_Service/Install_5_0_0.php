@@ -6,6 +6,13 @@ use SiteGround_Optimizer\Htaccess\Htaccess;
 use SiteGround_Optimizer\Ssl\Ssl;
 
 class Install_5_0_0 extends Install {
+	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $htaccess;
+	public $ssl;
 
 	/**
 	 * The default install version. Overridden by the installation packages.

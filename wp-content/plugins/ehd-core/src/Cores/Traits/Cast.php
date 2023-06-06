@@ -2,14 +2,13 @@
 
 namespace EHD_Cores\Traits;
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
-trait Cast
-{
+trait Cast {
 	use Base;
 	use Arr;
 
-    // --------------------------------------------------
+	// --------------------------------------------------
 
 	/**
 	 * @param mixed $value

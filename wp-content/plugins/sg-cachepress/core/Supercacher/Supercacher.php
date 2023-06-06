@@ -12,6 +12,14 @@ use SiteGround_Optimizer\Site_Tools_Client\Site_Tools_Client;
  * SG CachePress main plugin class
  */
 class Supercacher {
+	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $supercacher_comments;
+	public $supercacher_posts;
+	public $supercacher_terms;
 
 	/**
 	 * The children classes and their hooks and options.

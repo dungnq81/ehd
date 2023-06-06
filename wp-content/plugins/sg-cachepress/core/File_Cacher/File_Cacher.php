@@ -134,6 +134,13 @@ class File_Cacher extends Supercacher {
 	public $preheat;
 
 	/**
+	 * Option value for logged in cache enabled.
+	 *
+	 * @var int
+	 */
+	public $logged_in_cache;
+
+	/**
 	 * Construct of the class.
 	 *
 	 * @since 7.0.0

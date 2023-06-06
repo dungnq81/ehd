@@ -12,6 +12,20 @@ class Rest {
 	const REST_NAMESPACE = 'siteground-optimizer/v1';
 
 	/**
+	 * Local Variables.
+	 *
+	 * @var mixed
+	 */
+	public $rest_helper_webp;
+	public $rest_helper_options;
+	public $rest_helper_cache;
+	public $rest_helper_multisite;
+	public $rest_helper_misc;
+	public $rest_helper_images;
+	public $rest_helper_environment;
+	public $rest_helper_dashboard;
+
+	/**
 	 * Dependencies.
 	 *
 	 * @since 5.9.0

@@ -187,7 +187,7 @@ trait Base {
 	 *
 	 * @return string
 	 */
-	public static function youtubeImage( $url, array $resolution = [] ) : string {
+	public static function youtubeImage( $url, array $resolution = [] ): string {
 		if ( ! $url ) {
 			return '';
 		}

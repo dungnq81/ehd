@@ -18,6 +18,18 @@ use SiteGround_Optimizer\File_Cacher\File_Cacher;
  */
 class Rest_Helper_Options extends Rest_Helper {
 	/**
+	 * Local variables.
+	 *
+	 * @var mixed
+	 */
+	public $options;
+	public $multisite;
+	public $htaccess_service;
+	public $analysis;
+	public $images_optimizer;
+	public $heartbeat_control;
+
+	/**
 	 * The options map.
 	 *
 	 * @var array

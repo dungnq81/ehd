@@ -2,7 +2,6 @@
 
 namespace EHD_Plugins\WooCommerce;
 
-use EHD_Cores\Helper;
 use EHD_Plugins\WooCommerce\Widgets\MiniCart_Widget;
 use EHD_Plugins\WooCommerce\Widgets\Products_Widget;
 use EHD_Plugins\WooCommerce\Widgets\ProductsCarousel_Widget;

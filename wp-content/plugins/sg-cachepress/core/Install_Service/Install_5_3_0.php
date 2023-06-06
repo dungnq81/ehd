@@ -6,6 +6,13 @@ use SiteGround_Optimizer\Options\Options;
 use SiteGround_Helper\Helper_Service;
 
 class Install_5_3_0 extends Install {
+	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $htaccess_service;
+	public $options_service;
 
 	/**
 	 * The default install version. Overridden by the installation packages.

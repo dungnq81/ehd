@@ -15,6 +15,40 @@ use SiteGround_Data\Settings;
  */
 class Loader {
 	use Factory_Trait;
+
+	/**
+	 * Local variables.
+	 *
+	 * @var mixed
+	 */
+	public $admin_bar;
+	public $settings_page;
+	public $settings;
+	public $helper;
+	public $helper_service;
+	public $i18n_service;
+	public $emojis_removal;
+	public $lazy_load;
+	public $minifier;
+	public $parser;
+	public $admin;
+	public $modules;
+	public $install_service;
+	public $ssl;
+	public $file_cacher;
+	public $supercacher;
+	public $supercacher_helper;
+	public $heartbeat_control;
+	public $cli;
+	public $images_optimizer_webp;
+	public $images_optimizer;
+	public $front_end_optimization;
+	public $memcache;
+	public $config;
+	public $rest;
+	public $database_optimizer;
+	public $campaign_service;
+
 	/**
 	 * Configuration map array.
 	 *

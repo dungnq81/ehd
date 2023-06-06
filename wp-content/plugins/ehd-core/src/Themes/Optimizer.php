@@ -10,7 +10,7 @@ use EHD_Cores\Helper;
  * @author eHD
  */
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
 final class Optimizer {
 	public function __construct() {
@@ -56,54 +56,54 @@ final class Optimizer {
 
 	// ------------------------------------------------------
 
-    /**
-     * Launching operation cleanup
-     *
-     * @return void
-     */
-    private function _cleanup() : void {
-	    remove_action( 'welcome_panel', 'wp_welcome_panel' );
+	/**
+	 * Launching operation cleanup
+	 *
+	 * @return void
+	 */
+	private function _cleanup(): void {
+		remove_action( 'welcome_panel', 'wp_welcome_panel' );
 
-	    // wp_head
-	    remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
-	    remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
-	    remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
-	    remove_action( 'wp_head', 'feed_links_extra', 3 );             // remove comments feed.
-	    remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
+		// wp_head
+		remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
+		remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
+		remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
+		remove_action( 'wp_head', 'feed_links_extra', 3 );             // remove comments feed.
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
-	    // All actions related to emojis
-	    remove_action( 'wp_print_styles', 'print_emoji_styles' );
-	    remove_action( 'admin_print_styles', 'print_emoji_styles' );
-	    remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		// All actions related to emojis
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		remove_action( 'admin_print_styles', 'print_emoji_styles' );
+		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
-	    /**
-	     * Remove wp-json header from WordPress
-	     * Note that the REST API functionality will still be working as it used to;
-	     * this only removes the header code that is being inserted.
-	     */
-	    remove_action( 'wp_head', 'rest_output_link_wp_head' );
-	    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
-	    remove_action( 'template_redirect', 'rest_output_link_header', 11 );
+		/**
+		 * Remove wp-json header from WordPress
+		 * Note that the REST API functionality will still be working as it used to;
+		 * this only removes the header code that is being inserted.
+		 */
+		remove_action( 'wp_head', 'rest_output_link_wp_head' );
+		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+		remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 
-	    // Staticize emoji
-	    remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
-	    remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-	    remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+		// Staticize emoji
+		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 
-	    // Remove id li navigation
-	    add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
+		// Remove id li navigation
+		add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
 
-	    // Adding Shortcode in WordPress Using Custom HTML Widget
-	    add_filter( 'widget_text', 'do_shortcode' );
-	    add_filter( 'widget_text', 'shortcode_unautop' );
+		// Adding Shortcode in WordPress Using Custom HTML Widget
+		add_filter( 'widget_text', 'do_shortcode' );
+		add_filter( 'widget_text', 'shortcode_unautop' );
 
-	    // Normalize upload filename
-	    add_filter( 'sanitize_file_name', function ( $filename ) {
-		    return remove_accents( $filename );
-	    }, 10, 1 );
-    }
+		// Normalize upload filename
+		add_filter( 'sanitize_file_name', function ( $filename ) {
+			return remove_accents( $filename );
+		}, 10, 1 );
+	}
 
-    // ------------------------------------------------------
+	// ------------------------------------------------------
 
 	/**
 	 * @param $actions
@@ -135,14 +135,14 @@ final class Optimizer {
 		return $actions;
 	}
 
-    // ------------------------------------------------------
+	// ------------------------------------------------------
 
 	/**
 	 * @return void
 	 */
 	public function print_footer_scripts(): void {
 		?>
-		<script>document.documentElement.classList.remove("no-js");
+        <script>document.documentElement.classList.remove("no-js");
             if (-1 !== navigator.userAgent.toLowerCase().indexOf('msie') || -1 !== navigator.userAgent.toLowerCase().indexOf('trident/')) {
                 document.documentElement.classList.add('is-IE');
             }</script>
@@ -173,7 +173,7 @@ final class Optimizer {
 		}
 	}
 
-    // ------------------------------------------------------
+	// ------------------------------------------------------
 
 	/**
 	 * @return void
@@ -259,8 +259,8 @@ final class Optimizer {
 	// ------------------------------------------------------
 
 	/**
-     * Search only in post title or excerpt
-     *
+	 * Search only in post title or excerpt
+	 *
 	 * @param $search
 	 * @param $wp_query
 	 *

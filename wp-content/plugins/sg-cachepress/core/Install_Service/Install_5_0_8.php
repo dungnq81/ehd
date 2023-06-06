@@ -7,6 +7,14 @@ use SiteGround_Optimizer\Htaccess\Htaccess;
 class Install_5_0_8 extends Install {
 
 	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $htaccess;
+	public $options;
+
+	/**
 	 * The default install version. Overridden by the installation packages.
 	 *
 	 * @since 5.0.8

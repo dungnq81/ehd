@@ -2,16 +2,15 @@
 
 namespace EHD_Cores\Traits;
 
-\defined('ABSPATH') || die;
+\defined( 'ABSPATH' ) || die;
 
-trait Str
-{
+trait Str {
 	/**
 	 * https://github.com/cofirazak/phpMissingFunctions
 	 *
 	 * Replicates php's ucfirst() function with multibyte support.
 	 *
-	 * @param string      $str      The string being converted.
+	 * @param string $str The string being converted.
 	 * @param null|string $encoding Optional encoding parameter is the character encoding.
 	 *                              If it is omitted, the internal character encoding value will be used.
 	 *
@@ -227,29 +226,29 @@ trait Str
 		return mb_convert_case( $value, MB_CASE_TITLE, 'UTF-8' );
 	}
 
-    /**
-     * Keywords
-     *
-     * Takes multiple words separated by spaces and changes them to keywords
-     * Makes sure the keywords are separated by a comma followed by a space.
-     *
-     * @param string $str The keywords as a string, separated by whitespace.
-     *
-     * @return string The list of keywords in a comma separated string form.
-     */
+	/**
+	 * Keywords
+	 *
+	 * Takes multiple words separated by spaces and changes them to keywords
+	 * Makes sure the keywords are separated by a comma followed by a space.
+	 *
+	 * @param string $str The keywords as a string, separated by whitespace.
+	 *
+	 * @return string The list of keywords in a comma separated string form.
+	 */
 	public static function keyWords( string $str ): string {
 		$str = preg_replace( '/(\v|\s){1,}/u', ' ', $str );
 
 		return preg_replace( '/[\s]+/', ', ', trim( $str ) );
 	}
 
-    /**
-     * @param string $value
-     * @param int    $length
-     * @param string $end
-     *
-     * @return string
-     */
+	/**
+	 * @param string $value
+	 * @param int $length
+	 * @param string $end
+	 *
+	 * @return string
+	 */
 	public static function truncate( $value, $length, string $end = '' ): string {
 		return mb_strwidth( $value, 'UTF-8' ) > $length
 			? mb_substr( $value, 0, $length, 'UTF-8' ) . $end

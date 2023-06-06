@@ -343,18 +343,6 @@ add_filter( 'ehd_aspect_ratio_default_list', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
-/** Array containing all plugins using XML-RPC */
-add_filter( 'ehd_xml_rpc_plugins', function ( array $arr ) {
-	$update_arr = [
-		'jetpack/jetpack.php',
-	];
-
-	return array_merge( $arr, $update_arr );
-
-}, 99, 1 );
-
-/** ---------------------------------------- */
-
 /** Aspect Ratio */
 add_filter( 'ehd_aspect_ratio_post_type', function ( array $arr ) {
 

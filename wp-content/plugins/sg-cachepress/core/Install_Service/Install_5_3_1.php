@@ -5,6 +5,12 @@ use SiteGround_Optimizer\Ssl\Ssl;
 use SiteGround_Optimizer\Options\Options;
 
 class Install_5_3_1 extends Install {
+	/**
+	 * Local variables
+	 *
+	 * @var Ssl
+	 */
+	public $ssl_service;
 
 	/**
 	 * The default install version. Overridden by the installation packages.

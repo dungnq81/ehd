@@ -14,6 +14,15 @@ use SiteGround_Helper\Helper_Service;
 class Rest_Helper_Cache extends Rest_Helper {
 
 	/**
+	 * Local variables
+	 *
+	 * @var mixed
+	 */
+	public $memcache;
+	public $options;
+	public $htaccess;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {

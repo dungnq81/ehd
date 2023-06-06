@@ -5,6 +5,7 @@
 # END WordPress
 
 # BEGIN ng
+
 SetEnv HTACCESS on
 
 # Disable Directory Browsing
@@ -39,13 +40,5 @@ Options -Indexes
     Header always set Content-Security-Policy "upgrade-insecure-requests;"
 
 </IfModule>
+
 # END ng
-
-Header unset Vary
-
-# EHD XMLRPC Disable
-<Files xmlrpc.php>
-	order deny,allow
-	deny from all
-</Files>
-# EHD XMLRPC Disable END

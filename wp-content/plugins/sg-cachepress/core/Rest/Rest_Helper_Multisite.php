@@ -9,6 +9,13 @@ use SiteGround_Optimizer\Multisite\Multisite;
  */
 class Rest_Helper_Multisite {
 	/**
+	 * Local variables
+	 *
+	 * @var Multisite
+	 */
+	public $multisite;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {

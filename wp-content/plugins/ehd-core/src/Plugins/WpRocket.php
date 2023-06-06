@@ -15,7 +15,7 @@ use EHD_Cores\Helper;
 final class WpRocket {
 	public function __construct() {
 
-		/** server does not support using .htaccess */
+		/** Server does not support using .htaccess */
 		if ( ! Helper::htAccess() ) {
 
 			// Remove rewrite rules block of WP Rocket from .htaccess.

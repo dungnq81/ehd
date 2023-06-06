@@ -248,25 +248,36 @@ class Front_End_Optimization {
 	 * @param string $src    Script src.
 	 */
 	public function add_async_attribute( $tag, $handle, $src ) {
-		if ( @strpos( $src, 'siteground-async=1' ) !== false ) {
-			$new_src = remove_query_arg( 'siteground-async', $src );
-			// return the tag with the async attribute.
-			return str_replace(
-				array(
-					'<script ',
-					'-siteground-async',
-					$src,
-					'?#038;',
-				),
-				array(
-					'<script defer ',
-					'',
-					$new_src,
-					'?',
-				),
-				$tag
-			);
+		// Bail if we do not find the argument.
+		if ( @strpos( $src, 'siteground-async=1' ) === false ) {
+			return $tag;
 		}
+
+		// Add the async attribute and replace the & and ? with their proper representation.
+		$tag = str_replace(
+			array(
+				'<script ',
+				'-siteground-async',
+				'?#038;',
+				'&#038;',
+			),
+			array(
+				'<script defer ',
+				'',
+				'?',
+				'&',
+			),
+			$tag
+		);
+
+		// Match the async argument and replace it with the proper symbol, depending of the position of the argument.
+		$tag = preg_replace_callback(
+			'/([\?&])siteground-async=1(&|$|\b)/',
+			function( $matches ) {
+				return empty( $matches[2] ) ? '' : $matches[1];
+			},
+			$tag
+		);
 
 		return $tag;
 	}

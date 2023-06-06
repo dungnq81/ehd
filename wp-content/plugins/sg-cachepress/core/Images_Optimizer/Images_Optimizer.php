@@ -187,6 +187,14 @@ class Images_Optimizer extends Abstract_Images_Optimizer {
 			}
 		}
 
+		// Save the original filesize in new post meta.
+		update_post_meta( $id, 'siteground_optimizer_original_filesize', $metadata['filesize'] ) ;
+		// Replace the filesize in the metadata.
+		$metadata['filesize'] = filesize( $main_image );
+
+		// Update the attachment metadata.
+		wp_update_attachment_metadata( $id, $metadata );
+
 		// Everything ran smoothly.
 		update_post_meta( $id, 'siteground_optimizer_is_optimized', 1 );
 		return true;
@@ -410,12 +418,13 @@ class Images_Optimizer extends Abstract_Images_Optimizer {
 
 		exec( "find $basedir -regextype posix-extended -type f -regex '.*bak.(png|jpg|jpeg|gif)$' -exec rename '.bak' '' {} \;", $output, $result );
 
+		// Reset the images metadata.
+		$this->reset_images_filesize_meta();
+		// Reset the optimization status.
 		$this->reset_image_optimization_status();
 
 		return $result;
 	}
-
-
 
 	/**
 	 * Delete the backup image on image delete.
@@ -542,5 +551,43 @@ class Images_Optimizer extends Abstract_Images_Optimizer {
 		}
 		// Returns the modified array.
 		return $sizes;
+	}
+
+	/**
+	 * Reset the restored images original filesize in the metadata.
+	 *
+	 * @since  7.3.2
+	 */
+	public function reset_images_filesize_meta() {
+		// Get all images with backup filesize metadata available.
+		$images = get_posts(
+			array(
+				'post_type'      => 'attachment',
+				'post_mime_type' => 'image',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'meta_query'     => array(
+					array(
+						'key'     => 'siteground_optimizer_original_filesize',
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		);
+
+		// Bail if we have no images with backup filesize metadata.
+		if ( empty( $images ) ) {
+			return;
+		}
+
+		// Restore the filesize metadata.
+		foreach( $images as $image_id ) {
+			// Get the image metadata.
+			$metadata = wp_get_attachment_metadata( $image_id );
+			// Restore the original filesize metdata.
+			$metadata['filesize'] = get_post_meta( $image_id, 'siteground_optimizer_original_filesize', true );
+			// Update the attachment metadata.
+			wp_update_attachment_metadata( $image_id, $metadata );
+		}
 	}
 }
