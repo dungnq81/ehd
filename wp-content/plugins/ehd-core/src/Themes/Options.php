@@ -3,6 +3,7 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
+use EHD_Libs\Readme_File;
 use PHPMailer\PHPMailer\Exception;
 use MatthiasMullie\Minify;
 
@@ -14,7 +15,15 @@ use MatthiasMullie\Minify;
  * @author eHD
  */
 final class Options {
+
+	/**
+	 * @var array|false|mixed
+	 */
+	public $block_editor_options = [];
+
 	public function __construct() {
+
+		$this->block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
@@ -39,9 +48,6 @@ final class Options {
 		/** Block editor */
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
 
-		/** Security */
-		$this->_disable_XMLRPC();
-
 		/** Custom CSS */
 		// add_action( 'wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99 );
 		add_action( 'wp_head', [ &$this, 'header_custom_css' ], 98 );
@@ -53,7 +59,6 @@ final class Options {
 	 * @return void
 	 */
 	public function header_custom_css() {
-
 		/** Custom CSS */
 		$css = Helper::getCustomPostContent( 'ehd_css', false );
 
@@ -74,55 +79,8 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	private function _disable_XMLRPC() {
-		$security_options = Helper::getOption( 'security__options', false, false );
-		$xml_rpc_off      = $security_options['xml_rpc_off'] ? 1 : 0;
-		if ( 1 === $xml_rpc_off ) {
-
-			// Disable XML-RPC authentication
-			if ( is_admin() ) {
-				update_option( 'default_ping_status', 'closed' );
-			}
-
-			add_filter( 'xmlrpc_enabled', '__return_false' );
-			add_filter( 'pre_update_option_enable_xmlrpc', '__return_false' );
-			add_filter( 'pre_option_enable_xmlrpc', '__return_zero' );
-
-			/**
-			 * unset XML-RPC headers
-			 *
-			 * @param array $headers The array of wp headers
-			 */
-			add_filter( 'wp_headers', function ( $headers ) {
-				if ( isset( $headers['X-Pingback'] ) ) {
-					unset( $headers['X-Pingback'] );
-				}
-
-				return $headers;
-			}, 10, 1 );
-
-			/**
-			 * unset XML-RPC methods for ping-backs
-			 *
-			 * @param array $methods The array of xml-rpc methods
-			 */
-			add_filter( 'xmlrpc_methods', function ( $methods ) {
-				unset( $methods['pingback.ping'] );
-				unset( $methods['pingback.extensions.getPingbacks'] );
-
-				return $methods;
-			}, 10, 1 );
-		}
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * @return void
-	 */
-	public function enqueue_scripts() {
-		$block_editor_options = Helper::getOption( 'block_editor__options' );
-		$block_style_off      = $block_editor_options['block_style_off'] ?? '';
+	public function editor_enqueue_scripts() {
+		$block_style_off = $this->block_editor_options['block_style_off'] ?? '';
 
 		/** Remove block CSS */
 		if ( $block_style_off ) {
@@ -136,9 +94,9 @@ final class Options {
 			}
 		}
 
-		$use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
-		$gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
-		$use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
+		$use_widgets_block_editor_off           = $this->block_editor_options['use_widgets_block_editor_off'] ?? '';
+		$gutenberg_use_widgets_block_editor_off = $this->block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
+		$use_block_editor_for_post_type_off     = $this->block_editor_options['use_block_editor_for_post_type_off'] ?? '';
 
 		// Disables the block editor from managing widgets.
 		if ( $use_widgets_block_editor_off ) {

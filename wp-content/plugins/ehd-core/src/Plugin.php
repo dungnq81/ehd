@@ -9,6 +9,7 @@ use EHD_Themes\Admin_Options;
 use EHD_Themes\Login;
 use EHD_Themes\Optimizer;
 use EHD_Themes\Options;
+use EHD_Themes\Security;
 use EHD_Themes\Shortcode;
 
 use EHD_Plugins\ACF;
@@ -179,6 +180,7 @@ final class Plugin {
 		( new Login() );
 		( new Optimizer() );
 		( new Options() );
+		( new Security() );
 		( new Shortcode() )::init();
 	}
 }

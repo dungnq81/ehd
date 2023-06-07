@@ -32,7 +32,7 @@ trait Url {
 	 * @return string
 	 */
 	public static function home( string $path = '' ): string {
-		return trailingslashit( network_home_url( $path ) );
+		return trailingslashit( esc_url( network_home_url( $path ) ) );
 	}
 
 	/**

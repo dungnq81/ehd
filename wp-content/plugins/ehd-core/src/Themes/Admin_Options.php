@@ -3,6 +3,7 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
+use EHD_Libs\Readme_File;
 
 /**
  * Options Class
@@ -100,6 +101,8 @@ final class Admin_Options {
 			    wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN ) );
 		    }
 
+		    // ------------------------------------------------------
+
 		    /** Custom Scripts */
 		    $html_header      = $_POST['html_header'] ?? '';
 		    $html_footer      = $_POST['html_footer'] ?? '';
@@ -110,6 +113,8 @@ final class Admin_Options {
 		    Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
 		    Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
 		    Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
+
+		    // ------------------------------------------------------
 
 		    /** SMTP Settings */
 		    $smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
@@ -145,6 +150,8 @@ final class Admin_Options {
 
 		    Helper::updateOption( 'smtp__options', $smtp_options, true );
 
+		    // ------------------------------------------------------
+
 		    /** Aspect Ratio */
 		    $aspect_ratio_options = [];
 		    $ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [] );
@@ -154,6 +161,8 @@ final class Admin_Options {
 		    }
 
 		    Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options, false );
+
+		    // ------------------------------------------------------
 
 		    /** Contact info */
 		    $contact_info_options = [
@@ -167,6 +176,8 @@ final class Admin_Options {
 
 		    $html_contact_info_others = $_POST['contact_info_others'] ?? '';
 		    Helper::updateCustomPost( $html_contact_info_others, 'html_others', 'text/html', false );
+
+		    // ------------------------------------------------------
 
 		    /** Contact Button */
 		    $contact_btn_options = [
@@ -182,6 +193,8 @@ final class Admin_Options {
 		    $html_contact_popup_content = $_POST['contact_popup_content'] ?? '';
 		    Helper::updateCustomPost( $html_contact_popup_content, 'html_contact', 'text/html', false );
 
+		    // ------------------------------------------------------
+
 		    /** Block editor */
 		    $block_editor_options = [
 			    'use_widgets_block_editor_off'           => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
@@ -192,6 +205,8 @@ final class Admin_Options {
 
 		    Helper::updateOption( 'block_editor__options', $block_editor_options, true );
 
+		    // ------------------------------------------------------
+
 			/** Security */
 		    $security_options = [
 			    'xml_rpc_off'   => ! empty( $_POST['xml_rpc_off'] ) ? sanitize_text_field( $_POST['xml_rpc_off'] ) : '',
@@ -199,11 +214,21 @@ final class Admin_Options {
 			    'rss_feed_off'  => ! empty( $_POST['rss_feed_off'] ) ? sanitize_text_field( $_POST['rss_feed_off'] ) : '',
 		    ];
 
+            // readme.html
+		    if ( $security_options['remove_readme'] ) {
+			    $readme = new Readme_File();
+			    $readme->delete_readme();
+		    }
+
 		    Helper::updateOption( 'security__options', $security_options, true );
+
+		    // ------------------------------------------------------
 
 		    /** Custom CSS */
 		    $html_custom_css = $_POST['html_custom_css'] ?? '';
 		    Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
+
+		    // ------------------------------------------------------
 
 		    /** Echo message success */
 		    Helper::messageSuccess( 'Settings saved' );

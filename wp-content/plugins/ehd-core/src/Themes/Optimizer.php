@@ -68,7 +68,6 @@ final class Optimizer {
 		remove_action( 'wp_head', 'rsd_link' );                        // Remove the EditURI/RSD link
 		remove_action( 'wp_head', 'wlwmanifest_link' );                // Remove Windows Live Writer Manifest link
 		remove_action( 'wp_head', 'wp_generator' );                    // remove WordPress Generator
-		remove_action( 'wp_head', 'feed_links_extra', 3 );             // remove comments feed.
 		remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); // Emoji detection script.
 
 		// All actions related to emojis

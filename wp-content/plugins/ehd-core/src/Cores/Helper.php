@@ -55,45 +55,6 @@ final class Helper {
 		}
 	}
 
-	// --------------------------------------------------
-
-	/**
-	 * @return string[]
-	 */
-	public static function getSqlOperators(): array {
-		$compare                = self::getMetaCompare();
-		$compare['IS NULL']     = 'IS NULL';
-		$compare['IS NOT NULL'] = 'IS NOT NULL';
-
-		return $compare;
-	}
-
-	/**
-	 * @return string[]
-	 */
-	public static function getMetaCompare(): array {
-		// meta_compare (string) - Operator to test the 'meta_value'. Possible values are '=', '!=', '>', '>=', '<', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN', 'NOT EXISTS', 'REGEXP', 'NOT REGEXP' or 'RLIKE'. Default value is '='.
-		return [
-			'='           => '=',
-			'>'           => '&gt;',
-			'>='          => '&gt;=',
-			'<'           => '&lt;',
-			'<='          => '&lt;=',
-			'!='          => '!=',
-			'LIKE'        => 'LIKE',
-			'RLIKE'       => 'RLIKE',
-			'NOT LIKE'    => 'NOT LIKE',
-			'IN'          => 'IN (...)',
-			'NOT IN'      => 'NOT IN (...)',
-			'BETWEEN'     => 'BETWEEN',
-			'NOT BETWEEN' => 'NOT BETWEEN',
-			'EXISTS'      => 'EXISTS',
-			'NOT EXISTS'  => 'NOT EXISTS',
-			'REGEXP'      => 'REGEXP',
-			'NOT REGEXP'  => 'NOT REGEXP'
-		];
-	}
-
 	// -------------------------------------------------------------
 
 	/**

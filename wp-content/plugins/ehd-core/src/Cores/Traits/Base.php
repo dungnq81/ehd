@@ -182,6 +182,36 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
+	 * Search an IP range for a given IP.
+	 *
+	 * @param  string $ip    The ip to be searched for.
+	 * @param string $range The range to be searched in.
+	 *
+	 * @return bool          True, if IP is contained in the range.
+	 *
+	 */
+	public function ipInRange( string $ip, string $range ): bool {
+		$range = explode( '/', $range );
+		// Get the netmask from the range.
+		$netmask = $range[1];
+		// Get the base range ip and convert to long.
+		$start_ip = ip2long( $range[0] );
+		// Get the count of the possible IPs.
+		$ip_count = 1 << ( 32 - $netmask );
+
+		// Iterate through all possible IPs and return true on match, false if not found.
+		for ( $i = 0; $i < $ip_count - 1; $i ++ ) {
+			if ( long2ip( ( $start_ip + $i ) ) === $ip ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param       $url
 	 * @param array $resolution
 	 *
@@ -359,5 +389,44 @@ trait Base {
 		                   . 'else document.write(unescape(l[i]));'
 		                   . '}'
 		                   . '</script>' );
+	}
+
+	// --------------------------------------------------
+
+	/**
+	 * @return string[]
+	 */
+	public static function getSqlOperators(): array {
+		$compare                = self::getMetaCompare();
+		$compare['IS NULL']     = 'IS NULL';
+		$compare['IS NOT NULL'] = 'IS NOT NULL';
+
+		return $compare;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function getMetaCompare(): array {
+		// meta_compare (string) - Operator to test the 'meta_value'. Possible values are '=', '!=', '>', '>=', '<', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN', 'NOT EXISTS', 'REGEXP', 'NOT REGEXP' or 'RLIKE'. Default value is '='.
+		return [
+			'='           => '=',
+			'>'           => '&gt;',
+			'>='          => '&gt;=',
+			'<'           => '&lt;',
+			'<='          => '&lt;=',
+			'!='          => '!=',
+			'LIKE'        => 'LIKE',
+			'RLIKE'       => 'RLIKE',
+			'NOT LIKE'    => 'NOT LIKE',
+			'IN'          => 'IN (...)',
+			'NOT IN'      => 'NOT IN (...)',
+			'BETWEEN'     => 'BETWEEN',
+			'NOT BETWEEN' => 'NOT BETWEEN',
+			'EXISTS'      => 'EXISTS',
+			'NOT EXISTS'  => 'NOT EXISTS',
+			'REGEXP'      => 'REGEXP',
+			'NOT REGEXP'  => 'NOT REGEXP'
+		];
 	}
 }
