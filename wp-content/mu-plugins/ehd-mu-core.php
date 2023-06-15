@@ -4,7 +4,7 @@
  * Plugin Name: eHD mu-core
  * Plugin URI: https://webhd.vn
  * Description: Core plugin for EHD Theme
- * Version: 1.0.2
+ * Version: 0.23.06
  * Requires PHP: 7.4
  * Author: eHD Team
  * Author URI: https://webhd.vn

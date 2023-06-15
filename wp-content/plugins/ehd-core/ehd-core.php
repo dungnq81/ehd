@@ -3,7 +3,7 @@
  * Plugin Name: eHD Core
  * Plugin URI: https://webhd.vn
  * Description: Core plugin for EHD Theme
- * Version: 0.23.05
+ * Version: 0.23.06
  * Requires PHP: 7.4
  * Author: eHD Team
  * Author URI: https://webhd.vn
@@ -44,4 +44,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 require_once EHD_PLUGIN_PATH . 'src/Plugin.php';
 
-( new Plugin() );
+$plugin = new Plugin();
+
+register_activation_hook( __FILE__, [ &$plugin, 'activate' ] );
+register_deactivation_hook( __FILE__, [ &$plugin, 'deactivate' ] );

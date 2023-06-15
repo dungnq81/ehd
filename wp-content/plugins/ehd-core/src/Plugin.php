@@ -183,4 +183,8 @@ final class Plugin {
 		( new Security() );
 		( new Shortcode() )::init();
 	}
+
+	public function activate() {}
+
+	public function deactivate() {}
 }

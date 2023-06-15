@@ -4,7 +4,7 @@ Tags: nginx, caching, speed, memcache, memcached, performance, siteground, nginx
 Requires at least: 4.7
 Requires PHP: 7.0
 Tested up to: 6.2
-Stable tag: 7.3.2
+Stable tag: 7.3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -464,6 +464,11 @@ Our plugin uses a cookie in order to function properly. It does not store person
 1. Go to Plugins -> Installed Plugins and click the 'Activate' link under the WordPress SiteGround Optimizer listing
 
 == Changelog ==
+
+= Version 7.3.3 =
+Release Date: June 8th, 2023
+
+* Downgraded wp-background-processing external lib due to incompatibility with third party themes and plugins.
 
 = Version 7.3.2 =
 Release Date: June 6th, 2023

@@ -28,6 +28,6 @@ mix
     // .js(resources + '/js/plugins-dev/passive-events-fix.js', assets + '/js/plugins')
     // .js(resources + '/js/plugins-dev/load-scripts.js', assets + '/js/plugins')
 
-    .js(resources + '/js/login.js', assets + '/js')
+    //.js(resources + '/js/login.js', assets + '/js')
     .js(resources + '/js/admin.js', assets + '/js')
     .js(resources + '/js/ehd.js', assets + '/js');

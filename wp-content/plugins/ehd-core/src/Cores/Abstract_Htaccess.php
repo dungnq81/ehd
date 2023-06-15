@@ -5,12 +5,14 @@ namespace EHD_Cores;
 /**
  * Htaccess Class
  *
- * @author WEBHD
+ * @author SiteGround Security
+ *
+ * Modified by NTH for eHD theme
  */
 
 \defined( 'ABSPATH' ) || die;
 
-abstract class Htaccess {
+abstract class Abstract_Htaccess {
 	/**
 	 * WordPress filesystem.
 	 *
@@ -26,20 +28,6 @@ abstract class Htaccess {
 	public ?string $path = null;
 
 	/**
-	 * Regular expressions to check.
-	 *
-	 * @var ?string
-	 */
-	public ?string $rule_enabled = null;
-	public ?string $rule_disabled = null;
-	public ?string $rule_disabled_all = null;
-
-	/**
-	 * @var ?string
-	 */
-	public ?string $tpl = null;
-
-	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -53,64 +41,24 @@ abstract class Htaccess {
 	 *
 	 * @return string Path to the htaccess.
 	 */
-	public function filePath(): string {
+	public function get_filepath(): string {
 		return $this->wp_filesystem->abspath() . '.htaccess';
-	}
-
-	/**
-	 * @param $enabled
-	 *
-	 * @return Htaccess
-	 */
-	public function setRuleEnabled( $enabled ) {
-		$this->rule_enabled = $enabled;
-		return $this;
-	}
-
-	/**
-	 * @param $disabled
-	 *
-	 * @return Htaccess
-	 */
-	public function setRuleDisabled( $disabled ) {
-		$this->rule_disabled = $disabled;
-		return $this;
-	}
-
-	/**
-	 * @param $disabled_all
-	 *
-	 * @return Htaccess
-	 */
-	public function setRuleDisabledAll( $disabled_all ) {
-		$this->rule_disabled_all = $disabled_all;
-		return $this;
-	}
-
-	/**
-	 * @param $tpl
-	 *
-	 * @return Htaccess
-	 */
-	public function setTemplate( $tpl ) {
-		$this->tpl = $tpl;
-		return $this;
 	}
 
 	/**
 	 * Set the htaccess path.
 	 *
-	 * @return Htaccess
+	 * @return $this
 	 */
-	public function setPath() {
-		$filepath = $this->filePath();
+	public function set_filepath(): Abstract_Htaccess {
+		$filepath = $this->get_filepath();
 
 		// Create the htaccess if it doesn't exists.
 		if ( ! $this->wp_filesystem->exists( $filepath ) ) {
 			$this->wp_filesystem->touch( $filepath );
 		}
 
-		// Bail if it isn't writable.
+		// If it is writable.
 		if ( $this->wp_filesystem->is_writable( $filepath ) ) {
 			$this->path = $filepath;
 		}
@@ -121,77 +69,95 @@ abstract class Htaccess {
 	/**
 	 * Disable the rule and remove it from the htaccess.
 	 *
-	 * @return bool True on success, false otherwise.
+	 * @return $this
 	 */
-	public function disable(): bool {
-		// Bail if htaccess doesn't exists.
-		if ( empty( $this->path ) ) {
-			return false;
+	public function disable(): Abstract_Htaccess {
+		// If htaccess exists and rule is already enabled.
+		if ( $this->path && $this->is_enabled() ) {
+
+			// Remove the rule.
+			$new_content = preg_replace(
+				$this->rules['disabled'],
+				'',
+				$this->wp_filesystem->get_contents( $this->path )
+			);
+
+			$this->lock_and_write( $new_content );
 		}
 
-		// Bail if the rule is already disabled.
-		if ( ! $this->isEnabled() ) {
-			return true;
-		}
-
-		// Get the content of htaccess.
-		$content = $this->wp_filesystem->get_contents( $this->path );
-
-		// Remove the rule.
-		$new_content = preg_replace( $this->rule_disabled, '', $content );
-
-		return Helper::doLockWrite( $this->path, $new_content );
+		return $this;
 	}
 
 	/**
-	 * Add rule to htaccess and enable it.
+	 *  Add rule to htaccess and enable it.
 	 *
-	 * @return bool True on success, false otherwise.
+	 * @return $this
 	 */
-	public function enable(): bool {
-		// Bail if htaccess doesn't exists.
-		if ( empty( $this->path ) ) {
-			return false;
+	public function enable(): Abstract_Htaccess {
+		// If htaccess exists and rule is already disabled.
+		if ( $this->path && ! $this->is_enabled() ) {
+
+			// Disable all other rules first.
+			$content = preg_replace(
+				$this->rules['disable_all'],
+				'',
+				$this->wp_filesystem->get_contents( $this->path )
+			);
+
+			// Get the new rule.
+			$new_rule = $this->wp_filesystem->get_contents( EHD_PLUGIN_PATH . 'templates/' . $this->template );
+
+			// Add the rule and write the new htaccess.
+			$content = $content . PHP_EOL . $new_rule;
+			$content = $this->do_replacement( $content );
+
+			$this->lock_and_write( $content );
 		}
 
-		// Bail if the rule is already enabled.
-		if ( $this->isEnabled() ) {
-			return true;
-		}
+		return $this;
+	}
 
-		// Disable old rules first.
-		$content = preg_replace(
-			$this->rule_disabled_all,
-			'',
-			$this->wp_filesystem->get_contents( $this->path )
-		);
+	/**
+	 * Lock file and write something in it.
+	 *
+	 * @param string $content Content to add.
+	 *
+	 * @return bool            True on success, false otherwise.
+	 */
+	protected function lock_and_write( string $content ): bool {
+		return Helper::doLockWrite( $this->path, $content );
+	}
 
-		// Add the rule and write the new htaccess.
-		$new_rule = $this->wp_filesystem->get_contents( $this->tpl );
-		$content = $new_rule . PHP_EOL . $content;
+	/**
+	 * Check if rule is enabled.
+	 *
+	 * @return boolean True if the rule is enabled, false otherwise.
+	 */
+	public function is_enabled(): bool {
+		// Get the content of htaccess.
+		$content = $this->wp_filesystem->get_contents( $this->path );
 
 		// Return the result.
-		return Helper::doLockWrite( $this->path, $content );
+		return preg_match( $this->rules['enabled'], $content );
+	}
+
+	/**
+	 * Do a replacement.
+	 *
+	 * @param string $content The htaccess content.
+	 * @return string
+	 */
+	public function do_replacement( string $content ): string {
+		return $content;
 	}
 
 	/**
 	 * Toggle specific rule.
 	 *
-	 * @param  boolean $type Whether to enable or disable the rules.
+	 * @param  boolean $rule Whether to enable or disable the rules.
 	 */
-	public function toggleRules( $type = 1 ): bool {
-		$this->setPath();
-		return ( 1 === $type ) ? $this->enable() : $this->disable();
-	}
-
-	/**
-	 * @return false|int
-	 */
-	public function isEnabled() {
-		// Get the content of htaccess.
-		$content = $this->wp_filesystem->get_contents( $this->path );
-
-		// Return the result.
-		return preg_match( $this->rule_enabled, $content );
+	public function toggle_rules( $rule = 1 ) {
+		$this->set_filepath();
+		( 1 === intval($rule) ) ? $this->enable() : $this->disable();
 	}
 }

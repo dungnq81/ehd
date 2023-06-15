@@ -1,4 +1,5 @@
 <?php
+
 namespace SG_Security\Htaccess_Service;
 
 use SG_Security;
@@ -20,27 +21,27 @@ class Directory_Service extends Abstract_Htaccess_Service {
 	 *
 	 * @var array
 	 */
-	public $whitelist = array();
+	public $whitelist = [];
 
 	/**
 	 * Array with files to the whitelisted.
 	 *
 	 * @var array
 	 */
-	public $types = array(
-		'content'  => array(
-			'whitelist' => array(),
-		),
-		'includes' => array(
-			'whitelist' => array(
+	public $types = [
+		'content'  => [
+			'whitelist' => [],
+		],
+		'includes' => [
+			'whitelist' => [
 				'wp-tinymce.php',
 				'ms-files.php',
-			),
-		),
-		'uploads'  => array(
-			'whitelist' => array(),
-		),
-	);
+			],
+		],
+		'uploads'  => [
+			'whitelist' => [],
+		],
+	];
 
 	/**
 	 * Regular expressions to check if the rules are enabled.
@@ -51,11 +52,11 @@ class Directory_Service extends Abstract_Htaccess_Service {
 	 *
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
-	public $rules = array(
+	public $rules = [
 		'enabled'     => '/\#\s+SGS Directory Hardening/si',
 		'disabled'    => '/\#\s+SGS\s+Directory\s+Hardening(.+?)\#\s+SGS\s+Directory\s+Hardening\s+END(\n)?/ims',
 		'disable_all' => '/\#\s+SGS\s+Directory\s+Hardening(.+?)\#\s+SGS\s+Directory\s+Hardening\s+END(\n)?/ims',
-	);
+	];
 
 	/**
 	 * Get the filepath to the htaccess file.
@@ -70,6 +71,7 @@ class Directory_Service extends Abstract_Htaccess_Service {
 
 			case 'uploads':
 				$upload_dir = wp_upload_dir();
+
 				return $upload_dir['basedir'] . '/.htaccess';
 				break;
 
@@ -82,11 +84,11 @@ class Directory_Service extends Abstract_Htaccess_Service {
 	/**
 	 * Add whitelist rule for specifc or user files.
 	 *
-	 * @since  1.0.0
-	 *
-	 * @param  string $content The generated custom rule for a directory.
+	 * @param string $content The generated custom rule for a directory.
 	 *
 	 * @return string $content The modified rule, containing the whitelist.
+	 * @since  1.0.0
+	 *
 	 */
 	public function do_replacement( $content ) {
 		// Add custom whitelist.
@@ -113,9 +115,10 @@ class Directory_Service extends Abstract_Htaccess_Service {
 	/**
 	 * Enable all hardening rules.
 	 *
+	 * @param boolean $enable Whether to enable or disable the rules.
+	 *
 	 * @since  1.0.0
 	 *
-	 * @param  boolean $enable Whether to enable or disable the rules.
 	 */
 	public function toggle_rules( $enable = 1 ) {
 		foreach ( $this->types as $type => $data ) {
@@ -138,9 +141,9 @@ class Directory_Service extends Abstract_Htaccess_Service {
 	/**
 	 * Check if we need to remove the htaccess files after disable if they are empty.
 	 *
+	 * @return bool True/False if we deleted the files.
 	 * @since  1.0.1
 	 *
-	 * @return bool True/False if we deleted the files.
 	 */
 	public function maybe_remove_htaccess() {
 		// Get the filepath of the file.

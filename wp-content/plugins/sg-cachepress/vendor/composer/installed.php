@@ -3,7 +3,7 @@
         'name' => 'siteground/sg-cachepress',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '53a3b1799eb3df8298e47a914bd2875fe9681662',
+        'reference' => '3c5961465a0c214b487b198696755101cccd7b23',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'a5hleyrich/wp-background-processing' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
-            'reference' => 'd5ef95cecba7f792ddca3e3bd70ebfb90dc4996d',
+            'pretty_version' => '1.0.2',
+            'version' => '1.0.2.0',
+            'reference' => '2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800',
             'type' => 'library',
             'install_path' => __DIR__ . '/../a5hleyrich/wp-background-processing',
             'aliases' => array(),
@@ -81,7 +81,7 @@
         'siteground/sg-cachepress' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '53a3b1799eb3df8298e47a914bd2875fe9681662',
+            'reference' => '3c5961465a0c214b487b198696755101cccd7b23',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -101,7 +101,7 @@ trait Url {
 
 	/**
 	 * @param string $url
-	 * @param string $param
+	 * @param $param
 	 * @param string|int $fallback
 	 *
 	 * @return string

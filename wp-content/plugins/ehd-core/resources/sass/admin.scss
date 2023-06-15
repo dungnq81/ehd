@@ -451,6 +451,11 @@ body.toplevel_page_ehd-settings {
                 margin-bottom: 10px;
 
                 &.section-checkbox {
+                    .desc {
+                        color: #999;
+                        font-size: 13px;
+                        margin-bottom: 10px;
+                    }
                     .option {
                         display: table;
 
@@ -459,6 +464,10 @@ body.toplevel_page_ehd-settings {
                             padding-right: 5px;
                             vertical-align: top;
                             width: auto;
+                        }
+
+                        .explain {
+                            font-weight: 500;
                         }
                     }
                 }

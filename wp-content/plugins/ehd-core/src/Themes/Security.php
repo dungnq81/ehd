@@ -10,7 +10,6 @@ use EHD_Libs\Readme_File;
  *
  * @author eHD
  */
-
 final class Security {
 
 	/**
@@ -38,21 +37,19 @@ final class Security {
 	private function _disable_RSSFeed() {
 		$rss_feed_off = $this->security_options['rss_feed_off'] ? 1 : 0;
 
-		// Bail if the option is not enabled.
-		if ( ! $rss_feed_off ) {
-			return;
+		// If the option is already enabled.
+		if ( $rss_feed_off ) {
+			add_action( 'do_feed', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_rdf', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_rss', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_rss2', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_atom', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_rss2_comments', [ &$this, 'disable_feed' ], 1 );
+			add_action( 'do_feed_atom_comments', [ &$this, 'disable_feed' ], 1 );
+
+			remove_action( 'wp_head', 'feed_links_extra', 3 ); // remove comments feed.
+			remove_action( 'wp_head', 'feed_links', 2 );
 		}
-
-		add_action( 'do_feed', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_rdf', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_rss', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_rss2', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_atom', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_rss2_comments', [ &$this, 'disable_feed' ], 1 );
-		add_action( 'do_feed_atom_comments', [ &$this, 'disable_feed' ], 1 );
-
-		remove_action( 'wp_head', 'feed_links_extra', 3 ); // remove comments feed.
-		remove_action( 'wp_head', 'feed_links', 2 );
 	}
 
 	// ------------------------------------------------------
@@ -88,7 +85,7 @@ final class Security {
 	 */
 	private function _disable_XMLRPC() {
 		$xml_rpc_off = $this->security_options['xml_rpc_off'] ? 1 : 0;
-		if ( 1 === $xml_rpc_off ) {
+		if ( $xml_rpc_off ) {
 
 			// Disable XML-RPC authentication
 			if ( is_admin() ) {
