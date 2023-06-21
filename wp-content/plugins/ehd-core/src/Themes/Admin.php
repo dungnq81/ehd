@@ -14,10 +14,6 @@ use EHD_Cores\Helper;
 
 final class Admin {
 	public function __construct() {
-		if ( ! WP_DEBUG ) {
-			/** Remove admin wp version */
-			add_filter( 'update_footer', '__return_empty_string', 11 );
-		}
 
 		/** Admin footer text */
 		add_filter( 'admin_footer_text', function () {

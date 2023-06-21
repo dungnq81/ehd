@@ -1,14 +1,11 @@
 <?php
 
-namespace EHD_Libs;
+namespace EHD_Libs\Security;
 
 use EHD_Cores\Abstract_Htaccess;
 use EHD_Cores\Helper;
 
-/**
- * Class managing the xml-rpc related htaccess rules.
- */
-class Xmlrpc_Htaccess extends Abstract_Htaccess {
+class Xmlrpc extends Abstract_Htaccess {
 
 	/**
 	 * Array containing all plugins using XML-RPC.
@@ -32,9 +29,9 @@ class Xmlrpc_Htaccess extends Abstract_Htaccess {
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
 	public array $rules = [
-		'enabled'     => '/\#\s+EHD\s+XML-RPC\s+Disable/si',
-		'disabled'    => '/\#\s+EHD\s+XML-RPC\s+Disable(.+?)\#\s+EHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+EHD\s+XML-RPC\s+Disable(.+?)\#\s+EHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+eHD\s+XML-RPC\s+Disable/si',
+		'disabled'    => '/\#\s+eHD\s+XML-RPC\s+Disable(.+?)\#\s+eHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+eHD\s+XML-RPC\s+Disable(.+?)\#\s+eHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
 	];
 
 	/**

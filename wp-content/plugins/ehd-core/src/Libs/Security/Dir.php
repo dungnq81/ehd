@@ -1,10 +1,10 @@
 <?php
 
-namespace EHD_Libs;
+namespace EHD_Libs\Security;
 
 use EHD_Cores\Abstract_Htaccess;
 
-class Directory_Htaccess extends Abstract_Htaccess {
+class Dir extends Abstract_Htaccess {
 
 	/**
 	 * The path to the htaccess template.
@@ -51,9 +51,9 @@ class Directory_Htaccess extends Abstract_Htaccess {
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
 	public array $rules = [
-		'enabled'     => '/\#\s+EHD\s+Directory\s+Hardening/si',
-		'disabled'    => '/\#\s+EHD\s+Directory\s+Hardening(.+?)\#\s+EHD\s+Directory\s+Hardening\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+EHD\s+Directory\s+Hardening(.+?)\#\s+EHD\s+Directory\s+Hardening\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+eHD\s+Directory\s+Hardening/si',
+		'disabled'    => '/\#\s+eHD\s+Directory\s+Hardening(.+?)\#\s+eHD\s+Directory\s+Hardening\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+eHD\s+Directory\s+Hardening(.+?)\#\s+eHD\s+Directory\s+Hardening\s+END(\n)?/ims',
 	];
 
 	/**

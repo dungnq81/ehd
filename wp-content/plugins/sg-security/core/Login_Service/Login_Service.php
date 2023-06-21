@@ -73,7 +73,7 @@ class Login_Service {
 	}
 
 	/**
-	 * Restrict access to login for unsuccessfull attempts.
+	 * Restrict access to login for unsuccessfully attempts.
 	 *
 	 * @since  1.0.0
 	 */

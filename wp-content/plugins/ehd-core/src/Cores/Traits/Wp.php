@@ -230,7 +230,7 @@ trait Wp {
 	 *
 	 * @return bool
 	 */
-	public static function updateOption( string $option_name, $new_options, bool $merge_arr = true ): bool {
+	public static function updateOption( string $option_name, $new_options, bool $merge_arr = false ): bool {
 		if ( true === $merge_arr ) {
 			$options = self::getOption( $option_name );
 			if ( is_array( $options ) && is_array( $new_options ) ) {

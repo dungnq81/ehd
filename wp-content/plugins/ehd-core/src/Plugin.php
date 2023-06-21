@@ -31,7 +31,7 @@ use EHD_Widgets\Shortcode_Widget;
 /**
  * Plugin Class
  *
- * @author EHD
+ * @author eHD
  */
 
 \defined( 'ABSPATH' ) || die;
@@ -185,6 +185,5 @@ final class Plugin {
 	}
 
 	public function activate() {}
-
 	public function deactivate() {}
 }

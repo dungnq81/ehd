@@ -1,13 +1,13 @@
 <?php
 
-namespace EHD_Libs;
+namespace EHD_Libs\Security;
 
 /**
  * Class that manages the Readme.html.
  *
  * @author SiteGround Security
  */
-class Readme_File {
+class Readme {
 	/**
 	 * Check if the file exist in the root directory of the WP Installation
 	 *

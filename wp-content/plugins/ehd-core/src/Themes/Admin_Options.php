@@ -3,8 +3,11 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
-use EHD_Libs\Readme_File;
-use EHD_Libs\Xmlrpc_Htaccess;
+use EHD_Libs\Security\Dir;
+use EHD_Libs\Security\Headers;
+use EHD_Libs\Security\Login_Attempts;
+use EHD_Libs\Security\Readme;
+use EHD_Libs\Security\Xmlrpc;
 
 /**
  * Options Class
@@ -164,7 +167,7 @@ final class Admin_Options {
 				$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 3;
 			}
 
-			Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options, false );
+			Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options );
 
 			// ------------------------------------------------------
 
@@ -213,23 +216,36 @@ final class Admin_Options {
 
 			/** Security */
 			$security_options = [
-				'xml_rpc_off'         => ! empty( $_POST['xml_rpc_off'] ) ? sanitize_text_field( $_POST['xml_rpc_off'] ) : '',
-				'remove_readme'       => ! empty( $_POST['remove_readme'] ) ? sanitize_text_field( $_POST['remove_readme'] ) : '',
-				'rss_feed_off'        => ! empty( $_POST['rss_feed_off'] ) ? sanitize_text_field( $_POST['rss_feed_off'] ) : '',
-				'lock_protect_system' => ! empty( $_POST['lock_protect_system'] ) ? sanitize_text_field( $_POST['lock_protect_system'] ) : '',
+				'illegal_users'             => ! empty( $_POST['illegal_users'] ) ? sanitize_text_field( $_POST['illegal_users'] ) : '',
+				'hide_wp_version'           => ! empty( $_POST['hide_wp_version'] ) ? sanitize_text_field( $_POST['hide_wp_version'] ) : '',
+				'xml_rpc_off'               => ! empty( $_POST['xml_rpc_off'] ) ? sanitize_text_field( $_POST['xml_rpc_off'] ) : '',
+				'remove_readme'             => ! empty( $_POST['remove_readme'] ) ? sanitize_text_field( $_POST['remove_readme'] ) : '',
+				'rss_feed_off'              => ! empty( $_POST['rss_feed_off'] ) ? sanitize_text_field( $_POST['rss_feed_off'] ) : '',
+				'lock_protect_system'       => ! empty( $_POST['lock_protect_system'] ) ? sanitize_text_field( $_POST['lock_protect_system'] ) : '',
+				'advanced_xss_protection'   => ! empty( $_POST['advanced_xss_protection'] ) ? sanitize_text_field( $_POST['advanced_xss_protection'] ) : '',
+				'limit_login_attempts'      => ! empty( $_POST['limit_login_attempts'] ) ? sanitize_text_field( $_POST['limit_login_attempts'] ) : '0',
+				'two_factor_authentication' => ! empty( $_POST['two_factor_authentication'] ) ? sanitize_text_field( $_POST['two_factor_authentication'] ) : '',
 			];
 
 			Helper::updateOption( 'security__options', $security_options, true );
 
 			// readme.html
 			if ( $security_options['remove_readme'] ) {
-				$readme = new Readme_File();
+				$readme = new Readme();
 				$readme->delete_readme();
 			}
 
-            // xmlprc
-			$xml_rpc = new Xmlrpc_Htaccess();
+            // xml-rpc
+			$xml_rpc = new Xmlrpc();
 			$xml_rpc->toggle_rules( $security_options['xml_rpc_off'] );
+
+            // system protect
+			$protect_system = new Dir();
+			$protect_system->toggle_rules( $security_options['lock_protect_system'] );
+
+            // xss protection
+            $xss_protection = new Headers();
+			$xss_protection->toggle_rules( $security_options['advanced_xss_protection'] );
 
 			// ------------------------------------------------------
 
@@ -255,40 +271,32 @@ final class Admin_Options {
                             </h3>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings"
-                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
                         </div>
                         <ul class="ul-menu-list">
                             <li class="aspect-ratio aspect-ratio-settings">
-                                <a class="current" title="Aspect ratio"
-                                   href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="global-settings">
-                                <a title="Custom Scripts"
-                                   href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom Scripts" href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="smtp smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="contact-info contact-info-settings">
-                                <a title="Contact Info"
-                                   href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="contact-button contact-button-settings">
-                                <a title="Contact Button"
-                                   href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg gutenberg-settings">
-                                <a title="Block Editor"
-                                   href="#block_editor_settings"><?php _e( 'Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="security security-settings">
-                                <a title="Security"
-                                   href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Security" href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-css custom-css-settings">
-                                <a title="Custom CSS"
-                                   href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -321,8 +329,7 @@ final class Admin_Options {
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings"
-                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
                         </div>
                     </div>
                 </div>

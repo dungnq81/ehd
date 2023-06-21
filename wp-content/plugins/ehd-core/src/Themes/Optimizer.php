@@ -25,16 +25,6 @@ final class Optimizer {
 			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
 		}
 
-		// debug false
-		if ( ! WP_DEBUG ) {
-
-			// Remove WP version from RSS.
-			add_filter( 'the_generator', '__return_empty_string' );
-
-			add_filter( 'style_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
-			add_filter( 'script_loader_src', [ &$this, 'remove_version_scripts_styles' ], 11, 1 );
-		}
-
 		add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
 
 		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
@@ -75,6 +65,11 @@ final class Optimizer {
 		remove_action( 'admin_print_styles', 'print_emoji_styles' );
 		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 
+		// Staticize emoji
+		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
 		/**
 		 * Remove wp-json header from WordPress
 		 * Note that the REST API functionality will still be working as it used to;
@@ -83,11 +78,6 @@ final class Optimizer {
 		remove_action( 'wp_head', 'rest_output_link_wp_head' );
 		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 		remove_action( 'template_redirect', 'rest_output_link_header', 11 );
-
-		// Staticize emoji
-		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
-		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 
 		// Remove id li navigation
 		add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
@@ -236,23 +226,6 @@ final class Optimizer {
 		$styles = apply_filters( 'ehd_defer_style', [] );
 
 		return Helper::lazyStyleTag( $styles, $html, $handle );
-	}
-
-	// ------------------------------------------------------
-
-	/**
-	 * Remove version from scripts and styles
-	 *
-	 * @param $src
-	 *
-	 * @return false|mixed|string
-	 */
-	public function remove_version_scripts_styles( $src ) {
-		if ( $src && str_contains( $src, 'ver=' ) ) {
-			$src = remove_query_arg( 'ver', $src );
-		}
-
-		return $src;
 	}
 
 	// ------------------------------------------------------

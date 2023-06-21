@@ -1,6 +1,6 @@
-# EHD XML-RPC Disable
+# eHD XML-RPC Disable
 <Files xmlrpc.php>
 	order deny,allow
 	deny from all
 </Files>
-# EHD XML-RPC Disable END
+# eHD XML-RPC Disable END

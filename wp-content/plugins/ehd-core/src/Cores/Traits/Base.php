@@ -172,7 +172,7 @@ trait Base {
 		$clientAddress = $whip->getValidIpAddress();
 
 		if ( false !== $clientAddress ) {
-			return $clientAddress;
+			return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
 		}
 
 		// Fallback local ip.
@@ -184,18 +184,21 @@ trait Base {
 	/**
 	 * Search an IP range for a given IP.
 	 *
-	 * @param  string $ip    The ip to be searched for.
-	 * @param string $range The range to be searched in.
+	 * @param string $ip
+	 * @param string $range
+	 * @param string $separator
 	 *
-	 * @return bool          True, if IP is contained in the range.
-	 *
+	 * @return bool
 	 */
-	public function ipInRange( string $ip, string $range ): bool {
-		$range = explode( '/', $range );
+	public static function ipInRange( string $ip, string $range, string $separator = '/' ): bool {
+		$range = explode( $separator, $range );
+
 		// Get the netmask from the range.
 		$netmask = $range[1];
+
 		// Get the base range ip and convert to long.
 		$start_ip = ip2long( $range[0] );
+
 		// Get the count of the possible IPs.
 		$ip_count = 1 << ( 32 - $netmask );
 
@@ -291,9 +294,8 @@ trait Base {
 			if ( $lazyload ) {
 				$_lazy = ' loading="lazy"';
 			}
-			$_iframe = '<iframe id="ytb_iframe_' . $idurl . '" title="YouTube Video Player" allowfullscreen' . $_lazy . $_auto . $_size . $_src . ' style="border:0"></iframe>';
 
-			return $_iframe;
+			return '<iframe id="ytb_iframe_' . $idurl . '" title="YouTube Video Player"' . $_lazy . $_auto . $_size . $_src . ' style="border:0"></iframe>';
 		}
 
 		return null;

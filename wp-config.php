@@ -1,5 +1,4 @@
 <?php
-define( 'WP_CACHE', false ); // By SiteGround Optimizer
 
 /**
  * The base configuration for WordPress
@@ -62,14 +61,14 @@ const DB_COLLATE = '';
  *
  * @since 2.6.0
  */
-define('AUTH_KEY', 'tIxNNs88XY@#R bkN/$00`/Z:n #,03$2ngb)S[k%7t?)2XTIxcks>=!z@7t`+0A');
-define('SECURE_AUTH_KEY', '!v$H J+-ooM?~*_nt4FrB^ nop2K<PqCOzES!Jidpk/p9_vm^s!,H(gL1~dqI-_+');
-define('LOGGED_IN_KEY', 'mU&5|m%c:t Wpcx[0A$QH(5e^UeDqJ$Gj6m <i;-d^!9,>?F^p}4vjc=`Tp`I` q');
-define('NONCE_KEY', 'zm:p+1hfw&#t*M!$d%fSY!q--$7Lwk*Sms <,<pOw#aA~Dqd:-h,]]rZRZ)~;n|%');
-define('AUTH_SALT', '&L>,GIlHl5f?jZ09H3C4MPTWp|6j* 1U}~*T8*HRcTH#g_=e;mOm44V{`*QCI^a`');
-define('SECURE_AUTH_SALT', '3S(WRjvJe,?+=R~jj}FS`;bmpWc-tqmZ5rXfjpz]BhB*/ps&x/93!{b%a;z6&}dX');
-define('LOGGED_IN_SALT', 'CPl{m:b}oEluv8=.>PSVknH]C-Q%uwc*3DXn(sz):)5rAIpAdb33dx2,~a3vc8[K');
-define('NONCE_SALT', '>`>6qq@Ls Cv/Ig/KWfM#xiQtdGuTUP!5>|r1?_.zm+`ti}K! Ea06QMmRwri&ji');
+define('AUTH_KEY',         'y#$%r:?(k2+J/V3C|04H6c*|)_p,>L(xt}#z}:^BrqQ[PG+k9)KaHmd@&^yIZ)>g');
+define('SECURE_AUTH_KEY',  '|)2BX6YFR.i0rRK@RS)-h=F.E#1Q2G.#Qu|l/grKUEt&4O.w0);.*9;NYO9AngkA');
+define('LOGGED_IN_KEY',    'J.Wwq1UpI4/)-H%=cK*[1EK+%{JxG<,ZaE|p,q*hiN^^+eyDVsf/F %%8Vf5B6iz');
+define('NONCE_KEY',        'Ze^p^-,?eA[#qm{D,g2yx9&_S8b,8 7k:C(xI}O|i.g&&HIdl|,BM7f0d|/4xNeH');
+define('AUTH_SALT',        '(tn%y~-{rA%F}%Ev?UBI?&Kq;OIzIHXB{gS5*]duoKdZ-KrPyS+0a?T`;R4*+_,=');
+define('SECURE_AUTH_SALT', 'zWF`%7a!(His<PGdiW3U@K+8u?=WYUOicR:Vm.Rt-3Z_]tQ7RyZ<8+kR,~i2Hcw9');
+define('LOGGED_IN_SALT',   '|O=,SP>-mcoLX[mvr+)aE~Qx@p}|(j17sx,]*gWbt%x~gZ1]$l <?1O}B+dW+go;');
+define('NONCE_SALT',       'Ryo@lyg^!M*,soG-J#}aw)v4+*X>F0D_+0[31$)#v@/JY#1~!p!tmL<f8xs;:?G~');
 
 /**#@-*/
 

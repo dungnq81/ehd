@@ -23,6 +23,12 @@ $body-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", Aria
     margin-top: 10px;
 }
 
+#error-page {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: auto;
+}
+
 /** login form */
 body.login {
     background-size: cover;
@@ -380,22 +386,22 @@ body.toplevel_page_ehd-settings {
                 padding: 10px 20px;
                 display: block;
 
-                span {
-                    font-size: 80%;
-                    font-weight: normal;
-                    opacity: 0.6;
-                    display: block;
-                    margin-top: 4px;
+                h3 {
+                    font-weight: 700;
+
+                    span {
+                        font-size: 80%;
+                        opacity: 0.6;
+                        display: block;
+                        margin-top: 4px;
+                        font-weight: 400;
+                    }
                 }
             }
 
             .save-bar {
                 padding: 15px 20px;
                 display: block;
-
-                button[type="submit"] {
-                    font-family: Arial, Verdana, sans-serif;
-                }
             }
 
             ul {
@@ -442,7 +448,8 @@ body.toplevel_page_ehd-settings {
                 }
 
                 h2 {
-                    margin-top: 25px;
+                    margin-top: 30px;
+                    font-weight: 700;
                 }
             }
 
@@ -454,8 +461,9 @@ body.toplevel_page_ehd-settings {
                     .desc {
                         color: #999;
                         font-size: 13px;
-                        margin-bottom: 10px;
+                        margin-bottom: 20px;
                     }
+
                     .option {
                         display: table;
 
@@ -472,6 +480,14 @@ body.toplevel_page_ehd-settings {
                     }
                 }
 
+                &.section-select {
+                    .desc {
+                        color: #999;
+                        font-size: 13px;
+                        margin-bottom: 20px;
+                    }
+                }
+
                 &.section-multicheck {
                     .controls {
                         input {
@@ -485,13 +501,18 @@ body.toplevel_page_ehd-settings {
                 .heading {
                     font-size: 14px;
                     text-transform: uppercase;
-                    margin: 20px 0 0 0;
-                    padding: 15px 0;
+                    margin: 25px 0 0 0;
+                    padding: 20px 0 15px 0;
                     border-top: 1px solid #ddd;
                     display: block;
                     width: 600px;
                     max-width: calc(100% - 15px);
                     font-weight: 600;
+                }
+
+                .desc {
+                    width: 1000px;
+                    max-width: calc(100% - 15px);
                 }
 
                 .option {
@@ -501,7 +522,7 @@ body.toplevel_page_ehd-settings {
                         width: 600px;
                         max-width: calc(100% - 15px);
 
-                        input, textarea, select {
+                        input:not([type="checkbox"]), textarea, select {
                             width: 100%;
                             background-color: #f9f9f9;
                             border: 1px solid #ddd;
@@ -518,11 +539,6 @@ body.toplevel_page_ehd-settings {
                             padding: 0 25px 0 10px;
                             width: auto;
                             min-width: 200px;
-                        }
-
-                        input[type="checkbox"] {
-                            width: 17px;
-                            min-width: 17px;
                         }
 
                         textarea {
@@ -563,7 +579,7 @@ body.toplevel_page_ehd-settings {
             /** */
             .save-bar {
                 display: block;
-                padding: 15px 20px 15px 0;
+                padding: 30px 20px 15px 0;
             }
         }
     }
@@ -601,16 +617,87 @@ body.toplevel_page_ehd-settings {
     width: 1000px;
     margin: 0 auto;
     padding: 25px 20px 15px 22px;
+
     .server-info-inner {
         background: #fff;
         padding: 1em 1.5em;
         border: 1px solid #c3c4c7;
+
         ul {
             li {
                 color: #2c3338;
+
                 & > span:first-child {
                     font-weight: 700;
                 }
+            }
+        }
+    }
+}
+
+/** Checkbox Toggle UI */
+input[type="checkbox"] {
+    &.ehd-checkbox {
+        appearance: none;
+        -webkit-tap-highlight-color: transparent;
+        width: auto;
+        height: auto;
+        vertical-align: middle;
+        position: relative;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        margin: -3px 6px 0 0;
+        background: none;
+        box-shadow: none;
+        transition: ease .15s;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &::after {
+            content: '';
+            /*font-size: 8px;*/
+            font-weight: 400;
+            line-height: 19px;
+            text-indent: -15px;
+            color: #ffffff;
+            width: 37px;
+            height: 19px;
+            display: inline-block;
+            background-color: rgb(167 170 173 / 60%);
+            border-radius: 74px;
+            box-shadow: 0 0 12px rgb(0 0 0 / 15%) inset;
+            transition: ease .15s;
+        }
+
+        &::before {
+            content: '';
+            width: 15px;
+            height: 15px;
+            display: block;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            margin: 0;
+            border-radius: 50%;
+            background-color: #ffffff;
+            transition: ease .15s;
+        }
+
+        &:checked {
+            &::before {
+                left: 20px;
+                margin: 0;
+                background-color: #ffffff;
+                transition: ease .15s;
+            }
+
+            &::after {
+                content: '';
+                background-color: #2271b1;
+                transition: ease .15s;
             }
         }
     }
