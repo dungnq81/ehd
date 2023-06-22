@@ -25,6 +25,8 @@
 		"matthiasmullie/minify": "^1.3.71",
 		"vectorface/whip": "^v0.4.0",
 		"deliciousbrains/wp-background-processing": "^1.1.0",
-		"mobiledetect/mobiledetectlib": "^3.74.0"
+		"mobiledetect/mobiledetectlib": "^3.74.0",
+		"phpgangsta/googleauthenticator": "dev-master",
+		"pragmarx/recovery": "^0.2.1"
 	}
 }

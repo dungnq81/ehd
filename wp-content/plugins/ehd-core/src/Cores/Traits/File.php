@@ -58,7 +58,7 @@ trait File {
 		$wp_filesystem = self::wpFileSystem();
 
 		// Bail if the file already exists.
-		if ( $wp_filesystem->exists( $path ) ) {
+		if ( $wp_filesystem->is_file( $path ) ) {
 			return true;
 		}
 

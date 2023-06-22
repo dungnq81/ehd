@@ -80,9 +80,9 @@ final class Admin_Options {
 	 * @return void
 	 */
 	public function options_enqueue_assets( $hook ) {
-		$allowed_pages = array(
+		$allowed_pages = [
 			'toplevel_page_ehd-settings',
-		);
+		];
 
 		if ( in_array( $hook, $allowed_pages ) ) {
 			$codemirror_settings = [

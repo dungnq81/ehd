@@ -27,7 +27,7 @@ class Activator {
 			// Get all sites.
 			$sites = get_sites();
 
-			// Loop trough subsites and create the necesary db tables.
+			// Loop trough subsides and create the necessary db tables.
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site->blog_id );
 

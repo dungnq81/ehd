@@ -115,7 +115,7 @@ class Login_Attempts {
 		// Increase the attempt count.
 		$login_attempts[ $user_ip ]['attempts'] ++;
 		if ( $login_attempts[ $user_ip ]['attempts'] > 0 ) {
-			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials %s times.', $login_attempts[ $user_ip ]['attempts'] ), EHD_PLUGIN_TEXT_DOMAIN ) );
+			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials <strong>%s</strong> times.', $login_attempts[ $user_ip ]['attempts'] ), EHD_PLUGIN_TEXT_DOMAIN ) );
 
 			if (
 				in_array( 'incorrect_password', $errors->get_error_codes() ) &&
@@ -190,7 +190,7 @@ class Login_Attempts {
 	 *
 	 * @return bool
 	 */
-	public function ip_in_range( string $ip, string $range, string $separator = '/' ): bool {
-		return Helper::ipInRange( $ip, $range, $separator );
-	}
+//	public function ip_in_range( string $ip, string $range, string $separator = '/' ): bool {
+//		return Helper::ipInRange( $ip, $range, $separator );
+//	}
 }
