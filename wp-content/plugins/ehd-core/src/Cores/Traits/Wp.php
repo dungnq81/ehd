@@ -1488,11 +1488,7 @@ trait Wp {
 			}
 
 			$type = apply_filters( 'ehd_body_itemtype', $type );
-
-			$data = sprintf(
-				'itemtype="https://schema.org/%s" itemscope',
-				esc_html( $type )
-			);
+			$data = sprintf( 'itemtype="https://schema.org/%s" itemscope', esc_html( $type ) );
 		}
 
 		if ( 'header' === $context ) {
@@ -1505,11 +1501,7 @@ trait Wp {
 
 		if ( 'article' === $context ) {
 			$type = apply_filters( 'ehd_article_itemtype', 'CreativeWork' );
-
-			$data = sprintf(
-				'itemtype="https://schema.org/%s" itemscope',
-				esc_html( $type )
-			);
+			$data = sprintf( 'itemtype="https://schema.org/%s" itemscope', esc_html( $type ) );
 		}
 
 		if ( 'post-author' === $context ) {

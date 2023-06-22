@@ -89,14 +89,11 @@ class Login_Attempts {
 			return $error;
 		}
 
-		$err_codes = $errors->get_error_codes();
-		//dump($err_codes);
-
 		// Invalid login
 		if (
-			in_array( 'empty_username', $err_codes ) ||
-			in_array( 'invalid_username', $err_codes ) ||
-			in_array( 'empty_password', $err_codes )
+			in_array( 'empty_username', $errors->get_error_codes() ) ||
+			in_array( 'invalid_username', $errors->get_error_codes() ) ||
+			in_array( 'empty_password', $errors->get_error_codes() )
 		) {
 			return $error;
 		}
@@ -117,6 +114,17 @@ class Login_Attempts {
 
 		// Increase the attempt count.
 		$login_attempts[ $user_ip ]['attempts'] ++;
+		if ( $login_attempts[ $user_ip ]['attempts'] > 0 ) {
+			$errors->add( 'login_attempts', __( sprintf( '<strong>Alert:</strong> You have entered the wrong credentials %s times.', $login_attempts[ $user_ip ]['attempts'] ), EHD_PLUGIN_TEXT_DOMAIN ) );
+
+			if (
+				in_array( 'incorrect_password', $errors->get_error_codes() ) &&
+				in_array( 'login_attempts', $errors->get_error_codes() )
+			) {
+				$error_message = $errors->get_error_messages( 'login_attempts' );
+				$error .= '	' . $error_message[0] . "<br />\n";
+			}
+		}
 
 		// Check if we are reaching the limits.
 		switch ( $login_attempts[ $user_ip ]['attempts'] ) {
