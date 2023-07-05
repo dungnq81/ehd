@@ -1,4 +1,4 @@
-<style>#login { width:360px; padding:5% 0 0; }</style>
+<style>#login { width:360px; padding:4% 0 0; }</style>
 
 <form name="ehd_2fa_form" id="loginform" action="<?php echo $args['redirect_to']; ?>" method="post">
 	<h1><?php esc_html_e( 'You are logging in with a one-time Backup Code', EHD_PLUGIN_TEXT_DOMAIN ); ?></h1>

@@ -39,7 +39,7 @@ class Encryption {
 	/**
 	 * Generate encryption/decryption key file.
 	 */
-	public function generate_encryption_file() {
+	public function generate_encryption_file(): bool {
 		// Check if the file already exists.
 		if ( $this->wp_filesystem->is_file( $this->encryption_key_file ) ) {
 

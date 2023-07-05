@@ -180,7 +180,6 @@ final class Plugin {
 		( new Login() );
 		( new Optimizer() );
 		( new Options() );
-		( new Security() );
 		( new Shortcode() )::init();
 	}
 

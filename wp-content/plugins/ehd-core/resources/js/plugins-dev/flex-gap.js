@@ -19,5 +19,5 @@ document.body.appendChild(flex);
 let isSupported = flex.scrollHeight === 1;
 flex.parentNode.removeChild(flex);
 if(isSupported) {
-    document.documentElement.classList.add("flex-gap");
+    document.documentElement.classList.add("gap-support");
 }

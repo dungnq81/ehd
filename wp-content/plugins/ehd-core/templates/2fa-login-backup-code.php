@@ -1,4 +1,4 @@
-<style>#login { width:360px; padding:5% 0 0; }</style>
+<style>#login { width:360px; padding:4% 0 0; }</style>
 
 <?php if ( ! empty( $args['error'] ) ) : ?>
 	<div id="login_error"><strong><?php echo $args['error']; ?></strong><br /></div>

@@ -2,6 +2,8 @@
 
 namespace EHD_Cores\Traits;
 
+use IntlBreakIterator;
+
 \defined( 'ABSPATH' ) || die;
 
 trait Str {
@@ -299,5 +301,111 @@ trait Str {
 		$string = preg_replace( '~\x{00a0}~', $replace, $string );
 
 		return preg_replace( '/\s+/', $replace, $string );
+	}
+
+	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public static function normalize( string $text ): string {
+		$allowedHtml         = wp_kses_allowed_html();
+		$allowedHtml['mark'] = []; // allow using the <mark> tag to highlight text
+
+		$text = wp_kses( $text, $allowedHtml );
+		$text = strip_shortcodes( $text );
+		$text = excerpt_remove_blocks( $text ); // just in case...
+		$text = convert_smilies( $text );
+		$text = str_replace( ']]>', ']]&gt;', $text );
+
+		return preg_replace( '/(\v){2,}/u', '$1', $text );
+	}
+
+	/**
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public static function text( string $text ): string {
+		$text = static::normalize( $text );
+		$text = nl2br( $text );
+		$text = wptexturize( $text );
+
+		// replace all multiple-space and carriage return characters with a space
+		return preg_replace( '/(\v|\s){1,}/u', ' ', $text );
+	}
+
+	/**
+	 * @param string $text
+	 * @param int $limit
+	 *
+	 * @return int
+	 */
+	public static function excerptIntlSplit( string $text, int $limit ): int {
+		$words = \IntlRuleBasedBreakIterator::createWordInstance( '' );
+		$words->setText( $text );
+		$count = 0;
+		foreach ( $words as $offset ) {
+			if ( IntlBreakIterator::WORD_NONE === $words->getRuleStatus() ) {
+				continue;
+			}
+			++ $count;
+			if ( $count != $limit ) {
+				continue;
+			}
+
+			return $offset;
+		}
+
+		return strlen( $text );
+	}
+
+	/**
+	 * @param string $text
+	 * @param int $limit
+	 *
+	 * @return int
+	 */
+	protected static function excerptSplit( string $text, int $limit ): int {
+		if ( str_word_count( $text, 0 ) > $limit ) {
+			$words = array_keys( str_word_count( $text, 2 ) );
+
+			return $words[ $limit ];
+		}
+
+		return strlen( $text );
+	}
+
+	/**
+	 * @param string $text
+	 * @param int $limit
+	 * @param bool $splitWords
+	 * @param string $showMore
+	 *
+	 * @return string
+	 */
+	public static function excerpt( string $text, int $limit = 55, bool $splitWords = true, string $showMore = '...' ): string {
+
+		$text = strip_tags( $text );
+
+		$text        = static::normalize( $text );
+		$splitLength = $limit;
+
+		if ( $splitWords ) {
+			$splitLength = extension_loaded( 'intl' )
+				? static::excerptIntlSplit( $text, $limit )
+				: static::excerptSplit( $text, $limit );
+		}
+
+		$hiddenText = mb_substr( $text, $splitLength );
+		if ( ! empty( $hiddenText ) ) {
+			$text = ltrim( mb_substr( $text, 0, $splitLength ) ) . $showMore;
+		}
+
+		$text = nl2br( $text );
+		$text = wptexturize( $text );
+
+		// replace all multiple-space and carriage return characters with a space
+		return preg_replace( '/(\v|\s){1,}/u', ' ', $text );
 	}
 }

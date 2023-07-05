@@ -109,6 +109,7 @@ trait File {
 	 * Lock file and write something in it.
 	 *
 	 * @param string $content Content to add.
+	 *
 	 * @return bool    True on success, false otherwise.
 	 */
 	public static function doLockWrite( $path, string $content = '' ): bool {

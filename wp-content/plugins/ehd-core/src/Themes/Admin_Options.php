@@ -257,6 +257,11 @@ final class Admin_Options {
 
 			/** Echo message success */
 			Helper::messageSuccess( 'Settings saved' );
+
+			// Clear LiteSpeed cache, if existing.
+			if ( class_exists( '\LiteSpeed\Purge' ) ) {
+				\LiteSpeed\Purge::purge_all();
+			}
 		}
 		?>
         <div class="wrap" id="ehd_container">
@@ -277,9 +282,6 @@ final class Admin_Options {
                             <li class="aspect-ratio aspect-ratio-settings">
                                 <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="global-settings">
-                                <a title="Custom Scripts" href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
-                            </li>
                             <li class="smtp smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
@@ -290,10 +292,19 @@ final class Admin_Options {
                                 <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg gutenberg-settings">
-                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="security security-settings">
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            </li>
+                            <li class="woocommerce woocommerce-settings">
+                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            </li>
+                            <li class="comments comments-settings">
+                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            </li>
+                            <li class="global-settings">
+                                <a title="Custom Scripts" href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-css custom-css-settings">
                                 <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
@@ -305,9 +316,6 @@ final class Admin_Options {
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/aspect-ratio.php'; ?>
-                        </div>
-                        <div id="global_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/global.php'; ?>
                         </div>
                         <div id="smtp_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/smtp.php'; ?>
@@ -323,6 +331,15 @@ final class Admin_Options {
                         </div>
                         <div id="security_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/security.php'; ?>
+                        </div>
+                        <div id="woocommerce_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/woocommerce.php'; ?>
+                        </div>
+                        <div id="comments_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/comments.php'; ?>
+                        </div>
+                        <div id="global_settings" class="group tabs-panel">
+		                    <?php require __DIR__ . '/options/global.php'; ?>
                         </div>
                         <div id="custom_css_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/custom-css.php'; ?>
@@ -350,8 +367,8 @@ final class Admin_Options {
             <div id="main">
                 <h2 class="hide-text"></h2>
                 <div class="server-info-body">
-                    <h2>Server info</h2>
-                    <p class="desc">System configuration information</p>
+                    <h2><?php echo __( 'Server info', EHD_PLUGIN_TEXT_DOMAIN )?></h2>
+                    <p class="desc"><?php echo __( 'System configuration information', EHD_PLUGIN_TEXT_DOMAIN )?></p>
                     <div class="server-info-inner code">
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>

@@ -24,9 +24,9 @@ mix
     .js(resources + '/js/plugins-dev/swiper.js', assets + '/js/plugins')
 
     // .js(resources + '/js/plugins-dev/skip-link-focus-fix.js', assets + '/js/plugins')
-    // .js(resources + '/js/plugins-dev/flex-gap.js', assets + '/js/plugins')
-    // .js(resources + '/js/plugins-dev/passive-events-fix.js', assets + '/js/plugins')
-    // .js(resources + '/js/plugins-dev/load-scripts.js', assets + '/js/plugins')
+    //.js(resources + '/js/plugins-dev/flex-gap.js', assets + '/js/plugins')
+    //.js(resources + '/js/plugins-dev/passive-events-fix.js', assets + '/js/plugins')
+    //.js(resources + '/js/plugins-dev/load-scripts.js', assets + '/js/plugins')
 
     //.js(resources + '/js/login.js', assets + '/js')
     .js(resources + '/js/admin.js', assets + '/js')

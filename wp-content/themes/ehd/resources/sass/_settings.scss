@@ -2,13 +2,15 @@
 
 $unique_id: unique_id();
 
-/** */
 $black-color: #000000 !default;
 $medium-color: #555555 !default;
 $white-color: #ffffff !default;
 
 $header-color: #333333 !default;
 $anchor-color: #333333 !default;
+
+$body-color: #333333 !default;
+$body-background-color: #ffffff !default;
 
 $color1: #1c68b3 !default;
 $color2: #ef4023 !default;
@@ -18,31 +20,26 @@ $red-color: #FF0000 !default;
 $blue-color: #0000FF !default;
 $green-color: #008000 !default;
 
-/** */
 $scrollbar-with: rem-calc(4);
 $scrollbar-height: rem-calc(4);
 
-/** */
 $global-screen-small: rem-calc(960);
 $global-screen-medium: rem-calc(1080);
 $global-screen: rem-calc(1200);
 $global-screen-large: rem-calc(1300);
 
-/** */
 $mobile-width: rem-calc(640);
 $desktop-width: rem-calc(1024);
 $xdesktop-width: rem-calc(1200);
-$xxdesktop-width: rem-calc(1480);
+$xxdesktop-width: rem-calc(1440);
 $xxxdesktop-width: rem-calc(1620);
 
 $wp-small-width: rem-calc(600);
 $wp-medium-width: rem-calc(782);
 
-/** */
 $mq-breakpoints: (
         wp-mobile: $wp-small-width,
         wp-tablet: $wp-medium-width,
-
         mobile: $mobile-width,
         desktop: $desktop-width,
         xdesktop: $xdesktop-width,
@@ -50,7 +47,6 @@ $mq-breakpoints: (
         xxxdesktop: $xxxdesktop-width,
 );
 
-/** */
 $header-styles-small: (
         h1: 35,
         h2: 29,
@@ -68,30 +64,23 @@ $header-styles-medium: (
         h6: 16,
 );
 
-/** */
-$body-background-color: #ffffff !default;
-$body-font-color: #333333 !default;
+$body-size: rem-calc(16);
 
-$body-font-size: rem-calc(16);
+$large-size: rem-calc(18);
+$medium-size: rem-calc(16);
+$small-size: rem-calc(14);
 
-$large-font-size: rem-calc(16);
-$medium-font-size: rem-calc(15);
-$small-font-size: rem-calc(14);
-
-/** */
 $global-line-height: 1.5;
 $header-line-height: 1.4;
 $paragraph-line-height: 1.7;
 
-/** */
 $gutter: 15;
 $gutter-mobile: 10;
-$large_gutter: 165;
+$large_gutter: 180;
 
 $gap: $gutter * 2;
 $gap-mobile: $gutter-mobile * 2;
 
-/** */
-$header-font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
-$body-font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
-$font-awesome: "Font Awesome 6 Pro", "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;
+$header-font: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
+$body-font: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
+$awesome-font: "Font Awesome 6 Pro", "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;

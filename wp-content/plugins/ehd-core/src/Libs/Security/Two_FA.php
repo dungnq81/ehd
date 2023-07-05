@@ -48,7 +48,7 @@ class Two_FA {
 	 * The constructor.
 	 */
 	public function __construct() {
-		$this->encryption_key_file  = defined( 'EHD_ENCRYPTION_KEY_FILE_PATH' ) ? EHD_ENCRYPTION_KEY_FILE_PATH : EHD_PLUGIN_PATH . 'ehd_encrypt_key.php';
+		$this->encryption_key_file  = defined( 'EHD_ENCRYPTION_KEY_FILE_PATH' ) ? EHD_ENCRYPTION_KEY_FILE_PATH : WP_CONTENT_DIR . '/ehd_encrypt_key.php';
 		$this->google_authenticator = new PHPGangsta_GoogleAuthenticator();
 		$this->recovery             = new Recovery();
 		$this->encryption           = new Encryption( $this->encryption_key_file );
@@ -518,6 +518,8 @@ class Two_FA {
 
 	/**
 	 * Validate backup codes login.
+	 *
+	 * @throws Exception
 	 */
 	public function validate_2fabc_login() {
 		// Get the cookie data.
@@ -573,6 +575,7 @@ class Two_FA {
 	 * Validate 2FA login
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function validate_2fa_login() {
 		// Get the cookie data.
@@ -640,6 +643,8 @@ class Two_FA {
 	 * Login the user.
 	 *
 	 * @param int $user_id The user id.
+	 *
+	 * @throws Exception
 	 */
 	private function login_user( int $user_id ) {
 		// Set the auth cookie.
@@ -801,12 +806,12 @@ class Two_FA {
 	 */
 	public function show_notices() {
 		// Bail if there is no need of a notice.
-		if ( empty( get_option( 'ehd_security_2fa_encryption_file_notice', false ) ) ) {
+		if ( empty( Helper::getOption( 'ehd_security_2fa_encryption_file_notice', false ) ) ) {
 			return;
 		}
 
 		printf(
-			'<div class="notice notice-error ehd-section__content" style="position: relative; margin-top: 1em; display:block!important;"><p>%1$s</p><button type="button" class="notice-dismiss dismiss-ehd-security-notice" data-link="%2$s"><span class="screen-reader-text">Dismiss this notice.</span></button></div>',
+			'<div class="notice notice-error is-dismissible" style="position: relative; margin-top: 1em; display:block!important;"><p>%1$s</p><button type="button" class="notice-dismiss dismiss-ehd-security-notice" data-link="%2$s"><span class="screen-reader-text">Dismiss this notice.</span></button></div>',
 			__( 'We were not able to create encryption file used by 2FA, so the Two Factor Authentication service was disabled. Please check your website files and folders permissions or contact your hosting provider for assistance.', EHD_PLUGIN_TEXT_DOMAIN ), // phpcs:ignore
 			admin_url( 'admin-ajax.php?action=dismiss_ehd_2fa_notice&notice=2fa_encryption_file_notice' ) // phpcs:ignore
 		);
@@ -821,7 +826,26 @@ class Two_FA {
 		}
 
 		Helper::updateOption( 'ehd_security_' . $_GET['notice'], 0 ); // phpcs:ignore
-
 		wp_send_json_success();
+	}
+
+	/**
+	 * Check if encryption file was migrated over and move it back to wp-content directory.
+	 */
+	public function move_encryption_file() {
+		// Setup the WP Filesystem.
+		$wp_filesystem = Helper::wpFileSystem();
+
+		// Bail if the encryption file already exists.
+		if ( $wp_filesystem->is_file( $this->encryption_key_file ) ) {
+			return;
+		}
+
+		if ( ! $wp_filesystem->is_file( EHD_PLUGIN_PATH . 'ehd_encrypt_key.php' ) ) {
+			return;
+		}
+
+		// Move the file back to the original location.
+		$wp_filesystem->move( EHD_PLUGIN_PATH . 'ehd_encrypt_key.php', $this->encryption_key_file );
 	}
 }

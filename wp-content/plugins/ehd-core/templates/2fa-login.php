@@ -7,7 +7,7 @@
 	);
 ?>
 
-<style>#login { width:360px; padding:5% 0 0; }</style>
+<style>#login { width:360px; padding:4% 0 0; }</style>
 <?php if ( ! $args['is_wp_login'] ) : ?>
 <style>.login-action- > div#login:first-of-type{ display: none; } .login-action- > div#login:nth-last-of-type(2){ display: block !important; } </style>
 <?php endif ?>

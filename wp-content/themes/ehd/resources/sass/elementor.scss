@@ -5,7 +5,7 @@
 
     /** */
     @for $i from 1 through 6 {
-        &.e-h#{$i} {
+        &.e_h#{$i} {
             margin-bottom: 0;
 
             .elementor-heading-title {
@@ -16,9 +16,10 @@
     }
 
     /** */
-    &.e-scale {
+    &.e_scale {
         .elementor-image-box-img {
             overflow: hidden;
+
             img {
                 @include responsive-scale();
             }

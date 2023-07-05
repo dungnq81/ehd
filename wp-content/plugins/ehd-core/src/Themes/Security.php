@@ -7,6 +7,7 @@ use EHD_Libs\Security\Headers;
 use EHD_Libs\Security\Illegal_Users;
 use EHD_Libs\Security\Login_Attempts;
 use EHD_Libs\Security\Readme;
+use EHD_Libs\Security\Two_FA;
 
 /**
  * Security Class
@@ -33,11 +34,43 @@ final class Security {
 		$this->_disable_RSSFeed();
 		$this->_xss_protection();
 		$this->_login_attempts();
+		$this->_2fa_hooks();
 	}
 
 	// ------------------------------------------------------
 
 	/**
+	 * Add two-factor auth hooks.
+	 *
+	 * @return void
+	 */
+	private function _2fa_hooks() {
+		$two_factor_authentication = $this->security_options['two_factor_authentication'] ? 1 : 0;
+		$two_fa = new Two_FA();
+
+		// Check
+
+		add_filter( 'pre_update_option_ehd_security_2fa', [ &$two_fa, 'handle_option_change' ], 10, 2 );
+		add_action( 'admin_notices', [ &$two_fa, 'show_notices' ] );
+		add_action( 'wp_ajax_dismiss_ehd_2fa_notice', [ &$two_fa, 'hide_notice' ] );
+
+		// Bail if the option is not enabled.
+		if ( ! $two_factor_authentication ) {
+			return;
+		}
+
+		add_action( 'wp_login', [ &$two_fa, 'move_encryption_file' ], 9, 2 );
+		add_action( 'wp_login', [ &$two_fa, 'init_2fa' ], 10, 2 );
+		add_action( 'login_form_ehd_2fa', [ &$two_fa, 'validate_2fa_login' ] );
+		add_action( 'login_form_ehd_2fabc', [ &$two_fa, 'validate_2fabc_login' ] );
+		add_action( 'login_form_load_ehd_2fabc', [ &$two_fa, 'load_backup_codes_form' ] );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * Add login service hooks.
+	 *
 	 * @return void
 	 */
 	private function _login_attempts() {
@@ -47,6 +80,7 @@ final class Security {
 		// Bail if optimization is disabled.
 		if ( 0 === intval( $limit_login_attempts ) ) {
 			$security_login->reset_login_attempts();
+
 			return;
 		}
 
@@ -63,6 +97,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Add username hooks.
+	 *
 	 * @return void
 	 */
 	private function _illegal_users() {
@@ -76,6 +112,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Add headers_service hooks.
+	 *
 	 * @return void
 	 */
 	private function _xss_protection() {
@@ -94,6 +132,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Remove the WordPress version meta tag and parameter.
+	 *
 	 * @return void
 	 */
 	private function _hide_wp_version() {
@@ -131,6 +171,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Disable the WordPress feed.
+	 *
 	 * @return void
 	 */
 	private function _disable_RSSFeed() {
@@ -165,6 +207,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * Add readme hooks.
+	 *
 	 * @return void
 	 */
 	private function _remove_ReadMe() {
@@ -180,6 +224,8 @@ final class Security {
 	// ------------------------------------------------------
 
 	/**
+	 * XML-RPC
+	 *
 	 * @return void
 	 */
 	private function _disable_XMLRPC() {

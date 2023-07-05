@@ -3,7 +3,6 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
-use EHD_Libs\Readme_File;
 use PHPMailer\PHPMailer\Exception;
 use MatthiasMullie\Minify;
 
@@ -15,15 +14,7 @@ use MatthiasMullie\Minify;
  * @author eHD
  */
 final class Options {
-
-	/**
-	 * @var array|false|mixed
-	 */
-	public $block_editor_options = [];
-
 	public function __construct() {
-
-		$this->block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
@@ -47,6 +38,11 @@ final class Options {
 
 		/** Block editor */
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
+
+		/** Security */
+		( new Security() );
+
+		/** WooCommerce */
 
 		/** Custom CSS */
 		// add_action( 'wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99 );
@@ -80,7 +76,9 @@ final class Options {
 	 * @return void
 	 */
 	public function editor_enqueue_scripts() {
-		$block_style_off = $this->block_editor_options['block_style_off'] ?? '';
+		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
+
+		$block_style_off = $block_editor_options['block_style_off'] ?? '';
 
 		/** Remove block CSS */
 		if ( $block_style_off ) {
@@ -94,9 +92,9 @@ final class Options {
 			}
 		}
 
-		$use_widgets_block_editor_off           = $this->block_editor_options['use_widgets_block_editor_off'] ?? '';
-		$gutenberg_use_widgets_block_editor_off = $this->block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
-		$use_block_editor_for_post_type_off     = $this->block_editor_options['use_block_editor_for_post_type_off'] ?? '';
+		$use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
+		$gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
+		$use_block_editor_for_post_type_off     = $block_editor_options['use_block_editor_for_post_type_off'] ?? '';
 
 		// Disables the block editor from managing widgets.
 		if ( $use_widgets_block_editor_off ) {
