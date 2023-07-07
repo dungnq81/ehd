@@ -114,10 +114,12 @@ final class WooCommerce {
 	 */
 	protected function _hooks(): void {
 
-		// Fixed css
-		echo '<style>#wpadminbar ~ #wpbody { margin-top: 0 !important; }</style>';
+		// https://stackoverflow.com/questions/57321805/remove-header-from-the-woocommerce-administrator-panel
+		add_action( 'admin_head', function () {
+			//remove_action( 'in_admin_header', [ 'Automattic\WooCommerce\Internal\Admin\Loader', 'embed_page_header' ] );
+			//remove_action( 'in_admin_header', [ 'Automattic\WooCommerce\Admin\Loader', 'embed_page_header' ] );
 
-		// Trim zeros in price decimals
-		add_filter( 'woocommerce_price_trim_zeros', '__return_true' );
+			echo '<style>#wpadminbar ~ #wpbody { margin-top: 0 !important; }.woocommerce-layout__header { display: none !important; }</style>';
+		} );
 	}
 }

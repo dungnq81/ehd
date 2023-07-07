@@ -241,23 +241,25 @@ final class Admin_Options {
 			// ------------------------------------------------------
 
 			/** Woocommerce */
-			$woocommerce_options = [
-				'remove_legacy_coupon' => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
-				'woocommerce_jsonld' => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
-            ];
+			if ( Helper::isWoocommerceActive() ) {
 
-			Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
+				$woocommerce_options = [
+					'remove_legacy_coupon' => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
+					'woocommerce_jsonld'   => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
+				];
 
-            // fixed db
-			if ( $woocommerce_options['remove_legacy_coupon'] ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
-				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
+				Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
+
+				// fixed db
+				if ( $woocommerce_options['remove_legacy_coupon'] ) {
+					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
+					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
+				}
 			}
 
 			// ------------------------------------------------------
 
 			/** Comments */
-
 
 			// ------------------------------------------------------
 
@@ -323,9 +325,13 @@ final class Admin_Options {
                             <li class="security security-settings">
                                 <a title="Security" href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
+
+                            <?php if ( Helper::isWoocommerceActive() ) : ?>
                             <li class="woocommerce woocommerce-settings">
                                 <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
+                            <?php endif; ?>
+
                             <li class="comments comments-settings">
                                 <a title="Comments" href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
@@ -358,9 +364,13 @@ final class Admin_Options {
                         <div id="security_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/security.php'; ?>
                         </div>
+
+		                <?php if ( Helper::isWoocommerceActive() ) : ?>
                         <div id="woocommerce_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/woocommerce.php'; ?>
                         </div>
+                        <?php endif; ?>
+
                         <div id="comments_settings" class="group tabs-panel">
 		                    <?php require __DIR__ . '/options/comments.php'; ?>
                         </div>

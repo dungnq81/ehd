@@ -33,26 +33,6 @@ trait Plugin {
 	/**
 	 * @param $plugin
 	 *
-	 * @return false
-	 */
-	public static function isAcfPro( $plugin ): bool {
-		if ( $plugin == 'acf' ) {
-			if ( \defined( 'ACF' ) ) {
-				return ACF;
-			}
-		}
-		if ( $plugin == 'advanced-custom-fields-pro' ) {
-			if ( \defined( 'ACF_PRO' ) ) {
-				return ACF_PRO;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * @param $plugin
-	 *
 	 * @return bool
 	 */
 	public static function isPluginMustUse( $plugin ): bool {
@@ -200,12 +180,12 @@ trait Plugin {
 	}
 
 	/**
-	 * @param $ret
-	 * @param $deps
+	 * @param bool $ret
+	 * @param array $deps
 	 *
 	 * @return array|bool
 	 */
-	public static function checkPluginDependencies( $ret = false, $deps = [] ) {
+	public static function checkPluginDependencies( bool $ret = false, array $deps = [] ) {
 		$depsDisabled = [];
 		if ( ! empty( $deps ) ) {
 			$isActive = true;
@@ -231,6 +211,7 @@ trait Plugin {
 				}
 			}
 		}
+
 		if ( $ret ) {
 			return $depsDisabled;
 		}

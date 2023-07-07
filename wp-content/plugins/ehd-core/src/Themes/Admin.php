@@ -34,15 +34,17 @@ final class Admin {
 	 * @return void
 	 */
 	private function _remove_menu(): void {
-		//echo dump($GLOBALS[ 'menu' ]);
+
+		//global $menu;
+		//dump($menu);
 
 		// Hide menu
 		$hide_menu = Helper::getThemeMod( 'remove_menu_setting' );
 		if ( $hide_menu ) {
 			$array_hide_menu = explode( "\n", $hide_menu );
-			foreach ( $array_hide_menu as $menu ) {
-				if ( $menu ) {
-					remove_menu_page( $menu );
+			foreach ( $array_hide_menu as $menu_slug ) {
+				if ( $menu_slug ) {
+					remove_menu_page( $menu_slug );
 				}
 			}
 		}
@@ -54,6 +56,7 @@ final class Admin {
 	 * Add admin column
 	 */
 	public function admin_init(): void {
+
 		$this->_remove_menu();
 
 		// Add customize column taxonomy
@@ -180,7 +183,7 @@ final class Admin {
 			$menu_order = [
 				'term_order' => sprintf( '<span class="term-order tips">%1$s</span>', __( "Order", EHD_PLUGIN_TEXT_DOMAIN ) ),
 			];
-			$columns    = array_merge( $columns, $menu_order );
+			$columns = array_merge( $columns, $menu_order );
 		}
 
 		return $columns;
