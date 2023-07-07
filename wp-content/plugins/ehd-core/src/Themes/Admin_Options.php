@@ -318,56 +318,45 @@ final class Admin_Options {
                             </h3>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings"
-                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
                         </div>
                         <ul class="ul-menu-list">
                             <li class="aspect-ratio-settings">
-                                <a class="current" title="Aspect ratio"
-                                   href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="contact-info-settings">
-                                <a title="Contact Info"
-                                   href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="contact-button-settings">
-                                <a title="Contact Button"
-                                   href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="gutenberg-settings">
-                                <a title="Block Editor"
-                                   href="#block_editor_settings"><?php _e( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="optimizer-settings">
-                                <a title="Optimizer"
-                                   href="#optimizer_settings"><?php _e( 'Optimizer', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Optimizer" href="#optimizer_settings"><?php _e( 'Optimizer', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="security-settings">
-                                <a title="Security"
-                                   href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Security" href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
 
 							<?php if ( Helper::isWoocommerceActive() ) : ?>
-                                <li class="woocommerce-settings">
-                                    <a title="WooCommerce"
-                                       href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
-                                </li>
+                            <li class="woocommerce-settings">
+                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            </li>
 							<?php endif; ?>
 
                             <li class="comments-settings">
-                                <a title="Comments"
-                                   href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="global-settings">
-                                <a title="Custom Scripts"
-                                   href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="custom-script-settings">
+                                <a title="Custom Scripts" href="#custom_script_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="custom-css-settings">
-                                <a title="Custom CSS"
-                                   href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -375,19 +364,19 @@ final class Admin_Options {
                         <h2 class="hidden-text"></h2>
 
                         <div id="aspect_ratio_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/aspect-ratio.php'; ?>
+							<?php require __DIR__ . '/options/aspect_ratio.php'; ?>
                         </div>
                         <div id="smtp_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/smtp.php'; ?>
                         </div>
                         <div id="contact_info_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/contact-info.php'; ?>
+							<?php require __DIR__ . '/options/contact_info.php'; ?>
                         </div>
                         <div id="contact_button_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/contact-button.php'; ?>
+							<?php require __DIR__ . '/options/contact_button.php'; ?>
                         </div>
                         <div id="block_editor_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/block-editor.php'; ?>
+							<?php require __DIR__ . '/options/block_editor.php'; ?>
                         </div>
                         <div id="optimizer_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/optimizer.php'; ?>
@@ -397,19 +386,19 @@ final class Admin_Options {
                         </div>
 
 						<?php if ( Helper::isWoocommerceActive() ) : ?>
-                            <div id="woocommerce_settings" class="group tabs-panel">
-								<?php require __DIR__ . '/options/woocommerce.php'; ?>
-                            </div>
+                        <div id="woocommerce_settings" class="group tabs-panel">
+                            <?php require __DIR__ . '/options/woocommerce.php'; ?>
+                        </div>
 						<?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/comments.php'; ?>
                         </div>
-                        <div id="global_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/global.php'; ?>
+                        <div id="custom_script_settings" class="group tabs-panel">
+							<?php require __DIR__ . '/options/custom_script.php'; ?>
                         </div>
                         <div id="custom_css_settings" class="group tabs-panel">
-							<?php require __DIR__ . '/options/custom-css.php'; ?>
+							<?php require __DIR__ . '/options/custom_css.php'; ?>
                         </div>
 
                         <div class="save-bar">
@@ -440,7 +429,7 @@ final class Admin_Options {
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
 							<?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
-                                <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
+                            <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
 							<?php endif; ?>
                             <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>
                             <li><?php echo sprintf( '<span>WordPress version:</span> %s', get_bloginfo( 'version' ) ); ?></li>
@@ -477,7 +466,7 @@ final class Admin_Options {
                             <li><?php echo sprintf( '<span>stream_socket_client:</span> %s', $stream_socket_client_status ); ?></li>
                             <li><?php echo sprintf( '<span>fsockopen:</span> %s%s', $fsockopen_status, $socket_text ); ?></li>
 							<?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
-                                <li><?php echo sprintf( '<span>User agent:</span> %s', $agent ); ?></li>
+                            <li><?php echo sprintf( '<span>User agent:</span> %s', $agent ); ?></li>
 							<?php endif; ?>
                             <li><?php echo sprintf( '<span>IP:</span> %s', Helper::getIpAddress() ); ?></li>
                         </ul>
