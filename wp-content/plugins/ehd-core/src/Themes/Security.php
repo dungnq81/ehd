@@ -45,7 +45,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _2fa_hooks() {
-		$two_factor_authentication = $this->security_options['two_factor_authentication'] ? 1 : 0;
+		$two_factor_authentication = $this->security_options['two_factor_authentication'] ?? 0;
 		$two_fa = new Two_FA();
 
 		// Check
@@ -102,7 +102,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _illegal_users() {
-		$illegal_users_option = $this->security_options['illegal_users'] ? 1 : 0;
+		$illegal_users_option = $this->security_options['illegal_users'] ?? 0;
 		if ( $illegal_users_option ) {
 			$common_user = new Illegal_Users();
 			add_action( 'illegal_user_logins', [ &$common_user, 'get_illegal_usernames' ] );
@@ -117,7 +117,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _xss_protection() {
-		$xss_protection = $this->security_options['advanced_xss_protection'] ? 1 : 0;
+		$xss_protection = $this->security_options['advanced_xss_protection'] ?? 0;
 		if ( $xss_protection ) {
 			$headers = new Headers();
 
@@ -137,7 +137,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _hide_wp_version() {
-		$hide_wp_version = $this->security_options['hide_wp_version'] ? 1 : 0;
+		$hide_wp_version = $this->security_options['hide_wp_version'] ?? 0;
 		if ( $hide_wp_version ) {
 
 			// Remove admin wp version
@@ -176,7 +176,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _disable_RSSFeed() {
-		$rss_feed_off = $this->security_options['rss_feed_off'] ? 1 : 0;
+		$rss_feed_off = $this->security_options['rss_feed_off'] ?? 0;
 
 		// If the option is already enabled.
 		if ( $rss_feed_off ) {
@@ -212,7 +212,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _remove_ReadMe() {
-		$remove_readme = $this->security_options['remove_readme'] ? 1 : 0;
+		$remove_readme = $this->security_options['remove_readme'] ?? 0;
 		if ( $remove_readme ) {
 
 			// Add action to delete the README on WP core update, if option is set.
@@ -229,7 +229,7 @@ final class Security {
 	 * @return void
 	 */
 	private function _disable_XMLRPC() {
-		$xml_rpc_off = $this->security_options['xml_rpc_off'] ? 1 : 0;
+		$xml_rpc_off = $this->security_options['xml_rpc_off'] ?? 0;
 		if ( $xml_rpc_off ) {
 
 			// Disable XML-RPC authentication

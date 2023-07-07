@@ -70,8 +70,7 @@ final class CSS
      * @since  1.0
      *
      */
-    public function set_selector(string $selector = '')
-    {
+    public function set_selector(string $selector = '') {
         // Render the css in the output string everytime the selector changes.
         if ('' !== $this->_selector) {
             $this->add_selector_rules_to_output();

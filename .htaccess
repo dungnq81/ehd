@@ -30,16 +30,4 @@ Options -Indexes
 # END ng
 
 
-# eHD XML-RPC Disable
-<Files xmlrpc.php>
-	order deny,allow
-	deny from all
-</Files>
-# eHD XML-RPC Disable END
-# eHD XSS Header
-<IfModule mod_headers.c>
-     Header set X-Frame-Options "SAMEORIGIN"
-     Header always set X-Content-Type-Options "nosniff"
-     Header set X-XSS-Protection "1; mode=block"
-</IfModule>
-# eHD XSS Header END
+

@@ -33,6 +33,9 @@ define( 'EHD_PLUGIN_VERSION', $plugin_data['Version'] );
 define( 'EHD_PLUGIN_TEXT_DOMAIN', $plugin_data['TextDomain'] );
 define( 'EHD_PLUGIN_AUTHOR', $plugin_data['Author'] );
 
+const EHD_PLUGIN_SRC_URL = EHD_PLUGIN_URL . 'src/';
+const EHD_PLUGIN_SRC_PATH = EHD_PLUGIN_PATH . 'src/';
+
 //if ( ! defined( 'EHD_MU_PLUGIN_VERSION' ) ) {
 //	wp_die( __( 'eHD Core requires "eHD mu-core" plugin to function properly', EHD_PLUGIN_TEXT_DOMAIN ) );
 //}
@@ -42,7 +45,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once EHD_PLUGIN_PATH . 'src/Plugin.php';
+require_once EHD_PLUGIN_SRC_PATH . 'Plugin.php';
 
 $plugin = new Plugin();
 

@@ -101,25 +101,28 @@ final class Admin_Options {
 	 * @return void
 	 */
 	public function options_page(): void {
+
+		global $wpdb;
+
 		if ( isset( $_POST['ehd_update_settings'] ) ) {
 
 			$nonce = $_REQUEST['_wpnonce'];
+
 			if ( ! wp_verify_nonce( $nonce, 'ehd_settings' ) ) {
 				wp_die( __( 'Error! Nonce Security Check Failed! please save the settings again.', EHD_PLUGIN_TEXT_DOMAIN ) );
 			}
 
 			// ------------------------------------------------------
 
-			/** Custom Scripts */
-			$html_header      = $_POST['html_header'] ?? '';
-			$html_footer      = $_POST['html_footer'] ?? '';
-			$html_body_top    = $_POST['html_body_top'] ?? '';
-			$html_body_bottom = $_POST['html_body_bottom'] ?? '';
+			/** Aspect Ratio */
+			$aspect_ratio_options = [];
+			$ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [] );
+			foreach ( $ar_post_type_list as $i => $ar ) {
+				$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 4;
+				$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 3;
+			}
 
-			Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
-			Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
-			Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
-			Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
+			Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options );
 
 			// ------------------------------------------------------
 
@@ -156,18 +159,6 @@ final class Admin_Options {
 			}
 
 			Helper::updateOption( 'smtp__options', $smtp_options, true );
-
-			// ------------------------------------------------------
-
-			/** Aspect Ratio */
-			$aspect_ratio_options = [];
-			$ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [] );
-			foreach ( $ar_post_type_list as $i => $ar ) {
-				$aspect_ratio_options[ 'ar-' . $ar . '-width' ]  = ! empty( $_POST[ $ar . '-width' ] ) ? sanitize_text_field( $_POST[ $ar . '-width' ] ) : 4;
-				$aspect_ratio_options[ 'ar-' . $ar . '-height' ] = ! empty( $_POST[ $ar . '-height' ] ) ? sanitize_text_field( $_POST[ $ar . '-height' ] ) : 3;
-			}
-
-			Helper::updateOption( 'aspect_ratio__options', $aspect_ratio_options );
 
 			// ------------------------------------------------------
 
@@ -249,6 +240,40 @@ final class Admin_Options {
 
 			// ------------------------------------------------------
 
+			/** Woocommerce */
+			$woocommerce_options = [
+				'remove_legacy_coupon' => ! empty( $_POST['remove_legacy_coupon'] ) ? sanitize_text_field( $_POST['remove_legacy_coupon'] ) : '',
+				'woocommerce_jsonld' => ! empty( $_POST['woocommerce_jsonld'] ) ? sanitize_text_field( $_POST['woocommerce_jsonld'] ) : '',
+            ];
+
+			Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
+
+            // fixed db
+			if ( $woocommerce_options['remove_legacy_coupon'] ) {
+				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
+			}
+
+			// ------------------------------------------------------
+
+			/** Comments */
+
+
+			// ------------------------------------------------------
+
+			/** Custom Scripts */
+			$html_header      = $_POST['html_header'] ?? '';
+			$html_footer      = $_POST['html_footer'] ?? '';
+			$html_body_top    = $_POST['html_body_top'] ?? '';
+			$html_body_bottom = $_POST['html_body_bottom'] ?? '';
+
+			Helper::updateCustomPost( $html_header, 'html_header', 'text/html', true );
+			Helper::updateCustomPost( $html_footer, 'html_footer', 'text/html', true );
+			Helper::updateCustomPost( $html_body_top, 'html_body_top', 'text/html', true );
+			Helper::updateCustomPost( $html_body_bottom, 'html_body_bottom', 'text/html', true );
+
+			// ------------------------------------------------------
+
 			/** Custom CSS */
 			$html_custom_css = $_POST['html_custom_css'] ?? '';
 			Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
@@ -263,6 +288,7 @@ final class Admin_Options {
 				\LiteSpeed\Purge::purge_all();
 			}
 		}
+
 		?>
         <div class="wrap" id="ehd_container">
             <form id="ehd_form" method="post" enctype="multipart/form-data">

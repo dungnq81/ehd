@@ -72,7 +72,7 @@ final class RankMath {
 	 *
 	 * @return string[]
 	 */
-	public function breadcrumb_args( $args ) {
+	public function breadcrumb_args( $args ): array {
 		return [
 			'delimiter'   => '',
 			'wrap_before' => '<ul id="breadcrumbs" class="breadcrumbs" aria-label="Breadcrumbs">',

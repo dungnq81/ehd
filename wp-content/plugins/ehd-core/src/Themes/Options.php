@@ -16,33 +16,32 @@ use MatthiasMullie\Minify;
 final class Options {
 	public function __construct() {
 
-		/** Custom Scripts */
-		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
-		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP
-
-		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // footer scripts
-		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // body scripts - BOTTOM
+		/** Aspect Ratio */
+		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
+		add_filter( 'ehd_aspect_ratio_post_type', [ &$this, 'aspect_ratio_post_type_default' ], 98, 1 );
 
 		/** SMTP Settings */
 		if ( Helper::smtpConfigured() ) {
 			add_action( 'phpmailer_init', [ &$this, 'setup_phpmailer_init' ], 11 );
 		}
 
-		/** Aspect Ratio */
-		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
-		add_filter( 'ehd_aspect_ratio_post_type', [ &$this, 'aspect_ratio_post_type_default' ], 98, 1 );
-
 		/** Contact info */
 
 		/** Contact Button */
 
 		/** Block editor */
+		add_action( 'admin_init', [ &$this, 'editor_admin_init' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'editor_enqueue_scripts' ], 98 );
 
 		/** Security */
 		( new Security() );
 
-		/** WooCommerce */
+		/** Custom Scripts */
+		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
+		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP
+
+		add_action( 'wp_footer', [ &$this, 'footer_scripts__hook' ], 1 ); // footer scripts
+		add_action( 'wp_footer', [ &$this, 'body_scripts_bottom__hook' ], 998 ); // body scripts - BOTTOM
 
 		/** Custom CSS */
 		// add_action( 'wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99 );
@@ -75,22 +74,8 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function editor_enqueue_scripts() {
+	public function editor_admin_init() {
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
-
-		$block_style_off = $block_editor_options['block_style_off'] ?? '';
-
-		/** Remove block CSS */
-		if ( $block_style_off ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'wp-block-library-theme' );
-
-			// Remove WooCommerce block CSS
-			if ( class_exists( '\WooCommerce' ) ) {
-				wp_deregister_style( 'wc-blocks-vendors-style' );
-				wp_deregister_style( 'wc-block-style' );
-			}
-		}
 
 		$use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
 		$gutenberg_use_widgets_block_editor_off = $block_editor_options['gutenberg_use_widgets_block_editor_off'] ?? '';
@@ -109,6 +94,29 @@ final class Options {
 		// Use Classic Editor - Disable Gutenberg Editor
 		if ( $use_block_editor_for_post_type_off ) {
 			add_filter( 'use_block_editor_for_post_type', '__return_false' );
+		}
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function editor_enqueue_scripts() {
+
+		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
+		$block_style_off = $block_editor_options['block_style_off'] ?? '';
+
+		/** Remove block CSS */
+		if ( $block_style_off ) {
+			wp_dequeue_style( 'wp-block-library' );
+			wp_dequeue_style( 'wp-block-library-theme' );
+
+			// Remove WooCommerce block CSS
+			if ( class_exists( '\WooCommerce' ) ) {
+				wp_deregister_style( 'wc-blocks-vendors-style' );
+				wp_deregister_style( 'wc-block-style' );
+			}
 		}
 	}
 

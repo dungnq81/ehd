@@ -9,9 +9,9 @@ use EHD_Themes\Admin_Options;
 use EHD_Themes\Login;
 use EHD_Themes\Optimizer;
 use EHD_Themes\Options;
-use EHD_Themes\Security;
 use EHD_Themes\Shortcode;
 
+use EHD_Plugins\Editor\TinyMCE;
 use EHD_Plugins\ACF;
 use EHD_Plugins\CF7;
 use EHD_Plugins\Elementor\Elementor;
@@ -54,10 +54,13 @@ final class Plugin {
 		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 11 );
 		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 11 );
 
+		/** TinyMCE Editor */
+		( new TinyMCE() );
+
 		/** WooCommerce */
 		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
 
-		/** Advanced Custom Fields */
+		/** ACF */
 		class_exists( '\ACF' ) && ( new ACF() );
 
 //		if ( ! class_exists( '\ACF' ) ) {

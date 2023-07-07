@@ -108,7 +108,7 @@ trait Base {
 	 * @return bool
 	 */
 	public static function notEmpty( $value ): bool {
-		return isset( $value ) && ! empty( $value );
+		return ! empty( $value );
 	}
 
 	// --------------------------------------------------

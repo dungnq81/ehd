@@ -26,7 +26,7 @@ final class CF7 {
 	 *
 	 * @return array $tag
 	 */
-	public function dynamic_select_terms( $tag ) {
+	public function dynamic_select_terms( $tag ): array {
 		// Only run on select lists
 		if ( 'select' !== $tag['type'] && ( 'select*' !== $tag['type'] ) ) {
 			return $tag;

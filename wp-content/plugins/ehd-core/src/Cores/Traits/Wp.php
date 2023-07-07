@@ -1417,7 +1417,7 @@ trait Wp {
 		$phpmailer->SMTPAutoTLS = false;
 
 		// disable ssl certificate verification if checked
-		if ( isset( $smtp_options['smtp_disable_ssl_verification'] ) && ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
+		if ( ! empty( $smtp_options['smtp_disable_ssl_verification'] ) ) {
 			$phpmailer->SMTPOptions = [
 				'ssl' => [
 					'verify_peer'       => false,
