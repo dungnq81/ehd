@@ -12,8 +12,9 @@ Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # To rewrite "www.domain.com -> domain.com"
-    RewriteCond %{HTTPS} !=off
+    # SSL
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTPS} off
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
     RewriteRule ^(.*)$ https://%1/$1/ [R=301,L]
 
@@ -29,5 +30,10 @@ Options -Indexes
 </IfModule>
 # END ng
 
-
-
+# eHD XSS Header
+<IfModule mod_headers.c>
+     Header set X-Frame-Options "SAMEORIGIN"
+     Header always set X-Content-Type-Options "nosniff"
+     Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+# eHD XSS Header END

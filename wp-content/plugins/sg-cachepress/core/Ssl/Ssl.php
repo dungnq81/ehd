@@ -203,7 +203,7 @@ class Ssl {
 	}
 
 	/**
-	 * Chnage the url protocol.
+	 * Change the url protocol.
 	 *
 	 * @since  5.0.0
 	 *

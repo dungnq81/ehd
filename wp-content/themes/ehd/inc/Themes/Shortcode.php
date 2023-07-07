@@ -18,24 +18,26 @@ final class Shortcode {
 		}
 	}
 
-    // ------------------------------------------------------
+	// ------------------------------------------------------
 
-    /**
-     * @param array $atts
-     * @return false|string
-     */
-    public static function demo_shortcode(array $atts = []) {
-        $default_atts = [];
-        $atts = shortcode_atts(
-            $default_atts,
-            $atts,
-            'demo_shortcode'
-        );
+	/**
+	 * @param array $atts
+	 *
+	 * @return false|string
+	 */
+	public static function demo_shortcode( array $atts = [] ) {
+		$default_atts = [];
+		$atts         = shortcode_atts(
+			$default_atts,
+			$atts,
+			'demo_shortcode'
+		);
 
-        ob_start();
+		ob_start();
 
-        //...
-        echo 'demo_shortcode';
-        return ob_get_clean();
-    }
+		//...
+		echo 'demo_shortcode';
+
+		return ob_get_clean();
+	}
 }

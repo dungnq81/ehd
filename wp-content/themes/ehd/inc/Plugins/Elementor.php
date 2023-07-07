@@ -9,7 +9,7 @@ namespace EHD_Sites\Plugins;
  *
  * @author EHD
  */
-final class Elementor
-{
-    public function __construct() {}
+final class Elementor {
+	public function __construct() {
+	}
 }

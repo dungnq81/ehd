@@ -19,7 +19,10 @@ define( 'EHD_AUTHOR', $theme_author );
 define( 'EHD_THEME_PATH', untrailingslashit( get_template_directory() ) );
 define( 'EHD_THEME_URL', untrailingslashit( esc_url( get_template_directory_uri() ) ) );
 
-file_exists( __DIR__ . '/vendor/autoload.php' ) || wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', EHD_TEXT_DOMAIN ) );
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	wp_die( __( 'Error locating autoloader. Please run <code>composer install</code>.', EHD_TEXT_DOMAIN ) );
+}
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 if ( ! defined( 'EHD_PLUGIN_VERSION' ) ) {

@@ -8,7 +8,7 @@ namespace EHD_Sites\Plugins;
  * Woocommerce Class
  * @author EHD
  */
-final class Woocommerce
-{
-    public function __construct() {}
+final class Woocommerce {
+	public function __construct() {
+	}
 }

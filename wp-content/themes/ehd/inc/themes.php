@@ -151,6 +151,7 @@ if ( ! function_exists( '__body_classes' ) ) {
 	 * Adds custom classes to the array of body classes.
 	 *
 	 * @param array $classes
+	 *
 	 * @return array
 	 */
 	function __body_classes( array $classes ): array {
@@ -192,6 +193,7 @@ if ( ! function_exists( '__post_classes' ) ) {
 	 * Adds custom classes to the array of post classes.
 	 *
 	 * @param array $classes Classes for the post element.
+	 *
 	 * @return array
 	 */
 	function __post_classes( array $classes ): array {
@@ -328,7 +330,7 @@ add_filter( 'ehd_defer_style', function ( array $arr ) {
 
 /** Aspect Ratio default list */
 add_filter( 'ehd_aspect_ratio_default_list', function ( array $arr ) {
-	$new_arr = array_merge( $arr, [ '1-1' ] );
+	$new_arr    = array_merge( $arr, [ '1-1' ] );
 	$update_arr = [
 		'3-2',
 		'4-3',

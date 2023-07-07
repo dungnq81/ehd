@@ -205,6 +205,15 @@ final class Admin_Options {
 
 			// ------------------------------------------------------
 
+			/** Optimizer */
+			$optimizer_options = [
+				'https_enforce' => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : '',
+			];
+
+			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
+
+			// ------------------------------------------------------
+
 			/** Security */
 			$security_options = [
 				'illegal_users'             => ! empty( $_POST['illegal_users'] ) ? sanitize_text_field( $_POST['illegal_users'] ) : '',
@@ -226,16 +235,16 @@ final class Admin_Options {
 				$readme->delete_readme();
 			}
 
-            // xml-rpc
+			// xml-rpc
 			$xml_rpc = new Xmlrpc();
 			$xml_rpc->toggle_rules( $security_options['xml_rpc_off'] );
 
-            // system protect
+			// system protect
 			$protect_system = new Dir();
 			$protect_system->toggle_rules( $security_options['lock_protect_system'] );
 
-            // xss protection
-            $xss_protection = new Headers();
+			// xss protection
+			$xss_protection = new Headers();
 			$xss_protection->toggle_rules( $security_options['advanced_xss_protection'] );
 
 			// ------------------------------------------------------
@@ -260,6 +269,11 @@ final class Admin_Options {
 			// ------------------------------------------------------
 
 			/** Comments */
+			$comment_options = [
+                'simple_antispam' => ! empty( $_POST['simple_antispam'] ) ? sanitize_text_field( $_POST['simple_antispam'] ) : '',
+            ];
+
+			Helper::updateOption( 'comment__options', $comment_options, true );
 
 			// ------------------------------------------------------
 
@@ -304,42 +318,56 @@ final class Admin_Options {
                             </h3>
                         </div>
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
+                            <button type="submit" name="ehd_update_settings"
+                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ); ?></button>
                         </div>
                         <ul class="ul-menu-list">
-                            <li class="aspect-ratio aspect-ratio-settings">
-                                <a class="current" title="Aspect ratio" href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="aspect-ratio-settings">
+                                <a class="current" title="Aspect ratio"
+                                   href="#aspect_ratio_settings"><?php _e( 'Aspect Ratio', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="smtp smtp-settings">
+                            <li class="smtp-settings">
                                 <a title="SMTP" href="#smtp_settings"><?php _e( 'SMTP', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="contact-info contact-info-settings">
-                                <a title="Contact Info" href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="contact-info-settings">
+                                <a title="Contact Info"
+                                   href="#contact_info_settings"><?php _e( 'Contact Info', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="contact-button contact-button-settings">
-                                <a title="Contact Button" href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="contact-button-settings">
+                                <a title="Contact Button"
+                                   href="#contact_button_settings"><?php _e( 'Contact Button', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="gutenberg gutenberg-settings">
-                                <a title="Block Editor" href="#block_editor_settings"><?php _e( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="gutenberg-settings">
+                                <a title="Block Editor"
+                                   href="#block_editor_settings"><?php _e( 'Block Editor', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="security security-settings">
-                                <a title="Security" href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="optimizer-settings">
+                                <a title="Optimizer"
+                                   href="#optimizer_settings"><?php _e( 'Optimizer', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            </li>
+                            <li class="security-settings">
+                                <a title="Security"
+                                   href="#security_settings"><?php _e( 'Security', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
 
-                            <?php if ( Helper::isWoocommerceActive() ) : ?>
-                            <li class="woocommerce woocommerce-settings">
-                                <a title="WooCommerce" href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
-                            </li>
-                            <?php endif; ?>
+							<?php if ( Helper::isWoocommerceActive() ) : ?>
+                                <li class="woocommerce-settings">
+                                    <a title="WooCommerce"
+                                       href="#woocommerce_settings"><?php _e( 'WooCommerce', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                </li>
+							<?php endif; ?>
 
-                            <li class="comments comments-settings">
-                                <a title="Comments" href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="comments-settings">
+                                <a title="Comments"
+                                   href="#comments_settings"><?php _e( 'Comments', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                             <li class="global-settings">
-                                <a title="Custom Scripts" href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                                <a title="Custom Scripts"
+                                   href="#global_settings"><?php _e( 'Custom Scripts', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
-                            <li class="custom-css custom-css-settings">
-                                <a title="Custom CSS" href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
+                            <li class="custom-css-settings">
+                                <a title="Custom CSS"
+                                   href="#custom_css_settings"><?php _e( 'Custom CSS', EHD_PLUGIN_TEXT_DOMAIN ); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -361,28 +389,32 @@ final class Admin_Options {
                         <div id="block_editor_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/block-editor.php'; ?>
                         </div>
+                        <div id="optimizer_settings" class="group tabs-panel">
+							<?php require __DIR__ . '/options/optimizer.php'; ?>
+                        </div>
                         <div id="security_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/security.php'; ?>
                         </div>
 
-		                <?php if ( Helper::isWoocommerceActive() ) : ?>
-                        <div id="woocommerce_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/woocommerce.php'; ?>
-                        </div>
-                        <?php endif; ?>
+						<?php if ( Helper::isWoocommerceActive() ) : ?>
+                            <div id="woocommerce_settings" class="group tabs-panel">
+								<?php require __DIR__ . '/options/woocommerce.php'; ?>
+                            </div>
+						<?php endif; ?>
 
                         <div id="comments_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/comments.php'; ?>
+							<?php require __DIR__ . '/options/comments.php'; ?>
                         </div>
                         <div id="global_settings" class="group tabs-panel">
-		                    <?php require __DIR__ . '/options/global.php'; ?>
+							<?php require __DIR__ . '/options/global.php'; ?>
                         </div>
                         <div id="custom_css_settings" class="group tabs-panel">
 							<?php require __DIR__ . '/options/custom-css.php'; ?>
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
+                            <button type="submit" name="ehd_update_settings"
+                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
                         </div>
                     </div>
                 </div>
@@ -403,8 +435,8 @@ final class Admin_Options {
             <div id="main">
                 <h2 class="hide-text"></h2>
                 <div class="server-info-body">
-                    <h2><?php echo __( 'Server info', EHD_PLUGIN_TEXT_DOMAIN )?></h2>
-                    <p class="desc"><?php echo __( 'System configuration information', EHD_PLUGIN_TEXT_DOMAIN )?></p>
+                    <h2><?php echo __( 'Server info', EHD_PLUGIN_TEXT_DOMAIN ) ?></h2>
+                    <p class="desc"><?php echo __( 'System configuration information', EHD_PLUGIN_TEXT_DOMAIN ) ?></p>
                     <div class="server-info-inner code">
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
