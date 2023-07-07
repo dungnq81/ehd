@@ -40,28 +40,28 @@ $contact_popup_content = Helper::getCustomPostContent( 'html_contact', false );
 </div>
 <div class="section section-textarea" id="section_contact_popup_content">
     <label class="heading" for="contact_popup_content"><?php _e('Popup Content', EHD_PLUGIN_TEXT_DOMAIN) ?></label>
+    <div class="desc">The content of the popup, usually the content of a shortcode or image</div>
     <div class="option">
         <div class="controls">
             <textarea class="ehd-textarea ehd-control" name="contact_popup_content" id="contact_popup_content" rows="4"><?php echo $contact_popup_content; ?></textarea>
         </div>
-        <div class="explain">The content of the popup, usually the content of a shortcode or image</div>
     </div>
 </div>
 <div class="section section-text" id="section_contact_button_waiting_time">
     <label class="heading" for="contact_waiting_time"><?php _e('Popup display waiting time', EHD_PLUGIN_TEXT_DOMAIN) ?></label>
+    <div class="desc">The waiting time to display the popup, calculated in seconds.</div>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr($contact_waiting_time); ?>" class="ehd-input ehd-control" type="number" min="0" id="contact_waiting_time" name="contact_waiting_time">
         </div>
-        <div class="explain">The waiting time to display the popup, calculated in seconds.</div>
     </div>
 </div>
 <div class="section section-text" id="section_contact_show_repeat">
     <label class="heading" for="contact_show_repeat"><?php _e('Repeat Displays', EHD_PLUGIN_TEXT_DOMAIN) ?></label>
+    <div class="desc">Number of repeat displays of the popup.</div>
     <div class="option">
         <div class="controls">
             <input value="<?php echo esc_attr($contact_show_repeat); ?>" class="ehd-input ehd-control" type="number" min="0" id="contact_show_repeat" name="contact_show_repeat">
         </div>
-        <div class="explain">Number of repeat displays of the popup.</div>
     </div>
 </div>

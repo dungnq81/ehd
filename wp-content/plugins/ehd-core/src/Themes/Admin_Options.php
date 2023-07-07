@@ -259,7 +259,7 @@ final class Admin_Options {
 
 				Helper::updateOption( 'woocommerce__options', $woocommerce_options, true );
 
-				// fixed db
+				// fixed woo db
 				if ( $woocommerce_options['remove_legacy_coupon'] ) {
 					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_notes SET status=%s WHERE name=%s", 'actioned', 'wc-admin-coupon-page-moved' ) );
 					$wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "wc_admin_note_actions SET status=%s WHERE name=%s", 'actioned', 'remove-legacy-coupon-menu' ) );
@@ -413,8 +413,7 @@ final class Admin_Options {
                         </div>
 
                         <div class="save-bar">
-                            <button type="submit" name="ehd_update_settings"
-                                    class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
+                            <button type="submit" name="ehd_update_settings" class="button button-primary"><?php _e( 'Save Changes', EHD_PLUGIN_TEXT_DOMAIN ) ?></button>
                         </div>
                     </div>
                 </div>

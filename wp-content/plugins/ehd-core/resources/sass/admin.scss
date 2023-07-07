@@ -454,13 +454,16 @@ body.toplevel_page_ehd-settings {
             .section {
                 margin-bottom: 10px;
 
-                &.section-checkbox {
+                &.section-checkbox, &.section-select, &.section-text, &.section-textarea, &.section-multicheck {
                     .desc {
                         color: #999;
                         font-size: 13px;
                         margin-bottom: 20px;
+                        margin-top: -5px;
                     }
+                }
 
+                &.section-checkbox {
                     .option {
                         display: table;
 
@@ -474,14 +477,6 @@ body.toplevel_page_ehd-settings {
                         .explain {
                             font-weight: 500;
                         }
-                    }
-                }
-
-                &.section-select, &.section-text, &.section-textarea {
-                    .desc {
-                        color: #999;
-                        font-size: 13px;
-                        margin-bottom: 20px;
                     }
                 }
 

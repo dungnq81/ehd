@@ -36,6 +36,9 @@ final class Options {
 		/** Security */
 		( new Security() );
 
+		/** Comments */
+
+
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
 		add_action( 'wp_body_open', [ &$this, 'body_scripts_top__hook' ], 99 ); // body scripts - TOP

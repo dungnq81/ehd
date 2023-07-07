@@ -8,7 +8,7 @@ $html_body_top    = Helper::getCustomPostContent( 'html_body_top', true );
 $html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
 
 ?>
-<h2><?php _e( 'Global Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>
+<h2><?php _e( 'Custom Scripts Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>
 <div class="section section-textarea" id="section_html_header">
     <label class="heading" for="html_header"><?php _e('Header scripts', EHD_PLUGIN_TEXT_DOMAIN) ?></label>
     <div class="option">
