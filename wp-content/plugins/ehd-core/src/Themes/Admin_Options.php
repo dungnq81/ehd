@@ -3,9 +3,11 @@
 namespace EHD_Themes;
 
 use EHD_Cores\Helper;
+
+use EHD_Libs\Optimizer\Ssl;
+
 use EHD_Libs\Security\Dir;
 use EHD_Libs\Security\Headers;
-use EHD_Libs\Security\Login_Attempts;
 use EHD_Libs\Security\Readme;
 use EHD_Libs\Security\Xmlrpc;
 
@@ -211,6 +213,10 @@ final class Admin_Options {
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
+
+            // ssl
+			$ssl = new Ssl();
+			$ssl->toggle_rules( $optimizer_options['https_enforce'] );
 
 			// ------------------------------------------------------
 

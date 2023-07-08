@@ -13,35 +13,20 @@ use EHD_Cores\Helper;
 \defined( 'ABSPATH' ) || die;
 
 final class Optimizer {
+
+	/**
+	 * @var array|false|mixed
+	 */
+	public $optimizer_options = [];
+
+	// ------------------------------------------------------
+
 	public function __construct() {
 
+		$this->optimizer_options = Helper::getOption( 'optimizer__options', false, false );
+
 		$this->_cleanup();
-
-		add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );  // fixed canonical
-
-		// only front-end
-		if ( ! is_admin() ) {
-			add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
-			add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
-		}
-
-		add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
-
-		add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
-		// add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
-
-		add_filter( 'excerpt_more', function () {
-			return ' ' . '&hellip;';
-		} );
-
-		// Remove admin bar
-		add_action( 'wp_before_admin_bar_render', function () {
-			global $wp_admin_bar;
-			$wp_admin_bar->remove_menu( 'wp-logo' );
-		} );
-
-		// Prevent Specific Plugins from deactivation, delete, v.v...
-		add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+		$this->_optimizer();
 	}
 
 	// ------------------------------------------------------
@@ -91,6 +76,41 @@ final class Optimizer {
 			return remove_accents( $filename );
 		}, 10, 1 );
 	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+    private function _optimizer() {
+
+	    // fixed canonical
+	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
+
+	    // only front-end
+	    if ( ! is_admin() ) {
+		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
+		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
+	    }
+
+	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
+
+	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
+	    // add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title
+
+	    add_filter( 'excerpt_more', function () {
+		    return ' ' . '&hellip;';
+	    } );
+
+	    // Remove admin bar
+	    add_action( 'wp_before_admin_bar_render', function () {
+		    global $wp_admin_bar;
+		    $wp_admin_bar->remove_menu( 'wp-logo' );
+	    } );
+
+	    // Prevent Specific Plugins from deactivation, delete, v.v...
+	    add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+    }
 
 	// ------------------------------------------------------
 

@@ -2,9 +2,40 @@
 
 namespace EHD_Cores\Traits;
 
+use Vectorface\Whip\Whip;
+
 \defined( 'ABSPATH' ) || die;
 
 trait Url {
+
+	/**
+	 * @param string $img
+	 *
+	 * @return string
+	 */
+	public static function pixelImg( string $img = '' ): string {
+		if ( file_exists( $img ) ) {
+			return $img;
+		}
+
+		return "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getIpAddress(): string {
+		$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
+		$clientAddress = $whip->getValidIpAddress();
+
+		if ( false !== $clientAddress ) {
+			return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
+		}
+
+		// Fallback local ip.
+		return '127.0.0.1';
+	}
+
 	/**
 	 * @param $url
 	 *

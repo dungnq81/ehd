@@ -5,6 +5,32 @@ namespace EHD_Cores\Traits;
 \defined( 'ABSPATH' ) || die;
 
 trait File {
+
+	/**
+	 * Check if the passed content is xml.
+	 *
+	 * @param string $content       The page content.
+	 *
+	 * @return bool
+	 */
+	public static function is_xml( string $content ): bool {
+		// Get the first 200 chars of the file to make the preg_match check faster.
+		$xml_part = substr( $content, 0, 20 );
+
+		return preg_match( '/<\?xml version="/', $xml_part );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function htAccess(): bool {
+		if ( ! isset( $_SERVER['HTACCESS'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * @return mixed
 	 */

@@ -2,17 +2,37 @@
 
 namespace EHD_Cores\Traits;
 
-use Vectorface\Whip\Whip;
-
 \defined( 'ABSPATH' ) || die;
 
 trait Base {
-	public static function htAccess(): bool {
-		if ( ! isset( $_SERVER['HTACCESS'] ) ) {
-			return false;
+
+	// --------------------------------------------------
+
+	/**
+	 * Test if the current browser runs on a mobile device (smart phone, tablet, etc.)
+	 *
+	 * @return boolean
+	 */
+	public static function is_mobile(): bool {
+		if ( function_exists( 'wp_is_mobile' ) ) {
+			return wp_is_mobile();
 		}
 
-		return true;
+		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+			$is_mobile = false;
+		} elseif ( @strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false // many mobile devices (all iPhone, iPad, etc.)
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false
+		           || @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' ) !== false ) {
+			$is_mobile = true;
+		} else {
+			$is_mobile = false;
+		}
+
+		return $is_mobile;
 	}
 
 	// --------------------------------------------------
@@ -165,23 +185,6 @@ trait Base {
 	// --------------------------------------------------
 
 	/**
-	 * @return string
-	 */
-	public static function getIpAddress(): string {
-		$whip          = new Whip( Whip::CLOUDFLARE_HEADERS | Whip::REMOTE_ADDR | Whip::PROXY_HEADERS | Whip::INCAPSULA_HEADERS );
-		$clientAddress = $whip->getValidIpAddress();
-
-		if ( false !== $clientAddress ) {
-			return preg_replace( '/^::1$/', '127.0.0.1', $clientAddress );
-		}
-
-		// Fallback local ip.
-		return '127.0.0.1';
-	}
-
-	// --------------------------------------------------
-
-	/**
 	 * Search an IP range for a given IP.
 	 *
 	 * @param string $ip
@@ -210,95 +213,6 @@ trait Base {
 		}
 
 		return false;
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * @param       $url
-	 * @param array $resolution
-	 *
-	 * @return string
-	 */
-	public static function youtubeImage( $url, array $resolution = [] ): string {
-		if ( ! $url ) {
-			return '';
-		}
-
-		if ( ! is_array( $resolution ) || empty( $resolution ) ) {
-			$resolution = [
-				'sddefault',
-				'hqdefault',
-				'mqdefault',
-				'default',
-				'maxresdefault',
-			];
-		}
-
-		$url_img = self::pixelImg();
-		parse_str( wp_parse_url( $url, PHP_URL_QUERY ), $vars );
-		if ( isset( $vars['v'] ) ) {
-			$id      = $vars['v'];
-			$url_img = 'https://img.youtube.com/vi/' . $id . '/' . $resolution[0] . '.jpg';
-		}
-
-		return $url_img;
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * @param string $img
-	 *
-	 * @return string
-	 */
-	public static function pixelImg( string $img = '' ): string {
-		if ( file_exists( $img ) ) {
-			return $img;
-		}
-
-		return "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-	}
-
-	// --------------------------------------------------
-
-	/**
-	 * @param      $url
-	 * @param int $autoplay
-	 * @param bool $lazyload
-	 * @param bool $control
-	 *
-	 * @return string|null
-	 */
-	public static function youtubeIframe( $url, int $autoplay = 0, bool $lazyload = true, bool $control = true ): ?string {
-		$autoplay = (int) $autoplay;
-		parse_str( wp_parse_url( $url, PHP_URL_QUERY ), $vars );
-		$home = trailingslashit( network_home_url() );
-
-		if ( isset( $vars['v'] ) ) {
-			$idurl     = $vars['v'];
-			$_size     = ' width="800px" height="450px"';
-			$_autoplay = 'autoplay=' . $autoplay;
-			$_auto     = ' allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"';
-			if ( $autoplay ) {
-				$_auto = ' allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"';
-			}
-			$_src     = 'https://www.youtube.com/embed/' . $idurl . '?wmode=transparent&origin=' . $home . '&' . $_autoplay;
-			$_control = '';
-			if ( ! $control ) {
-				$_control = '&modestbranding=1&controls=0&rel=0&version=3&loop=1&enablejsapi=1&iv_load_policy=3&playlist=' . $idurl . '&playerapiid=ng_video_iframe_' . $idurl;
-			}
-			$_src  .= $_control . '&html5=1';
-			$_src  = ' src="' . $_src . '"';
-			$_lazy = '';
-			if ( $lazyload ) {
-				$_lazy = ' loading="lazy"';
-			}
-
-			return '<iframe id="ytb_iframe_' . $idurl . '" title="YouTube Video Player"' . $_lazy . $_auto . $_size . $_src . ' style="border:0"></iframe>';
-		}
-
-		return null;
 	}
 
 	// --------------------------------------------------

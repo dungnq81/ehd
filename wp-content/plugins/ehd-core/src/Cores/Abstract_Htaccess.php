@@ -71,7 +71,7 @@ abstract class Abstract_Htaccess {
 	 *
 	 * @return $this
 	 */
-	public function disable(): Abstract_Htaccess {
+	public function disable() {
 		// If htaccess exists and rule is already enabled.
 		if ( $this->path && $this->is_enabled() ) {
 
@@ -93,7 +93,7 @@ abstract class Abstract_Htaccess {
 	 *
 	 * @return $this
 	 */
-	public function enable(): Abstract_Htaccess {
+	public function enable() {
 		// If htaccess exists and rule is already disabled.
 		if ( $this->path && ! $this->is_enabled() ) {
 
