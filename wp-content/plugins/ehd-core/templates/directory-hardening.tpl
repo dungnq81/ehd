@@ -1,4 +1,4 @@
-# eHD Directory Hardening
+# Directory Hardening
 <FilesMatch "\.(?i:php)$">
   <IfModule !mod_authz_core.c>
     Order allow,deny
@@ -9,4 +9,4 @@
   </IfModule>
 </FilesMatch>
 {REPLACEMENT}
-# eHD Directory Hardening END
+# Directory Hardening END

@@ -24,8 +24,6 @@ final class Admin {
 
 		add_action( 'admin_init', [ &$this, 'admin_init' ], 10 );
 		add_action( 'admin_menu', [ &$this, 'dashboard_meta_box' ], 11 );
-
-
 	}
 
 	/** ---------------------------------------- */

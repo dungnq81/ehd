@@ -21,9 +21,9 @@ class Headers extends Abstract_Htaccess {
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
 	public array $rules = [
-		'enabled'     => '/\#\s+eHD\s+XSS\s+Header/si',
-		'disabled'    => '/\#\s+eHD\s+XSS\s+Header(.+?)\#\s+eHD\s+XSS\s+Header\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+eHD\s+XSS\s+Header(.+?)\#\s+eHD\s+XSS\s+Header\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+XSS\s+Header/si',
+		'disabled'    => '/\#\s+XSS\s+Header(.+?)\#\s+XSS\s+Header\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+XSS\s+Header(.+?)\#\s+XSS\s+Header\s+END(\n)?/ims',
 	];
 
 	/**
@@ -78,7 +78,7 @@ class Headers extends Abstract_Htaccess {
 	 *
 	 * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
 	 */
-	public function set_rest_security_headers( WP_HTTP_Response $result ): WP_HTTP_Response {
+	public function set_rest_security_headers( WP_HTTP_Response $result ) {
 		// Return result if no headers to add.
 		if ( empty( $this->security_headers ) ) {
 			return $result;

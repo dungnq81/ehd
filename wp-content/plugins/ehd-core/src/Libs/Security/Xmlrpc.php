@@ -29,9 +29,9 @@ class Xmlrpc extends Abstract_Htaccess {
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
 	public array $rules = [
-		'enabled'     => '/\#\s+eHD\s+XML-RPC\s+Disable/si',
-		'disabled'    => '/\#\s+eHD\s+XML-RPC\s+Disable(.+?)\#\s+eHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+eHD\s+XML-RPC\s+Disable(.+?)\#\s+eHD\s+XML-RPC\s+Disable\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+XML-RPC\s+Disable/si',
+		'disabled'    => '/\#\s+XML-RPC\s+Disable(.+?)\#\s+XML-RPC\s+Disable\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+XML-RPC\s+Disable(.+?)\#\s+XML-RPC\s+Disable\s+END(\n)?/ims',
 	];
 
 	/**

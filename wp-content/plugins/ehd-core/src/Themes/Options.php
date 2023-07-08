@@ -37,7 +37,8 @@ final class Options {
 		( new Security() );
 
 		/** Comments */
-
+		add_action( 'comment_form_after_fields', [ &$this, 'add_simple_antispam_field' ] );
+		add_filter( 'preprocess_comment', [ &$this, 'check_simple_antispam' ] );
 
 		/** Custom Scripts */
 		add_action( 'wp_head', [ &$this, 'header_scripts__hook' ], 99 ); // header scripts
@@ -49,6 +50,50 @@ final class Options {
 		/** Custom CSS */
 		// add_action( 'wp_enqueue_scripts', [ &$this, 'header_custom_css' ], 99 );
 		add_action( 'wp_head', [ &$this, 'header_custom_css' ], 98 );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $commentdata
+	 *
+	 * @return mixed
+	 */
+	public function check_simple_antispam( $commentdata ) {
+		if ( ! isset( $_POST['antispam_input'] ) || ! isset( $_POST['antispam_result'] ) ) {
+			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', EHD_PLUGIN_TEXT_DOMAIN ) );
+		}
+
+		$input = intval( $_POST['antispam_input'] );
+		$result = intval( $_POST['antispam_result'] );
+
+		if ( $input !== $result ) {
+			wp_die( esc_html__( 'Câu trả lời chưa chính xác. Vui lòng thử lại.', EHD_PLUGIN_TEXT_DOMAIN ) );
+		}
+
+		return $commentdata;
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function add_simple_antispam_field() {
+		$comment_options = Helper::getOption( 'comment__options', false, false );
+
+		$simple_antispam = $comment_options['simple_antispam'] ?? '';
+		if ( $simple_antispam ) {
+
+			$num1     = rand( 1, 10 );
+			$num2     = rand( 1, 10 );
+			$operator = rand( 0, 1 ) ? '+' : '-';
+			$result = $operator === '+' ? $num1 + $num2 : $num1 - $num2;
+
+			echo '<p class="comment-form-antispam">' . sprintf( esc_html__( 'Để xác minh bạn không phải là robot spam comment, Hãy tính: %1$d %2$s %3$d = ?', EHD_PLUGIN_TEXT_DOMAIN ), $num1, $operator, $num2 ) . '</p>';
+			echo '<input type="hidden" name="antispam_result" value="' . $result . '" />';
+			echo '<p class="comment-form-antispam-answer"><label for="antispam_input">' . esc_html__( 'Câu trả lời:', EHD_PLUGIN_TEXT_DOMAIN ) . '</label> <input type="text" name="antispam_input" id="antispam_input" required /></p>';
+		}
 	}
 
 	// ------------------------------------------------------

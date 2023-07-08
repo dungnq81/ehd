@@ -51,9 +51,9 @@ class Dir extends Abstract_Htaccess {
 	 * @var array Regular expressions to check if the rules are enabled.
 	 */
 	public array $rules = [
-		'enabled'     => '/\#\s+eHD\s+Directory\s+Hardening/si',
-		'disabled'    => '/\#\s+eHD\s+Directory\s+Hardening(.+?)\#\s+eHD\s+Directory\s+Hardening\s+END(\n)?/ims',
-		'disable_all' => '/\#\s+eHD\s+Directory\s+Hardening(.+?)\#\s+eHD\s+Directory\s+Hardening\s+END(\n)?/ims',
+		'enabled'     => '/\#\s+Directory\s+Hardening/si',
+		'disabled'    => '/\#\s+Directory\s+Hardening(.+?)\#\s+Directory\s+Hardening\s+END(\n)?/ims',
+		'disable_all' => '/\#\s+Directory\s+Hardening(.+?)\#\s+Directory\s+Hardening\s+END(\n)?/ims',
 	];
 
 	/**
