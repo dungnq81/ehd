@@ -12,7 +12,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-use EHD\Plugin;
+use EHD_Base\Plugin;
 
 \defined( 'ABSPATH' ) || die;
 

@@ -6,6 +6,8 @@
  * @author WEBHD
  */
 
+use EHD_Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
 /** ----------------------------------------------- */

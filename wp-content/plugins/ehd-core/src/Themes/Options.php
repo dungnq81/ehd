@@ -157,6 +157,8 @@ final class Options {
 
 		/** Remove block CSS */
 		if ( $block_style_off ) {
+			wp_dequeue_style( 'global-styles' );
+
 			wp_dequeue_style( 'wp-block-library' );
 			wp_dequeue_style( 'wp-block-library-theme' );
 

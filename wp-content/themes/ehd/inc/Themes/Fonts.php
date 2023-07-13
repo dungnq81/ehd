@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD_Sites\Themes;
+namespace EHD\Themes;
 
 \defined( 'ABSPATH' ) || die;
 

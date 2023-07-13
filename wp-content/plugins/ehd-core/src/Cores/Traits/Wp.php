@@ -1487,7 +1487,14 @@ trait Wp {
 				$type = 'SearchResultsPage';
 			}
 
-			$type = apply_filters( 'ehd_body_itemtype', $type );
+			if ( function_exists( 'is_shop' ) && is_shop() ) {
+				$type = 'Collection';
+			}
+
+			if ( function_exists('is_product_category') && is_product_category() ) {
+				$type = 'Collection';
+			}
+
 			$data = sprintf( 'itemtype="https://schema.org/%s" itemscope', esc_html( $type ) );
 		}
 

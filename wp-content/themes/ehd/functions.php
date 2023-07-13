@@ -6,7 +6,7 @@
  * @package eHD
  */
 
-use EHD_Sites\Themes\Theme;
+use EHD\Themes\Theme;
 
 $theme_version = ( wp_get_theme()->get( 'Version' ) ) ?: false;
 $theme_author  = ( wp_get_theme()->get( 'Author' ) ) ?: 'eHD Team';

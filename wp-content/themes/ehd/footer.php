@@ -3,7 +3,7 @@
 /**
  * The template for displaying the footer.
  * Contains the body & html closing tags.
- * @package hd
+ * @package ehd
  */
 
 \defined( 'ABSPATH' ) || die;

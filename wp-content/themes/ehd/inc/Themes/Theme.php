@@ -1,10 +1,11 @@
 <?php
 
-namespace EHD_Sites\Themes;
+namespace EHD\Themes;
 
 use EHD_Cores\Helper;
-use EHD_Sites\Plugins\Elementor;
-use EHD_Sites\Plugins\Woocommerce;
+
+use EHD\Plugins\Elementor;
+use EHD\Plugins\Woocommerce;
 
 \defined( 'ABSPATH' ) || die;
 

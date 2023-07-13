@@ -1,6 +1,6 @@
 <?php
 
-namespace EHD;
+namespace EHD_Base;
 
 use EHD_Themes\Admin;
 use EHD_Themes\Admin_Customizer;
