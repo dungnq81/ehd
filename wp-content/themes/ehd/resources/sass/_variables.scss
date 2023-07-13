@@ -1,5 +1,5 @@
 //
-// Color
+// base color
 //
 
 @import "colors";
@@ -31,8 +31,6 @@ $theme-colors: (
 // See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
 
 $min-contrast-ratio:   4.5 !default;
-
-//
 
 $color-contrast-dark:      $black !default;
 $color-contrast-light:     $white !default;
@@ -129,8 +127,6 @@ $font-sizes-large: (
         h6: 17px,
 ) !default;
 
-//
-
 $line-height-header: 1.3 !default;
 $line-height-paragraph: 1.7 !default;
 
@@ -142,7 +138,7 @@ $font-weight-semibold:        600 !default;
 $font-weight-bold:            700 !default;
 $font-weight-bolder:          bolder !default;
 
-//
+// Spacers
 
 $gutter-xs: 10px !default;
 $gutter: 15px !default;
@@ -161,8 +157,6 @@ $spacers: (
 
 $scrollbar-w: 4px !default;
 $scrollbar-h: 4px !default;
-
-//
 
 $header-font: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;
 $body-font: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', Arial, cursive, sans-serif;

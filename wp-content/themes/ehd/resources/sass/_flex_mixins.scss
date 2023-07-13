@@ -4,15 +4,13 @@
 @import "mixins";
 
 @mixin flex-self($total: 1, $n: 1, $gap: false) {
-    @if type-of($gap) == bool {
+    @if type-of($gap) == bool or $gap < 0 {
         $gap: 0;
     }
     @if is-int($total) and is-int($n) and $n > 0 {
         @if $total == $n {
             width: percentage(1);
-        } @else if 0 == $gap and $total > $n {
-            width: percentage(divide($n, $total));
-        } @else if is-int($gap) and $total > $n {
+        } @else if $total > $n {
             width: subtract(percentage(divide($n, $total)), fs(($total - $n) * divide($gap, $total)));
         }
     }

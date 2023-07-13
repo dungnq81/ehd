@@ -93,7 +93,7 @@ if ( ! function_exists( '__ehd_construct_header' ) ) {
 	 */
 	function __ehd_construct_header(): void {
 		?>
-		<header class="site-header">
+		<header class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
 			<div class="top-header"></div>
 		</header>
 		<?php

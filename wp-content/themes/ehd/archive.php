@@ -8,4 +8,9 @@
 
 \defined( 'ABSPATH' ) || die;
 
-echo 'Archive pages';
+get_header();
+
+?>
+
+<?php
+get_footer();

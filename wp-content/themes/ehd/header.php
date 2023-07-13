@@ -22,7 +22,7 @@ use EHD_Cores\Helper;
     /**
      * Triggered after the opening body tag.
      *
-     * @see \EHD_Settings\CustomScripts::body_scripts_top__hook - 99
+     * @see \EHD_Themes\Options::body_scripts_top__hook - 99
      */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 

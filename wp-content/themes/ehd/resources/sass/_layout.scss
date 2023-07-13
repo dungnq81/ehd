@@ -1,32 +1,34 @@
 //
 // mixins
 //
+
 @import "flex_mixins";
 @import "grid_mixins";
 
 :root {
-    --white:                #{$white};
-    --black:                #{$black};
-    --light:                #{$light};
-    --dark:                 #{$dark};
+    --black:                #{map-get($colors, "black")};
+    --white:                #{map-get($colors, "white")};
+    --gray:                 #{map-get($colors, "gray")};
+    --gray-dark:            #{map-get($colors, "gray-dark")};
+    --blue:                 #{map-get($colors, "blue")};
+    --indigo:               #{map-get($colors, "indigo")};
+    --purple:               #{map-get($colors, "purple")};
+    --pink:                 #{map-get($colors, "pink")};
+    --red:                  #{map-get($colors, "red")};
+    --orange:               #{map-get($colors, "orange")};
+    --yellow:               #{map-get($colors, "yellow")};
+    --green:                #{map-get($colors, "green")};
+    --teal:                 #{map-get($colors, "teal")};
+    --cyan:                 #{map-get($colors, "cyan")};
 
-    --blue:                 #{$blue};
-    --indigo:               #{$indigo};
-    --purple:               #{$purple};
-    --pink:                 #{$pink};
-    --red:                  #{$red};
-    --orange:               #{$orange};
-    --yellow:               #{$yellow};
-    --green:                #{$green};
-    --teal:                 #{$teal};
-    --cyan:                 #{$cyan};
-
-    --primary:              #{$primary};
-    --secondary:            #{$secondary};
-    --success:              #{$success};
-    --info:                 #{$info};
-    --warning:              #{$warning};
-    --alert:                #{$alert};
+    --primary:              #{map-get($theme-colors, "primary")};
+    --secondary:            #{map-get($theme-colors, "secondary")};
+    --success:              #{map-get($theme-colors, "success")};
+    --info:                 #{map-get($theme-colors, "info")};
+    --warning:              #{map-get($theme-colors, "warning")};
+    --alert:                #{map-get($theme-colors, "alert")};
+    --light:                #{map-get($theme-colors, "light")};
+    --dark:                 #{map-get($theme-colors, "dark")};
 
     --body-color:           #{$body-color};
     --body-bg:              #{$body-bg};
@@ -34,10 +36,10 @@
     --link-color:           #{$link-color};
     --link-hover-color:     #{$link-hover-color};
 
-    --gutter:               #{$gutter};
-    --gutter-xs:            #{$gutter-xs};
-    --gap:                  #{$gap};
-    --gap-xs:               #{$gap-xs};
+    --gutter:               #{map-get($spacers, "gutter")};
+    --gutter-xs:            #{map-get($spacers, "gutter-xs")};
+    --gap:                  #{map-get($spacers, "gap")};
+    --gap-xs:               #{map-get($spacers, "gap-xs")};
 }
 
 ::placeholder {
