@@ -17,14 +17,14 @@
         margin-top: 0;
 
         &::before {
-            color: $header-color;
+            color: $body-color;
             font-size: 20px;
             font-weight: 300;
         }
 
         svg {
-            fill: $header-color;
-            color: $header-color;
+            fill: $body-color;
+            color: $body-color;
             font-size: 18px;
         }
 

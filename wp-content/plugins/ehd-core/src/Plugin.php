@@ -37,6 +37,7 @@ use EHD_Widgets\Shortcode_Widget;
 \defined( 'ABSPATH' ) || die;
 
 final class Plugin {
+
 	public function __construct() {
 		add_action( 'init', [ &$this, 'i18n' ] );
 		add_action( 'init', [ &$this, 'init' ] );

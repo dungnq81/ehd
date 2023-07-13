@@ -1,15 +1,21 @@
 @use "sass:list";
 @use "sass:math";
 
-@import "settings";
-@import "linear-gradient";
+@import "functions";
+@import "variables";
+@import "linear_gradient";
+
+@mixin color-scheme($name) {
+    @media (prefers-color-scheme: #{$name}) {
+        @content;
+    }
+}
 
 @mixin mq($breakpoint, $type: min) {
     $breakpoint-value: get-breakpoint($breakpoint, $mq-breakpoints);
     @if $breakpoint-value {
         @if $type == max {
-            $breakpoint-value: #{$breakpoint-value - fs(0.5)};
-
+            $breakpoint-value: #{$breakpoint-value - fs(0.02)};
         }
         @media only screen and (#{$type}-width: $breakpoint-value) {
             @content;
@@ -19,24 +25,24 @@
     }
 }
 
-@mixin mq-min($breakpoint: desktop) {
+@mixin mq-min($breakpoint: sm) {
     @include mq($breakpoint, min) {
         @content;
     }
 }
 
-@mixin mq-max($breakpoint: mobile) {
+@mixin mq-max($breakpoint: sm) {
     @include mq($breakpoint, max) {
         @content;
     }
 }
 
-@mixin media-css($css_property: font-size, $m: 16, $t: false, $d: false) {
+@mixin media-css($css_property: font-size, $m: $body-size, $t: false, $d: false) {
     @if type-of($m) != bool {
         #{$css_property}: fs($m);
     }
     @if type-of($t) != bool {
-        @include mq-min(mobile) {
+        @include mq-min(tablet) {
             #{$css_property}: fs($t);
         }
     }
@@ -61,7 +67,7 @@
         @include box($m);
     }
     @if type-of($t) != bool {
-        @include mq-min(mobile) {
+        @include mq-min(tablet) {
             @include box($t);
         }
     }
@@ -76,7 +82,7 @@
     }
 }
 
-@mixin media-fs($m: 16, $t: false, $d: false) {
+@mixin media-fs($m: $body-size, $t: false, $d: false) {
     @include media-css(font-size, $m, $t, $d);
 }
 
@@ -120,10 +126,34 @@
     @include media-css(margin-right, $m, $t, $d);
 }
 
+@mixin gap($x: 20, $y: $x) {
+    @if $x == $y and type-of($x) != bool {
+        grid-gap: fs($x);
+        gap: fs($x);
+    } @else if $x != $y and type-of($x) != bool and type-of($y) != bool {
+        grid-gap: fs($x) fs($y);
+        gap: fs($x) fs($y);
+    }
+}
+
+@mixin media-gap($m: 20, $t: false, $d: false) {
+    @include gap($m);
+    @if type-of($t) != bool {
+        @include mq-min(tablet) {
+            @include gap($t);
+        }
+    }
+    @if type-of($d) != bool {
+        @include mq-min(desktop) {
+            @include gap($d);
+        }
+    }
+}
+
 @mixin fs-heading($heading: h1) {
-    font-size: fs(map-get($header-styles-small, $heading));
-    @include mq-min(mobile) {
-        font-size: fs(map-get($header-styles-medium, $heading));
+    font-size: fs(map-get($font-sizes, $heading));
+    @include mq-min(tablet) {
+        font-size: fs(map-get($font-sizes-large, $heading));
     }
 }
 
@@ -133,21 +163,21 @@
     }
 }
 
-@mixin webkit-scrollbar($width: $scrollbar-with, $height: $scrollbar-height) {
+@mixin webkit-scrollbar($width: $scrollbar-w, $height: $scrollbar-h) {
     &::-webkit-scrollbar {
         @include box($width, $height);
     }
 }
 
-@mixin webkit-scrollbar-track($bg_color: #e6e6e6) {
+@mixin webkit-scrollbar-track($color: #e6e6e6) {
     &::-webkit-scrollbar-track {
-        background-color: $bg_color;
+        background-color: $color;
     }
 }
 
-@mixin webkit-scrollbar-thumb($bg_color: #9a9a9a) {
+@mixin webkit-scrollbar-thumb($color: #9a9a9a) {
     &::-webkit-scrollbar-thumb {
-        background-color: $bg_color;
+        background-color: $color;
     }
 }
 
@@ -218,7 +248,7 @@
         &::before {
             content: '';
             position: relative;
-            width: $width_percent;
+            width: fs($width_percent);
             padding-bottom: fs($padding);
         }
     } @else {
@@ -233,15 +263,15 @@
     }
 }
 
-@mixin linear-gradient($angle: 90deg, $c: $color1, $amount: 12deg) {
+@mixin linear-gradient($angle: 90deg, $c: $primary, $amount: 12deg) {
     background-image: linear-gradient($angle, $c 0%, adjust-hue($c, $amount) 100%);
 }
 
-@mixin linear-gradient2($angle: 90deg, $c1: $color1, $c2: $color2) {
+@mixin linear-gradient2($angle: 90deg, $c1: $primary, $c2: $secondary) {
     background-image: linear-gradient($angle, $c1 0%, $c2 100%);
 }
 
-@mixin gradient-text($angle: 135deg, $c: $color1, $amount: 12deg) {
+@mixin gradient-text($angle: 135deg, $c: $primary, $amount: 12deg) {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
@@ -250,7 +280,7 @@
     @include linear-gradient($angle, $c, $amount);
 }
 
-@mixin gradient-text2($angle: 135deg, $c1: $color1, $c2: $color2) {
+@mixin gradient-text2($angle: 135deg, $c1: $primary, $c2: $secondary) {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
@@ -259,68 +289,68 @@
     @include linear-gradient($angle, $c1, $c1);
 }
 
-@mixin mx-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) or unit($gutter_m) == '%' {
-        margin-left: -#{fs($gutter_m)};
-        margin-right: -#{fs($gutter_m)};
+@mixin mx-gutter($m: $gutter-xs, $t: $gutter) {
+    @if is-int($m) or unit($m) == '%' {
+        margin-left: -#{fs($m)};
+        margin-right: -#{fs($m)};
     }
 
-    @if is-int($gutter) or unit($gutter) == '%' {
-        @include mq-min(mobile) {
-            @if 0 == $gutter {
+    @if is-int($t) or unit($t) == '%' {
+        @include mq-min(tablet) {
+            @if 0 == $t {
                 margin-left: 0;
                 margin-right: 0;
             } @else {
-                margin-left: -#{fs($gutter)};
-                margin-right: -#{fs($gutter)};
+                margin-left: -#{fs($t)};
+                margin-right: -#{fs($t)};
             }
         }
     }
 }
 
-@mixin my-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) or unit($gutter_m) == '%' {
-        margin-top: -#{fs($gutter_m)};
-        margin-bottom: -#{fs($gutter_m)};
+@mixin my-gutter($m: $gutter-xs, $t: $gutter) {
+    @if is-int($m) or unit($m) == '%' {
+        margin-top: -#{fs($m)};
+        margin-bottom: -#{fs($m)};
     }
 
-    @if is-int($gutter) or unit($gutter) == '%' {
-        @include mq-min(mobile) {
-            @if 0 == $gutter {
+    @if is-int($t) or unit($t) == '%' {
+        @include mq-min(tablet) {
+            @if 0 == $t {
                 margin-top: 0;
                 margin-bottom: 0;
             } @else {
-                margin-top: -#{fs($gutter)};
-                margin-bottom: -#{fs($gutter)};
+                margin-top: -#{fs($t)};
+                margin-bottom: -#{fs($t)};
             }
         }
     }
 }
 
-@mixin px-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) or unit($gutter_m) == '%' {
-        padding-left: fs($gutter_m);
-        padding-right: fs($gutter_m);
+@mixin px-gutter($m: $gutter-xs, $t: $gutter) {
+    @if is-int($m) or unit($m) == '%' {
+        padding-left: fs($m);
+        padding-right: fs($m);
     }
 
-    @if is-int($gutter) or unit($gutter) == '%' {
-        @include mq-min(mobile) {
-            padding-left: fs($gutter);
-            padding-right: fs($gutter);
+    @if is-int($t) or unit($t) == '%' {
+        @include mq-min(tablet) {
+            padding-left: fs($t);
+            padding-right: fs($t);
         }
     }
 }
 
-@mixin py-gutter($gutter_m: 10, $gutter: 15) {
-    @if is-int($gutter_m) or unit($gutter_m) == '%' {
-        padding-top: fs($gutter_m);
-        padding-bottom: fs($gutter_m);
+@mixin py-gutter($m: $gutter-xs, $t: $gutter) {
+    @if is-int($m) or unit($m) == '%' {
+        padding-top: fs($m);
+        padding-bottom: fs($m);
     }
 
-    @if is-int($gutter) or unit($gutter) == '%' {
-        @include mq-min(mobile) {
-            padding-top: fs($gutter);
-            padding-bottom: fs($gutter);
+    @if is-int($t) or unit($t) == '%' {
+        @include mq-min(tablet) {
+            padding-top: fs($t);
+            padding-bottom: fs($t);
         }
     }
 }
@@ -344,7 +374,7 @@
     }
 }
 
-@mixin hover-color($c1: $color1, $c2: $c1, $text-decoration: false) {
+@mixin hover-color($c1: $primary, $c2: $c1, $text-decoration: false) {
     color: $c1;
     &:hover {
         color: $c2;
@@ -354,14 +384,14 @@
     }
 }
 
-@mixin hover-svg($c1: $color1, $c2: $c1) {
+@mixin hover-svg($c1: $primary, $c2: $c1) {
     fill: $c1;
     &:hover {
         fill: $c2;
     }
 }
 
-@mixin underline($color: #9a9a9a, $height: 1px, $width: 100%, $left: 0, $bottom: 0) {
+@mixin underline($color: $primary, $height: 1px, $width: 100%, $left: 0, $bottom: 0) {
     position: relative;
     display: inline-block;
     &::before {
@@ -383,34 +413,6 @@
         }
     }
 }
-
-@mixin button-arrow($width: 16, $height: $width, $color: #fff) {
-    overflow-wrap: break-word;
-    &::after {
-        content: '';
-        display: inline-block;
-        margin: 0 0 0 10px;
-        @include box($width, $height);
-        background-image: inline-svg('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill:#{$color};"><path d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"></path></svg>');
-        vertical-align: -10%;
-    }
-}
-
-@mixin button-scale($scale: 0.98) {
-    transition: all .3s ease-out .07s;
-    &:hover {
-        transition: all .3s ease-out .07s;
-        transform: scale($scale);
-    }
-}
-
-//@mixin hardware($backface: true, $perspective: 1000) {
-//    @if $backface {
-//        backface-visibility: hidden;
-//    }
-//    transform: translate3d(0, 0, 0);
-//    perspective: $perspective;
-//}
 
 @mixin list-reset($margin: 0, $padding: 0) {
     margin: fs($margin);
@@ -434,8 +436,8 @@
 @mixin centering-self($width: 300, $height: $width) {
     @include box($width, $height);
     position: absolute;
-    top: calc(50% - #{fs(divide($height, 2))});
-    left: calc(50% - #{fs(divide($width, 2))});
+    top: subtract(50%, fs(divide($height, 2)));
+    left: subtract(50%, fs(divide($width, 2)));
 }
 
 @mixin fixed-center {
@@ -488,7 +490,7 @@
 @mixin clearfix {
     &::before, &::after {
         display: table;
-        content: ' ';
+        content: '';
 
         $global-flexbox: true;
         @if $global-flexbox {
@@ -509,8 +511,8 @@
 // @param {Number} $weight [2px] - Height of individual bars in the icon.
 // @param {Number} $bars [3] - Number of bars in the icon.
 @mixin hamburger(
-    $color: $header-color,
-    $color-hover: #8a8a8a,
+    $color: $body-color,
+    $color-hover: $gray-900,
     $width: 20px,
     $height: 16px,
     $weight: 2px,
@@ -536,8 +538,7 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    width: $width;
-    height: $height;
+    @include box($width, $height);
     cursor: pointer;
 
     // Icon bars
@@ -547,8 +548,7 @@
         top: 0;
         left: 0;
         display: block;
-        width: 100%;
-        height: $weight;
+        @include box(100%, $weight);
         background: $color;
         box-shadow: $shadow;
     }
@@ -568,82 +568,6 @@
     }
 }
 
-// http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect1($c1: $color1, $c2: $color2) {
-    box-shadow: 0 0 0 2.5em $c1 inset;
-    background-color: transparent;
-    transition: all 300ms ease;
-    color: $c2;
-    &:hover {
-        box-shadow: 0 0 0 0 $c1 inset, 0 3px 10px transparentize($c2, 0.7);
-        color: $c1;
-        background-color: $c2;
-    }
-}
-
-// http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect2($border_radius: false, $c: #000000, $opacity_hover: 0.15) {
-    position: relative;
-
-    @if type-of($border_radius) != bool {
-        border-radius: fs($border_radius);
-    }
-
-    &::before {
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 0;
-        content: "";
-        background-color: $c;
-        transition: 0.5s;
-        opacity: 0;
-
-        @if type-of($border_radius) != bool {
-            border-radius: fs($border_radius);
-        }
-    }
-    &:hover {
-        &::before {
-            width: 100%;
-            opacity: $opacity_hover;
-        }
-    }
-}
-
-// http://el.commonsupport.com/newwp/autorex/services-2/
-@mixin _effect3($border-radius: false, $bg_color: rgba(255, 255, 255, 0.2)) {
-    @if type-of($border_radius) != bool {
-        border-radius: fs($border_radius);
-    }
-
-    position: relative;
-    overflow: hidden;
-    &::before {
-        content: "";
-        @include absolute-center;
-        display: block;
-        width: 0;
-        height: 0;
-        background: $bg_color;
-        opacity: 0;
-        z-index: 10;
-
-        @if type-of($border_radius) != bool {
-            border-radius: fs($border_radius);
-        }
-    }
-
-    &:hover {
-        opacity: 1;
-
-        &::before {
-            animation: circle 0.75s;
-        }
-    }
-}
-
 /** keyframes */
 @mixin keyframes($name) {
     @-webkit-keyframes #{$name} {
@@ -658,6 +582,7 @@
 }
 
 /** add unique id image url */
+$unique-id: unique_id();
 @function inline-image($url) {
-    @return url("#{$url}?v=#{$unique_id}");
+    @return url("#{$url}?v=#{$unique-id}");
 }

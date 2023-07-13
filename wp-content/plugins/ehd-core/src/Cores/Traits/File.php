@@ -24,11 +24,18 @@ trait File {
 	 * @return bool
 	 */
 	public static function htAccess(): bool {
-		if ( ! isset( $_SERVER['HTACCESS'] ) ) {
-			return false;
+
+		// Apache
+		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_rewrite', apache_get_modules() ) ) {
+			return true;
 		}
 
-		return true;
+		// ?
+		if ( isset( $_SERVER['HTACCESS'] ) && 'on' === $_SERVER['HTACCESS'] ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

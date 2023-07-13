@@ -13,7 +13,7 @@
         } @else if 0 == $gap and $total > $n {
             width: percentage(divide($n, $total));
         } @else if is-int($gap) and $total > $n {
-            width: calc(#{percentage(divide($n, $total))} - #{fs(($total - $n) * divide($gap, $total))});
+            width: subtract(percentage(divide($n, $total)), fs(($total - $n) * divide($gap, $total)));
         }
     }
 }
@@ -23,7 +23,7 @@
         @include flex-self($m, 1, $gap_m);
     }
     @if is-int($t) and $t > 0 {
-        @include mq-min(mobile) {
+        @include mq-min(tablet) {
             @include flex-self($t, 1, $gap);
         }
     }
@@ -36,35 +36,13 @@
 
 @mixin flex-layout($m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $class_cell: '.cell') {
     @include media-gap($gap_m, $gap, false);
+
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell(false);
         }
+
         @include media-flex-self($m, $t, $d, $gap_m, $gap);
-    }
-}
-
-@mixin gap($x: false, $y: $x) {
-    @if ($x == $y) and (type-of($x) != bool) {
-        grid-gap: fs($x);
-        gap: fs($x);
-    } @else if ($x != $y) and (type-of($x) != bool) and (type-of($y) != bool) {
-        grid-gap: fs($x) fs($y);
-        gap: fs($x) fs($y);
-    }
-}
-
-@mixin media-gap($m: false, $t: false, $d: false) {
-    @include gap($m);
-    @if type-of($t) != bool {
-        @include mq-min(mobile) {
-            @include gap($t);
-        }
-    }
-    @if type-of($d) != bool {
-        @include mq-min(desktop) {
-            @include gap($d);
-        }
     }
 }
 
@@ -78,105 +56,57 @@
     }
 }
 
-@mixin right-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
-    margin: 0 0 0 auto;
-    max-width: calc(50% + #{divide($global-screen, 2)});
-
-    @if is-int($padding_m) or unit($padding_m) == '%' {
-        padding-left: fs($padding_m);
-    }
-
-    @if is-int($padding) or unit($padding) == '%' {
-        @include mq-min(mobile) {
-            padding-left: fs($padding);
-        }
-    }
-
-    @if true == $grid_extra {
-        @include mq-min(xxdesktop) {
-            max-width: calc(50% + #{divide($global-screen-large, 2)});
-        }
-    }
-
-    @if true == $widescreen {
-        @include mq-min(xxxdesktop) {
-            max-width: 100%;
-            padding-left: fs($large_gutter + $gutter);
-        }
-    }
-
-    @include mq-max(xxdesktop) {
-        max-width: calc(50% + #{divide($global-screen-medium, 2)});
-    }
-}
-
-@mixin left-fullwidth($padding_m: 10, $padding: 15, $grid_extra: false, $widescreen: false) {
-    margin: 0 auto 0 0;
-    max-width: calc(50% + #{divide($global-screen, 2)});
-
-    @if is-int($padding_m) or unit($padding_m) == '%' {
-        padding-right: fs($padding_m);
-    }
-
-    @if is-int($padding) or unit($padding) == '%' {
-        @include mq-min(mobile) {
-            padding-right: fs($padding);
-        }
-    }
-
-    @if true == $grid_extra {
-        @include mq-min(xxdesktop) {
-            max-width: calc(50% + #{divide($global-screen-large, 2)});
-        }
-    }
-
-    @if true == $widescreen {
-        @include mq-min(xxxdesktop) {
-            max-width: 100%;
-            padding-right: fs($large_gutter + $gutter);
-        }
-    }
-
-    @include mq-max(xxdesktop) {
-        max-width: calc(50% + #{divide($global-screen-medium, 2)});
-    }
-}
-
-@mixin flex-container($padding_m: 10, $padding: 15, $width_extra: false, $widescreen: false) {
+@mixin flex-container($padding_m: $gutter-xs, $padding: $gutter, $xxl: false, $xxxl: false) {
     margin-left: auto;
     margin-right: auto;
 
     &:not(.full) {
-        max-width: $global-screen;
 
         @if is-int($padding_m) or unit($padding_m) == '%' {
             padding-left: fs($padding_m);
             padding-right: fs($padding_m);
         }
 
+        // tablet breakpoint
         @if is-int($padding) or unit($padding) == '%' {
-            @include mq-min(mobile) {
+            @include mq-min(tablet) {
                 padding-left: fs($padding);
                 padding-right: fs($padding);
             }
         }
 
-        @if true == $width_extra {
-            @include mq-min(xxdesktop) {
-                max-width: $global-screen-large;
+        // sm breakpoint
+        @include mq-min(sm) {
+            max-width: map-get($container-max-widths, sm);
+        }
+
+        // md breakpoint
+        @include mq-min(md) {
+            max-width: map-get($container-max-widths, md);
+        }
+
+        // lg breakpoint
+        @include mq-min(lg) {
+            max-width: map-get($container-max-widths, lg);
+        }
+
+        // xl breakpoint
+        @include mq-min(xl) {
+            max-width: map-get($container-max-widths, xl);
+        }
+
+        // xxl breakpoint
+        @if true == $xxl {
+            @include mq-min(xxl) {
+                max-width: map-get($container-max-widths, xxl);
             }
         }
 
-        @if true == $widescreen {
-            @include mq-min(xxxdesktop) {
-                max-width: 100%;
-                padding-left: fs($large_gutter + $gutter);
-                padding-right: fs($large_gutter + $gutter);
+        // xxxl breakpoint
+        @if true == $xxxl {
+            @include mq-min(xxxl) {
+                max-width: map-get($container-max-widths, xxxl);
             }
-        }
-
-        @include mq-max(xxdesktop) {
-            max-width: $global-screen-medium;
         }
     }
 }
@@ -201,8 +131,9 @@
     }
 }
 
-@mixin flex-padding-x($padding_m: 10, $padding: 15, $class_cell: '.cell') {
+@mixin flex-padding-x($padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell') {
     @include mx-gutter($padding_m, $padding);
+
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell();
@@ -212,12 +143,14 @@
     }
 }
 
-@mixin flex-padding-y($padding_m: 10, $padding: 15, $class_cell: '.cell') {
+@mixin flex-padding-y($padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell') {
     @include my-gutter($padding_m, $padding);
+
     & > #{unquote($class_cell)} {
         @if '.cell' != $class_cell {
             @include cell();
         }
+
         @include py-gutter($padding_m, $padding);
     }
 }
