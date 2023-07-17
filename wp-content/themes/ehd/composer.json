@@ -12,9 +12,8 @@
 			"EHD\\Themes\\": "inc/Themes",
 			"EHD\\Widgets\\": "inc/Widgets"
 		},
-		"exclude-from-classmap": [],
 		"files": [
-			"inc/Plugins/tgmpa/tgmpa-config.php",
+			"inc/Plugins/Tgmpa/tgmpa-config.php",
 			"inc/ajax.php",
 			"inc/css-output.php",
 			"inc/helpers.php",

@@ -863,8 +863,8 @@ trait Wp {
 			$term = get_term( $term );
 		}
 
-		if ( class_exists( '\ACF' ) && function_exists( 'get_field' ) ) {
-			$attach_id = \get_field( $acf_field_name, $term ) ?? '';
+		if ( class_exists( '\ACF' ) ) {
+			$attach_id = \get_field( $acf_field_name, $term ) ?? false;
 			if ( $attach_id ) {
 				$img_src = wp_get_attachment_image_url( $attach_id, $size );
 				if ( $img_wrap ) {

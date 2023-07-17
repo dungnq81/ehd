@@ -15,7 +15,6 @@
 			"EHD_Walkers\\": "src/Walkers",
 			"EHD_Widgets\\": "src/Widgets"
 		},
-		"exclude-from-classmap": [],
 		"files": []
 	},
 	"require": {

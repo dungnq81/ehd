@@ -3,7 +3,6 @@
 namespace EHD_Base;
 
 use EHD_Themes\Admin;
-use EHD_Themes\Admin_Customizer;
 use EHD_Themes\Admin_Options;
 
 use EHD_Themes\Login;
@@ -12,10 +11,9 @@ use EHD_Themes\Options;
 use EHD_Themes\Shortcode;
 
 use EHD_Plugins\Editor\TinyMCE;
-use EHD_Plugins\ACF;
+use EHD_Plugins\ACF\ACF;
 use EHD_Plugins\CF7;
 use EHD_Plugins\Elementor\Elementor;
-use EHD_Plugins\LiteSpeed;
 use EHD_Plugins\RankMath;
 use EHD_Plugins\WooCommerce\WooCommerce;
 use EHD_Plugins\WpRocket;
@@ -49,6 +47,21 @@ final class Plugin {
 	/**
 	 * @return void
 	 */
+	public function init(): void {
+		if ( is_admin() ) {
+			( new Admin() );
+			( new Admin_Options() );
+		}
+
+		( new Login() );
+		( new Optimizer() );
+		( new Options() );
+		( new Shortcode() )::init();
+	}
+
+	/**
+	 * @return void
+	 */
 	public function plugins_loaded(): void {
 
 		/** Widgets wordpress */
@@ -62,22 +75,19 @@ final class Plugin {
 		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
 
 		/** ACF */
-		class_exists( '\ACF' ) && ( new ACF() );
+		//class_exists( '\ACF' ) && ( new ACF() );
 
-//		if ( ! class_exists( '\ACF' ) ) {
-//			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
-//		} else {
-//			( new ACF() );
-//		}
+		if ( ! class_exists( '\ACF' ) ) {
+			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
+		} else {
+			( new ACF() );
+		}
 
 		/** Elementor */
 		did_action( 'elementor/loaded' ) && ( new Elementor() );
 
 		/** WpRocket */
 		defined( 'WP_ROCKET_VERSION' ) && ( new WpRocket() );
-
-		/** Litespeed */
-		defined( 'LSCWP_BASENAME' ) && ( new LiteSpeed() );
 
 		/** RankMath */
 		class_exists( '\RankMath' ) && ( new RankMath() );
@@ -166,22 +176,6 @@ final class Plugin {
 
 		/** Dequeue classic theme styles */
 		wp_dequeue_style( 'classic-theme-styles' );
-	}
-
-	/**
-	 * @return void
-	 */
-	public function init(): void {
-		if ( is_admin() ) {
-			( new Admin() );
-			( new Admin_Customizer() );
-			( new Admin_Options() );
-		}
-
-		( new Login() );
-		( new Optimizer() );
-		( new Options() );
-		( new Shortcode() )::init();
 	}
 
 	/**

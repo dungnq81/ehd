@@ -16,8 +16,9 @@ use MatthiasMullie\Minify;
 final class Options {
 	public function __construct() {
 
-		/** Aspect Ratio */
 		add_action( 'wp_enqueue_scripts', [ &$this, 'aspect_ratio_enqueue_scripts' ], 11 );
+
+		/** Aspect Ratio */
 		add_filter( 'ehd_aspect_ratio_post_type', [ &$this, 'aspect_ratio_post_type_default' ], 98, 1 );
 
 		/** SMTP Settings */

@@ -269,6 +269,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 
 /** comment off default */
 add_filter( 'wp_insert_post_data', function ( array $data ) {
+
 	if ( $data['post_status'] == 'auto-draft' ) {
 		// $data['comment_status'] = 0;
 		$data['ping_status'] = 0;
@@ -282,6 +283,7 @@ add_filter( 'wp_insert_post_data', function ( array $data ) {
 
 /** Tags cloud font sizes */
 add_filter( 'widget_tag_cloud_args', function ( array $args ) {
+
 	$args['smallest'] = '10';
 	$args['largest']  = '19';
 	$args['unit']     = 'px';
@@ -294,10 +296,11 @@ add_filter( 'widget_tag_cloud_args', function ( array $args ) {
 
 /** defer scripts */
 add_filter( 'ehd_defer_script', function ( array $arr ) {
+
 	$arr_new = [
 		// defer script
-		'wc-single-product' => 'defer',
-		'contact-form-7'    => 'defer',
+		//'wc-single-product' => 'defer',
+		//'contact-form-7'    => 'defer',
 
 		// delay script - default 5s
 		'comment-reply'     => 'delay',
@@ -316,9 +319,10 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 
 /** defer styles */
 add_filter( 'ehd_defer_style', function ( array $arr ) {
+
 	$arr_new = [
 		'dashicons',
-		'contact-form-7',
+		//'contact-form-7',
 		//'rank-math',
 	];
 
@@ -354,5 +358,50 @@ add_filter( 'ehd_aspect_ratio_post_type', function ( array $arr ) {
 	];
 
 	return array_merge( $arr, $update_arr );
+
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+// add the category ID to admin page
+add_filter( 'ehd_term_row_actions', function ( array $arr ) {
+
+	$update_arr = [
+		//'banner_cat',
+	];
+
+	$new_arr = array_merge( $arr, $update_arr );
+	if ( class_exists( '\WooCommerce' ) ) {
+		$new_arr = array_merge( $new_arr, [ 'product_cat' ] );
+	}
+
+	return $new_arr;
+
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+add_filter( 'ehd_term_columns', function ( array $arr ) {
+
+}, 99, 1 );
+/** ---------------------------------------- */
+
+// exclude thumb post column
+add_filter( 'ehd_post_exclude_columns', function ( array $arr ) {
+
+	$update_arr = [
+		//'site-review',
+	];
+
+	$new_arr = array_merge( $arr, $update_arr );
+	if ( class_exists( '\WooCommerce' ) ) {
+		$new_arr = array_merge( $new_arr, [ 'product' ] );
+	}
+
+	if ( class_exists( '\WPCF7' ) ) {
+		$new_arr = array_merge( $new_arr, [ 'wpcf7_contact_form' ] );
+	}
+
+	return $new_arr;
 
 }, 99, 1 );

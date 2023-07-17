@@ -2,10 +2,11 @@
 
 namespace EHD\Themes;
 
+use EHD\Plugins\Elementor\Elementor;
+use EHD\Plugins\WooCommerce\Woocommerce;
+
 use EHD_Cores\Helper;
 
-use EHD\Plugins\Elementor;
-use EHD\Plugins\Woocommerce;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -25,6 +26,30 @@ final class Theme {
 
 		/** template hooks */
 		$this->_hooks();
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * Init function
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+
+		if ( is_admin() ) {
+			( new Admin() );
+		} else {
+			( new Fonts() );
+		}
+
+		( new Shortcode() )::init();
+
+		/** WooCommerce */
+		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
+
+		/** Elementor */
+		did_action( 'elementor/loaded' ) && ( new Elementor() );
 	}
 
 	/** ---------------------------------------- */
@@ -148,27 +173,6 @@ final class Theme {
 		} else {
 			wp_dequeue_script( 'comment-reply' );
 		}
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Init function
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-		if ( ! is_admin() ) {
-			( new Fonts() );
-		}
-
-		( new Shortcode() )::init();
-
-		/** WooCommerce */
-		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
-
-		/** Elementor */
-		did_action( 'elementor/loaded' ) && ( new Elementor() );
 	}
 
 	// ------------------------------------------------------
