@@ -1262,12 +1262,12 @@ trait Wp {
 //			$mixed = base64_encode( $mixed );
 //		}
 
-		$post_data = array(
+		$post_data = [
 			'post_type'             => $post_type,
 			'post_status'           => 'publish',
 			'post_content'          => $mixed,
 			'post_content_filtered' => $preprocessed,
-		);
+		];
 
 		// Update post if it already exists, otherwise create a new one.
 		$post = self::getCustomPost( $post_type );
@@ -1491,7 +1491,7 @@ trait Wp {
 				$type = 'Collection';
 			}
 
-			if ( function_exists('is_product_category') && is_product_category() ) {
+			if ( function_exists( 'is_product_category' ) && is_product_category() ) {
 				$type = 'Collection';
 			}
 

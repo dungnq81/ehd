@@ -98,7 +98,7 @@ $table_prefix = 'w_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-const WP_DEBUG = false;
+const WP_DEBUG = true;
 
 /* Add any custom values between this line and the "stop editing" line. */
 

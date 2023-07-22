@@ -26,14 +26,14 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
-	 * @param string $path
-	 * @param string $FQN
+	 * @param ?string $path - full-path dir
 	 * @param bool $required_path
 	 * @param bool $required_new
+	 * @param string $FQN
 	 *
 	 * @return void
 	 */
-	public static function FQN_Load( string $path, string $FQN = '\\', bool $required_path = false, bool $required_new = true ) {
+	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\' ) {
 		if ( $path ) {
 			$iterator = new DirectoryIterator( $path );
 			foreach ( $iterator as $fileInfo ) {
@@ -41,7 +41,7 @@ final class Helper {
 					continue;
 				}
 
-				$filename    = self::fileName( $fileInfo, false );
+				$filename    = self::fileName( $fileInfo, true );
 				$filenameFQN = $FQN . $filename;
 
 				if ( $required_path ) {

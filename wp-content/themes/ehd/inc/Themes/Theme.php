@@ -2,11 +2,11 @@
 
 namespace EHD\Themes;
 
+use EHD\Plugins\ACF\ACF;
 use EHD\Plugins\Elementor\Elementor;
 use EHD\Plugins\WooCommerce\Woocommerce;
 
 use EHD_Cores\Helper;
-
 
 \defined( 'ABSPATH' ) || die;
 
@@ -17,39 +17,16 @@ use EHD_Cores\Helper;
  */
 final class Theme {
 	public function __construct() {
-		add_action( 'init', [ &$this, 'init' ] );
-		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 11 );
-		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 98 );
+
+		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
+		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 11 );
+
+		add_action( 'init', [ &$this, 'init' ], 10 );
+
+		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
 
 		// add multiple for category dropdown
 		add_filter( 'wp_dropdown_cats', [ &$this, 'dropdown_cats_multiple' ], 10, 2 );
-
-		/** template hooks */
-		$this->_hooks();
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Init function
-	 *
-	 * @return void
-	 */
-	public function init(): void {
-
-		if ( is_admin() ) {
-			( new Admin() );
-		} else {
-			( new Fonts() );
-		}
-
-		( new Shortcode() )::init();
-
-		/** WooCommerce */
-		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
-
-		/** Elementor */
-		did_action( 'elementor/loaded' ) && ( new Elementor() );
 	}
 
 	/** ---------------------------------------- */
@@ -131,11 +108,50 @@ final class Theme {
 	/** ---------------------------------------- */
 
 	/**
+	 * @return void
+	 */
+	public function plugins_setup() {
+
+		/** ACF */
+		( new ACF() );
+
+		/** WooCommerce */
+		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
+
+		/** Elementor */
+		did_action( 'elementor/loaded' ) && ( new Elementor() );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * Init function
+	 *
+	 * @return void
+	 */
+	public function init(): void {
+
+		/** template hooks */
+		$this->_hooks();
+
+		if ( is_admin() ) {
+			( new Admin() );
+		} else {
+			( new Fonts() );
+		}
+
+		( new Shortcode() )::init();
+	}
+
+	/** ---------------------------------------- */
+
+	/**
 	 * Enqueue scripts and styles
 	 *
 	 * @return void
 	 */
 	public function wp_enqueue_scripts(): void {
+
 		/** Stylesheet. */
 		wp_register_style( "plugin-style", get_template_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION );
 		wp_enqueue_style( "app-style", get_template_directory_uri() . '/assets/css/app.css', [
@@ -143,7 +159,7 @@ final class Theme {
 			"plugin-style"
 		], EHD_THEME_VERSION );
 
-		/** Scripts. */
+		/** Scripts */
 		wp_enqueue_script( "app", get_template_directory_uri() . "/assets/js/app.js", [ "ehd-core" ], EHD_THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
@@ -157,7 +173,7 @@ final class Theme {
 			'ajaxUrl'      => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'baseUrl'      => trailingslashit( site_url() ),
 			'themeUrl'     => trailingslashit( get_template_directory_uri() ),
-			'smoothScroll' => ! 0,
+			'smoothScroll' => !0,
 			'locale'       => get_locale(),
 			'lang'         => Helper::getLang(),
 			'lg'           => [

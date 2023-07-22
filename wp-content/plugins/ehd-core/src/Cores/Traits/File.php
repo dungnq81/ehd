@@ -9,7 +9,7 @@ trait File {
 	/**
 	 * Check if the passed content is xml.
 	 *
-	 * @param string $content       The page content.
+	 * @param string $content The page content.
 	 *
 	 * @return bool
 	 */
@@ -183,10 +183,9 @@ trait File {
 	 * @return string
 	 */
 	public static function fileName( $filename, bool $include_ext = false ): string {
-		return $include_ext ? pathinfo(
-			                      $filename,
-			                      PATHINFO_FILENAME
-		                      ) . self::fileExtension( $filename ) : pathinfo( $filename, PATHINFO_FILENAME );
+		return $include_ext
+			? pathinfo( $filename, PATHINFO_FILENAME ) . self::fileExtension( $filename, true )
+			: pathinfo( $filename, PATHINFO_FILENAME );
 	}
 
 	/**

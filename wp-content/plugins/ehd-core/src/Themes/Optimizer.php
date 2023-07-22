@@ -66,15 +66,6 @@ final class Optimizer {
 
 		// Remove id li navigation
 		add_filter( 'nav_menu_item_id', '__return_null', 10, 3 );
-
-		// Adding Shortcode in WordPress Using Custom HTML Widget
-		add_filter( 'widget_text', 'do_shortcode' );
-		add_filter( 'widget_text', 'shortcode_unautop' );
-
-		// Normalize upload filename
-		add_filter( 'sanitize_file_name', function ( $filename ) {
-			return remove_accents( $filename );
-		}, 10, 1 );
 	}
 
 	// ------------------------------------------------------
@@ -108,9 +99,52 @@ final class Optimizer {
 		    $wp_admin_bar->remove_menu( 'wp-logo' );
 	    } );
 
+	    // Adding Shortcode in WordPress Using Custom HTML Widget
+	    add_filter( 'widget_text', 'do_shortcode' );
+	    add_filter( 'widget_text', 'shortcode_unautop' );
+
+	    // Normalize upload filename
+	    add_filter( 'sanitize_file_name', function ( $filename ) {
+		    return remove_accents( $filename );
+	    }, 10, 1 );
+
+	    // add new windows for external link
+	    add_filter( 'the_content', [ &$this, 'new_windows_external_links' ]  );
+
 	    // Prevent Specific Plugins from deactivation, delete, v.v...
 	    add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+
+	    // SVG Support
+	    //add_filter( 'upload_mimes', [ &$this, 'svg_upload_mimes' ] );
     }
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $mimes
+	 *
+	 * @return mixed
+	 */
+//	public function svg_upload_mimes( $mimes ) {
+//		$mimes['svg'] = 'image/svg+xml';
+//		$mimes['svgz'] = 'image/svg+xml';
+//
+//		return $mimes;
+//	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $content
+	 *
+	 * @return array|string|string[]|null
+	 */
+	public function new_windows_external_links( $content ) {
+		$href       = '/<a(.*?)href=["\'](http[s]*:\/\/[^"\']+)["\'](.*?)>/i';
+		$attributes = '<a$1href="$2"$3 target="_blank" rel="nofollow noopener">';
+
+		return preg_replace( $href, $attributes, $content );
+	}
 
 	// ------------------------------------------------------
 

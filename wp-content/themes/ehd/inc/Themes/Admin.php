@@ -61,7 +61,7 @@ final class Admin {
 		add_filter( 'manage_pages_columns', [ &$this, 'post_header' ], 5, 1 );
 		add_filter( 'manage_pages_custom_column', [ &$this, 'post_column' ], 5, 2 );
 
-		// exclude post column
+		// exclude post columns
 		$exclude_thumb_posts = [];
 		$exclude_thumb_posts = apply_filters( 'ehd_post_exclude_columns', $exclude_thumb_posts );
 
@@ -69,13 +69,14 @@ final class Admin {
 			add_filter( "manage_{$post}_posts_columns", [ $this, 'post_exclude_header' ], 12, 1 );
 		}
 
-		// thumb term
-		$thumb_term = [
+		// thumb terms
+		$thumb_terms = [
 			'category',
-			//'banner_cat',
+			'post_tag',
 		];
+		$thumb_terms = apply_filters( 'ehd_term_columns', $thumb_terms );
 
-		foreach ( $thumb_term as $term ) {
+		foreach ( $thumb_terms as $term ) {
 			add_filter( "manage_edit-{$term}_columns", [ &$this, 'term_header' ], 11, 1 );
 			add_filter( "manage_{$term}_custom_column", [ &$this, 'term_column' ], 11, 3 );
 		}

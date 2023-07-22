@@ -27,7 +27,7 @@ final class TinyMCE {
 		array_push( $buttons, 'separator', 'table' );
 		array_push( $buttons, 'separator', 'codesample' );
 		array_push( $buttons, 'separator', 'toc' );
-		array_push( $buttons, 'separator', 'fullscreen' );
+		//array_push( $buttons, 'separator', 'fullscreen' );
 
 		return $buttons;
 	}

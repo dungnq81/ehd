@@ -116,8 +116,8 @@ if ( ! function_exists( 'ehd_post_comment' ) ) {
 		$zalo_comment     = false;
 
 		if ( class_exists( '\ACF' ) ) {
-			$facebook_comment = \get_field( 'facebook_comment', $id );
-			$zalo_comment     = \get_field( 'zalo_comment', $id );
+			$facebook_comment = \get_field( 'facebook_comment', $id ) ?? false;
+			$zalo_comment     = \get_field( 'zalo_comment', $id ) ?? false;
 		}
 
 		if ( comments_open() || true === $facebook_comment || true === $zalo_comment ) {

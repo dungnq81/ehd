@@ -303,12 +303,12 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 		//'contact-form-7'    => 'defer',
 
 		// delay script - default 5s
-		'comment-reply'     => 'delay',
-		'wp-embed'          => 'delay',
-		'admin-bar'         => 'delay',
-		'back-to-top'       => 'delay',
-		'social-share'      => 'delay',
-		'o-draggable'       => 'delay',
+		'comment-reply' => 'delay',
+		'wp-embed'      => 'delay',
+		'admin-bar'     => 'delay',
+		'back-to-top'   => 'delay',
+		'social-share'  => 'delay',
+		'o-draggable'   => 'delay',
 	];
 
 	return array_merge( $arr, $arr_new );
@@ -381,9 +381,17 @@ add_filter( 'ehd_term_row_actions', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
+// thumb terms
 add_filter( 'ehd_term_columns', function ( array $arr ) {
 
+	$update_arr = [
+		//'banner_cat',
+	];
+
+	return array_merge( $arr, $update_arr );
+
 }, 99, 1 );
+
 /** ---------------------------------------- */
 
 // exclude thumb post column

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el.removeAttribute('target');
         el.setAttribute('target', '_blank');
         if (!1 === el.hasAttribute('rel')) {
-            el.setAttribute('rel', 'noopener noreferrer nofollow');
+            el.setAttribute('rel', 'noopener nofollow');
         }
     });
 

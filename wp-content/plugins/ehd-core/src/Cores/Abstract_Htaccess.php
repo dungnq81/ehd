@@ -145,6 +145,7 @@ abstract class Abstract_Htaccess {
 	 * Do a replacement.
 	 *
 	 * @param string $content The htaccess content.
+	 *
 	 * @return string
 	 */
 	public function do_replacement( string $content ): string {
@@ -154,10 +155,10 @@ abstract class Abstract_Htaccess {
 	/**
 	 * Toggle specific rule.
 	 *
-	 * @param  boolean $rule Whether to enable or disable the rules.
+	 * @param boolean $rule Whether to enable or disable the rules.
 	 */
 	public function toggle_rules( $rule = 1 ) {
 		$this->set_filepath();
-		( 1 === intval($rule) ) ? $this->enable() : $this->disable();
+		( 1 === intval( $rule ) ) ? $this->enable() : $this->disable();
 	}
 }

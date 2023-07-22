@@ -11,7 +11,7 @@ use EHD_Themes\Options;
 use EHD_Themes\Shortcode;
 
 use EHD_Plugins\Editor\TinyMCE;
-use EHD_Plugins\ACF\ACF;
+use EHD_Plugins\ACF;
 use EHD_Plugins\CF7;
 use EHD_Plugins\Elementor\Elementor;
 use EHD_Plugins\RankMath;
@@ -26,14 +26,13 @@ use EHD_Widgets\RecentPosts_Widget;
 use EHD_Widgets\Search_Widget;
 use EHD_Widgets\Shortcode_Widget;
 
+\defined( 'ABSPATH' ) || die;
+
 /**
  * Plugin Class
  *
  * @author eHD
  */
-
-\defined( 'ABSPATH' ) || die;
-
 final class Plugin {
 
 	public function __construct() {
@@ -75,8 +74,6 @@ final class Plugin {
 		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
 
 		/** ACF */
-		//class_exists( '\ACF' ) && ( new ACF() );
-
 		if ( ! class_exists( '\ACF' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_missing_acf' ] );
 		} else {
