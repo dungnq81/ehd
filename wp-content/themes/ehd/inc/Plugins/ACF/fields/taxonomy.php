@@ -1,11 +1,30 @@
 <?php
 
+use EHD_Cores\Helper;
+
 \defined( 'ABSPATH' ) || die;
 
 add_action( 'acf/include_fields', function () {
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
 	}
+
+	$location = [];
+	$ehd_term_columns = apply_filters( 'ehd_term_columns', [] );
+
+	foreach ( $ehd_term_columns as $term_column ) {
+		if ( $term_column ) {
+			$location[] = [
+				[
+					'param'    => 'taxonomy',
+					'operator' => '==',
+					'value'    => Helper::toString( $term_column ),
+				]
+			];
+		}
+	}
+
+	$location = array_values( $location );
 
 	acf_add_local_field_group( [
 		'key'                   => 'group_64b3b263d91cc',
@@ -59,22 +78,7 @@ add_action( 'acf/include_fields', function () {
 				'append'            => '',
 			],
 		],
-		'location'              => [
-			[
-				[
-					'param'    => 'taxonomy',
-					'operator' => '==',
-					'value'    => 'category',
-				],
-			],
-			[
-				[
-					'param'    => 'taxonomy',
-					'operator' => '==',
-					'value'    => 'post_tag',
-				],
-			],
-		],
+		'location'              => $location,
 		'menu_order'            => 0,
 		'position'              => 'normal',
 		'style'                 => 'default',

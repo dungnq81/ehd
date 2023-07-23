@@ -17,7 +17,6 @@ final class ACF {
 		add_filter( 'wp_nav_menu_objects', [ &$this, 'wp_nav_menu_objects' ], 11, 2 );
 
 		// auto required fields
-
 		// **\wp-content\themes\ehd\inc\Plugins\ACF\fields
 		$fields_dir = __DIR__ . DIRECTORY_SEPARATOR . 'fields';
 		Helper::FQN_Load( $fields_dir, true, false );

@@ -140,7 +140,12 @@ final class Theme {
 			( new Fonts() );
 		}
 
+		// Shortcode
 		( new Shortcode() )::init();
+
+		// required template-structures
+		$structures_dir = EHD_THEME_PATH . 'template-structures';
+		Helper::FQN_Load( $structures_dir, true, false );
 	}
 
 	/** ---------------------------------------- */

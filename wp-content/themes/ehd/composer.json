@@ -17,10 +17,7 @@
 			"inc/ajax.php",
 			"inc/css-output.php",
 			"inc/helpers.php",
-			"inc/themes.php",
-			"template-structures/header.php",
-			"template-structures/footer.php",
-			"template-structures/archives.php"
+			"inc/themes.php"
 		]
 	},
 	"require": {

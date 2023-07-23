@@ -367,6 +367,8 @@ add_filter( 'ehd_aspect_ratio_post_type', function ( array $arr ) {
 add_filter( 'ehd_term_row_actions', function ( array $arr ) {
 
 	$update_arr = [
+		'category',
+		'post_tag',
 		//'banner_cat',
 	];
 
@@ -381,10 +383,27 @@ add_filter( 'ehd_term_row_actions', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
+// post_row_actions
+add_filter( 'ehd_post_row_actions', function ( array $arr ) {
+
+	$update_arr = [
+		'user',
+		'post',
+		'page',
+	];
+
+	return array_merge( $arr, $update_arr );
+
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
 // thumb terms
 add_filter( 'ehd_term_columns', function ( array $arr ) {
 
 	$update_arr = [
+		'category',
+		'post_tag',
 		//'banner_cat',
 	];
 
