@@ -60,6 +60,7 @@ final class ACF {
 				}
 
 				if ( $menu_label_text ) {
+					$item->classes[] = 'menu-label';
 
 					$_color_attr = '';
 					if ( $menu_label_color ) $_color_attr .= 'color:' . $menu_label_color . ';';
@@ -70,7 +71,7 @@ final class ACF {
 				}
 
 				$item->title = $title;
-				unset( $fields );
+				unset( $ACF );
 			}
 		}
 
