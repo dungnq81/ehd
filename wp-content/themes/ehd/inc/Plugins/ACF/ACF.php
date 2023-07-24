@@ -62,11 +62,11 @@ final class ACF {
 				if ( $menu_label_text ) {
 					$item->classes[] = 'menu-label';
 
-					$_color_attr = '';
-					if ( $menu_label_color ) $_color_attr .= 'color:' . $menu_label_color . ';';
-					if ( $menu_label_background ) $_color_attr .= 'background-color:' . $menu_label_background . ';';
+					$_css = '';
+					if ( $menu_label_color ) $_css .= 'color:' . $menu_label_color . ';';
+					if ( $menu_label_background ) $_css .= 'background-color:' . $menu_label_background . ';';
 
-					$_style = $_color_attr ? ' style="' . $_color_attr . '"' : '';
+					$_style = $_css ? ' style="' . Helper::CSS_Minify( $_css, true ) . '"' : '';
 					$title  .= '<sup' . $_style . '>' . $menu_label_text . '</sup>';
 				}
 

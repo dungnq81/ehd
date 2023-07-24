@@ -4,7 +4,6 @@ namespace EHD_Themes;
 
 use EHD_Cores\Helper;
 use PHPMailer\PHPMailer\Exception;
-use MatthiasMullie\Minify;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -107,11 +106,7 @@ final class Options {
 		$css = Helper::getCustomPostContent( 'ehd_css', false );
 
 		if ( $css ) {
-			if ( ! WP_DEBUG ) {
-				$minifier = new Minify\CSS();
-				$minifier->add( $css );
-				$css = $minifier->minify();
-			}
+			$css = Helper::CSS_Minify( $css, true );
 
 			echo "<style id='custom-style-inline-css'>" . $css . "</style>";
 			// wp_add_inline_style( 'app-style', $css );

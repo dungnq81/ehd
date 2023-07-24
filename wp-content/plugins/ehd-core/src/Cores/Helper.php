@@ -8,6 +8,7 @@ use EHD_Cores\Traits\Elementor;
 use EHD_Cores\Traits\Plugin;
 use EHD_Cores\Traits\WooCommerce;
 use EHD_Cores\Traits\Wp;
+use MatthiasMullie\Minify;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -22,6 +23,29 @@ final class Helper {
 	use WooCommerce;
 	use Plugin;
 	use Wp;
+
+	// --------------------------------------------------
+
+	/**
+	 * @param $css
+	 * @param bool $debug_check
+	 *
+	 * @return string
+	 */
+	public static function CSS_Minify( $css, bool $debug_check = true ): string {
+		if ( empty( $css ) ) {
+			return $css;
+		}
+
+		if ( true === $debug_check && WP_DEBUG ) {
+			return $css;
+		}
+
+		$minifier = new Minify\CSS();
+		$minifier->add( $css );
+
+		return $minifier->minify();
+	}
 
 	// --------------------------------------------------
 
