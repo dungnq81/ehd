@@ -17,8 +17,7 @@
  * @link       https://github.com/TGMPA/TGM-Plugin-Activation
  */
 
-//require_once get_template_directory() . '/inc/Themes/tgmpa/TGM_Plugin_Activation.php';
-require_once __DIR__ . '/TGM_Plugin_Activation.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'TGM_Plugin_Activation.php';
 
 add_action( 'tgmpa_register', 'ehd_register_required_plugins' );
 
@@ -49,6 +48,11 @@ function ehd_register_required_plugins(): void {
 		[
 			'name'     => 'WooCommerce',
 			'slug'     => 'woocommerce',
+			'required' => false,
+		],
+		[
+			'name'     => 'Variation Swatches for WooCommerce',
+			'slug'     => 'woo-variation-swatches',
 			'required' => false,
 		],
 		[

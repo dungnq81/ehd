@@ -293,6 +293,7 @@ add_filter( 'widget_tag_cloud_args', function ( array $args ) {
 } );
 
 /** ---------------------------------------- */
+/** ---------------------------------------- */
 
 /** defer scripts */
 add_filter( 'ehd_defer_script', function ( array $arr ) {
@@ -430,5 +431,20 @@ add_filter( 'ehd_post_exclude_columns', function ( array $arr ) {
 	}
 
 	return $new_arr;
+
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+// Add ACF attributes in menu item
+add_filter( 'ehd_location_menu_items', function ( array $arr ) {
+
+	$update_arr = [
+		'main-nav',
+		//'second-nav',
+		//'mobile-nav',
+	];
+
+	return array_merge( $arr, $update_arr );
 
 }, 99, 1 );

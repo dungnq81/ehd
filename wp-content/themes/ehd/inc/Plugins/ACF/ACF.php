@@ -14,10 +14,13 @@ use EHD_Cores\Helper;
 
 final class ACF {
 	public function __construct() {
+
+		// Hide the ACF Admin UI
+		//add_filter( 'acf/settings/show_admin', '__return_false' );
+
 		add_filter( 'wp_nav_menu_objects', [ &$this, 'wp_nav_menu_objects' ], 11, 2 );
 
 		// auto required fields
-		// **\wp-content\themes\ehd\inc\Plugins\ACF\fields
 		$fields_dir = __DIR__ . DIRECTORY_SEPARATOR . 'fields';
 		Helper::FQN_Load( $fields_dir, true, false );
 	}
@@ -34,36 +37,36 @@ final class ACF {
 		foreach ( $items as &$item ) {
 
 			$title  = $item->title;
-			$fields = \get_fields( $item ) ?? '';
+			$ACF = \get_fields( $item ) ?? [];
 
-			if ( $fields ) {
-				$fields = Helper::toObject( $fields );
+			if ( $ACF ) {
 
-				//...
-				if ( $fields->icon_svg ?? false ) {
-					$item->classes[] = 'icon-menu';
-					$title           = $fields->icon_svg . '<span>' . $item->title . '</span>';
-				} else if ( $fields->icon_image ?? false ) {
-					$item->classes[] = 'thumb-menu';
-					$title           = '<img width="50px" height="50px" alt="' . esc_attr( $item->title ) . '" src="' . Helper::attachmentImageSrc( $fields->icon_image ) . '" loading="lazy" />' . '<span>' . $item->title . '</span>';
-				} else if ( $fields->icon_glyph ?? false ) {
-					$item->classes[] = 'glyph-menu';
-					$title           = '<span data-glyph="' . $fields->icon_glyph . '">' . $item->title . '</span>';
+				$ACF = Helper::toObject( $ACF );
+
+				$menu_glyph = $ACF->menu_glyph ?? '';
+				$menu_image = $ACF->menu_image ?? '';
+				$menu_label_text = $ACF->menu_label_text ?? '';
+				$menu_label_color = $ACF->menu_label_color ?? '';
+				$menu_label_background = $ACF->menu_label_background ?? '';
+
+				if ( $menu_glyph ) {
+					$item->classes[] = 'menu-glyph';
+					$title           = '<span data-glyph="' . esc_attr( $menu_glyph ) . '">' . $title . '</span>';
 				}
 
-				//...
-				if ( $fields->label_text ?? false ) {
+				if ( $menu_image ) {
+					$item->classes[] = 'menu-thumb';
+					$title = wp_get_attachment_image( $menu_image, 'thumbnail' ) . '<span>' . $item->title . '</span>';
+				}
 
-					$_str = '';
-					if ( $fields->label_color ?? false ) {
-						$_str .= 'color:' . $fields->label_color . ';';
-					}
-					if ( $fields->label_background ?? false ) {
-						$_str .= 'background-color:' . $fields->label_background . ';';
-					}
+				if ( $menu_label_text ) {
 
-					$_style = $_str ? ' style="' . $_str . '"' : '';
-					$title  .= '<sup' . $_style . '>' . $fields->label_text . '</sup>';
+					$_color_attr = '';
+					if ( $menu_label_color ) $_color_attr .= 'color:' . $menu_label_color . ';';
+					if ( $menu_label_background ) $_color_attr .= 'background-color:' . $menu_label_background . ';';
+
+					$_style = $_color_attr ? ' style="' . $_color_attr . '"' : '';
+					$title  .= '<sup' . $_style . '>' . $menu_label_text . '</sup>';
 				}
 
 				$item->title = $title;

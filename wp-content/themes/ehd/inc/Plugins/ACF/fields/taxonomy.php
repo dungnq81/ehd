@@ -52,7 +52,7 @@ add_action( 'acf/include_fields', function () {
 				'max_width'         => '',
 				'max_height'        => '',
 				'max_size'          => '',
-				'mime_types'        => 'png,jpeg,jpg,svg,gif',
+				'mime_types'        => 'png,svg,jpg,jpeg,gif,webp',
 				'preview_size'      => 'thumbnail',
 			],
 			[
