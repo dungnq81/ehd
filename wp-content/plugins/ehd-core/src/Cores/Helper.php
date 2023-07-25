@@ -3,12 +3,12 @@
 namespace EHD_Cores;
 
 use DirectoryIterator;
+use MatthiasMullie\Minify;
 
 use EHD_Cores\Traits\Elementor;
 use EHD_Cores\Traits\Plugin;
 use EHD_Cores\Traits\WooCommerce;
 use EHD_Cores\Traits\Wp;
-use MatthiasMullie\Minify;
 
 \defined( 'ABSPATH' ) || die;
 

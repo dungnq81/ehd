@@ -89,7 +89,7 @@ a, area, button, [role='button'], input, label, select, summary, textarea {
     margin-bottom: 0;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+:is(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
     font-weight: 700;
 
     a {
@@ -106,7 +106,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 a {
     display: inline-block;
 
-    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    :where(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
         font-size: inherit;
         color: currentColor;
     }
@@ -119,39 +119,41 @@ img {
     max-width: 100%;
     width: auto;
 
-    &.aligncenter, &.align-center {
+    &:where(.aligncenter, .align-center) {
         display: block;
         margin-left: auto;
         margin-right: auto;
     }
 }
 
-button[type="submit"], button[type="reset"], button[type="button"] {
+:is([type="submit"], [type="reset"], [type="button"]) {
     cursor: pointer;
 }
 
-figure.wp-caption, figure.caption {
-    max-width: 100% !important;
-    display: block;
+figure {
+    &:where(.wp-caption, .caption) {
+        max-width: 100% !important;
+        display: block;
 
-    img {
-        display: inline-block;
-    }
+        img {
+            display: inline-block;
+        }
 
-    .wp-caption-text, .caption-text {
-        padding-top: 10px;
-        color: #454545;
-    }
+        &:where(.wp-caption-text, .caption-text) {
+            padding-top: 10px;
+            color: #454545;
+        }
 
-    &.aligncenter, &.align-center {
-        margin-bottom: 15px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
+        &:where(.aligncenter, .align-center) {
+            margin-bottom: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
     }
 }
 
-.screen-reader-text, .submenu-toggle-text, .hidden-text {
+:is(.screen-reader-text, .submenu-toggle-text, .hidden-text) {
     @include hidden-text;
 }
 
@@ -169,22 +171,22 @@ figure.wp-caption, figure.caption {
     font-family: $awesome-font;
 }
 
-/** @todo flexbox */
+/** @todo flexbox & grid */
 .flex-x {
     @include flex-x();
 
-    & > .auto, & > .shrink {
+    & > :where(.auto, .shrink) {
         width: auto;
     }
 
     @include mq-min(tablet) {
-        & > .t-auto, & > .t-shrink {
+        & > :where(.t-auto, .t-shrink) {
             width: auto;
         }
     }
 
     @include mq-min(desktop) {
-        & > .d-auto, & > .d-shrink {
+        & > :where(.d-auto, .d-shrink) {
             width: auto;
         }
     }
@@ -197,6 +199,14 @@ figure.wp-caption, figure.caption {
         height: auto;
         max-height: none;
     }
+}
+
+.grid-x {
+    @include grid-x;
+}
+
+.grid-y {
+    @include grid-y;
 }
 
 .cell {
@@ -231,7 +241,7 @@ figure.wp-caption, figure.caption {
     }
 }
 
-.grid-gap, .flex-gap {
+:is(.grid-gap, .flex-gap) {
     @include media-gap($gap-xs, $gap, false);
 }
 
@@ -243,9 +253,9 @@ figure.wp-caption, figure.caption {
     @include flex-padding-y($gutter-xs, $gutter);
 }
 
-// flex container
-.flex-container {
-    @include flex-container($gutter-xs, $gutter, false, false);
+// layout container
+:is(.layout-container, .flex-container, .grid-container) {
+    @include layout-container($gutter-xs, $gutter, false, false);
 
     &:not(.full) {
         &.xxl {
@@ -272,37 +282,70 @@ figure.wp-caption, figure.caption {
     }
 }
 
-/** @todo flexbox layout */
+/** @todo layout */
 @for $i from 1 through 12 {
-    .m-up-#{$i} > .cell, .cell.m-#{$i} {
-        @include flex-self($i, 1, false);
+
+    .is-flex {
+        &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
+            @include flex-self($i, 1, false);
+        }
+
+        &.flex-gap {
+            &.m-up-#{$i} > .cell, & > .cell.m-#{$i} {
+                @include flex-self($i, 1, $gap-xs);
+            }
+        }
     }
 
-    .m-up-#{$i}.flex-gap > .cell, .flex-gap > .cell.m-#{$i} {
-        @include flex-self($i, 1, $gap-xs);
+    .is-grid {
+        &.m-up-#{$i} {
+            @include grid-template( $i );
+        }
     }
 }
 
 @include mq-min(tablet) {
     @for $i from 1 through 12 {
-        .t-up-#{$i} > .cell, .cell.t-#{$i} {
-            @include flex-self($i, 1, false);
+
+        .is-flex {
+            &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
+                @include flex-self($i, 1, false);
+            }
+
+            &.flex-gap {
+                &.t-up-#{$i} > .cell, & > .cell.t-#{$i} {
+                    @include flex-self($i, 1, $gap);
+                }
+            }
         }
 
-        .t-up-#{$i}.flex-gap > .cell, .flex-gap > .cell.t-#{$i} {
-            @include flex-self($i, 1, $gap);
+        .is-grid {
+            &.t-up-#{$i} {
+                @include grid-template( $i );
+            }
         }
     }
 }
 
 @include mq-min(desktop) {
     @for $i from 1 through 12 {
-        .d-up-#{$i} > .cell, .cell.d-#{$i} {
-            @include flex-self($i, 1, false);
+
+        .is-flex {
+            &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
+                @include flex-self($i, 1, false);
+            }
+
+            &.flex-gap {
+                &.d-up-#{$i} > .cell, & > .cell.d-#{$i} {
+                    @include flex-self($i, 1, $gap);
+                }
+            }
         }
 
-        .d-up-#{$i}.flex-gap > .cell, .flex-gap > .cell.d-#{$i} {
-            @include flex-self($i, 1, $gap);
+        .is-grid {
+            &.d-up-#{$i} {
+                @include grid-template( $i );
+            }
         }
     }
 }

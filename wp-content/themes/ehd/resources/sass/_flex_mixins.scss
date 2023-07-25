@@ -44,68 +44,13 @@
     }
 }
 
-@mixin cell($w: 100%) {
+@mixin cell($w: auto) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
 
     @if type-of($w) != bool {
         width: fs($w);
-    }
-}
-
-@mixin flex-container($padding_m: $gutter-xs, $padding: $gutter, $xxl: false, $xxxl: false) {
-    margin-left: auto;
-    margin-right: auto;
-
-    &:not(.full) {
-
-        @if is-int($padding_m) or unit($padding_m) == '%' {
-            padding-left: fs($padding_m);
-            padding-right: fs($padding_m);
-        }
-
-        // tablet breakpoint
-        @if is-int($padding) or unit($padding) == '%' {
-            @include mq-min(tablet) {
-                padding-left: fs($padding);
-                padding-right: fs($padding);
-            }
-        }
-
-        // sm breakpoint
-        @include mq-min(sm) {
-            max-width: map-get($container-max-widths, sm);
-        }
-
-        // md breakpoint
-        @include mq-min(md) {
-            max-width: map-get($container-max-widths, md);
-        }
-
-        // lg breakpoint
-        @include mq-min(lg) {
-            max-width: map-get($container-max-widths, lg);
-        }
-
-        // xl breakpoint
-        @include mq-min(xl) {
-            max-width: map-get($container-max-widths, xl);
-        }
-
-        // xxl breakpoint
-        @if true == $xxl {
-            @include mq-min(xxl) {
-                max-width: map-get($container-max-widths, xxl);
-            }
-        }
-
-        // xxxl breakpoint
-        @if true == $xxxl {
-            @include mq-min(xxxl) {
-                max-width: map-get($container-max-widths, xxxl);
-            }
-        }
     }
 }
 
