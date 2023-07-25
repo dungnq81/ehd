@@ -16,29 +16,33 @@
 @mixin grid-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false ) {
     @include grid-y;
     @include media-gap( $gap_m, $gap, false );
-    @include media-grid-template( $m, $t, $d );
+    @include media-grid-template( $m, $t, $d, true );
 }
 
-@mixin media-grid-template( $m: 1, $t: false, $d: false ) {
+@mixin media-grid-template( $m: 1, $t: false, $d: false, $columns: true ) {
     @if is-int( $m ) and $m > 0 {
-        @include grid-template( $m );
+        @include grid-template( $m, $columns );
     }
 
     @if is-int( $t ) and $t > 0 {
         @include mq-min( tablet ) {
-            @include grid-template( $t );
+            @include grid-template( $t, $columns );
         }
     }
 
     @if is-int( $d ) and $d > 0 {
         @include mq-min( desktop ) {
-            @include grid-template( $d );
+            @include grid-template( $d, $columns );
         }
     }
 }
 
-@mixin grid-template( $n:1 ) {
-    grid-template-columns: repeat( $n, 1fr );
+@mixin grid-template( $n:1, $columns: true ) {
+    @if true == $columns {
+        grid-template-columns: repeat( $n, 1fr );
+    } @else {
+        grid-template-rows: repeat( $n, 1fr );
+    }
 }
 
 @mixin grid-self( $row-start: 1, $column-start: 1, $row-end: 2, $column-end: 2 ) {

@@ -299,7 +299,7 @@ figure {
 
     .is-grid {
         &.m-up-#{$i} {
-            @include grid-template( $i );
+            @include grid-template( $i, true );
         }
     }
 }
@@ -321,7 +321,7 @@ figure {
 
         .is-grid {
             &.t-up-#{$i} {
-                @include grid-template( $i );
+                @include grid-template( $i, true );
             }
         }
     }
@@ -344,7 +344,7 @@ figure {
 
         .is-grid {
             &.d-up-#{$i} {
-                @include grid-template( $i );
+                @include grid-template( $i, true );
             }
         }
     }

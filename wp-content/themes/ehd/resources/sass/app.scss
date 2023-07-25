@@ -2,10 +2,6 @@
 
 /** demo */
 .layout-demo {
-    margin: 0 auto;
-    max-width: 1100px;
-    @include grid-layout(4, 3, 2, 20, 30);
-
     .cell {}
     .cell-1 {
         @include grid-self( 2, 1, span 3, 2 );
