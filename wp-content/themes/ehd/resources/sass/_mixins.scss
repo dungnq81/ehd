@@ -126,13 +126,13 @@
     @include media-css(margin-right, $m, $t, $d);
 }
 
-@mixin gap($x: 20, $y: $x) {
-    @if $x == $y and type-of($x) != bool {
-        grid-gap: fs($x);
-        gap: fs($x);
+@mixin gap($y: 20, $x: $y) {
+    @if $x == $y and type-of($y) != bool {
+        grid-gap: fs($y);
+        gap: fs($y);
     } @else if $x != $y and type-of($x) != bool and type-of($y) != bool {
-        grid-gap: fs($x) fs($y);
-        gap: fs($x) fs($y);
+        grid-gap: fs($y) fs($x);
+        gap: fs($y) fs($x);
     }
 }
 

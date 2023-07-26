@@ -1,3 +1,10 @@
+@use "sass:list";
+
+// check a list has tokens or not.
+@function is_empty($list) {
+    @return list.length($list) == 0;
+}
+
 // Ascending
 // Used to evaluate Sass maps like our grid breakpoints.
 @mixin _assert-ascending($map, $map-name) {

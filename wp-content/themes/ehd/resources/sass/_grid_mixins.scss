@@ -13,10 +13,9 @@
     grid-auto-flow: row;
 }
 
-@mixin grid-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false ) {
-    @include grid-y;
+@mixin grid-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $columns: true ) {
     @include media-gap( $gap_m, $gap, false );
-    @include media-grid-template( $m, $t, $d, true );
+    @include media-grid-template( $m, $t, $d, $columns );
 }
 
 @mixin media-grid-template( $m: 1, $t: false, $d: false, $columns: true ) {
