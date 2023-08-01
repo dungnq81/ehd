@@ -6,40 +6,43 @@
 @import "grid_mixins";
 
 :root {
-    --black:                #{map-get($colors, "black")};
-    --white:                #{map-get($colors, "white")};
-    --gray:                 #{map-get($colors, "gray")};
-    --gray-dark:            #{map-get($colors, "gray-dark")};
-    --blue:                 #{map-get($colors, "blue")};
-    --indigo:               #{map-get($colors, "indigo")};
-    --purple:               #{map-get($colors, "purple")};
-    --pink:                 #{map-get($colors, "pink")};
-    --red:                  #{map-get($colors, "red")};
-    --orange:               #{map-get($colors, "orange")};
-    --yellow:               #{map-get($colors, "yellow")};
-    --green:                #{map-get($colors, "green")};
-    --teal:                 #{map-get($colors, "teal")};
-    --cyan:                 #{map-get($colors, "cyan")};
+    --black:                    #{map-get($colors, "black")};
+    --white:                    #{map-get($colors, "white")};
+    --gray:                     #{map-get($colors, "gray")};
+    --gray-dark:                #{map-get($colors, "gray-dark")};
+    --blue:                     #{map-get($colors, "blue")};
+    --indigo:                   #{map-get($colors, "indigo")};
+    --purple:                   #{map-get($colors, "purple")};
+    --pink:                     #{map-get($colors, "pink")};
+    --red:                      #{map-get($colors, "red")};
+    --orange:                   #{map-get($colors, "orange")};
+    --yellow:                   #{map-get($colors, "yellow")};
+    --green:                    #{map-get($colors, "green")};
+    --teal:                     #{map-get($colors, "teal")};
+    --cyan:                     #{map-get($colors, "cyan")};
 
-    --primary:              #{map-get($theme-colors, "primary")};
-    --secondary:            #{map-get($theme-colors, "secondary")};
-    --success:              #{map-get($theme-colors, "success")};
-    --info:                 #{map-get($theme-colors, "info")};
-    --warning:              #{map-get($theme-colors, "warning")};
-    --alert:                #{map-get($theme-colors, "alert")};
-    --light:                #{map-get($theme-colors, "light")};
-    --dark:                 #{map-get($theme-colors, "dark")};
+    --primary:                  #{map-get($theme-colors, "primary")};
+    --secondary:                #{map-get($theme-colors, "secondary")};
+    --success:                  #{map-get($theme-colors, "success")};
+    --info:                     #{map-get($theme-colors, "info")};
+    --warning:                  #{map-get($theme-colors, "warning")};
+    --alert:                    #{map-get($theme-colors, "alert")};
+    --light:                    #{map-get($theme-colors, "light")};
+    --dark:                     #{map-get($theme-colors, "dark")};
 
-    --body-color:           #{$body-color};
-    --body-bg:              #{$body-bg};
+    --body-color:               #{$body-color};
+    --body-bg:                  #{$body-bg};
 
-    --link-color:           #{$link-color};
-    --link-hover-color:     #{$link-hover-color};
+    --link-color:               #{$link-color};
+    --link-hover-color:         #{$link-hover-color};
 
-    --gutter:               #{map-get($spacers, "gutter")};
-    --gutter-xs:            #{map-get($spacers, "gutter-xs")};
-    --gap:                  #{map-get($spacers, "gap")};
-    --gap-xs:               #{map-get($spacers, "gap-xs")};
+    --gutter:                   #{map-get($spacers, "gutter")};
+    --gutter-xs:                #{map-get($spacers, "gutter-xs")};
+    --gap:                      #{map-get($spacers, "gap")};
+    --gap-xs:                   #{map-get($spacers, "gap-xs")};
+
+    --line-height-header:       $line-height-header;
+    --line-height-paragraph:    $line-height-paragraph;
 }
 
 ::placeholder {
@@ -63,13 +66,13 @@
 html {
     font-family: sans-serif;
     font-variant-ligatures: no-common-ligatures;
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-touch-callout: none;
 }
 
 body {
+    scroll-behavior: smooth;
     background: $body-bg;
     font-size: $body-size;
     font-weight: 400;
@@ -384,7 +387,7 @@ figure {
         @include responsive-scale();
     }
 
-    iframe, embed, object, video {
+    :where(iframe, embed, object, video) {
         @include absolute-full;
         border: 0;
         width: 100%;

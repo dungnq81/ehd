@@ -27,6 +27,26 @@ add_action( 'acf/include_fields', function () {
 		'title'                 => 'Attributes of Menu Items',
 		'fields'                => [
 			[
+				'key'               => 'field_64c88782ac9a8',
+				'label'             => 'Mega menu',
+				'name'              => 'menu_mega',
+				'aria-label'        => '',
+				'type'              => 'true_false',
+				'instructions'      => '',
+				'required'          => 0,
+				'conditional_logic' => 0,
+				'wrapper'           => [
+					'width' => '',
+					'class' => '',
+					'id'    => '',
+				],
+				'message'           => '',
+				'default_value'     => 0,
+				'ui'                => 1,
+				'ui_on_text'        => '',
+				'ui_off_text'       => '',
+			],
+			[
 				'key'               => 'field_64bd134b8bca9',
 				'label'             => 'Awesome Glyph',
 				'name'              => 'menu_glyph',
@@ -48,7 +68,7 @@ add_action( 'acf/include_fields', function () {
 			],
 			[
 				'key'               => 'field_64bd0ab0ea1d7',
-				'label'             => 'Image',
+				'label'             => 'Thumbnail',
 				'name'              => 'menu_image',
 				'aria-label'        => '',
 				'type'              => 'image',

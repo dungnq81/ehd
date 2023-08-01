@@ -3,9 +3,9 @@
 namespace EHD_Base;
 
 use EHD_Themes\Admin;
-use EHD_Themes\Admin_Options;
 
 use EHD_Themes\Login;
+use EHD_Themes\Customizer;
 use EHD_Themes\Optimizer;
 use EHD_Themes\Options;
 use EHD_Themes\Shortcode;
@@ -49,10 +49,10 @@ final class Plugin {
 	public function init(): void {
 		if ( is_admin() ) {
 			( new Admin() );
-			( new Admin_Options() );
 		}
 
 		( new Login() );
+		( new Customizer() );
 		( new Optimizer() );
 		( new Options() );
 		( new Shortcode() )::init();
@@ -175,9 +175,6 @@ final class Plugin {
 		wp_dequeue_style( 'classic-theme-styles' );
 	}
 
-	/**
-	 * @return void
-	 */
 	public function activate() {}
 	public function deactivate() {}
 }

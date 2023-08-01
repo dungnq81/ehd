@@ -1,7 +1,4 @@
-//
-// base color
-//
-
+@import "functions";
 @import "colors";
 
 //
@@ -74,6 +71,7 @@ $xxxl: 1880px;
 $wp:   782px;
 
 $mq-breakpoints: (
+        xs:      0,
         sm:      fs($sm),
         md:      fs($md),
         lg:      fs($lg),

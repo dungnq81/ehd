@@ -14,24 +14,24 @@
 }
 
 @mixin grid-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $columns: true ) {
-    @include media-gap( $gap_m, $gap, false );
-    @include media-grid-template( $m, $t, $d, $columns );
+    @include media-gap($gap_m, $gap, false);
+    @include media-grid-template($m, $t, $d, $columns);
 }
 
 @mixin media-grid-template( $m: 1, $t: false, $d: false, $columns: true ) {
     @if is-int( $m ) and $m > 0 {
-        @include grid-template( $m, $columns );
+        @include grid-template($m, $columns);
     }
 
     @if is-int( $t ) and $t > 0 {
-        @include mq-min( tablet ) {
-            @include grid-template( $t, $columns );
+        @include mq-min(tablet) {
+            @include grid-template($t, $columns);
         }
     }
 
     @if is-int( $d ) and $d > 0 {
-        @include mq-min( desktop ) {
-            @include grid-template( $d, $columns );
+        @include mq-min(desktop) {
+            @include grid-template($d, $columns);
         }
     }
 }
@@ -45,7 +45,7 @@
 }
 
 @mixin grid-self( $row-start: 1, $column-start: 1, $row-end: 2, $column-end: 2 ) {
-    grid-area: list.slash( $row-start, $column-start, $row-end, $column-end );
+    grid-area: list.slash($row-start, $column-start, $row-end, $column-end);
 }
 
 @mixin grid-center() {

@@ -2,8 +2,6 @@
 
 namespace EHD_Plugins\Editor;
 
-use EHD_Cores\Helper;
-
 \defined( 'ABSPATH' ) || die;
 
 /**
@@ -41,7 +39,7 @@ final class TinyMCE {
 		$plugins['table']      = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/table/plugin.min.js';
 		$plugins['codesample'] = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/codesample/plugin.min.js';
 		$plugins['toc']        = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/toc/plugin.min.js';
-		$plugins['fullscreen'] = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/fullscreen/plugin.min.js';
+		//$plugins['fullscreen'] = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/fullscreen/plugin.min.js';
 
 		return $plugins;
 	}

@@ -75,8 +75,8 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 
 				if ( isset( $columns ) ) :
 			?>
-			<div class="inside-footer-widgets footer-rows footer-row-<?php echo $row; ?>">
-				<div class="grid-x">
+			<div class="footer-rows footer-row-<?php echo $row; ?>">
+				<div class="grid-y is-grid grid-gap">
 					<?php
 					for ( $column = 1; $column <= $columns; $column ++ ) :
 						$footer_n = $column + $regions * ( $row - 1 );

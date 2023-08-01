@@ -15,7 +15,7 @@
 
 get_header();
 
-echo 'pages';
+the_content();
 
 // homepage widget
 if (is_active_sidebar('ehd-home-sidebar')) :

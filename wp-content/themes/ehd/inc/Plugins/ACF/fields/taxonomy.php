@@ -9,7 +9,7 @@ add_action( 'acf/include_fields', function () {
 		return;
 	}
 
-	$location = [];
+	$location         = [];
 	$ehd_term_columns = apply_filters( 'ehd_term_columns', [] );
 
 	foreach ( $ehd_term_columns as $term_column ) {

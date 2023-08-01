@@ -36,17 +36,17 @@ final class ACF {
 	public function wp_nav_menu_objects( $items, $args ) {
 		foreach ( $items as &$item ) {
 
-			$title  = $item->title;
-			$ACF = \get_fields( $item ) ?? [];
+			$title = $item->title;
+			$ACF   = \get_fields( $item ) ?? [];
 
 			if ( $ACF ) {
 
 				$ACF = Helper::toObject( $ACF );
 
-				$menu_glyph = $ACF->menu_glyph ?? '';
-				$menu_image = $ACF->menu_image ?? '';
-				$menu_label_text = $ACF->menu_label_text ?? '';
-				$menu_label_color = $ACF->menu_label_color ?? '';
+				$menu_glyph            = $ACF->menu_glyph ?? '';
+				$menu_image            = $ACF->menu_image ?? '';
+				$menu_label_text       = $ACF->menu_label_text ?? '';
+				$menu_label_color      = $ACF->menu_label_color ?? '';
 				$menu_label_background = $ACF->menu_label_background ?? '';
 
 				if ( $menu_glyph ) {

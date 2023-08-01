@@ -1,4 +1,5 @@
-@import "mixins";
+@import "flex_mixins";
+@import "grid_mixins";
 
 /** */
 .elementor-element {
@@ -10,7 +11,7 @@
 
             .elementor-heading-title {
                 @include fs-heading(h#{$i});
-                line-height: $header-line-height;
+                line-height: $line-height-header;
             }
         }
     }
