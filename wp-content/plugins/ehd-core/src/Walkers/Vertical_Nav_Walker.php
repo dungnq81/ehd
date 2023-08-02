@@ -1,4 +1,5 @@
 <?php
+
 namespace EHD_Walkers;
 
 use stdClass;
@@ -22,7 +23,24 @@ if ( ! class_exists( 'Vertical_Nav_Walker' ) ) {
 				$n = "\n";
 			}
 			$indent = str_repeat( $t, $depth );
-			$output .= "{$n}{$indent}<ul class=\"vertical nested menu\">{$n}";
+
+			// Default class.
+			$classes = [ 'sub-menu', 'vertical', 'nested', 'menu' ];
+
+			/**
+			 * Filters the CSS class(es) applied to a menu list element.
+			 *
+			 * @param string[] $classes Array of the CSS classes that are applied to the menu `<ul>` element.
+			 * @param stdClass $args An object of `wp_nav_menu()` arguments.
+			 * @param int $depth Depth of menu item. Used for padding.
+			 *
+			 * @since 4.8.0
+			 *
+			 */
+			$class_names = implode( ' ', apply_filters( 'nav_menu_submenu_css_class', $classes, $args, $depth ) );
+			$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
+
+			$output .= "{$n}{$indent}<ul$class_names>{$n}";
 		}
 	}
 }

@@ -92,6 +92,9 @@ if ( ! function_exists( '__ehd_construct_header' ) ) {
 	 * @return void
 	 */
 	function __ehd_construct_header(): void {
+
+        //echo Helper::doShortcode( 'horizontal_menu' );
+
 		?>
 		<header class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
 			<div class="top-header"></div>

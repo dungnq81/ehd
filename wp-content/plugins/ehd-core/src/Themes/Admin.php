@@ -263,7 +263,7 @@ final class Admin {
 
             // ssl
 			$ssl = new Ssl();
-			$ssl->toggle_rules( $optimizer_options['https_enforce'] );
+			//$ssl->toggle_rules( $optimizer_options['https_enforce'] );
 
 			// ------------------------------------------------------
 

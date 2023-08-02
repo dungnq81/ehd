@@ -258,15 +258,6 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 
 /** ---------------------------------------- */
 
-/** Add class to anchor link */
-//add_filter( 'nav_menu_link_attributes', function ( $atts ) {
-//	$atts['class'] = "nav-link";
-//
-//	return $atts;
-//}, 100, 1 );
-
-/** ---------------------------------------- */
-
 /** comment off default */
 add_filter( 'wp_insert_post_data', function ( array $data ) {
 
@@ -436,8 +427,23 @@ add_filter( 'ehd_post_exclude_columns', function ( array $arr ) {
 
 /** ---------------------------------------- */
 
-// Add ACF attributes in menu item
+// Add ACF attributes in menu locations
 add_filter( 'ehd_location_menu_items', function ( array $arr ) {
+
+	$update_arr = [
+		'main-nav',
+		//'second-nav',
+		//'mobile-nav',
+	];
+
+	return array_merge( $arr, $update_arr );
+
+}, 99, 1 );
+
+/** ---------------------------------------- */
+
+// Add ACF attributes in mega menu locations
+add_filter( 'ehd_location_mega_menu', function ( array $arr ) {
 
 	$update_arr = [
 		'main-nav',

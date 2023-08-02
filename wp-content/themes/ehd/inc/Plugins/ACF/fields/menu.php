@@ -2,6 +2,8 @@
 
 use EHD_Cores\Helper;
 
+\defined( 'ABSPATH' ) || die;
+
 add_action( 'acf/include_fields', function () {
 	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
 		return;
@@ -26,26 +28,6 @@ add_action( 'acf/include_fields', function () {
 		'key'                   => 'group_64bd0aafbaa3a',
 		'title'                 => 'Attributes of Menu Items',
 		'fields'                => [
-			[
-				'key'               => 'field_64c88782ac9a8',
-				'label'             => 'Mega menu',
-				'name'              => 'menu_mega',
-				'aria-label'        => '',
-				'type'              => 'true_false',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => [
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				],
-				'message'           => '',
-				'default_value'     => 0,
-				'ui'                => 1,
-				'ui_on_text'        => '',
-				'ui_off_text'       => '',
-			],
 			[
 				'key'               => 'field_64bd134b8bca9',
 				'label'             => 'Awesome Glyph',
@@ -89,7 +71,7 @@ add_action( 'acf/include_fields', function () {
 				'max_height'        => '',
 				'max_size'          => '',
 				'mime_types'        => 'png,svg,jpg,jpeg,gif,webp',
-				'preview_size'      => 'medium',
+				'preview_size'      => 'small-thumbnail',
 			],
 			[
 				'key'               => 'field_64bd139df7dfd',

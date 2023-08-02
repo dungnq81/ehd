@@ -5,7 +5,7 @@
 
 # END WordPress
 
-# NG
+# HD
 SetEnv HTACCESS on
 Options -Indexes
 <IfModule mod_rewrite.c>
@@ -13,7 +13,7 @@ Options -Indexes
     RewriteRule ^wp\-content/plugins/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
     RewriteRule ^wp\-content/themes/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
 </IfModule>
-# NG END
+# HD END
 
 # Https Forced
 <IfModule mod_rewrite.c>

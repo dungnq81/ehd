@@ -247,11 +247,13 @@ final class Theme {
 		 * medium (768x0)
 		 * large (1024x0)
 		 *
+		 * small-thumbnail (90x90)
 		 * widescreen (1920x9999)
 		 * post-thumbnail (1200x9999)
 		 */
 
 		/** Custom thumb */
+		add_image_size( 'small-thumbnail', 90, 90, true );
 		add_image_size( 'widescreen', 1920, 9999, false );
 		add_image_size( 'post-thumbnail', 1200, 9999, false );
 
