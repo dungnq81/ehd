@@ -15,16 +15,16 @@ trait Arr {
 	 */
 	public static function separatedToArray( $string, string $separator = ',' ): array {
 		// Explode on comma
-		$vals = explode( $separator, $string );
+		$vars = explode( $separator, $string );
 
 		// Trim whitespace
-		foreach ( $vals as $key => $val ) {
-			$vals[ $key ] = trim( $val );
+		foreach ( $vars as $key => $val ) {
+			$vars[ $key ] = trim( $val );
 		}
 
 		// Return empty array if no items found
 		// http://php.net/manual/en/function.explode.php#114273
-		return array_diff( $vals, [ "" ] );
+		return array_diff( $vars, [ "" ] );
 	}
 
 	/**

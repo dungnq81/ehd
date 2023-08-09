@@ -9,7 +9,7 @@ $(function () {
 
     /**
      * @param el
-     * @return void
+     * @return {*|jQuery}
      */
     function rand_element_init(el) {
         const _rand = nanoid(9);
@@ -20,6 +20,8 @@ $(function () {
             _id = _rand;
             $(el).attr('id', _id);
         }
+
+        return _id;
     }
 
     // codemirror
@@ -70,8 +72,7 @@ $(function () {
     // filter tabs
     const tabs_wrapper = $(".filter-tabs");
     tabs_wrapper.each((index, el) => {
-        rand_element_init(el);
-        let _id = $(el).attr('id');
+        let _id = rand_element_init(el);
 
         const _nav = $(el).find(".tabs-nav");
         const _content = $(el).find(".tabs-content");
@@ -98,8 +99,8 @@ $(function () {
     });
 
     // user
-    const createuser = $("#createuser");
-    createuser.find("#send_user_notification").removeAttr("checked").attr("disabled", true);
+    const create_user = $("#createuser");
+    create_user.find("#send_user_notification").removeAttr("checked").attr("disabled", true);
 
     //...
     $("input[value=\"advanced-custom-fields-pro/acf.php\"]").remove();

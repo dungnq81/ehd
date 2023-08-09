@@ -12,22 +12,6 @@ use EHD_Cores\Helper;
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'q_dump' ) ) {
-	/**
-	 * @return void
-	 */
-	function q_dump() {
-		global $wpdb;
-		if ( function_exists( 'dump' ) ) {
-			dump( $wpdb->last_query );
-		} else {
-			var_dump( $wpdb->last_query );
-		}
-	}
-}
-
-/** ----------------------------------------------- */
-
 if ( ! function_exists( 'ehd_pagination_links' ) ) {
 	/**
 	 * @param bool $echo

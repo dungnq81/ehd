@@ -75,22 +75,24 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 
 				if ( isset( $columns ) ) :
 			?>
-			<div class="footer-rows footer-row-<?php echo $row; ?>">
-				<div class="grid-y is-grid grid-gap">
-					<?php
-					for ( $column = 1; $column <= $columns; $column ++ ) :
-						$footer_n = $column + $regions * ( $row - 1 );
-						if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) ) ) :
+			<div class="rows row-<?php echo $row; ?>">
+                <div class="grid-container">
+                    <div class="grid-y">
+                        <?php
+                        for ( $column = 1; $column <= $columns; $column ++ ) :
+                            $footer_n = $column + $regions * ( $row - 1 );
+                            if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) ) ) :
 
-							echo sprintf( '<div class="cell footer-cell cell-%1$s">', esc_attr( $column ) );
-							dynamic_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) );
-							echo "</div>";
+                                echo sprintf( '<div class="cell cell-%1$s">', esc_attr( $column ) );
+                                dynamic_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) );
+                                echo "</div>";
 
-						endif;
-					endfor;
+                            endif;
+                        endfor;
 
-					?>
-				</div>
+                        ?>
+                    </div>
+                </div>
 			</div>
 			<?php endif; endfor; ?>
 		</div><!-- #footer-widgets-->
@@ -109,26 +111,28 @@ if ( ! function_exists( '__construct_footer' ) ) {
 	function __construct_footer() {
 		?>
 		<footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
-			<div class="inside-footer-info">
-				<?php
-				/**
-				 * ehd_before_credit hook
-				 *
-				 * @see __ehd_before_credits - 15
-				 */
-				do_action( 'ehd_before_credits' );
-				?>
-				<div class="footer-copyright">
-					<?php
-					/**
-					 * ehd_credits hook
-					 *
-					 * @see __ehd_credits - 10
-					 */
-					do_action( 'ehd_credits' );
-					?>
-				</div>
-			</div>
+            <div class="grid-container">
+                <div class="grid-y">
+                    <?php
+                    /**
+                     * ehd_before_credit hook
+                     *
+                     * @see __ehd_before_credits - 15
+                     */
+                    do_action( 'ehd_before_credits' );
+                    ?>
+                    <div class="footer-copyright">
+                        <?php
+                        /**
+                         * ehd_credits hook
+                         *
+                         * @see __ehd_credits - 10
+                         */
+                        do_action( 'ehd_credits' );
+                        ?>
+                    </div>
+                </div>
+            </div>
 		</footer>
 	<?php
 	}
@@ -160,7 +164,7 @@ if ( ! function_exists( '__ehd_credits' ) ) {
 	 */
 	function __ehd_credits() {
 		$copyright = sprintf(
-			'<span class="copyright">&copy; %1$s %2$s</span><span class="hd">, %3$s <a class="_blank" title="%6$s" href="%4$s"%5$s>%6$s</a></span>',
+			'<span class="copyright">&copy; %1$s %2$s</span><span class="hd">, %3$s <a class="_blank" title="%6$s" href="%4$s" %5$s>%6$s</a></span>',
 			date( 'Y' ), // phpcs:ignore
 			get_bloginfo( 'name' ),
 			__( 'design by', EHD_TEXT_DOMAIN ),

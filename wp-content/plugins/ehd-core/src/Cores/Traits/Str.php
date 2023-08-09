@@ -267,17 +267,22 @@ trait Str {
 	 * @return string
 	 */
 	public static function stripAllTags( $string, string $replace = ' ', bool $remove_js = true, bool $flatten = false, $allowed_tags = null ): string {
+
+		if ( ! is_scalar( $string ) ) {
+			return '';
+		}
+
 		if ( true === $remove_js ) {
-			$string = preg_replace( '#<script[^>]*>([^<]+)</script>#', $replace, $string );
+			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', $replace, $string );
 		}
 
 		$string = strip_tags( $string, $allowed_tags );
 
 		if ( true === $flatten ) {
-			return preg_replace( '/\s+/', $replace, $string );
+			$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
 		}
 
-		return trim( preg_replace( '/ {2,}/', $replace, $string ) );
+		return trim( $string );
 	}
 
 	/**

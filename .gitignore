@@ -171,3 +171,8 @@ fabric.properties
 /.vscode/
 /.idea/
 /wp-content/plugins/header-footer-code-manager/
+/wp-content/plugins/elementor/
+/wp-content/plugins/polylang/
+/wp-content/plugins/polylang-wc/
+/wp-content/plugins/theme-translation-for-polylang/
+/wp-content/plugins/elementor-pro/

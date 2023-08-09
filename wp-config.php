@@ -1,6 +1,4 @@
 <?php
-define( 'WP_CACHE', false ); // By SiteGround Optimizer
-
 
 /**
  * The base configuration for WordPress
@@ -98,7 +96,7 @@ $table_prefix = 'w_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-const WP_DEBUG = true;
+const WP_DEBUG = false;
 
 /* Add any custom values between this line and the "stop editing" line. */
 

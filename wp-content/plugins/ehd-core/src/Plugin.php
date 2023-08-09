@@ -104,7 +104,10 @@ final class Plugin {
 
 		// Removes the styling added to the header for recent comments
 		global $wp_widget_factory;
-		remove_action( 'wp_head', [ $wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style' ] );
+		remove_action( 'wp_head', [
+			$wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
+			'recent_comments_style'
+		] );
 	}
 
 	/**
@@ -176,5 +179,6 @@ final class Plugin {
 	}
 
 	public function activate() {}
+
 	public function deactivate() {}
 }

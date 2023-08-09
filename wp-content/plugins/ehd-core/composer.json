@@ -15,7 +15,9 @@
 			"EHD_Walkers\\": "src/Walkers",
 			"EHD_Widgets\\": "src/Widgets"
 		},
-		"files": []
+		"files": [
+			"src/helpers.php"
+		]
 	},
 	"require": {
 		"php": ">=7.4",

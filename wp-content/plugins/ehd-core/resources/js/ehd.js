@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // javascript disable right click
     //document.addEventListener('contextmenu', event => event.preventDefault());
-    /*document.addEventListener("contextmenu", function(e){
+    /*document.addEventListener("contextmenu", function(e) {
         if (e.target.nodeName === "IMG") {
             e.preventDefault();
         }
     }, false);*/
 
-    /**remove style img tag*/
+    /** remove style img tag */
     const _img = document.querySelectorAll('img');
     Array.prototype.forEach.call(_img, (el) => {
         el.removeAttribute('style');

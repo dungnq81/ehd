@@ -43,6 +43,7 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 	 * @link https://codex.wordpress.org/Function_Reference/register_sidebar
 	 */
 	function __register_sidebars(): void {
+
 		/** homepage */
 		register_sidebar(
 			[
@@ -57,6 +58,8 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 			]
 		);
 
+		//-------------------------------------------------------
+
 		/** header sidebar */
 		register_sidebar(
 			[
@@ -70,6 +73,8 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 				'after_title'   => '</span>',
 			]
 		);
+
+		//-------------------------------------------------------
 
 		// footer columns
 		$footer_args = [];

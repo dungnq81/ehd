@@ -78,7 +78,7 @@ body {
     font-weight: 400;
 }
 
-input, textarea, button, main {
+:is(input, textarea, button, main) {
     &:focus {
         outline: none;
     }
@@ -129,7 +129,7 @@ img {
     }
 }
 
-:is([type="submit"], [type="reset"], [type="button"]) {
+[type="submit"], [type="reset"], [type="button"] {
     cursor: pointer;
 }
 
@@ -156,7 +156,7 @@ figure {
     }
 }
 
-:is(.screen-reader-text, .submenu-toggle-text, .hidden-text) {
+.screen-reader-text, .submenu-toggle-text, .hidden-text {
     @include hidden-text;
 }
 
@@ -244,7 +244,7 @@ figure {
     }
 }
 
-:is(.grid-gap, .flex-gap) {
+.grid-gap, .flex-gap {
     @include media-gap($gap-xs, $gap, false);
 }
 

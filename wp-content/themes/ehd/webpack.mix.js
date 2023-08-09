@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-//const purgeCss = require('@fullhuman/postcss-purgecss');
+const purgeCss = require('@fullhuman/postcss-purgecss');
 
 const path = require('path');
 let directory = path.basename(path.resolve(__dirname));
