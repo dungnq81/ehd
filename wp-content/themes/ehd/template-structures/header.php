@@ -25,7 +25,7 @@ if ( ! function_exists( '__wp_head' ) ) {
 		// Add viewport to wp_head
 		echo apply_filters( 'ehd_meta_viewport', '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-		// Add a pingback url auto-discovery header for singularly identifiable articles.
+		// Add a ping-back url auto-discovery header for singularly identifiable articles.
 		if ( is_singular() && pings_open() ) {
 			printf( '<link rel="pingback" href="%s" />', esc_url( get_bloginfo( 'pingback_url' ) ) );
 		}

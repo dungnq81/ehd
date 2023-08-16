@@ -34,7 +34,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'alt_logo',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -55,7 +55,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'logo_title_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -111,7 +111,7 @@ final class Customizer {
 			'login_page_bgcolor_setting',
 			[
 				'sanitize_callback' => 'sanitize_hex_color',
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 			]
 		);
 		$wp_customize->add_control(
@@ -129,7 +129,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'login_page_bgimage_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -149,7 +149,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'login_page_logo_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -169,7 +169,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'login_page_headertext_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -188,7 +188,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'login_page_headerurl_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -223,7 +223,7 @@ final class Customizer {
 			[
 				'default'           => 'default',
 				'sanitize_callback' => 'sanitize_text_field',
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 			]
 		);
 		$wp_customize->add_control(
@@ -260,7 +260,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'breadcrumb_bg_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -295,7 +295,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'header_bgcolor_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_hex_color'
 			]
 		);
@@ -315,7 +315,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'header_bg_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -334,7 +334,7 @@ final class Customizer {
 		// Add control
 		$wp_customize->add_setting( 'top_header_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field'
 			]
 		);
@@ -372,7 +372,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'header_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -410,7 +410,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'bottom_header_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field'
 			]
 		);
@@ -462,7 +462,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'footer_bgcolor_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_hex_color'
 			]
 		);
@@ -482,7 +482,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'footer_bg_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_image',
 			]
 		);
@@ -502,7 +502,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'footer_row_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -521,7 +521,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'footer_col_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field',
 			]
 		);
@@ -572,7 +572,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'theme_color_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_hex_color',
 			]
 		);
@@ -591,7 +591,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'remove_menu_setting',
 			[
-				'capability'     => 'edit_theme_options',
+				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_textarea_field',
 			]
 		);
