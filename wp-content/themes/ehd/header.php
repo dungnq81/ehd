@@ -20,15 +20,11 @@ use EHD_Cores\Helper;
     <?php
 
     /**
-     * Triggered after the opening body tag.
-     *
      * @see \EHD_Themes\Options::body_scripts_top__hook - 99
      */
     do_action( 'wp_body_open' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP hook.
 
     /**
-     * ehd_before_header hook.
-     *
      * @see __ehd_skip_to_content_link - 2
      * @see __off_canvas_menu - 10
      */
@@ -39,36 +35,22 @@ use EHD_Cores\Helper;
         <?php
 
         /**
-         * ehd_header hook.
-         *
          * @see __ehd_construct_header - 10
          */
         do_action( 'ehd_header' );
 
-        /**
-         * ehd_after_header hook.
-         *
-         */
         do_action( 'ehd_after_header' );
 
         ?>
         <div class="site-page">
 	        <?php
 
-	        /**
-	         * ehd_inside_site_page hook.
-	         *
-	         */
 	        do_action( 'ehd_inside_site_page' );
 
 	        ?>
             <div class="site-content">
                 <?php
 
-                /**
-                 * ehd_inside_site_content hook.
-                 *
-                 */
                 do_action( 'ehd_inside_site_content' );
 
 

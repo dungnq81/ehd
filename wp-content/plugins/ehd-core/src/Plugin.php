@@ -36,10 +36,10 @@ use EHD_Widgets\Shortcode_Widget;
 final class Plugin {
 
 	public function __construct() {
-		add_action( 'init', [ &$this, 'i18n' ] );
-		add_action( 'init', [ &$this, 'init' ] );
+		add_action( 'init', [ &$this, 'i18n' ], 10 );
+		add_action( 'init', [ &$this, 'init' ], 10 );
 
-		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ] );
+		add_action( 'plugins_loaded', [ &$this, 'plugins_loaded' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue' ], 11 );
 	}
 
@@ -179,6 +179,5 @@ final class Plugin {
 	}
 
 	public function activate() {}
-
 	public function deactivate() {}
 }

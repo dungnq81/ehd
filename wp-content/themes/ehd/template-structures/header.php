@@ -3,7 +3,6 @@
  * Header elements
  *
  * @author WEBHD
- * @package ehd
  */
 
 use EHD_Cores\Helper;
@@ -117,7 +116,9 @@ if ( ! function_exists( '__top_header' ) ) {
 	 */
 	function __top_header(): void {
 		$top_header_cols      = (int) Helper::getThemeMod( 'top_header_setting' );
-		$top_header_container = (int) Helper::getThemeMod( 'top_header_container_setting' );
+		$top_header_container = Helper::getThemeMod( 'top_header_container_setting' );
+
+		if ( $top_header_cols > 0 ) :
 
         ?>
         <div class="top-header" id="top-header">
@@ -136,7 +137,7 @@ if ( ! function_exists( '__top_header' ) ) {
             if ( $top_header_container ) echo '</div>';
             ?>
         </div>
-    <?php
+    <?php endif;
 	}
 }
 
@@ -148,13 +149,28 @@ if ( ! function_exists( '__header' ) ) {
 	 */
 	function __header(): void {
 		$header_cols = (int) Helper::getThemeMod( 'header_setting' );
-		$header_container = (int) Helper::getThemeMod( 'header_container_setting' );
+		$header_container = Helper::getThemeMod( 'header_container_setting' );
+
+		if ( $header_cols > 0 ) :
 
         ?>
         <div class="inside-header" id="inside-header">
+	        <?php
+	        if ( $header_container ) echo '<div class="grid-container">';
+	        else echo '<div class="grid-container fluid">';
 
+	        for ( $i = 1; $i <= $header_cols; $i++ ) :
+		        if ( is_active_sidebar( 'ehd-header-' . $i . '-sidebar' )) :
+			        echo '<div class="cell-inner cell-' . $i . '">';
+			        dynamic_sidebar( 'ehd-header-' . $i . '-sidebar' );
+			        echo '</div>';
+		        endif;
+	        endfor;
+
+            if ( $header_container ) echo '</div>';
+            ?>
         </div>
-    <?php
+    <?php endif;
 	}
 }
 
@@ -166,13 +182,28 @@ if ( ! function_exists( '__bottom_header' ) ) {
 	 */
 	function __bottom_header(): void {
 		$bottom_header_cols      = (int) Helper::getThemeMod( 'bottom_header_setting' );
-		$bottom_header_container = (int) Helper::getThemeMod( 'bottom_header_container_setting' );
+		$bottom_header_container = Helper::getThemeMod( 'bottom_header_container_setting' );
+
+		if ( $bottom_header_cols > 0 ) :
 
         ?>
         <div class="bottom-header header-content" id="bottom-header">
+            <?php
+            if ( $bottom_header_container ) echo '<div class="grid-container">';
+            else echo '<div class="grid-container fluid">';
 
+            for ( $i = 1; $i <= $bottom_header_cols; $i++ ) :
+	            if ( is_active_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' )) :
+		            echo '<div class="cell-inner cell-' . $i . '">';
+		            dynamic_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' );
+		            echo '</div>';
+	            endif;
+            endfor;
+
+            if ( $bottom_header_container ) echo '</div>';
+            ?>
         </div>
-    <?php
+    <?php endif;
 	}
 }
 

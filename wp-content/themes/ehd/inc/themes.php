@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Themes Functions
  *
- * @author   WEBHD
+ * @author WEBHD
  */
 
 use EHD_Cores\Helper;
@@ -37,10 +38,6 @@ if ( ! function_exists( '__after_setup_theme' ) ) {
 if ( ! function_exists( '__register_sidebars' ) ) {
 	add_action( 'widgets_init', '__register_sidebars', 11 );
 
-	//----------------------------------------------------------
-	// Homepage
-	//----------------------------------------------------------
-
 	/**
 	 * Register widget area.
 	 *
@@ -48,12 +45,15 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 	 */
 	function __register_sidebars(): void {
 
-		/** homepage */
+		//----------------------------------------------------------
+		// Homepage
+		//----------------------------------------------------------
+
 		register_sidebar(
 			[
 				'container'     => false,
 				'id'            => 'ehd-home-sidebar',
-				'name'          => __( 'Home Page', EHD_TEXT_DOMAIN ),
+				'name'          => __( 'Home-Page', EHD_TEXT_DOMAIN ),
 				'description'   => __( 'Widgets added here will appear in homepage.', EHD_TEXT_DOMAIN ),
 				'before_widget' => '<div class="%2$s">',
 				'after_widget'  => '</div>',
@@ -107,13 +107,13 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 		}
 
 		if ( $bottom_header_cols > 0 ) {
-			for ( $i = 1; $i <= $bottom_header_cols; $i++ ) {
+			for ( $i = 1; $i <= $bottom_header_cols; $i ++ ) {
 				$_name = sprintf( __( 'Bottom-Header %d', EHD_TEXT_DOMAIN ), $i );
 				register_sidebar(
 					[
 						'container'     => false,
 						'id'            => 'ehd-bottom-header-' . $i . '-sidebar',
-						'name'          => $_name ,
+						'name'          => $_name,
 						'description'   => __( 'Widgets added here will appear in bottom header.', EHD_TEXT_DOMAIN ),
 						'before_widget' => '<div class="header-widgets %2$s">',
 						'after_widget'  => '</div>',
@@ -128,7 +128,6 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 		// Footer
 		//----------------------------------------------------------
 
-		// footer columns
 		$footer_args = [];
 
 		$rows    = (int) Helper::getThemeMod( 'footer_row_setting' );
@@ -141,14 +140,14 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 				if ( 1 === $rows ) {
 
 					/* translators: 1: column number */
-					$footer_region_name = sprintf( __( 'Footer Column %1$d', EHD_TEXT_DOMAIN ), $region );
+					$footer_region_name = sprintf( __( 'Footer-Column %1$d', EHD_TEXT_DOMAIN ), $region );
 
 					/* translators: 1: column number */
 					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of the footer.', EHD_TEXT_DOMAIN ), $region );
 				} else {
 
 					/* translators: 1: row number, 2: column number */
-					$footer_region_name = sprintf( __( 'Footer Row %1$d - Column %2$d', EHD_TEXT_DOMAIN ), $row, $region );
+					$footer_region_name = sprintf( __( 'Footer-Row %1$d - Column %2$d', EHD_TEXT_DOMAIN ), $row, $region );
 
 					/* translators: 1: column number, 2: row number */
 					$footer_region_description = sprintf( __( 'Widgets added here will appear in column %1$d of footer row %2$d.', EHD_TEXT_DOMAIN ), $region, $row );
@@ -350,15 +349,16 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 	$arr_new = [
 		// defer script
 		//'wc-single-product' => 'defer',
-		//'contact-form-7'    => 'defer',
+		//'contact-form-7' => 'defer',
+		//'video-js'       => 'defer',
 
 		// delay script - default 5s
-		'comment-reply' => 'delay',
-		'wp-embed'      => 'delay',
-		'admin-bar'     => 'delay',
-		'back-to-top'   => 'delay',
-		'social-share'  => 'delay',
-		'o-draggable'   => 'delay',
+		'comment-reply'  => 'delay',
+		'wp-embed'       => 'delay',
+		'admin-bar'      => 'delay',
+		'back-to-top'    => 'delay',
+		'social-share'   => 'delay',
+		'o-draggable'    => 'delay',
 	];
 
 	return array_merge( $arr, $arr_new );

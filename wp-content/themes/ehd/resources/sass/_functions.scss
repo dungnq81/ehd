@@ -1,4 +1,5 @@
 @use "sass:list";
+@use "sass:math";
 
 // check a list has tokens or not.
 @function is_empty($list) {
@@ -193,17 +194,17 @@ $_luminance-list: .0008 .001 .0011 .0013 .0015 .0017 .002 .0022 .0025 .0027 .003
     @return if($weight > 0, shade-color($color, $weight), tint-color($color, -$weight));
 }
 
-/// Divide the given `$dividend` by the given `$divisor`.
+/// Divide the given `$divident` by the given `$divisor`.
 ///
-/// @param {Number} $dividend - The dividend.
+/// @param {Number} $divident - The divident.
 /// @param {Number} $divisor - The divisor.
 /// @param {Number} $precision - The precision decimals for the division.
 ///
 /// @return {Number} The product of the division.
 @function divide($dividend, $divisor, $precision: 12) {
     $sign: if($dividend > 0 and $divisor > 0 or $dividend < 0 and $divisor < 0, 1, -1);
-    $dividend: abs($dividend);
-    $divisor: abs($divisor);
+    $dividend: math.abs($dividend);
+    $divisor: math.abs($divisor);
     @if $dividend == 0 {
         @return 0;
     }

@@ -4,11 +4,11 @@
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'wp_dump' ) ) {
+if ( ! function_exists( 'dump_query' ) ) {
 	/**
 	 * @return void
 	 */
-	function wp_dump() {
+	function dump_query() {
 		global $wpdb;
 		if ( function_exists( 'dump' ) ) {
 			dump( $wpdb->last_query );

@@ -2,7 +2,7 @@
 /**
  * Archive elements.
  *
- * @package ehd
+ * @author WEBHD
  */
 
 \defined( 'ABSPATH' ) || die;

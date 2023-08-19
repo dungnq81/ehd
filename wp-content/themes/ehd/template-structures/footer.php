@@ -3,7 +3,6 @@
  * Footer elements
  *
  * @author WEBHD
- * @package ehd
  */
 
 use EHD_Cores\Helper;
@@ -22,7 +21,7 @@ if ( ! function_exists( '__wp_footer' ) ) {
 	 *
 	 * @return void
 	 */
-	function __wp_footer() : void {
+	function __wp_footer(): void {
 
 		$back_to_top = apply_filters( 'ehd_back_to_top', true );
 		if ( $back_to_top ) {
@@ -52,16 +51,18 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 	 * @return void
 	 */
 	function __construct_footer_widgets() {
-		$rows = (int) Helper::getThemeMod( 'footer_row_setting' );
+		$rows    = (int) Helper::getThemeMod( 'footer_row_setting' );
 		$regions = (int) Helper::getThemeMod( 'footer_col_setting' );
 
+		$footer_container = Helper::getThemeMod( 'footer_container_setting' );
+
 		// If no footer widgets exist, we don't need to continue
-		if ( 1  > $rows || 1 > $regions) {
+		if ( 1 > $rows || 1 > $regions ) {
 			return;
 		}
 
 		?>
-		<div id="footer-widgets" class="footer-widgets">
+        <div id="footer-widgets" class="footer-widgets">
 			<?php
 			for ( $row = 1; $row <= $rows; $row ++ ) :
 
@@ -74,29 +75,35 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
 				}
 
 				if ( isset( $columns ) ) :
-			?>
-			<div class="rows row-<?php echo $row; ?>">
-                <div class="grid-container">
-                    <div class="grid-y">
-                        <?php
-                        for ( $column = 1; $column <= $columns; $column ++ ) :
-                            $footer_n = $column + $regions * ( $row - 1 );
-                            if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) ) ) :
 
-                                echo sprintf( '<div class="cell cell-%1$s">', esc_attr( $column ) );
-                                dynamic_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) );
-                                echo "</div>";
+            ?>
+            <div class="rows row-<?php echo $row; ?>">
+                <?php
+                if ( $footer_container ) echo '<div class="grid-container">';
+                else echo '<div class="grid-container fluid">';
 
-                            endif;
-                        endfor;
+                ?>
+                <div class="grid-y">
+                    <?php
+                    for ( $column = 1; $column <= $columns; $column ++ ) :
+                        $footer_n = $column + $regions * ( $row - 1 );
+                        if ( is_active_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) ) ) :
 
-                        ?>
-                    </div>
+                            echo sprintf( '<div class="cell cell-%1$s">', esc_attr( $column ) );
+                            dynamic_sidebar( 'ehd-footer-' . esc_attr( $footer_n ) );
+                            echo "</div>";
+
+                        endif;
+                    endfor;
+
+                    ?>
                 </div>
-			</div>
-			<?php endif; endfor; ?>
-		</div><!-- #footer-widgets-->
-	<?php
+
+                <?php if ( $footer_container ) echo '</div>'; ?>
+            </div>
+            <?php endif; endfor; ?>
+        </div><!-- #footer-widgets-->
+		<?php
 	}
 }
 
@@ -109,37 +116,45 @@ if ( ! function_exists( '__construct_footer' ) ) {
 	 * @return void
 	 */
 	function __construct_footer() {
+		$footer_container = Helper::getThemeMod( 'footer_container_setting' );
+
 		?>
-		<footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
-            <div class="grid-container">
-                <div class="grid-y">
+        <footer class="footer-info" <?php echo Helper::microdata( 'footer' ); ?>>
+	        <?php
+	        if ( $footer_container ) echo '<div class="grid-container">';
+	        else echo '<div class="grid-container fluid">';
+
+	        ?>
+            <div class="grid-y">
+                <?php
+
+                /**
+                 * @see __ehd_before_credits - 15
+                 */
+                do_action( 'ehd_before_credits' );
+
+                ?>
+                <div class="footer-copyright">
                     <?php
+
                     /**
-                     * ehd_before_credit hook
-                     *
-                     * @see __ehd_before_credits - 15
+                     * @see __ehd_credits - 10
                      */
-                    do_action( 'ehd_before_credits' );
+                    do_action( 'ehd_credits' );
+
                     ?>
-                    <div class="footer-copyright">
-                        <?php
-                        /**
-                         * ehd_credits hook
-                         *
-                         * @see __ehd_credits - 10
-                         */
-                        do_action( 'ehd_credits' );
-                        ?>
-                    </div>
                 </div>
             </div>
-		</footer>
-	<?php
+
+	        <?php if ( $footer_container ) echo '</div>'; ?>
+        </footer>
+		<?php
 	}
 }
 
 if ( ! function_exists( '__ehd_before_credits' ) ) {
 	add_action( 'ehd_before_credits', '__ehd_before_credits', 15 );
+
 	/**
 	 * @return void
 	 */
@@ -148,15 +163,16 @@ if ( ! function_exists( '__ehd_before_credits' ) ) {
 			return;
 		}
 		?>
-		<div class="footer-credits">
+        <div class="footer-credits">
 			<?php dynamic_sidebar( 'footer-credits' ); ?>
-		</div>
+        </div>
 		<?php
 	}
 }
 
 if ( ! function_exists( '__ehd_credits' ) ) {
 	add_action( 'ehd_credits', '__ehd_credits', 10 );
+
 	/**
 	 * Add the copyright to the footer
 	 *
