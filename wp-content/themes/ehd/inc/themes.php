@@ -37,6 +37,10 @@ if ( ! function_exists( '__after_setup_theme' ) ) {
 if ( ! function_exists( '__register_sidebars' ) ) {
 	add_action( 'widgets_init', '__register_sidebars', 11 );
 
+	//----------------------------------------------------------
+	// Homepage
+	//----------------------------------------------------------
+
 	/**
 	 * Register widget area.
 	 *
@@ -58,23 +62,71 @@ if ( ! function_exists( '__register_sidebars' ) ) {
 			]
 		);
 
-		//-------------------------------------------------------
+		//----------------------------------------------------------
+		// Header
+		//----------------------------------------------------------
 
-		/** header sidebar */
-		register_sidebar(
-			[
-				'container'     => false,
-				'id'            => 'ehd-header-sidebar',
-				'name'          => __( 'Header', EHD_TEXT_DOMAIN ),
-				'description'   => __( 'Widgets added here will appear in header.', EHD_TEXT_DOMAIN ),
-				'before_widget' => '<div class="header-widgets %2$s">',
-				'after_widget'  => '</div>',
-				'before_title'  => '<span>',
-				'after_title'   => '</span>',
-			]
-		);
+		$top_header_cols    = (int) Helper::getThemeMod( 'top_header_setting' );
+		$header_cols        = (int) Helper::getThemeMod( 'header_setting' );
+		$bottom_header_cols = (int) Helper::getThemeMod( 'bottom_header_setting' );
 
-		//-------------------------------------------------------
+		if ( $top_header_cols > 0 ) {
+			for ( $i = 1; $i <= $top_header_cols; $i ++ ) {
+				$_name = sprintf( __( 'Top-Header %d', EHD_TEXT_DOMAIN ), $i );
+				register_sidebar(
+					[
+						'container'     => false,
+						'id'            => 'ehd-top-header-' . $i . '-sidebar',
+						'name'          => $_name,
+						'description'   => __( 'Widgets added here will appear in top header.', EHD_TEXT_DOMAIN ),
+						'before_widget' => '<div class="header-widgets %2$s">',
+						'after_widget'  => '</div>',
+						'before_title'  => '<span>',
+						'after_title'   => '</span>',
+					]
+				);
+			}
+		}
+
+		if ( $header_cols > 0 ) {
+			for ( $i = 1; $i <= $header_cols; $i ++ ) {
+				$_name = sprintf( __( 'Header %d', EHD_TEXT_DOMAIN ), $i );
+				register_sidebar(
+					[
+						'container'     => false,
+						'id'            => 'ehd-header-' . $i . '-sidebar',
+						'name'          => $_name,
+						'description'   => __( 'Widgets added here will appear in header.', EHD_TEXT_DOMAIN ),
+						'before_widget' => '<div class="header-widgets %2$s">',
+						'after_widget'  => '</div>',
+						'before_title'  => '<span>',
+						'after_title'   => '</span>',
+					]
+				);
+			}
+		}
+
+		if ( $bottom_header_cols > 0 ) {
+			for ( $i = 1; $i <= $bottom_header_cols; $i++ ) {
+				$_name = sprintf( __( 'Bottom-Header %d', EHD_TEXT_DOMAIN ), $i );
+				register_sidebar(
+					[
+						'container'     => false,
+						'id'            => 'ehd-bottom-header-' . $i . '-sidebar',
+						'name'          => $_name ,
+						'description'   => __( 'Widgets added here will appear in bottom header.', EHD_TEXT_DOMAIN ),
+						'before_widget' => '<div class="header-widgets %2$s">',
+						'after_widget'  => '</div>',
+						'before_title'  => '<span>',
+						'after_title'   => '</span>',
+					]
+				);
+			}
+		}
+
+		//----------------------------------------------------------
+		// Footer
+		//----------------------------------------------------------
 
 		// footer columns
 		$footer_args = [];
@@ -140,6 +192,7 @@ if ( ! function_exists( '__wp_default_scripts' ) ) {
 			if ( $script->deps ) {
 
 				// Check whether the script has any dependencies
+
 				// remove jquery-migrate
 				$script->deps = array_diff( $script->deps, [ 'jquery-migrate' ] );
 			}

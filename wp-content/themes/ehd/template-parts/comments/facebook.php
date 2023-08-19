@@ -20,6 +20,6 @@ if ( ! $fb_appid ) {
 
 ?>
 <div class="facebook-comments-area comments-area">
-    <h5 class="comments-title"><?php echo __( 'Facebook comments', EHD_TEXT_DOMAIN ) ?></h5>
+    <span class="comments-title"><?php echo __( 'Facebook comments', EHD_TEXT_DOMAIN ) ?></span>
     <div class="fb-comments" data-href="<?php echo get_the_permalink(); ?>" data-numposts="10" data-colorscheme="light" data-order-by="social" data-mobile="true"></div>
 </div>

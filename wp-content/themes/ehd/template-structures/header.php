@@ -43,7 +43,7 @@ if ( ! function_exists( '__wp_head' ) ) {
 // -----------------------------------------------
 
 if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
-	add_action( 'ehd_before_header', '__ehd_skip_to_content_link', 2 );
+	//add_action( 'ehd_before_header', '__ehd_skip_to_content_link', 2 );
 
 	/**
 	 * Add skip to content link before the header.
@@ -52,7 +52,7 @@ if ( ! function_exists( '__ehd_skip_to_content_link' ) ) {
 	 */
 	function __ehd_skip_to_content_link(): void {
 		printf(
-			'<a class="screen-reader-text skip-link" href="#content" title="%1$s">%2$s</a>',
+			'<a class="screen-reader-text skip-link" href="#site-content" title="%1$s">%2$s</a>',
 			esc_attr__( 'Skip to content', EHD_TEXT_DOMAIN ),
 			esc_html__( 'Skip to content', EHD_TEXT_DOMAIN )
 		);
@@ -93,9 +93,87 @@ if ( ! function_exists( '__ehd_construct_header' ) ) {
 	 */
 	function __ehd_construct_header(): void {
 		?>
-		<header class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
-			<div class="top-header"></div>
+		<header id="masthead" class="site-header" <?php echo Helper::microdata( 'header' ); ?>>
+            <?php
+
+            /**
+             * @see __top_header - 10
+             * @see __header - 11
+             * @see __bottom_header - 12
+             */
+            do_action( 'masthead' );
+
+            ?>
 		</header>
 		<?php
 	}
 }
+
+if ( ! function_exists( '__top_header' ) ) {
+	add_action( 'masthead', '__top_header', 10 );
+
+	/**
+	 * @return void
+	 */
+	function __top_header(): void {
+		$top_header_cols      = (int) Helper::getThemeMod( 'top_header_setting' );
+		$top_header_container = (int) Helper::getThemeMod( 'top_header_container_setting' );
+
+        ?>
+        <div class="top-header" id="top-header">
+	        <?php
+	        if ( $top_header_container ) echo '<div class="grid-container">';
+	        else echo '<div class="grid-container fluid">';
+
+		    for ( $i = 1; $i <= $top_header_cols; $i++ ) :
+			    if ( is_active_sidebar( 'ehd-top-header-' . $i . '-sidebar' )) :
+				    echo '<div class="cell-inner cell-' . $i . '">';
+				    dynamic_sidebar( 'ehd-top-header-' . $i . '-sidebar' );
+				    echo '</div>';
+			    endif;
+            endfor;
+
+            if ( $top_header_container ) echo '</div>';
+            ?>
+        </div>
+    <?php
+	}
+}
+
+if ( ! function_exists( '__header' ) ) {
+	add_action( 'masthead', '__header', 11 );
+
+	/**
+	 * @return void
+	 */
+	function __header(): void {
+		$header_cols = (int) Helper::getThemeMod( 'header_setting' );
+		$header_container = (int) Helper::getThemeMod( 'header_container_setting' );
+
+        ?>
+        <div class="inside-header" id="inside-header">
+
+        </div>
+    <?php
+	}
+}
+
+if ( ! function_exists( '__bottom_header' ) ) {
+	add_action( 'masthead', '__bottom_header', 12 );
+
+	/**
+	 * @return void
+	 */
+	function __bottom_header(): void {
+		$bottom_header_cols      = (int) Helper::getThemeMod( 'bottom_header_setting' );
+		$bottom_header_container = (int) Helper::getThemeMod( 'bottom_header_container_setting' );
+
+        ?>
+        <div class="bottom-header header-content" id="bottom-header">
+
+        </div>
+    <?php
+	}
+}
+
+

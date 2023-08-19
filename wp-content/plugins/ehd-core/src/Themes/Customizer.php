@@ -332,7 +332,8 @@ final class Customizer {
 		);
 
 		// Add control
-		$wp_customize->add_setting( 'top_header_setting',
+		$wp_customize->add_setting(
+			'top_header_setting',
 			[
 				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_text_field'
