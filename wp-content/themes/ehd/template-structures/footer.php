@@ -99,7 +99,7 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
                     ?>
                 </div>
 
-                <?php if ( $footer_container ) echo '</div>'; ?>
+                <?php echo '</div>'; ?>
             </div>
             <?php endif; endfor; ?>
         </div><!-- #footer-widgets-->
@@ -146,7 +146,7 @@ if ( ! function_exists( '__construct_footer' ) ) {
                 </div>
             </div>
 
-	        <?php if ( $footer_container ) echo '</div>'; ?>
+	        <?php echo '</div>'; ?>
         </footer>
 		<?php
 	}

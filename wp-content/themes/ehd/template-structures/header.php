@@ -134,7 +134,7 @@ if ( ! function_exists( '__top_header' ) ) {
 			    endif;
             endfor;
 
-            if ( $top_header_container ) echo '</div>';
+            echo '</div>';
             ?>
         </div>
     <?php endif;
@@ -167,7 +167,7 @@ if ( ! function_exists( '__header' ) ) {
 		        endif;
 	        endfor;
 
-            if ( $header_container ) echo '</div>';
+            echo '</div>';
             ?>
         </div>
     <?php endif;
@@ -200,7 +200,7 @@ if ( ! function_exists( '__bottom_header' ) ) {
 	            endif;
             endfor;
 
-            if ( $bottom_header_container ) echo '</div>';
+            echo '</div>';
             ?>
         </div>
     <?php endif;

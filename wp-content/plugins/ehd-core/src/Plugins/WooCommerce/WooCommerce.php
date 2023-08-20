@@ -39,6 +39,7 @@ final class WooCommerce {
 		$this->_hooks();
 
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 31 );
+		add_action( 'enqueue_block_assets', [ &$this, 'enqueue_block_assets' ], 31 );
 		add_action( 'wp_enqueue_scripts', [ &$this, 'enqueue_scripts' ], 98 );
 
 		add_action( 'widgets_init', [ &$this, 'unregister_default_widgets' ], 31 );
@@ -105,6 +106,37 @@ final class WooCommerce {
 
 		// Remove woocommerce default styles
 		add_filter( 'woocommerce_enqueue_styles', '__return_false' );
+	}
+
+	// ------------------------------------------------------
+
+	/**
+	 * @return void
+	 */
+	public function enqueue_block_assets() {
+		global $wp_styles;
+
+		// Remove woocommerce blocks styles
+		$block_editor_options = Helper::getOption( 'block_editor__options', false, true );
+		$block_style_off = $block_editor_options['block_style_off'] ?? '';
+
+		if ( $block_style_off ) {
+			wp_deregister_style( 'wc-block-editor' );
+
+			wp_deregister_style( 'wc-blocks-style' );
+			wp_deregister_style( 'wc-blocks-packages-style' );
+
+			$styles_to_remove = [];
+			foreach ( $wp_styles->registered as $handle => $style ) {
+				if ( strpos( $handle, 'wc-blocks-style-' ) === 0 ) {
+					$styles_to_remove[] = $handle;
+				}
+			}
+
+			foreach ( $styles_to_remove as $handle ) {
+				wp_deregister_style( $handle );
+			}
+		}
 	}
 
 	// ------------------------------------------------------
