@@ -83,7 +83,7 @@ if ( ! function_exists( '__construct_footer_widgets' ) ) {
                 else echo '<div class="grid-container fluid">';
 
                 ?>
-                <div class="grid-y">
+                <div class="grid-x">
                     <?php
                     for ( $column = 1; $column <= $columns; $column ++ ) :
                         $footer_n = $column + $regions * ( $row - 1 );
@@ -124,26 +124,21 @@ if ( ! function_exists( '__construct_footer' ) ) {
 	        if ( $footer_container ) echo '<div class="grid-container">';
 	        else echo '<div class="grid-container fluid">';
 
-	        ?>
-            <div class="grid-y">
+            /**
+             * @see __ehd_before_credits - 15
+             */
+            do_action( 'ehd_before_credits' );
+
+            ?>
+            <div class="footer-copyright">
                 <?php
 
                 /**
-                 * @see __ehd_before_credits - 15
+                 * @see __ehd_credits - 10
                  */
-                do_action( 'ehd_before_credits' );
+                do_action( 'ehd_credits' );
 
                 ?>
-                <div class="footer-copyright">
-                    <?php
-
-                    /**
-                     * @see __ehd_credits - 10
-                     */
-                    do_action( 'ehd_credits' );
-
-                    ?>
-                </div>
             </div>
 
 	        <?php echo '</div>'; ?>

@@ -3,8 +3,7 @@
 use EHD_Cores\Helper;
 
 $optimizer_options = Helper::getOption( 'optimizer__options', false, false );
-
-$https_enforce = $optimizer_options['https_enforce'] ?? '';
+$https_enforce = $optimizer_options['https_enforce'] ?? 0;
 
 ?>
 <h2><?php _e( 'Optimizer Settings', EHD_PLUGIN_TEXT_DOMAIN ); ?></h2>

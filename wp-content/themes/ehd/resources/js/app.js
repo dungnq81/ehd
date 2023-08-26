@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 import './_foundation';
 
 import {nanoid} from 'nanoid';

@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    var smooth_scroll_back_to_top = true;
+    let smooth_scroll_back_to_top = false;
 
     // Feature Test
     if ('querySelector' in document && 'addEventListener' in window) {
-        var goTopBtn = document.querySelector('.back-to-top');
+        let goTopBtn = document.querySelector('.back-to-top');
 
-        var trackScroll = function () {
-            var scrolled = window.pageYOffset;
-            var coords = goTopBtn.getAttribute('data-start-scroll');
+        let trackScroll = function () {
+            let scrolled = window.pageYOffset;
+            let coords = goTopBtn.getAttribute('data-start-scroll');
 
             if (scrolled > coords) {
                 goTopBtn.classList.add('back-to-top__show');
@@ -21,23 +21,23 @@
         };
 
         // Function to animate the scroll
-        var smoothScroll = function (anchor, duration) {
+        let smoothScroll = function (anchor, duration) {
             // Calculate how far and how fast to scroll
-            var startLocation = window.pageYOffset;
-            var endLocation = document.body.offsetTop;
-            var distance = endLocation - startLocation;
-            var increments = distance / (duration / 16);
-            var stopAnimation;
+            let startLocation = window.pageYOffset;
+            let endLocation = document.body.offsetTop;
+            let distance = endLocation - startLocation;
+            let increments = distance / (duration / 16);
+            let stopAnimation;
 
             // Scroll the page by an increment, and check if it's time to stop
-            var animateScroll = function () {
+            let animateScroll = function () {
                 window.scrollBy(0, increments);
                 stopAnimation();
             };
 
             // Stop animation when you reach the anchor OR the top of the page
             stopAnimation = function () {
-                var travelled = window.pageYOffset;
+                let travelled = window.pageYOffset;
                 if (travelled <= (endLocation || 0)) {
                     clearInterval(runAnimation);
                     document.activeElement.blur();
@@ -45,7 +45,7 @@
             };
 
             // Loop the animation function
-            var runAnimation = setInterval(animateScroll, 16);
+            let runAnimation = setInterval(animateScroll, 16);
         };
 
         if (goTopBtn) {

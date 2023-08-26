@@ -15,6 +15,7 @@ Options -Indexes
 </IfModule>
 # HD END
 
+
 # Https Forced
 <IfModule mod_rewrite.c>
     RewriteEngine On

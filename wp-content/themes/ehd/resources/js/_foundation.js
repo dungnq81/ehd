@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 import $ from 'jquery';
 
 //const $ = jQuery;

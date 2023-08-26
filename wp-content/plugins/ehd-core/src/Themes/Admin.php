@@ -150,7 +150,6 @@ final class Admin {
 	 * @return void
 	 */
 	public function options_page(): void {
-
 		global $wpdb;
 
 		if ( isset( $_POST['ehd_update_settings'] ) ) {
@@ -164,6 +163,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Aspect Ratio */
+
 			$aspect_ratio_options = [];
 			$ar_post_type_list    = apply_filters( 'ehd_aspect_ratio_post_type', [] );
 			foreach ( $ar_post_type_list as $i => $ar ) {
@@ -176,6 +176,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** SMTP Settings */
+
 			$smtp_host     = ! empty( $_POST['smtp_host'] ) ? sanitize_text_field( $_POST['smtp_host'] ) : '';
 			$smtp_auth     = ! empty( $_POST['smtp_auth'] ) ? sanitize_text_field( $_POST['smtp_auth'] ) : '';
 			$smtp_username = ! empty( $_POST['smtp_username'] ) ? sanitize_text_field( $_POST['smtp_username'] ) : '';
@@ -212,6 +213,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Contact info */
+
 			$contact_info_options = [
 				'hotline' => ! empty( $_POST['contact_info_hotline'] ) ? sanitize_text_field( $_POST['contact_info_hotline'] ) : '',
 				'address' => ! empty( $_POST['contact_info_address'] ) ? sanitize_text_field( $_POST['contact_info_address'] ) : '',
@@ -227,6 +229,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Contact Button */
+
 			$contact_btn_options = [
 				'contact_title'        => ! empty( $_POST['contact_title'] ) ? sanitize_text_field( $_POST['contact_title'] ) : '',
 				'contact_url'          => ! empty( $_POST['contact_url'] ) ? sanitize_text_field( $_POST['contact_url'] ) : '',
@@ -243,6 +246,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Block editor */
+
 			$block_editor_options = [
 				'use_widgets_block_editor_off'           => ! empty( $_POST['use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['use_widgets_block_editor_off'] ) : '',
 				'gutenberg_use_widgets_block_editor_off' => ! empty( $_POST['gutenberg_use_widgets_block_editor_off'] ) ? sanitize_text_field( $_POST['gutenberg_use_widgets_block_editor_off'] ) : '',
@@ -255,19 +259,26 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Optimizer */
+
+			$optimizer_options_old = Helper::getOption( 'optimizer__options', false, false );
+			$https_enforce_old     = $optimizer_options_old['https_enforce'] ?? 0;
+
 			$optimizer_options = [
-				'https_enforce' => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : '',
+				'https_enforce' => ! empty( $_POST['https_enforce'] ) ? sanitize_text_field( $_POST['https_enforce'] ) : 0,
 			];
 
 			Helper::updateOption( 'optimizer__options', $optimizer_options, true );
 
-            // ssl
-			$ssl = new Ssl();
-			//$ssl->toggle_rules( $optimizer_options['https_enforce'] );
+			// Ssl
+			if ( $https_enforce_old != $optimizer_options['https_enforce'] ) {
+				$ssl = new Ssl();
+				$ssl->toggle_rules( $optimizer_options['https_enforce'] );
+			}
 
 			// ------------------------------------------------------
 
 			/** Security */
+
 			$security_options = [
 				'illegal_users'             => ! empty( $_POST['illegal_users'] ) ? sanitize_text_field( $_POST['illegal_users'] ) : '',
 				'hide_wp_version'           => ! empty( $_POST['hide_wp_version'] ) ? sanitize_text_field( $_POST['hide_wp_version'] ) : '',
@@ -303,6 +314,7 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Woocommerce */
+
 			if ( Helper::isWoocommerceActive() ) {
 
 				$woocommerce_options = [
@@ -322,15 +334,17 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Comments */
+
 			$comment_options = [
-                'simple_antispam' => ! empty( $_POST['simple_antispam'] ) ? sanitize_text_field( $_POST['simple_antispam'] ) : '',
-            ];
+				'simple_antispam' => ! empty( $_POST['simple_antispam'] ) ? sanitize_text_field( $_POST['simple_antispam'] ) : '',
+			];
 
 			Helper::updateOption( 'comment__options', $comment_options, true );
 
 			// ------------------------------------------------------
 
 			/** Custom Scripts */
+
 			$html_header      = $_POST['html_header'] ?? '';
 			$html_footer      = $_POST['html_footer'] ?? '';
 			$html_body_top    = $_POST['html_body_top'] ?? '';
@@ -344,12 +358,14 @@ final class Admin {
 			// ------------------------------------------------------
 
 			/** Custom CSS */
+
 			$html_custom_css = $_POST['html_custom_css'] ?? '';
 			Helper::updateCustomCssPost( $html_custom_css, 'ehd_css', false );
 
 			// ------------------------------------------------------
 
 			/** Echo message success */
+
 			Helper::messageSuccess( 'Settings saved' );
 
 			// Clear LiteSpeed cache, if existing.
@@ -481,9 +497,11 @@ final class Admin {
                     <div class="server-info-inner code">
                         <ul>
                             <li><?php echo sprintf( '<span>Platform:</span> %s', php_uname() ); ?></li>
+
 							<?php if ( $server_software = $_SERVER['SERVER_SOFTWARE'] ?? null ) : ?>
                             <li><?php echo sprintf( '<span>SERVER:</span> %s', $server_software ); ?></li>
 							<?php endif; ?>
+
                             <li><?php echo sprintf( '<span>PHP version:</span> %s', PHP_VERSION ); ?></li>
                             <li><?php echo sprintf( '<span>WordPress version:</span> %s', get_bloginfo( 'version' ) ); ?></li>
                             <li><?php echo sprintf( '<span>WordPress multisite:</span> %s', ( is_multisite() ? 'Yes' : 'No' ) ); ?></li>
@@ -518,9 +536,11 @@ final class Admin {
 							?>
                             <li><?php echo sprintf( '<span>stream_socket_client:</span> %s', $stream_socket_client_status ); ?></li>
                             <li><?php echo sprintf( '<span>fsockopen:</span> %s%s', $fsockopen_status, $socket_text ); ?></li>
-							<?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
+
+                            <?php if ( $agent = $_SERVER['HTTP_USER_AGENT'] ?? null ) : ?>
                             <li><?php echo sprintf( '<span>User agent:</span> %s', $agent ); ?></li>
 							<?php endif; ?>
+
                             <li><?php echo sprintf( '<span>IP:</span> %s', Helper::getIpAddress() ); ?></li>
                         </ul>
                     </div>

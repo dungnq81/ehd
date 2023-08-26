@@ -1602,14 +1602,14 @@ trait Wp {
 	/**
 	 * A fallback when no navigation is selected by default.
 	 *
-	 * @param string $container
+	 * @param bool $container
 	 *
 	 * @return void
 	 */
-	public static function menuFallback( string $container = '' ) {
+	public static function menuFallback( bool $container = false ) {
 		echo '<div class="menu-fallback">';
 		if ( $container ) {
-			echo '<div class="' . $container . '">';
+			echo '<div class="grid-container">';
 		}
 
 		/* translators: %1$s: link to menus, %2$s: link to customize. */

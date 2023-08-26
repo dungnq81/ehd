@@ -354,7 +354,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'top_header_container_setting',
 			[
-				'default'           => true,
+				'default'           => false,
 				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_checkbox',
 			]
@@ -392,7 +392,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'header_container_setting',
 			[
-				'default'           => true,
+				'default'           => false,
 				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_checkbox',
 			]
@@ -430,7 +430,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'bottom_header_container_setting',
 			[
-				'default'           => true,
+				'default'           => false,
 				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_checkbox',
 			]
@@ -541,7 +541,7 @@ final class Customizer {
 		$wp_customize->add_setting(
 			'footer_container_setting',
 			[
-				'default'           => true,
+				'default'           => false,
 				'capability'        => 'edit_theme_options',
 				'sanitize_callback' => 'sanitize_checkbox',
 			]

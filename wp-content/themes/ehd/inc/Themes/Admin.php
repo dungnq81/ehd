@@ -132,6 +132,7 @@ final class Admin {
 			case 'term_order':
 				if ( class_exists( '\ACF' ) ) {
 					$term_order = \get_field( 'term_order', get_term( $term_id ) );
+
 					return $out = $term_order ?: 0;
 				}
 

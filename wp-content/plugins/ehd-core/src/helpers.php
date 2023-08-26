@@ -4,12 +4,14 @@
 
 /** ----------------------------------------------- */
 
-if ( ! function_exists( 'dump_query' ) ) {
+if ( ! function_exists( 'last_dump' ) ) {
+
 	/**
 	 * @return void
 	 */
-	function dump_query() {
+	function last_dump() {
 		global $wpdb;
+
 		if ( function_exists( 'dump' ) ) {
 			dump( $wpdb->last_query );
 		} else {
@@ -20,7 +22,25 @@ if ( ! function_exists( 'dump_query' ) ) {
 
 /** ----------------------------------------------- */
 
+if ( ! function_exists( 'sanitize_checkbox' ) ) {
+
+	/**
+	 * Sanitize checkbox values.
+	 *
+	 * @param $checked
+	 *
+	 * @return bool
+	 */
+	function sanitize_checkbox( $checked ): bool {
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- Intentionally loose.
+		return isset( $checked ) && true == $checked;
+	}
+}
+
+/** ----------------------------------------------- */
+
 if ( ! function_exists( 'sanitize_image' ) ) {
+
 	/**
 	 * @param $file
 	 * @param $setting - WP_Customize_Image_Control
@@ -33,7 +53,7 @@ if ( ! function_exists( 'sanitize_image' ) ) {
 			'gif'          => 'image/gif',
 			'png'          => 'image/png',
 			'bmp'          => 'image/bmp',
-			'webp'          => 'image/webp',
+			'webp'         => 'image/webp',
 			'tif|tiff'     => 'image/tiff',
 			'ico'          => 'image/x-icon'
 		];

@@ -100,7 +100,7 @@ body.login {
         top: -59px;
     }
 
-    #nav, .privacy-policy-link, #backtoblog {
+    :where(#nav, .privacy-policy-link, #backtoblog) {
         display: none;
     }
 }
@@ -129,7 +129,7 @@ body.post-type-banner {
 /** */
 body.wp-admin {
     #rank_math_dashboard_widget {
-        .rank-math-blog-title, .rank-math-blog-post {
+        :where(.rank-math-blog-title, .rank-math-blog-post) {
             display: none;
         }
     }
@@ -149,7 +149,7 @@ body.wp-admin {
 
     table {
         &.wp-list-table {
-            .column-post_thumb, .column-term_thumb, .column-thumb {
+            :where(.column-post_thumb, .column-term_thumb, .column-thumb) {
                 width: 66px;
                 text-align: center;
                 white-space: nowrap;
@@ -515,7 +515,7 @@ body.toplevel_page_ehd-settings {
                         width: 600px;
                         max-width: calc(100% - 15px);
 
-                        input:not([type="checkbox"]), textarea, select {
+                        :where(input:not([type="checkbox"]), textarea, select) {
                             width: 100%;
                             background-color: #f9f9f9;
                             border: 1px solid #ddd;
@@ -693,5 +693,12 @@ input[type="checkbox"] {
                 transition: ease .15s;
             }
         }
+    }
+}
+
+/** */
+:is(input, textarea, select) {
+    &:disabled {
+        cursor: not-allowed !important;
     }
 }

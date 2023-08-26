@@ -1,4 +1,4 @@
-/*! draggable - https://www.kirupa.com/html5/drag.htm */
+/* draggable - https://www.kirupa.com/html5/drag.htm */
 import {nanoid} from "nanoid";
 
 const draggable_container = [...document.querySelectorAll(".o_draggable")];

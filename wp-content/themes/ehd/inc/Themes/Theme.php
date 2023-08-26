@@ -178,7 +178,7 @@ final class Theme {
 			'ajaxUrl'      => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'baseUrl'      => trailingslashit( site_url() ),
 			'themeUrl'     => trailingslashit( get_template_directory_uri() ),
-			'smoothScroll' => !0,
+			'smoothScroll' => ! 0,
 			'locale'       => get_locale(),
 			'lang'         => Helper::getLang(),
 			'lg'           => [

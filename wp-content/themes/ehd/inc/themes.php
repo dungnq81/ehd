@@ -353,12 +353,12 @@ add_filter( 'ehd_defer_script', function ( array $arr ) {
 		//'video-js'       => 'defer',
 
 		// delay script - default 5s
-		'comment-reply'  => 'delay',
-		'wp-embed'       => 'delay',
-		'admin-bar'      => 'delay',
-		'back-to-top'    => 'delay',
-		'social-share'   => 'delay',
-		'o-draggable'    => 'delay',
+		'comment-reply' => 'delay',
+		'wp-embed'      => 'delay',
+		'admin-bar'     => 'delay',
+		'back-to-top'   => 'delay',
+		'social-share'  => 'delay',
+		'o-draggable'   => 'delay',
 	];
 
 	return array_merge( $arr, $arr_new );

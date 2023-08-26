@@ -106,7 +106,7 @@ $two_factor_authentication = $security_options['two_factor_authentication'] ?? '
     <div class="desc"><?php _e( 'Two-factor authentication forces admin users to login only after providing a token, generated from the Google Authenticator application. When you enable this option, all admin & editor users will be asked to configure their two-factor authentication in the Authenticator app on their next login.', EHD_PLUGIN_TEXT_DOMAIN )?></div>
     <div class="option">
         <div class="controls">
-            <input type="checkbox" class="ehd-checkbox ehd-control" name="two_factor_authentication" id="two_factor_authentication" <?php checked( $two_factor_authentication, 1 ); ?> value="1">
+            <input disabled type="checkbox" class="ehd-checkbox ehd-control" name="two_factor_authentication" id="two_factor_authentication" <?php checked( $two_factor_authentication, 1 ); ?> value="1">
         </div>
         <div class="explain"><?php _e( 'Enable Two-factor authentication', EHD_PLUGIN_TEXT_DOMAIN ); ?></div>
     </div>

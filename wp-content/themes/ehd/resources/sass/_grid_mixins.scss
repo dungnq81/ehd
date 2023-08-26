@@ -5,12 +5,12 @@
 
 @mixin grid-x() {
     display: grid;
-    grid-auto-flow: column
+    grid-auto-flow: row;
 }
 
 @mixin grid-y() {
     display: grid;
-    grid-auto-flow: row;
+    grid-auto-flow: column
 }
 
 @mixin grid-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $columns: true ) {
