@@ -23,6 +23,10 @@ final class Theme {
 
 		add_action( 'init', [ &$this, 'init' ], 10 );
 
+		/** Widgets wordpress */
+		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 11 );
+		add_action( 'widgets_init', [ &$this, 'register_widgets' ], 11 );
+
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
 
 		// add multiple for category dropdown
@@ -145,7 +149,32 @@ final class Theme {
 
 		// template-structures
 		$structures_dir = EHD_THEME_PATH . 'template-structures';
-		Helper::FQN_Load( $structures_dir, true, false );
+		Helper::FQN_Load( $structures_dir, true );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * Unregisters a WP_Widget widget
+	 *
+	 * @return void
+	 */
+	public function unregister_widgets(): void {
+		unregister_widget( 'WP_Widget_Media_Image' );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * Registers a WP_Widget widget
+	 *
+	 * @return void
+	 */
+	public function register_widgets(): void {
+		$widgets_dir = EHD_THEME_PATH . 'inc' . DIRECTORY_SEPARATOR . 'Widgets';
+		$FQN = '\\EHD\\Widgets\\';
+
+		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
 	}
 
 	/** ---------------------------------------- */
@@ -159,21 +188,18 @@ final class Theme {
 
 		/** Stylesheet. */
 		wp_register_style( "plugin-style", get_template_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION );
-		wp_enqueue_style( "app-style", get_template_directory_uri() . '/assets/css/app.css', [
-			"ehd-core-style",
-			"plugin-style"
-		], EHD_THEME_VERSION );
+		wp_enqueue_style( "app-style", get_template_directory_uri() . '/assets/css/app.css', [ "ehd-core-style", "plugin-style" ], EHD_THEME_VERSION );
 
 		/** Scripts */
 		wp_enqueue_script( "app", get_template_directory_uri() . "/assets/js/app.js", [ "ehd-core" ], EHD_THEME_VERSION, true );
 		wp_script_add_data( "app", "defer", true );
 
-		/** Extra Scripts */
+		/** Extra scripts */
 		wp_enqueue_script( "back-to-top", get_template_directory_uri() . "/assets/js/plugins/back-to-top.js", [], EHD_THEME_VERSION, true );
 		wp_enqueue_script( "o-draggable", get_template_directory_uri() . "/assets/js/plugins/draggable.js", [], EHD_THEME_VERSION, true );
 		wp_enqueue_script( "social-share", get_template_directory_uri() . "/assets/js/plugins/social-share.js", [], '0.0.2', true );
 
-		/** Inline JS */
+		/** Inline Js */
 		$l10n = [
 			'ajaxUrl'      => esc_url( admin_url( 'admin-ajax.php' ) ),
 			'baseUrl'      => trailingslashit( site_url() ),
@@ -208,6 +234,7 @@ final class Theme {
 		if ( isset( $r['multiple'] ) && $r['multiple'] ) {
 			$output = preg_replace( '/^<select/i', '<select multiple', $output );
 			$output = str_replace( "name='{$r['name']}'", "name='{$r['name']}[]'", $output );
+
 			foreach ( array_map( 'trim', explode( ",", $r['selected'] ) ) as $value ) {
 				$output = str_replace( "value=\"{$value}\"", "value=\"{$value}\" selected", $output );
 			}
@@ -268,10 +295,10 @@ final class Theme {
 			return $sizes;
 		} );
 
-		/** Disable Scaled */
+		/** Disable scaled */
 		add_filter( 'big_image_size_threshold', '__return_false' );
 
-		/** Disable Other Sizes */
+		/** Disable other sizes */
 		add_action( 'init', function () {
 			remove_image_size( '1536x1536' ); // disable 2x medium-large size
 			remove_image_size( '2048x2048' ); // disable 2x large size

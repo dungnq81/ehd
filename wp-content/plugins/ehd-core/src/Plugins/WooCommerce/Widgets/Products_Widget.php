@@ -60,7 +60,7 @@ class Products_Widget extends Abstract_Widget {
             'product_attributes'    => [
                 'type'    => 'select',
                 'std'     => '',
-                'label'   => __( 'Display Product Attributes', 'woocommerce' ),
+                'label'   => __( 'Display product attributes', 'woocommerce' ),
                 'options' => [
                     ''             => __( 'Default', 'woocommerce' ),
                     'on_sale'      => __( 'On-sale products', 'woocommerce' ),
@@ -83,12 +83,12 @@ class Products_Widget extends Abstract_Widget {
             'category'              => [
                 'type'  => 'text',
                 'std'   => '',
-                'label' => __( 'Product Categories (Id or Slug), separated by commas', EHD_PLUGIN_TEXT_DOMAIN ),
+                'label' => __( 'Product categories (Id or Slug), separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN ),
             ],
             'cat_operator'          => [
                 'type'    => 'select',
                 'std'     => '',
-                'label'   => __( 'Cat Operator', EHD_PLUGIN_TEXT_DOMAIN ),
+                'label'   => __( 'Cat operator', EHD_PLUGIN_TEXT_DOMAIN ),
                 'options' => [
                     ''       => __( 'Default', 'woocommerce' ),
                     'AND'    => __( 'AND', EHD_PLUGIN_TEXT_DOMAIN ),
@@ -99,7 +99,7 @@ class Products_Widget extends Abstract_Widget {
             'ids'                   => [
                 'type'  => 'text',
                 'std'   => '',
-                'label' => __( 'Product IDs, separated by commas', EHD_PLUGIN_TEXT_DOMAIN ),
+                'label' => __( 'Product ids, separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN ),
             ],
             'paginate'              => [
                 'type'  => 'checkbox',
@@ -109,7 +109,7 @@ class Products_Widget extends Abstract_Widget {
             'full_width'            => [
                 'type'  => 'checkbox',
                 'std'   => 0,
-                'label' => __( 'Full Width', EHD_PLUGIN_TEXT_DOMAIN ),
+                'label' => __( 'Full width', EHD_PLUGIN_TEXT_DOMAIN ),
             ],
             'show_viewmore_button'  => [
                 'type'  => 'checkbox',
@@ -196,10 +196,10 @@ class Products_Widget extends Abstract_Widget {
         }
 
         // Toggle Pagination
-        $paginate = empty( $instance['paginate'] ) ? 'false' : 'true';
-        if ( 'true' == $paginate ) {
-            $query_args['paginate'] = $paginate;
-        }
+	    $paginate = empty( $instance['paginate'] ) ? 'false' : 'true';
+	    if ( 'true' == $paginate ) {
+		    $query_args['paginate'] = $paginate;
+	    }
 
         // class
         $_class    = $this->widget_classname . ' ' . $this->id;
@@ -209,14 +209,14 @@ class Products_Widget extends Abstract_Widget {
             $_class = $_class . ' ' . $css_class;
         }
 
-        //...
-        $full_width           = ! empty( $instance['full_width'] );
-        $uniqid = esc_attr( uniqid( $this->widget_classname . '-' ) );
+	    //...
+	    $full_width = ! empty( $instance['full_width'] );
+	    $uniqid     = esc_attr( uniqid( $this->widget_classname . '-' ) );
 
-        // has products
-        wc_set_loop_prop( 'name', 'products_widget' );
+	    // has products
+	    wc_set_loop_prop( 'name', 'products_widget' );
 
-        ob_start();
+	    ob_start();
 
         ?>
         <section class="section products-section <?= $_class ?>" id="<?= $uniqid ?>">

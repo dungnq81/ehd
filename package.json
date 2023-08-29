@@ -28,7 +28,7 @@
   "dependencies": {
     "@fancyapps/ui": "^5.0.22",
     "aos": "^3.0.0-beta.6",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
     "current-device": "^0.10.2",
     "data-masonry": "^1.0.4",

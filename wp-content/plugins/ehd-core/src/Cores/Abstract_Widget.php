@@ -8,26 +8,32 @@ use WP_Widget;
 \defined( 'ABSPATH' ) || die;
 
 abstract class Abstract_Widget extends WP_Widget {
+
 	protected string $prefix = 'w-';
 	protected string $widget_id;
 	protected string $widget_classname;
 	protected string $widget_name = 'Unknown Widget';
 	protected string $widget_description = '';
+	protected string $widget_mime_type = '';
+
 	protected array $settings;
 
 	/**
-	 * Whether or not the widget has been registered yet.
+	 * Whether the widget has been registered yet.
 	 *
 	 * @var bool
 	 */
 	protected bool $registered = false;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$className              = ( new ReflectionClass( $this ) )->getShortName();
 		$this->widget_classname = str_replace( [ '_widget', '-widget' ], '', Helper::dashCase( strtolower( $className ) ) );
 		$this->widget_id        = $this->prefix . $this->widget_classname;
 
-		parent::__construct( $this->widget_id, $this->widget_name, $this->widget_options() );
+		parent::__construct( $this->widget_id, $this->widget_name, $this->widget_options(), $this->control_options() );
 
 		add_action( 'save_post', [ &$this, 'flush_widget_cache' ] );
 		add_action( 'deleted_post', [ &$this, 'flush_widget_cache' ] );
@@ -43,7 +49,15 @@ abstract class Abstract_Widget extends WP_Widget {
 			'description'                 => $this->widget_description,
 			'customize_selective_refresh' => true,
 			'show_instance_in_rest'       => true,
+			'mime_type'                   => $this->widget_mime_type,
 		];
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function control_options(): array {
+		return [];
 	}
 
 	/**
@@ -316,8 +330,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	/**
 	 * styles_and_scripts
 	 */
-	public function styles_and_scripts() {
-	}
+    public function styles_and_scripts() {}
 
 	/**
 	 * @param $instance
@@ -330,8 +343,8 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		$_columns_number = $instance['columns_number'] ?? $default_settings['columns_number']['std'];
 		$_gap            = $instance['gap'] ?? $default_settings['gap']['std'];
-		$_columns_number = Helper::separatedToArray( $_columns_number, '-' );
-		$_gap            = Helper::separatedToArray( $_gap, '-' );
+		$_columns_number = Helper::separatedToArray( $_columns_number, ',' );
+		$_gap            = Helper::separatedToArray( $_gap, ',' );
 
 		$pagination = isset( $instance['pagination'] ) ? sanitize_title( $instance['pagination'] ) : $default_settings['pagination']['std'];
 		$direction  = isset( $instance['direction'] ) ? sanitize_title( $instance['direction'] ) : $default_settings['direction']['std'];
@@ -425,15 +438,18 @@ abstract class Abstract_Widget extends WP_Widget {
 
 	/**
 	 * @param $id
-	 *
-	 * @return object|null
+	 * @return array|object
 	 */
 	protected function acfFields( $id ): ?object {
-		$fields = \get_fields( $id ) ?? '';
-		if ( $fields ) {
-			return Helper::toObject( $fields );
+		if ( ! class_exists( '\ACF' ) ) {
+			return [];
 		}
 
-		return null;
+		$_fields = \get_fields( $id ) ?? [];
+		if ( $_fields ) {
+			return Helper::toObject( $_fields );
+		}
+
+		return [];
 	}
 }

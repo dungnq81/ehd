@@ -54,10 +54,11 @@ final class Helper {
 	 * @param bool $required_path
 	 * @param bool $required_new
 	 * @param string $FQN
+	 * @param bool $is_widget
 	 *
 	 * @return void
 	 */
-	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\' ) {
+	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ) {
 		if ( $path ) {
 			$iterator = new DirectoryIterator( $path );
 			foreach ( $iterator as $fileInfo ) {
@@ -65,15 +66,19 @@ final class Helper {
 					continue;
 				}
 
-				$filename    = self::fileName( $fileInfo, true );
+				$filename    = self::fileName( $fileInfo, false );
 				$filenameFQN = $FQN . $filename;
 
 				if ( $required_path ) {
-					require $path . DIRECTORY_SEPARATOR . $filename;
+					require $path . DIRECTORY_SEPARATOR . $filename . self::fileExtension( $fileInfo, true );
 				}
 
 				if ( $required_new ) {
-					class_exists( $filenameFQN ) && ( new $filenameFQN() );
+					if ( ! $is_widget ) {
+						class_exists( $filenameFQN ) && ( new $filenameFQN() );
+					} else {
+						class_exists( $filenameFQN ) && register_widget( new $filenameFQN() );
+					}
 				}
 			}
 		}
@@ -138,7 +143,7 @@ final class Helper {
 			$_src     = 'https://www.youtube.com/embed/' . $idurl . '?wmode=transparent&origin=' . $home . '&' . $_autoplay;
 			$_control = '';
 			if ( ! $control ) {
-				$_control = '&modestbranding=1&controls=0&rel=0&version=3&loop=1&enablejsapi=1&iv_load_policy=3&playlist=' . $idurl . '&playerapiid=ng_video_iframe_' . $idurl;
+				$_control = '&modestbranding=1&controls=0&rel=0&version=3&loop=1&enablejsapi=1&iv_load_policy=3&playlist=' . $idurl . '&playerapiid=ytb_iframe_' . $idurl;
 			}
 			$_src  .= $_control . '&html5=1';
 			$_src  = ' src="' . $_src . '"';

@@ -8,100 +8,100 @@ use EHD_Cores\Helper;
 \defined('ABSPATH') || die;
 
 class Posts_Widget extends Abstract_Widget {
-    public function __construct() {
-        $this->widget_description = __( 'Your site&#8217;s Posts.' );
-        $this->widget_name        = __( 'W - Posts', EHD_PLUGIN_TEXT_DOMAIN );
-        $this->settings           = [
-            'title'                 => [
-                'type'  => 'text',
-                'std'   => __( 'Posts', EHD_PLUGIN_TEXT_DOMAIN ),
-                'label' => __( 'Title', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'desc'                  => [
-                'type'  => 'textarea',
-                'std'   => '',
-                'label' => __( 'Description', EHD_PLUGIN_TEXT_DOMAIN ),
-                'desc'  => __( 'Short description of widget', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'number'                => [
-                'type'  => 'number',
-                'min'   => 0,
-                'max'   => 99,
-                'std'   => 12,
-                'class' => 'tiny-text',
-                'label' => __( 'Number of posts to show', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'category'              => [
-                'type'  => 'text',
-                'std'   => '',
-                'class' => '',
-                'label' => __( 'Posts Categories Ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN ),
-                'desc'  => __( 'Separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'full_width'            => [
-                'type'  => 'checkbox',
-                'std'   => 0,
-                'label' => __( 'Full Width', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'include_children'      => [
-                'type'  => 'checkbox',
-                'std'   => 0,
-                'label' => __( 'Include Children', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'show_cat'              => [
-                'type'  => 'checkbox',
-                'std'   => '',
-                'class' => 'checkbox',
-                'label' => __( 'Display post categories?', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'show_thumbnail'        => [
-                'type'  => 'checkbox',
-                'std'   => '',
-                'class' => 'checkbox',
-                'label' => __( 'Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'show_date'             => [
-                'type'  => 'checkbox',
-                'std'   => '',
-                'class' => 'checkbox',
-                'label' => __( 'Display post date?', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'show_desc'             => [
-                'type'  => 'checkbox',
-                'std'   => '',
-                'class' => 'checkbox',
-                'label' => __( 'Display post description?', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'limit_time'            => [
-                'type'  => 'text',
-                'std'   => '',
-                'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
-                'desc'  => __( 'Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'show_viewmore_button'  => [
-                'type'  => 'checkbox',
-                'std'   => 0,
-                'label' => __( 'Show view more button', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'viewmore_button_title' => [
-                'type'  => 'text',
-                'std'   => __( 'View more', EHD_PLUGIN_TEXT_DOMAIN ),
-                'label' => __( 'View more title', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'viewmore_button_link'  => [
-                'type'  => 'text',
-                'std'   => '#',
-                'label' => __( 'View more link', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-            'css_class'             => [
-                'type'  => 'text',
-                'std'   => '',
-                'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
-            ],
-        ];
+	public function __construct() {
+		$this->widget_description = __( 'Your site&#8217;s Posts.' );
+		$this->widget_name        = __( 'W - Posts', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->settings           = [
+			'title'                 => [
+				'type'  => 'text',
+				'std'   => __( 'Posts', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Title', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'desc'                  => [
+				'type'  => 'textarea',
+				'std'   => '',
+				'label' => __( 'Description', EHD_PLUGIN_TEXT_DOMAIN ),
+				'desc'  => __( 'Short description of widget', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'number'                => [
+				'type'  => 'number',
+				'min'   => 0,
+				'max'   => 99,
+				'std'   => 12,
+				'class' => 'tiny-text',
+				'label' => __( 'Number of posts to show', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'category'              => [
+				'type'  => 'text',
+				'std'   => '',
+				'class' => '',
+				'label' => __( 'Posts categories ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN ),
+				'desc'  => __( 'Separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'full_width'            => [
+				'type'  => 'checkbox',
+				'std'   => 0,
+				'label' => __( 'Full width', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'include_children'      => [
+				'type'  => 'checkbox',
+				'std'   => 0,
+				'label' => __( 'Include children', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_cat'              => [
+				'type'  => 'checkbox',
+				'std'   => '',
+				'class' => 'checkbox',
+				'label' => __( 'Display post categories?', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_thumbnail'        => [
+				'type'  => 'checkbox',
+				'std'   => '',
+				'class' => 'checkbox',
+				'label' => __( 'Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_date'             => [
+				'type'  => 'checkbox',
+				'std'   => '',
+				'class' => 'checkbox',
+				'label' => __( 'Display post date?', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_desc'             => [
+				'type'  => 'checkbox',
+				'std'   => '',
+				'class' => 'checkbox',
+				'label' => __( 'Display post description?', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'limit_time'            => [
+				'type'  => 'text',
+				'std'   => '',
+				'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
+				'desc'  => __( 'Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_viewmore_button'  => [
+				'type'  => 'checkbox',
+				'std'   => 0,
+				'label' => __( 'Show view more button', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'viewmore_button_title' => [
+				'type'  => 'text',
+				'std'   => __( 'View more', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'View more title', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'viewmore_button_link'  => [
+				'type'  => 'text',
+				'std'   => '#',
+				'label' => __( 'View more link', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'css_class'             => [
+				'type'  => 'text',
+				'std'   => '',
+				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+		];
 
-        parent::__construct();
-    }
+		parent::__construct();
+	}
 
     /**
      * Outputs the content for the posts widget instance.
