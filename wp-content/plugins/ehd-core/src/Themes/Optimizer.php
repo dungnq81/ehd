@@ -75,6 +75,9 @@ final class Optimizer {
 	 */
     private function _optimizer() {
 
+        // Filters the rel values that are added to links with `target` attribute.
+	    add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
+
 	    // fixed canonical
 	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
 
@@ -110,6 +113,19 @@ final class Optimizer {
 
 	    // Prevent Specific Plugins from deactivation, delete, v.v...
 	    add_filter( 'plugin_action_links', [ &$this, 'plugin_action_links' ], 11, 4 );
+    }
+
+	// ------------------------------------------------------
+
+	/**
+	 * @param $rel
+	 * @param $link_target
+	 *
+	 * @return string
+	 */
+    public function targeted_link_rel( $rel, $link_target ): string {
+	    $rel .= ' nofollow';
+	    return $rel;
     }
 
 	// ------------------------------------------------------

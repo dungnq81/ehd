@@ -159,9 +159,7 @@ final class Theme {
 	 *
 	 * @return void
 	 */
-	public function unregister_widgets(): void {
-		unregister_widget( 'WP_Widget_Media_Image' );
-	}
+	public function unregister_widgets(): void {}
 
 	/** ---------------------------------------- */
 

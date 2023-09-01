@@ -438,18 +438,15 @@ abstract class Abstract_Widget extends WP_Widget {
 
 	/**
 	 * @param $id
-	 * @return array|object
+	 * @return object
 	 */
 	protected function acfFields( $id ): ?object {
 		if ( ! class_exists( '\ACF' ) ) {
-			return [];
+			return (object) [];
 		}
 
 		$_fields = \get_fields( $id ) ?? [];
-		if ( $_fields ) {
-			return Helper::toObject( $_fields );
-		}
 
-		return [];
+		return Helper::toObject( $_fields );
 	}
 }
