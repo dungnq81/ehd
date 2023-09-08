@@ -24,7 +24,7 @@ endif;
 
 ?>
     <div class="layout-demo grid-container">
-        <div class="grid-y grid-gap is-grid m-up-4 t-up-3 d-up-2">
+        <div class="grid-x grid-gap is-grid m-up-4 t-up-3 d-up-2">
             <div class="cell cell-1" style="background-color: #0a4b78;padding: 20px;">cell-1</div>
             <div class="cell cell-2" style="background-color: #0c6ca0;padding: 20px;">cell-2</div>
             <div class="cell cell-3" style="background-color: #00a32a;padding: 20px;">cell-3</div>

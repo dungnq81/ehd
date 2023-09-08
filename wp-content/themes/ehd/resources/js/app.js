@@ -26,8 +26,6 @@ const $ = jQuery;
 //     YTdeferred.resolve(window.YT);
 // };
 
-//require("jquery.marquee");
-
 $(() => {
     //...
 });

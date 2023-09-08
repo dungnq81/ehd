@@ -30,7 +30,7 @@ final class ACF {
 		$toolbars['Minimal'][1] = [
 			'formatselect',
 			'bold',
-			'italic',
+			//'italic',
 			'underline',
 			'link',
 			'unlink',
@@ -43,7 +43,6 @@ final class ACF {
 		//unset( $toolbars['Full'] );
 		//unset( $toolbars['Basic'] );
 
-		// return $toolbars - IMPORTANT!
 		return $toolbars;
 	}
 }

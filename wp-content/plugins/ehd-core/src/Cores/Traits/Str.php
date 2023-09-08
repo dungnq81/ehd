@@ -7,6 +7,7 @@ use IntlBreakIterator;
 \defined( 'ABSPATH' ) || die;
 
 trait Str {
+
 	/**
 	 * https://github.com/cofirazak/phpMissingFunctions
 	 *

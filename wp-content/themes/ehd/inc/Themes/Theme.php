@@ -18,10 +18,11 @@ use EHD_Cores\Helper;
 final class Theme {
 	public function __construct() {
 
+		// init is run before wp_loaded
+		add_action( 'init', [ &$this, 'init' ], 10 );
+
 		add_action( 'after_setup_theme', [ &$this, 'after_setup_theme' ], 10 );
 		add_action( 'after_setup_theme', [ &$this, 'plugins_setup' ], 11 );
-
-		add_action( 'init', [ &$this, 'init' ], 10 );
 
 		/** Widgets wordpress */
 		add_action( 'widgets_init', [ &$this, 'unregister_widgets' ], 11 );
@@ -112,23 +113,6 @@ final class Theme {
 	/** ---------------------------------------- */
 
 	/**
-	 * @return void
-	 */
-	public function plugins_setup() {
-
-		/** ACF */
-		( new ACF() );
-
-		/** WooCommerce */
-		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
-
-		/** Elementor */
-		did_action( 'elementor/loaded' ) && ( new Elementor() );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
 	 * Init function
 	 *
 	 * @return void
@@ -150,6 +134,23 @@ final class Theme {
 		// template-structures
 		$structures_dir = EHD_THEME_PATH . 'template-structures';
 		Helper::FQN_Load( $structures_dir, true );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * @return void
+	 */
+	public function plugins_setup() {
+
+		/** ACF */
+		( new ACF() );
+
+		/** WooCommerce */
+		class_exists( '\WooCommerce' ) && ( new WooCommerce() );
+
+		/** Elementor */
+		did_action( 'elementor/loaded' ) && ( new Elementor() );
 	}
 
 	/** ---------------------------------------- */
@@ -184,7 +185,7 @@ final class Theme {
 	 */
 	public function wp_enqueue_scripts(): void {
 
-		/** Stylesheet. */
+		/** Stylesheet */
 		wp_register_style( "plugin-style", get_template_directory_uri() . '/assets/css/plugins.css', [], EHD_THEME_VERSION );
 		wp_enqueue_style( "app-style", get_template_directory_uri() . '/assets/css/app.css', [ "ehd-core-style", "plugin-style" ], EHD_THEME_VERSION );
 

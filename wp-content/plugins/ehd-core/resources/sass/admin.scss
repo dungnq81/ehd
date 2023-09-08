@@ -287,7 +287,7 @@ table.fixed {
         width: 74px;
         padding: 0;
 
-        a, span {
+        :where(a, span) {
             display: block;
             overflow: hidden;
             padding: 8px;
@@ -316,7 +316,7 @@ table.wp-list-table .column-price {
         display: none;
     }
 
-    del, ins {
+    :where(del, ins) {
         white-space: nowrap;
     }
 
@@ -635,7 +635,7 @@ body.toplevel_page_ehd-settings {
     }
 }
 
-:is(input[type="checkbox"].ehd-checkbox, .acf-field.ehd-checkbox > .acf-input input[type="checkbox"]) {
+:is(input[type="checkbox"].ehd-checkbox, .acf-field.ehd-checkbox > .acf-input input[type="checkbox"], .menu-item-settings .field-link-target input[type="checkbox"]) {
     appearance: none;
     -webkit-tap-highlight-color: transparent;
     width: auto;
@@ -696,6 +696,39 @@ body.toplevel_page_ehd-settings {
             content: '';
             background-color: #2271b1;
             transition: ease .15s;
+        }
+    }
+}
+
+/** ACF Upload Image */
+//.acf-field.acf-field-image {
+//    .acf-label {}
+//}
+
+.acf-image-uploader {
+    .hide-if-value {
+        & > p {
+            font-size: 0;
+
+            a.acf-button.button {
+                border: 1px dashed #c3c4c7;
+                box-sizing: border-box;
+                line-height: 1.6;
+                padding: 9px 0;
+                position: relative;
+                text-align: center;
+                width: 400px;
+                max-width: 100%;
+                cursor: pointer;
+                background-color: #f0f0f1;
+                color: #2c3338;
+                display: block;
+                font-size: 13px;
+
+                &:hover {
+                    background-color: #fff;
+                }
+            }
         }
     }
 }

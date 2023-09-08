@@ -11,7 +11,6 @@ use EHD_Cores\Helper;
  *
  * WpRocket Plugins
  */
-
 final class WpRocket {
 	public function __construct() {
 

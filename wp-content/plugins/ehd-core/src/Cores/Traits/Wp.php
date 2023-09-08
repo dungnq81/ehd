@@ -812,7 +812,7 @@ trait Wp {
 		if ( $hashtag_list ) {
 			echo '<div class="hashtags">';
 			printf(
-				/* translators: 1: SVG icon. 2: posted in label, only visible to screen readers. 3: list of tags. */
+			/* translators: 1: SVG icon. 2: posted in label, only visible to screen readers. 3: list of tags. */
 				'<div class="hashtag-links links">%1$s<span class="screen-reader-text">%2$s</span>%3$s</div>',
 				'<i data-glyph="#"></i>',
 				__( 'Tags', EHD_PLUGIN_TEXT_DOMAIN ),

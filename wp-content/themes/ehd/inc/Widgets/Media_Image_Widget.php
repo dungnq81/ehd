@@ -29,12 +29,14 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
 		$container = $ACF->container ?? false;
+		$heading_tag = ! empty( $ACF->heading_tag ) ? $ACF->heading_tag : 'span';
+		$heading_class = ! empty( $ACF->heading_class ) ? $ACF->heading_tag : 'heading-title';
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . $ACF->css_class : '';
 
-		$before_widget = '<div class="section widget_media_image' . $css_class . '">';
-		$after_widget  = '</div>';
+		$args['before_widget'] = '<div class="section widget_media_image' . $css_class . '">';
+		$args['after_widget'] = '</div>';
 
-		echo $before_widget;
+		echo $args['before_widget'];
 		if ( $container ) {
 			echo '<div class="grid-container">';
 		}
@@ -42,6 +44,9 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
 		$title = $instance['title'] ?? '';
 		if ( $title ) {
+			$args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
+			$args['after_title'] = '</' . $heading_tag . '>';
+
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
@@ -51,9 +56,6 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 		 * @param array $instance Instance data.
 		 * @param array $args Widget args.
 		 * @param WP_Widget_Media $widget Widget object.
-		 *
-		 * @since 4.8.0
-		 *
 		 */
 		$instance = apply_filters( "widget_{$this->id_base}_instance", $instance, $args, $this );
 
@@ -62,7 +64,8 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 		if ( $container ) {
 			echo '</div>';
 		}
-		echo $after_widget;
+
+		echo $args['after_widget'];
 	}
 
 	/**
@@ -117,7 +120,6 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 			}
 
 			$image_attributes['class'] .= sprintf( ' attachment-%1$s size-%1$s', is_array( $size ) ? implode( 'x', $size ) : $size );
-
 			$image = wp_get_attachment_image( $attachment->ID, $size, false, $image_attributes );
 
 		} else {

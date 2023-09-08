@@ -27,6 +27,82 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
+	 * Find an attribute and add the data as a HTML string.
+	 *
+	 * @param string $str The HTML string.
+	 * @param string $attr The attribute to find.
+	 * @param string $content_extra The content that needs to be appended.
+	 * @param bool $unique Do we need to filter for unique values?
+	 *
+	 * @return string
+	 */
+	public static function appendToAttribute( string $str, string $attr, string $content_extra, bool $unique = false ): string {
+
+		// Check if attribute has single or double quotes.
+		// @codingStandardsIgnoreLine
+		if ( $start = stripos( $str, $attr . '="' ) ) {
+			// Double.
+			$quote = '"';
+
+			// @codingStandardsIgnoreLine
+		} elseif ( $start = stripos( $str, $attr . "='" ) ) {
+			// Single.
+			$quote = "'";
+
+		} else {
+			// Not found
+			return $str;
+		}
+
+		// Add quote (for filtering purposes).
+		$attr .= '=' . $quote;
+
+		$content_extra = trim( $content_extra );
+
+		if ( $unique ) {
+
+			// Set start pointer to after the quote.
+			$start += strlen( $attr );
+			// Find first quote after the start pointer.
+			$end = strpos( $str, $quote, $start );
+			// Get the current content.
+			$content = explode( ' ', substr( $str, $start, $end - $start ) );
+			// Get our extra content.
+			$content_extra = explode( ' ', $content_extra );
+			foreach ( $content_extra as $class ) {
+				if ( ! empty( $class ) && ! in_array( $class, $content, true ) ) {
+					// This one can be added!
+					$content[] = $class;
+				}
+			}
+			// Remove duplicates and empty values.
+			$content = array_filter( array_unique( $content ) );
+			// Convert to space separated string.
+			$content = implode( ' ', $content );
+			// Get HTML before content.
+			$before_content = substr( $str, 0, $start );
+			// Get HTML after content.
+			$after_content = substr( $str, $end );
+
+			// Combine the string again.
+			$str = $before_content . $content . $after_content;
+
+		} else {
+			$str = preg_replace(
+				'/' . preg_quote( $attr, '/' ) . '/',
+				$attr . $content_extra . ' ',
+				$str,
+				1
+			);
+		} // End if().
+
+		// Return full HTML string.
+		return $str;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param $css
 	 * @param bool $debug_check
 	 *

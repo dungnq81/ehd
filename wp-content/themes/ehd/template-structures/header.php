@@ -128,7 +128,7 @@ if ( ! function_exists( '__top_header' ) ) {
 
 		    for ( $i = 1; $i <= $top_header_cols; $i++ ) :
 			    if ( is_active_sidebar( 'ehd-top-header-' . $i . '-sidebar' )) :
-				    echo '<div class="cell-inner cell-' . $i . '">';
+				    echo '<div class="cell cell-' . $i . '">';
 				    dynamic_sidebar( 'ehd-top-header-' . $i . '-sidebar' );
 				    echo '</div>';
 			    endif;
@@ -161,7 +161,7 @@ if ( ! function_exists( '__header' ) ) {
 
 	        for ( $i = 1; $i <= $header_cols; $i++ ) :
 		        if ( is_active_sidebar( 'ehd-header-' . $i . '-sidebar' )) :
-			        echo '<div class="cell-inner cell-' . $i . '">';
+			        echo '<div class="cell cell-' . $i . '">';
 			        dynamic_sidebar( 'ehd-header-' . $i . '-sidebar' );
 			        echo '</div>';
 		        endif;
@@ -194,7 +194,7 @@ if ( ! function_exists( '__bottom_header' ) ) {
 
             for ( $i = 1; $i <= $bottom_header_cols; $i++ ) :
 	            if ( is_active_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' )) :
-		            echo '<div class="cell-inner cell-' . $i . '">';
+		            echo '<div class="cell cell-' . $i . '">';
 		            dynamic_sidebar( 'ehd-bottom-header-' . $i . '-sidebar' );
 		            echo '</div>';
 	            endif;
