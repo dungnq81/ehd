@@ -107,7 +107,12 @@ body.login {
 
 /** */
 input.tiny-text {
-    width: 50px;
+    width: 60px;
+}
+
+input[type=number].tiny-text {
+    width: 60px;
+    padding-right: 0;
 }
 
 /** */

@@ -30,7 +30,10 @@ abstract class Abstract_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		$className              = ( new ReflectionClass( $this ) )->getShortName();
-		$this->widget_classname = str_replace( [ '_widget', '-widget' ], '', Helper::dashCase( strtolower( $className ) ) );
+		$this->widget_classname = str_replace( [
+			'_widget',
+			'-widget'
+		], '', Helper::dashCase( strtolower( $className ) ) );
 		$this->widget_id        = $this->prefix . $this->widget_classname;
 
 		parent::__construct( $this->widget_id, $this->widget_name, $this->widget_options(), $this->control_options() );
@@ -294,11 +297,13 @@ abstract class Abstract_Widget extends WP_Widget {
 				case 'checkbox':
 					?>
                     <p>
-                        <input class="checkbox <?php echo esc_attr( $class ); ?>"
-                               id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
-                               name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="checkbox"
-                               value="1" <?php checked( $value, 1 ); ?> />
-                        <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
+                        <label>
+                            <input class="ehd-checkbox checkbox <?php echo esc_attr( $class ); ?>"
+                                   id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
+                                   name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="checkbox"
+                                   value="1" <?php checked( $value, 1 ); ?> />
+                            <span class="message"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></span>
+                        </label>
                     </p>
 					<?php
 					break;
@@ -330,7 +335,7 @@ abstract class Abstract_Widget extends WP_Widget {
 	/**
 	 * styles_and_scripts
 	 */
-    public function styles_and_scripts() {}
+	public function styles_and_scripts() {}
 
 	/**
 	 * @param $instance
@@ -438,6 +443,7 @@ abstract class Abstract_Widget extends WP_Widget {
 
 	/**
 	 * @param $id
+	 *
 	 * @return object
 	 */
 	protected function acfFields( $id ): ?object {

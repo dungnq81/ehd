@@ -10,18 +10,13 @@ use EHD_Cores\Helper;
 class Search_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'A search form for your site.', EHD_PLUGIN_TEXT_DOMAIN );
-		$this->widget_name        = __( 'W - Search', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->widget_name        = __( 'Search *', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->settings           = [
-			'title'     => [
+			'title' => [
 				'type'  => 'text',
 				'std'   => __( 'Search' ),
 				'label' => __( 'Title' ),
-			],
-			'css_class' => [
-				'type'  => 'text',
-				'std'   => '',
-				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
+			]
 		];
 
 		parent::__construct();
@@ -38,8 +33,10 @@ class Search_Widget extends Abstract_Widget {
 			return;
 		}
 
+		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
+		$css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
 		$title     = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
-		$css_class = ! empty( $instance['css_class'] ) ? sanitize_title( $instance['css_class'] ) : '';
 
 		$shortcode_content = Helper::doShortcode(
 			'inline_search',
@@ -47,7 +44,7 @@ class Search_Widget extends Abstract_Widget {
 				'inline_search_widget_shortcode_args',
 				[
 					'title' => $title,
-					'class' => $this->widget_classname . ' ' . $css_class,
+					'class' => $this->widget_classname . $css_class,
 					'id'    => '',
 				]
 			)

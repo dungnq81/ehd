@@ -24,7 +24,6 @@ use EHD_Widgets\Posts_Widget;
 use EHD_Widgets\PostsCarousel_Widget;
 use EHD_Widgets\RecentPosts_Widget;
 use EHD_Widgets\Search_Widget;
-use EHD_Widgets\Shortcode_Widget;
 
 \defined( 'ABSPATH' ) || die;
 
@@ -104,6 +103,7 @@ final class Plugin {
 
 		// Removes the styling added to the header for recent comments
 		global $wp_widget_factory;
+
 		remove_action( 'wp_head', [
 			$wp_widget_factory->widgets['WP_Widget_Recent_Comments'],
 			'recent_comments_style'
@@ -120,7 +120,6 @@ final class Plugin {
 
 		class_exists( Search_Widget::class ) && register_widget( new Search_Widget() );
 		class_exists( DropdownSearch_Widget::class ) && register_widget( new DropdownSearch_Widget() );
-		class_exists( Shortcode_Widget::class ) && register_widget( new Shortcode_Widget() );
 
 		class_exists( RecentPosts_Widget::class ) && register_widget( new RecentPosts_Widget() );
 		class_exists( Posts_Widget::class ) && register_widget( new Posts_Widget() );

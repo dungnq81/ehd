@@ -232,13 +232,15 @@ final class Shortcode {
 			[
 				'title'           => '',
 				'hide_if_desktop' => true,
+                'class' => '',
 			],
 			$atts,
 			'off_canvas_button'
 		);
 
 		$title = $atts['title'] ?: __( 'Menu', EHD_PLUGIN_TEXT_DOMAIN );
-		$class = $atts['hide_if_desktop'] ? 'hide-for-large' : '';
+		$class = $atts['hide_if_desktop'] ? ' hide-for-large' : '';
+		$class = $atts['class'] ? ' ' . $atts['class'] . $class : '';
 
 		ob_start();
 
@@ -248,7 +250,7 @@ final class Shortcode {
         </button>
 		<?php
 
-		return '<div class="off-canvas-content ' . $class . '" data-off-canvas-content>' . ob_get_clean() . '</div>';
+		return '<div class="off-canvas-content' . $class . '" data-off-canvas-content>' . ob_get_clean() . '</div>';
 	}
 
 	// ------------------------------------------------------
@@ -262,7 +264,7 @@ final class Shortcode {
 		$atts = shortcode_atts(
 			[
 				'title' => '',
-				'email' => 'info@webhd.vn',
+				'email' => '',
 				'class' => '',
 				'id'    => esc_attr( uniqid( 'mail-' ) ),
 			],
@@ -370,16 +372,12 @@ final class Shortcode {
 		ob_start();
 
 		?>
-        <a class="trigger-s" title="<?= esc_attr( $title ); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>"
-           data-glyph=""><span><?php echo $title; ?></span></a>
+        <a class="trigger-s" title="<?= esc_attr( $title ); ?>" href="javascript:;" data-toggle="dropdown-<?= $id; ?>" data-glyph=""><span><?php echo $title; ?></span></a>
         <div role="search" class="dropdown-pane" id="dropdown-<?= $atts['id']; ?>" data-dropdown data-auto-focus="true">
-            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
-                  data-abide novalidate>
+            <form role="form" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
                 <div class="frm-container">
                     <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr( $title_for ); ?></label>
-                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s"
-                           value="<?php echo get_search_query(); ?>"
-                           placeholder="<?php echo esc_attr( $placeholder_title ); ?>">
+                    <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" name="s" value="<?php echo get_search_query(); ?>" placeholder="<?php echo esc_attr( $placeholder_title ); ?>">
                     <button class="btn-s" type="submit" data-glyph="">
                         <span><?php echo $title; ?></span>
                     </button>

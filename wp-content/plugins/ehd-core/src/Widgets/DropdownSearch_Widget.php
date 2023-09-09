@@ -13,17 +13,18 @@ class DropdownSearch_Widget extends Abstract_Widget {
 	 */
 	public function __construct() {
 		$this->widget_description = __( 'Display the dropdown search box', EHD_PLUGIN_TEXT_DOMAIN );
-		$this->widget_name        = __( 'W - Dropdown Search', EHD_PLUGIN_TEXT_DOMAIN );
-		$this->settings           = [
-			'title'     => [
+		$this->widget_name        = __( 'Dropdown Search *', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->settings = [
+			'title'         => [
 				'type'  => 'text',
 				'std'   => __( 'Search' ),
 				'label' => __( 'Title' ),
 			],
-			'css_class' => [
-				'type'  => 'text',
+			'popup_overlay' => [
+				'type'  => 'checkbox',
 				'std'   => '',
-				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
+				'class' => 'checkbox',
+				'label' => __( 'Display the popup.', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 		];
 
@@ -41,8 +42,15 @@ class DropdownSearch_Widget extends Abstract_Widget {
 			return;
 		}
 
-		$title     = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
-		$css_class = ! empty( $instance['css_class'] ) ? sanitize_title( $instance['css_class'] ) : '';
+		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
+		$title         = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
+		$css_class     = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
+		$popup_overlay = ! empty( $instance['popup_overlay'] );
+
+		if ( $popup_overlay ) {
+			$css_class = ' popup-overlay' . $css_class;
+		}
 
 		$shortcode_content = Helper::doShortcode(
 			'dropdown_search',
@@ -50,7 +58,7 @@ class DropdownSearch_Widget extends Abstract_Widget {
 				'dropdown_search_widget_shortcode_args',
 				[
 					'title' => $title,
-					'class' => $this->widget_classname . ' ' . $css_class,
+					'class' => $this->widget_classname . $css_class,
 					'id'    => '',
 				]
 			)

@@ -120,7 +120,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @param string $content The page content.
 	 *
-	 * @return string          Modified content.
+	 * @return string Modified content.
 	 */
 	public function replace_insecure_links( string $content ): string {
 		// Get the url list.

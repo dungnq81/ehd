@@ -11,7 +11,7 @@ use WP_Query;
 class RecentPosts_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'Your site&#8217;s most recent Posts.' );
-		$this->widget_name        = __( 'W - Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->widget_name        = __( 'Recent Posts *', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->settings           = [
 			'title'          => [
 				'type'  => 'text',
@@ -55,12 +55,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 				'std'   => '',
 				'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
 				'desc'  => sprintf( __( "A date/time string, restrict to only posts within a specific time period. %s", EHD_PLUGIN_TEXT_DOMAIN ), "\n<a target='_blank' href=\"https://www.php.net/manual/en/function.strtotime.php\">php.net/manual/en/function.strtotime.php</a>" ),
-			],
-			'css_class'      => [
-				'type'  => 'text',
-				'std'   => '',
-				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
+			]
 		];
 
 		parent::__construct();
@@ -77,6 +72,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 			return;
 		}
 
+		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 		$title = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
 
 		$number         = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;
@@ -114,14 +110,14 @@ class RecentPosts_Widget extends Abstract_Widget {
 		}
 
 		$r = new WP_Query(
-		/**
-		 * Filters the arguments for the Recent Posts widget.
-		 *
-		 * @param array $args An array of arguments used to retrieve the recent posts.
-		 * @param array $instance Array of settings for the current widget.
-		 *
-		 * @see   WP_Query::get_posts()
-		 */
+            /**
+             * Filters the arguments for the Recent Posts widget.
+             *
+             * @param array $args An array of arguments used to retrieve the recent posts.
+             * @param array $instance Array of settings for the current widget.
+             *
+             * @see   WP_Query::get_posts()
+             */
 			apply_filters(
 				'widget_recent_posts_args',
 				$query_args,
@@ -129,13 +125,8 @@ class RecentPosts_Widget extends Abstract_Widget {
 			)
 		);
 
-		//$_class = $this->widget_classname . ' ' . $this->id;
-		$_class    = $this->widget_classname;
-		$css_class = ( ! empty( $instance['css_class'] ) ) ? sanitize_title( $instance['css_class'] ) : '';
-		if ( $css_class ) {
-			$_class = $_class . ' ' . $css_class;
-		}
-
+		$css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
+		$css_class = $this->widget_classname . $css_class;
 		$uniqid = esc_attr( uniqid( $this->widget_classname . '-' ) );
 
 		if ( ! $r->have_posts() ) {
@@ -145,7 +136,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <div class="<?php echo $_class; ?>" id="<?= $uniqid ?>">
+        <div class="<?php echo $css_class; ?>" id="<?= $uniqid ?>">
 			<?php if ( $title ) : ?>
                 <span class="sidebar-title"><?php echo $title; ?></span>
 			<?php endif;
@@ -155,12 +146,11 @@ class RecentPosts_Widget extends Abstract_Widget {
 			$aria_label = $title ?: __( 'Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );
 
 			?>
-            <nav class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>">
+            <nav aria-label="<?php echo esc_attr( $aria_label ); ?>">
                 <ul>
 					<?php
-
-					$ratio_obj          = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
-					$ratio_class        = $ratio_obj->class ?? '';
+					$ratio_obj   = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );
+					$ratio_class = $ratio_obj->class ?? '';
 
 					foreach ( $r->posts as $recent_post ) :
 						$post_title = get_the_title( $recent_post->ID );

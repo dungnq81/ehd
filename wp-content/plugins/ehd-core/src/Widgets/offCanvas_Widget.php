@@ -33,7 +33,9 @@ class offCanvas_Widget extends Abstract_Widget {
 			return;
 		}
 
+		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 		$hide_if_desktop = empty( $instance['hide_if_desktop'] ) ? 0 : 1;
+		$css_class = ! empty( $ACF->css_class ) ? sanitize_title( $ACF->css_class ) : '';
 
 		$shortcode_content = Helper::doShortcode(
 			'off_canvas_button',
@@ -42,6 +44,7 @@ class offCanvas_Widget extends Abstract_Widget {
 				[
 					'title'           => '',
 					'hide_if_desktop' => $hide_if_desktop,
+					'class' => $css_class,
 				]
 			)
 		);
