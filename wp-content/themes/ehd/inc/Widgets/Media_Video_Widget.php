@@ -29,8 +29,8 @@ class Media_Video_Widget extends WP_Widget_Media_Video {
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
 		$container = $ACF->container ?? false;
-		$heading_tag = ! empty( $ACF->heading_tag ) ? $ACF->heading_tag : 'span';
-		$heading_class = ! empty( $ACF->heading_class ) ? $ACF->heading_tag : 'heading-title';
+		$heading_tag = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
+		$heading_class = ! empty( $ACF->title_classes ) ? $ACF->title_classes : 'heading-title';
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . $ACF->css_class : '';
 
 		$args['before_widget'] = '<div class="section widget_media_video' . $css_class . '">';

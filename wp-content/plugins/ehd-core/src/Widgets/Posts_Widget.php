@@ -10,7 +10,7 @@ use EHD_Cores\Helper;
 class Posts_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( 'Your site&#8217;s Posts.' );
-		$this->widget_name        = __( 'W - Posts', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->widget_name        = __( 'Posts *', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->settings           = [
 			'title'                 => [
 				'type'  => 'text',
@@ -21,7 +21,7 @@ class Posts_Widget extends Abstract_Widget {
 				'type'  => 'textarea',
 				'std'   => '',
 				'label' => __( 'Description', EHD_PLUGIN_TEXT_DOMAIN ),
-				'desc'  => __( 'Short description of widget', EHD_PLUGIN_TEXT_DOMAIN ),
+				//'desc'  => __( 'Short description of widget', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'number'                => [
 				'type'  => 'number',
@@ -31,17 +31,10 @@ class Posts_Widget extends Abstract_Widget {
 				'class' => 'tiny-text',
 				'label' => __( 'Number of posts to show', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
-			'category'              => [
-				'type'  => 'text',
-				'std'   => '',
-				'class' => '',
-				'label' => __( 'Posts categories ids, separated by commas', EHD_PLUGIN_TEXT_DOMAIN ),
-				'desc'  => __( 'Separated by commas (,)', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'full_width'            => [
+			'container'            => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Full width', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Container', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'include_children'      => [
 				'type'  => 'checkbox',
@@ -52,51 +45,37 @@ class Posts_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post categories?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post categories', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show_thumbnail'        => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post thumbnails', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show_date'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post date?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post date', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show_desc'             => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post description?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post description', EHD_PLUGIN_TEXT_DOMAIN ),
+			],
+			'show_detail_button'             => [
+				'type'  => 'checkbox',
+				'std'   => '',
+				'class' => 'checkbox',
+				'label' => __( 'Display detail button', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'limit_time'            => [
 				'type'  => 'text',
 				'std'   => '',
 				'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
 				'desc'  => __( 'Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'show_viewmore_button'  => [
-				'type'  => 'checkbox',
-				'std'   => 0,
-				'label' => __( 'Show view more button', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'viewmore_button_title' => [
-				'type'  => 'text',
-				'std'   => __( 'View more', EHD_PLUGIN_TEXT_DOMAIN ),
-				'label' => __( 'View more title', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'viewmore_button_link'  => [
-				'type'  => 'text',
-				'std'   => '#',
-				'label' => __( 'View more link', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'css_class'             => [
-				'type'  => 'text',
-				'std'   => '',
-				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 		];
 
@@ -114,84 +93,89 @@ class Posts_Widget extends Abstract_Widget {
             return;
         }
 
-        $title = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
-        $desc  = $instance['desc'] ? trim( $instance['desc'] ) : '';
+	    $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
-        $number               = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 12;
-        $show_cat             = ! empty( $instance['show_cat'] );
-        $show_thumbnail       = ! empty( $instance['show_thumbnail'] );
-        $show_date            = ! empty( $instance['show_date'] );
-        $show_desc            = ! empty( $instance['show_desc'] );
-        $show_viewmore_button = ! empty( $instance['show_viewmore_button'] );
+	    $title = $this->get_instance_title( $instance );
+	    $desc  = $instance['desc'] ? trim( $instance['desc'] ) : '';
 
-        $include_children = ! empty( $instance['include_children'] );
-        $limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : '';
+	    $number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 12;
+	    $show_cat           = ! empty( $instance['show_cat'] );
+	    $show_thumbnail     = ! empty( $instance['show_thumbnail'] );
+	    $show_date          = ! empty( $instance['show_date'] );
+	    $show_desc          = ! empty( $instance['show_desc'] );
+	    $show_detail_button = ! empty( $instance['show_detail_button'] );
 
-        $term_ids = $instance['category'] ?: $this->settings['category']['std'];
-        $term_ids = Helper::separatedToArray( $term_ids, ',' );
+	    $include_children = ! empty( $instance['include_children'] );
+	    $limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : '';
 
-        $query_args = [
-            'term_ids'         => $term_ids,
-            'include_children' => $include_children,
-            'posts_per_page'   => $number,
-            'limit_time'       => $limit_time,
-            'show'             => [
-                'thumbnail' => Helper::toBool( $show_thumbnail ),
-                //'thumbnail_size' => 'medium',
-                //'scale' => true,
-                'time'      => Helper::toBool( $show_date ),
-                'term'      => Helper::toBool( $show_cat ),
-                'desc'      => Helper::toBool( $show_desc ),
-                'more'      => Helper::toBool( $show_viewmore_button ),
-            ],
-        ];
+        // ACF fields
+	    $heading_tag = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
+	    $heading_class = ! empty( $ACF->title_classes ) ? $ACF->title_classes : 'heading-title';
 
-        //$_class = $this->widget_classname . ' ' . $this->id;
-        $_class    = $this->widget_classname;
-        $css_class = ( ! empty( $instance['css_class'] ) ) ? sanitize_title( $instance['css_class'] ) : '';
-        if ( $css_class ) {
-            $_class = $_class . ' ' . $css_class;
-        }
+	    $term_ids = $ACF->post_category_ids ?? [];
 
-        $full_width = ! empty( $instance['full_width'] );
-        $uniqid     = esc_attr( uniqid( $this->widget_classname . '-' ) );
+	    $show_view_more_button = $ACF->show_view_more_button ?? false;
+	    $view_more_link        = $ACF->view_more_link ?? '';
+        $view_more_link = Helper::ACF_Link( $view_more_link );
+
+        // queries
+	    $query_args = [
+		    'term_ids'         => $term_ids,
+		    'include_children' => $include_children,
+		    'posts_per_page'   => $number,
+		    'limit_time'       => $limit_time,
+		    'show'             => [
+			    'thumbnail' => Helper::toBool( $show_thumbnail ),
+			    //'thumbnail_size' => 'medium',
+			    //'scale' => true,
+			    'time'      => Helper::toBool( $show_date ),
+			    'term'      => Helper::toBool( $show_cat ),
+			    'desc'      => Helper::toBool( $show_desc ),
+			    'more'      => Helper::toBool( $show_detail_button ),
+		    ],
+	    ];
+
+	    $css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
+	    $css_class = $this->widget_classname . $css_class;
+	    $uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
+
+	    $container = ! empty( $instance['container'] );
 
         ob_start();
 
         ?>
-    <section class="section posts-section <?= $_class ?>" id="<?= $uniqid ?>">
+        <section class="section posts-section <?= $css_class ?>">
+            <?php
+            if ( $container ) echo '<div class="grid-container">';
 
-        <?php if (!$full_width) echo '<div class="grid-container">'; ?>
+            if ( $title ) {
+	            $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
+	            $args['after_title'] = '</' . $heading_tag . '>';
 
-        <?php if ($title) echo '<h2 class="heading-title">' . $title . '</h2>'; ?>
-        <?php if ($desc) echo '<p class="heading-desc">' . $desc . '</p>'; ?>
-
-        <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
-            <div class="grid-posts grid-x">
-                <?php
-                echo Helper::doShortcode(
-                    'posts',
-                    $query_args
-                );
-                ?>
-            </div>
-        </div>
-        <?php
-
-        if ($show_viewmore_button) {
-            $viewmore_button_title = $instance['viewmore_button_title'] ?: '';
-            $viewmore_button_link = filter_var($instance['viewmore_button_link'], FILTER_VALIDATE_URL) ? $instance['viewmore_button_link'] : '#';
-
-            if ($viewmore_button_title) {
-                echo '<a href="' . esc_url($viewmore_button_link) . '" class="viewmore button" title="' . esc_attr($viewmore_button_title) . '">' . $viewmore_button_title . '</a>';
+	            echo $args['before_title'] . $title . $args['after_title'];
             }
-        }
-        ?>
 
-        <?php if (!$full_width) echo '</div>'; ?>
+            if ( $desc ) echo '<p class="heading-desc">' . $desc . '</p>';
 
-    </section>
-    <?php
-        echo $this->cache_widget($args, ob_get_clean()); // WPCS: XSS ok.
+            ?>
+            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
+                <div class="grid-posts grid-x">
+                    <?php
+                    echo Helper::doShortcode(
+	                    'posts',
+	                    $query_args
+                    );
+                    ?>
+                </div>
+            </div>
+            <?php
+
+            if ( $show_view_more_button ) echo $view_more_link;
+            if ( $container ) echo '</div>';
+
+            ?>
+        </section>
+        <?php
+	        echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
     }
 }

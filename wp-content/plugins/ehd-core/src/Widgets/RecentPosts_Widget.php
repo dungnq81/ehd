@@ -73,7 +73,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 		}
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
-		$title = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
+		$title = $this->get_instance_title( $instance );
 
 		$number         = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;
 		$show_cat       = ! empty( $instance['show_cat'] );
@@ -136,7 +136,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <div class="<?php echo $css_class; ?>" id="<?= $uniqid ?>">
+        <div class="<?php echo $css_class; ?>">
 			<?php if ( $title ) : ?>
                 <span class="sidebar-title"><?php echo $title; ?></span>
 			<?php endif;
@@ -146,7 +146,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 			$aria_label = $title ?: __( 'Recent Posts', EHD_PLUGIN_TEXT_DOMAIN );
 
 			?>
-            <nav aria-label="<?php echo esc_attr( $aria_label ); ?>">
+            <nav class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $aria_label ); ?>">
                 <ul>
 					<?php
 					$ratio_obj   = Helper::getAspectRatioClass( 'post', 'aspect_ratio__options' );

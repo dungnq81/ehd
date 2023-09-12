@@ -23,7 +23,7 @@ class Search_Widget extends Abstract_Widget {
 	}
 
 	/**
-	 * Creating widget front-end
+	 * Creating widget Front-End
 	 *
 	 * @param array $args
 	 * @param array $instance
@@ -36,7 +36,7 @@ class Search_Widget extends Abstract_Widget {
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
 		$css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
-		$title     = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
+		$title = $this->get_instance_title( $instance );
 
 		$shortcode_content = Helper::doShortcode(
 			'inline_search',

@@ -286,7 +286,7 @@ abstract class Abstract_Widget extends WP_Widget {
                         <textarea class="widefat <?php echo esc_attr( $class ); ?>"
                                   id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
                                   name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" cols="20"
-                                  rows="2"><?php echo esc_textarea( $value ); ?></textarea>
+                                  rows="3"><?php echo esc_textarea( $value ); ?></textarea>
 						<?php if ( isset( $setting['desc'] ) ) : ?>
                             <small class="help-text"><?php echo $setting['desc']; ?></small>
 						<?php endif; ?>

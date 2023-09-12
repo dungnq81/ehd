@@ -44,7 +44,7 @@ class DropdownSearch_Widget extends Abstract_Widget {
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
 
-		$title         = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
+		$title = $this->get_instance_title( $instance );
 		$css_class     = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
 		$popup_overlay = ! empty( $instance['popup_overlay'] );
 
