@@ -395,7 +395,7 @@ abstract class Abstract_Widget extends WP_Widget {
 			];
 		}
 
-		if ( $_data['mobile'] && $_data['tablet'] && $_data['desktop'] ) {
+		if ( ! $_data['mobile'] && ! $_data['tablet'] && ! $_data['desktop'] ) {
 			$_data['autoview'] = true;
 			$swiper_class .= ' auto-view';
 		}
