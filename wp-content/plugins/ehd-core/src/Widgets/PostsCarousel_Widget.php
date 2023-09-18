@@ -109,13 +109,13 @@ class PostsCarousel_Widget extends Abstract_Widget {
 		$title = $this->get_instance_title( $instance );
 		$desc  = $instance['desc'] ? trim( $instance['desc'] ) : '';
 
-		$container            = ! empty( $instance['container'] );
-		$number               = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
-		$show_cat             = ! empty( $instance['show_cat'] );
-		$show_thumbnail       = ! empty( $instance['show_thumbnail'] );
-		$show_date            = ! empty( $instance['show_date'] );
-		$show_desc            = ! empty( $instance['show_desc'] );
-		$show_viewmore_button = ! empty( $instance['show_viewmore_button'] );
+		$container          = ! empty( $instance['container'] );
+		$number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
+		$show_cat           = ! empty( $instance['show_cat'] );
+		$show_thumbnail     = ! empty( $instance['show_thumbnail'] );
+		$show_date          = ! empty( $instance['show_date'] );
+		$show_desc          = ! empty( $instance['show_desc'] );
+		$show_detail_button = ! empty( $instance['show_detail_button'] );
 
 		$include_children = ! empty( $instance['include_children'] );
 		$limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : $this->settings['limit_time']['std'];
@@ -144,7 +144,7 @@ class PostsCarousel_Widget extends Abstract_Widget {
 				'time'      => Helper::toBool( $show_date ),
 				'term'      => Helper::toBool( $show_cat ),
 				'desc'      => Helper::toBool( $show_desc ),
-				'more'      => Helper::toBool( $show_viewmore_button ),
+				'more'      => Helper::toBool( $show_detail_button ),
 			],
 		];
 
@@ -157,14 +157,14 @@ class PostsCarousel_Widget extends Abstract_Widget {
 		?>
         <section class="section carousel-section posts-carousel-section posts-section <?= $css_class ?>">
 			<?php
-            if ( $container ) echo '<div class="grid-container">';
+			if ( $container ) echo '<div class="grid-container">';
 
-            if ( $title ) {
-	            $args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
-	            $args['after_title'] = '</' . $heading_tag . '>';
+			if ( $title ) {
+				$args['before_title'] = '<' . $heading_tag . ' class="' . $heading_class . '">';
+				$args['after_title'] = '</' . $heading_tag . '>';
 
-	            echo $args['before_title'] . $title . $args['after_title'];
-            }
+				echo $args['before_title'] . $title . $args['after_title'];
+			}
 
 			if ( $desc ) echo '<p class="heading-desc">' . $desc . '</p>';
 
@@ -172,10 +172,10 @@ class PostsCarousel_Widget extends Abstract_Widget {
             <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $title ); ?>">
                 <div class="swiper-section carousel-posts grid-posts">
 					<?php
-					$_data = $this->swiperOptions( $instance, $this->settings );
+					$_data = $this->swiper_acf_options( $instance, $ACF );
 
-					$swiper_class = $_data['class'];
-					$swiper_data  = $_data['data'];
+					$swiper_class = $_data['class'] ?? '';
+					$swiper_data  = $_data['data'] ?? json_encode( [], JSON_FORCE_OBJECT );
 
 					?>
                     <div class="w-swiper swiper">

@@ -280,14 +280,14 @@ abstract class Abstract_Widget extends WP_Widget {
 					break;
 
 				case 'textarea':
-                    $rows = ! empty( $setting['rows'] ) ? (int) $setting['rows'] : 3;
+					$rows = ! empty( $setting['rows'] ) ? (int) $setting['rows'] : 3;
 					?>
                     <p>
                         <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                         <textarea class="widefat <?php echo esc_attr( $class ); ?>"
                                   id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
                                   name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" cols="20"
-                                  rows="<?=$rows?>"><?php echo esc_textarea( $value ); ?></textarea>
+                                  rows="<?= $rows ?>"><?php echo esc_textarea( $value ); ?></textarea>
 						<?php if ( isset( $setting['desc'] ) ) : ?>
                             <small class="help-text"><?php echo $setting['desc']; ?></small>
 						<?php endif; ?>
@@ -340,100 +340,120 @@ abstract class Abstract_Widget extends WP_Widget {
 
 	/**
 	 * @param $instance
-	 * @param $default_settings
+	 * @param $ACF
 	 *
 	 * @return array
 	 */
-	protected function swiperOptions( $instance, $default_settings ): array {
-		$rows = Helper::notEmpty( $instance['rows'] ) ? absint( $instance['rows'] ) : $default_settings['rows']['std'];
+	protected function swiper_acf_options( $instance, $ACF ): array {
+		$m_rows           = $ACF->m_rows ?? 1;
+		$m_spacebetween   = $ACF->m_spacebetween ?? 20;
+		$m_slidesperview  = $ACF->m_slidesperview ?? 0;
+		$m_slidespergroup = $ACF->m_slidespergroup ?? 1;
 
-		$_columns_number = $instance['columns_number'] ?? $default_settings['columns_number']['std'];
-		$_gap            = $instance['gap'] ?? $default_settings['gap']['std'];
-		$_columns_number = Helper::separatedToArray( $_columns_number, ',' );
-		$_gap            = Helper::separatedToArray( $_gap, ',' );
+		$t_rows           = $ACF->m_rows ?? 1;
+		$t_spacebetween   = $ACF->m_spacebetween ?? 30;
+		$t_slidesperview  = $ACF->m_slidesperview ?? 0;
+		$t_slidespergroup = $ACF->m_slidespergroup ?? 1;
 
-		$pagination = isset( $instance['pagination'] ) ? sanitize_title( $instance['pagination'] ) : $default_settings['pagination']['std'];
-		$direction  = isset( $instance['direction'] ) ? sanitize_title( $instance['direction'] ) : $default_settings['direction']['std'];
-		$effect     = isset( $instance['effect'] ) ? sanitize_title( $instance['effect'] ) : $default_settings['effect']['std'];
+		$d_rows           = $ACF->m_rows ?? 1;
+		$d_spacebetween   = $ACF->m_spacebetween ?? 30;
+		$d_slidesperview  = $ACF->m_slidesperview ?? 0;
+		$d_slidespergroup = $ACF->d_slidespergroup ?? 1;
 
-		$navigation = Helper::notEmpty( $instance['navigation'] );
-		$autoplay   = Helper::notEmpty( $instance['autoplay'] );
-		$loop       = Helper::notEmpty( $instance['loop'] );
-		$marquee    = Helper::notEmpty( $instance['marquee'] );
-		$scrollbar  = Helper::notEmpty( $instance['scrollbar'] );
-
-		$delay = Helper::notEmpty( $instance['delay'] ) ? absint( $instance['delay'] ) : $default_settings['delay']['std'];
-		$speed = Helper::notEmpty( $instance['speed'] ) ? absint( $instance['speed'] ) : $default_settings['speed']['std'];
-
-		//...
-		$desktop_gap     = $_gap[0] ?? 0;
-		$mobile_gap      = $_gap[1] ?? 0;
-		$columns_desktop = $_columns_number[0] ?? 0;
-		$columns_tablet  = $_columns_number[1] ?? 0;
-		$columns_mobile  = $_columns_number[2] ?? 0;
-
-		//...
 		$swiper_class = '';
 		$_data        = [
-			'observer' => true,
+			//'observer' => true,
+			'mobile'  => false,
+			'tablet'  => false,
+			'desktop' => false,
 		];
 
-		if ( $desktop_gap ) {
-			$_data['desktop_gap'] = absint( $desktop_gap );
-		}
-		if ( $mobile_gap ) {
-			$_data['mobile_gap'] = absint( $mobile_gap );
-		}
-
-		if ( $delay > 0 ) {
-			$_data['delay'] = $delay;
-		}
-		if ( $speed > 0 ) {
-			$_data['speed'] = $speed;
+		if ( $m_slidesperview > 0 ) {
+			$_data['mobile'] = [
+				'row'    => absint( $m_rows ),
+				'gap'    => absint( $m_spacebetween ),
+				'column' => absint( $m_slidesperview ),
+				'group'  => absint( $m_slidespergroup ),
+			];
 		}
 
-		if ( $pagination ) {
-			$_data['pagination'] = $pagination;
+		if ( $t_slidesperview > 0 ) {
+			$_data['tablet'] = [
+				'row'    => absint( $t_rows ),
+				'gap'    => absint( $t_spacebetween ),
+				'column' => absint( $t_slidesperview ),
+				'group'  => absint( $t_slidespergroup ),
+			];
 		}
-		if ( $direction ) {
-			$_data['direction'] = $direction;
+
+		if ( $d_slidesperview > 0 ) {
+			$_data['desktop'] = [
+				'row'    => absint( $d_rows ),
+				'gap'    => absint( $d_spacebetween ),
+				'column' => absint( $d_slidesperview ),
+				'group'  => absint( $d_slidespergroup ),
+			];
 		}
-		if ( $effect ) {
-			$_data['effect'] = $effect;
+
+		if ( $_data['mobile'] && $_data['tablet'] && $_data['desktop'] ) {
+			$_data['autoview'] = true;
+			$swiper_class .= ' auto-view';
 		}
+
+		$navigation   = $ACF->navigation ?? false;
+		$pagination   = $ACF->pagination ?? 'none';
+		$autoplay     = $ACF->autoplay ?? false;
+		$loop         = $ACF->loop ?? false;
+		$marquee      = $ACF->marquee ?? false;
+		$scrollbar    = $ACF->scrollbar ?? false;
+		$direction    = $ACF->direction ?? 'default';
+		$effect_slide = $ACF->effect_slide ?? 'default';
+		$delay        = $ACF->delay ?? 1;
+		$speed        = $ACF->speed ?? 1;
 
 		if ( $navigation ) {
-			$_data['navigation'] = true;
+			$_data['navigation'] = Helper::toBool( $navigation );
 		}
+
+		if ( 'none' != $pagination && $pagination ) {
+			$_data['pagination'] = Helper::toString( $pagination );
+			$swiper_class .= ' ' . $pagination . '-pagination';
+		}
+
 		if ( $autoplay ) {
-			$_data['autoplay'] = true;
+			$_data['autoplay'] = Helper::toBool( $autoplay );
 		}
+
 		if ( $loop ) {
-			$_data['loop'] = true;
+			$_data['loop'] = Helper::toBool( $loop );
 		}
 
 		if ( $marquee ) {
-			$_data['marquee'] = true;
-			$swiper_class     .= ' marquee';
+			$_data['marquee'] = Helper::toBool( $marquee );
+			$swiper_class .= ' marquee';
 		}
+
 		if ( $scrollbar ) {
-			$_data['scrollbar'] = true;
-			$swiper_class       .= ' scrollbar';
+			$_data['scrollbar'] = Helper::toBool( $scrollbar );
+			$swiper_class .= ' scrollbar';
 		}
 
-		if ( ! $columns_desktop || ! $columns_tablet || ! $columns_mobile ) {
-			$_data['autoview'] = true;
-			$swiper_class      .= ' auto-view';
-		} else {
-			$_data['desktop'] = absint( $columns_desktop );
-			$_data['tablet']  = absint( $columns_tablet );
-			$_data['mobile']  = absint( $columns_mobile );
+		if ( 'default' != $direction && $direction ) {
+			$_data['direction'] = Helper::toString( $direction );
+			$swiper_class .= ' ' . $direction . '-direction';
 		}
 
-		if ( $rows > 1 ) {
-			$_data['row']  = $rows;
-			$_data['loop'] = false;
-			$swiper_class  .= ' multi-row';
+		if ( 'default' != $effect_slide && $effect_slide ) {
+			$_data['effect_slide'] = Helper::toString( $effect_slide );
+			$swiper_class .= ' ' . $effect_slide . '-effect';
+		}
+
+		if ( $delay > 0 ) {
+			$_data['delay'] = absint( $delay );
+		}
+
+		if ( $speed > 0 ) {
+			$_data['speed'] = absint( $speed );
 		}
 
 		return [
