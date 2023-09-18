@@ -246,9 +246,9 @@ abstract class Abstract_Widget extends WP_Widget {
 
 				case 'number':
 					?>
-                    <p>
+                    <p class="<?php echo esc_attr( $class ); ?>">
                         <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
-                        <input class="widefat <?php echo esc_attr( $class ); ?>"
+                        <input class="widefat"
                                id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
                                name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="number"
                                min="<?php echo esc_attr( $setting['min'] ); ?>"
@@ -280,13 +280,14 @@ abstract class Abstract_Widget extends WP_Widget {
 					break;
 
 				case 'textarea':
+                    $rows = ! empty( $setting['rows'] ) ? (int) $setting['rows'] : 3;
 					?>
                     <p>
                         <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php echo $setting['label']; /* phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped */ ?></label>
                         <textarea class="widefat <?php echo esc_attr( $class ); ?>"
                                   id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
                                   name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" cols="20"
-                                  rows="3"><?php echo esc_textarea( $value ); ?></textarea>
+                                  rows="<?=$rows?>"><?php echo esc_textarea( $value ); ?></textarea>
 						<?php if ( isset( $setting['desc'] ) ) : ?>
                             <small class="help-text"><?php echo $setting['desc']; ?></small>
 						<?php endif; ?>
@@ -422,7 +423,7 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		if ( ! $columns_desktop || ! $columns_tablet || ! $columns_mobile ) {
 			$_data['autoview'] = true;
-			$swiper_class      .= ' autoview';
+			$swiper_class      .= ' auto-view';
 		} else {
 			$_data['desktop'] = absint( $columns_desktop );
 			$_data['tablet']  = absint( $columns_tablet );
@@ -432,7 +433,7 @@ abstract class Abstract_Widget extends WP_Widget {
 		if ( $rows > 1 ) {
 			$_data['row']  = $rows;
 			$_data['loop'] = false;
-			$swiper_class  .= ' multirow';
+			$swiper_class  .= ' multi-row';
 		}
 
 		return [

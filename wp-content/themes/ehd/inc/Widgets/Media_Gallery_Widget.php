@@ -32,7 +32,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 		$heading_tag   = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
 		$heading_class = ! empty( $ACF->title_classes ) ? $ACF->title_classes : 'heading-title';
 		$css_class     = ! empty( $ACF->css_class ) ? ' ' . $ACF->css_class : '';
-		$html_desc     = $ACF->html_desc ?? '';
+		$html_desc     = $ACF->textarea_desc ?? '';
 
 		$args['before_widget'] = '<div class="section widget_media_image' . $css_class . '">';
 		$args['after_widget']  = '</div>';

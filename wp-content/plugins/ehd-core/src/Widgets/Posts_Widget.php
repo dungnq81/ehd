@@ -28,8 +28,8 @@ class Posts_Widget extends Abstract_Widget {
 				'min'   => 0,
 				'max'   => 99,
 				'std'   => 12,
-				'class' => 'tiny-text',
-				'label' => __( 'Number of posts to show', EHD_PLUGIN_TEXT_DOMAIN ),
+				//'class' => 'tiny-text',
+				'label' => __( 'Maximum number of posts', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'container'            => [
 				'type'  => 'checkbox',
@@ -98,7 +98,8 @@ class Posts_Widget extends Abstract_Widget {
 	    $title = $this->get_instance_title( $instance );
 	    $desc  = $instance['desc'] ? trim( $instance['desc'] ) : '';
 
-	    $number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 12;
+	    $container          = ! empty( $instance['container'] );
+	    $number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
 	    $show_cat           = ! empty( $instance['show_cat'] );
 	    $show_thumbnail     = ! empty( $instance['show_thumbnail'] );
 	    $show_date          = ! empty( $instance['show_date'] );
@@ -106,19 +107,19 @@ class Posts_Widget extends Abstract_Widget {
 	    $show_detail_button = ! empty( $instance['show_detail_button'] );
 
 	    $include_children = ! empty( $instance['include_children'] );
-	    $limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : '';
+	    $limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : $this->settings['limit_time']['std'];
 
-        // ACF fields
-	    $heading_tag = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
+	    // ACF fields
+	    $heading_tag   = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
 	    $heading_class = ! empty( $ACF->title_classes ) ? $ACF->title_classes : 'heading-title';
 
 	    $term_ids = $ACF->post_category_ids ?? [];
 
 	    $show_view_more_button = $ACF->show_view_more_button ?? false;
 	    $view_more_link        = $ACF->view_more_link ?? '';
-        $view_more_link = Helper::ACF_Link( $view_more_link );
+	    $view_more_link        = Helper::ACF_Link( $view_more_link );
 
-        // queries
+	    // queries
 	    $query_args = [
 		    'term_ids'         => $term_ids,
 		    'include_children' => $include_children,
@@ -139,8 +140,6 @@ class Posts_Widget extends Abstract_Widget {
 	    $css_class = $this->widget_classname . $css_class;
 	    $uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
 
-	    $container = ! empty( $instance['container'] );
-
         ob_start();
 
         ?>
@@ -158,7 +157,7 @@ class Posts_Widget extends Abstract_Widget {
             if ( $desc ) echo '<p class="heading-desc">' . $desc . '</p>';
 
             ?>
-            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr($title); ?>">
+            <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $title ); ?>">
                 <div class="grid-posts grid-x">
                     <?php
                     echo Helper::doShortcode(
@@ -176,6 +175,6 @@ class Posts_Widget extends Abstract_Widget {
             ?>
         </section>
         <?php
-	        echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
+        echo $this->cache_widget( $args, ob_get_clean() ); // WPCS: XSS ok.
     }
 }

@@ -30,25 +30,25 @@ class RecentPosts_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post categories?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post categories', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show_thumbnail' => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post thumbnails?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post thumbnails', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show_date'      => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post date?' ),
+				'label' => __( 'Display post date' ),
 			],
 			'show_desc'      => [
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display post description?', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Display post description', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'limit_time'     => [
 				'type'  => 'text',
@@ -138,7 +138,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 		?>
         <div class="<?php echo $css_class; ?>">
 			<?php if ( $title ) : ?>
-                <span class="sidebar-title"><?php echo $title; ?></span>
+            <span class="sidebar-title"><?php echo $title; ?></span>
 			<?php endif;
 
 			// The title may be filtered: Strip out HTML and make sure the aria-label is never empty.

@@ -18,6 +18,10 @@
     @include media-grid-template($m, $t, $d, $columns);
 }
 
+@mixin grid-self( $row-start: 1, $column-start: 1, $row-end: 2, $column-end: 2 ) {
+    grid-area: list.slash($row-start, $column-start, $row-end, $column-end);
+}
+
 @mixin media-grid-template( $m: 1, $t: false, $d: false, $columns: true ) {
     @if is-int( $m ) and $m > 0 {
         @include grid-template($m, $columns);
@@ -42,10 +46,6 @@
     } @else {
         grid-template-rows: repeat( $n, 1fr );
     }
-}
-
-@mixin grid-self( $row-start: 1, $column-start: 1, $row-end: 2, $column-end: 2 ) {
-    grid-area: list.slash($row-start, $column-start, $row-end, $column-end);
 }
 
 @mixin grid-center() {

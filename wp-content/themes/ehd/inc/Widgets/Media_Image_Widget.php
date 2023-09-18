@@ -160,7 +160,7 @@ class Media_Image_Widget extends WP_Widget_Media_Image {
 		} // End if().
 
 		$acf_att    = \get_fields( $attachment->ID ) ?? false;
-		$src_mobile = $acf_att['src_mobile'] ?? '';
+		$src_mobile = $acf_att['thumbnail_mobile'] ?? '';
 
 		$picture = '';
 		if ( $src_mobile ) {

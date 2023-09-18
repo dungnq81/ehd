@@ -10,8 +10,6 @@ SetEnv HTACCESS on
 Options -Indexes
 <IfModule mod_rewrite.c>
     RewriteRule ^wp\-content/uploads/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
-    #RewriteRule ^wp\-content/plugins/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
-    #RewriteRule ^wp\-content/themes/.*\.(?:php[1-7]?|pht|phtml?|phps)\.?$ - [NC,F]
 </IfModule>
 # hd END
 

@@ -245,10 +245,27 @@ body.wp-admin {
     }
 }
 
-.acf-field {
+:is(.acf-field, p) {
     &.tiny-text {
-        input {
-            width: 80px;
+        display: flex;
+        align-items: center;
+        grid-gap: 10px;
+        gap: 10px;
+
+        //input {
+        //    width: 80px;
+        //}
+
+        & > .acf-label, & > label {
+            flex: 0 0 auto;
+            width: 160px;
+            margin-bottom: 0;
+        }
+
+        & > .acf-input, & > input[type="number"] {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 80px;
         }
     }
 
@@ -743,4 +760,17 @@ body.toplevel_page_ehd-settings {
     &:disabled {
         cursor: not-allowed !important;
     }
+}
+
+.acf-field p.description {
+    color: #667085;
+    font-size: smaller;
+    display: block;
+    margin-top: 5px;
+}
+
+.acf-tab-group li a {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: normal;
 }

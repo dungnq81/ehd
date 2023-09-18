@@ -54,8 +54,8 @@ final class ACF {
 
 		//$arr_registered_widgets = wp_get_sidebars_widgets();
 		//$this_id                = $params[0]['id'];
-		$widget_id              = $params[0]['widget_id'];
-		$widget_obj             = $wp_registered_widgets[ $widget_id ];
+		$widget_id  = $params[0]['widget_id'];
+		$widget_obj = $wp_registered_widgets[ $widget_id ];
 
 		// Skip old single widget (not using WP_Widget).
 		if ( ! isset( $widget_obj['params'][0]['number'] ) ) {
@@ -67,9 +67,15 @@ final class ACF {
 
 		// Add id.
 		if ( ! empty( $widget_opt[ $widget_num ]['ids'] ) ) {
+			if ( is_array( $widget_opt[ $widget_num ]['ids'] ) ) {
+				$_id = $widget_opt[ $widget_num ]['ids'][0];
+			} else {
+				$_id = $widget_opt[ $widget_num ]['ids'];
+			}
+
 			$params[0]['before_widget'] = preg_replace(
 				'/id="[^"]*/',
-				"id=\"{$widget_opt[ $widget_num ]['ids']}",
+				"id=\"{$_id}",
 				$params[0]['before_widget'],
 				1
 			);
