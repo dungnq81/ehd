@@ -24,7 +24,7 @@ class DropdownSearch_Widget extends Abstract_Widget {
 				'type'  => 'checkbox',
 				'std'   => '',
 				'class' => 'checkbox',
-				'label' => __( 'Display the popup.', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Overlay', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 		];
 

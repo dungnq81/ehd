@@ -11,7 +11,7 @@ use WP_Query;
 class RecentProducts_Widget extends Abstract_Widget {
 	public function __construct() {
 		$this->widget_description = __( "Display a list of recent products from your store.", EHD_PLUGIN_TEXT_DOMAIN );
-		$this->widget_name        = __( 'W - Recent Products', EHD_PLUGIN_TEXT_DOMAIN );
+		$this->widget_name        = __( 'Recent Products *', EHD_PLUGIN_TEXT_DOMAIN );
 		$this->settings           = [
 			'title'      => [
 				'type'  => 'text',
@@ -24,28 +24,28 @@ class RecentProducts_Widget extends Abstract_Widget {
 				'max'   => 99,
 				'std'   => 5,
 				'class' => 'tiny-text',
-				'label' => __( 'Number of products to show', 'woocommerce' ),
+				'label' => __( 'Number of products to show', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'show'       => [
 				'type'    => 'select',
 				'std'     => '',
-				'label'   => __( 'Show', 'woocommerce' ),
+				'label'   => __( 'Show', EHD_PLUGIN_TEXT_DOMAIN ),
 				'options' => [
-					''         => __( 'All products', 'woocommerce' ),
-					'featured' => __( 'Featured products', 'woocommerce' ),
-					'onsale'   => __( 'On-sale products', 'woocommerce' ),
+					''         => __( 'All', EHD_PLUGIN_TEXT_DOMAIN ),
+					'featured' => __( 'Featured', EHD_PLUGIN_TEXT_DOMAIN ),
+					'on_sale'   => __( 'On-sale', EHD_PLUGIN_TEXT_DOMAIN ),
 				],
 			],
 			'orderby'    => [
 				'type'    => 'select',
 				'std'     => '',
-				'label'   => __( 'Order by', 'woocommerce' ),
+				'label'   => __( 'Order by', EHD_PLUGIN_TEXT_DOMAIN ),
 				'options' => [
-					''      => __( 'Default', 'woocommerce' ),
-					'date'  => __( 'Date', 'woocommerce' ),
-					'price' => __( 'Price', 'woocommerce' ),
-					'rand'  => __( 'Random', 'woocommerce' ),
-					'sales' => __( 'Sales', 'woocommerce' ),
+					''      => __( 'Default', EHD_PLUGIN_TEXT_DOMAIN ),
+					'date'  => __( 'Date', EHD_PLUGIN_TEXT_DOMAIN ),
+					'price' => __( 'Price', EHD_PLUGIN_TEXT_DOMAIN ),
+					'rand'  => __( 'Random', EHD_PLUGIN_TEXT_DOMAIN ),
+					'sales' => __( 'Sales', EHD_PLUGIN_TEXT_DOMAIN ),
 				],
 			],
 			'order'      => [
@@ -57,21 +57,11 @@ class RecentProducts_Widget extends Abstract_Widget {
 					'desc' => __( 'DESC', EHD_PLUGIN_TEXT_DOMAIN ),
 				],
 			],
-			'hide_free'  => [
-				'type'  => 'checkbox',
-				'std'   => 0,
-				'label' => __( 'Hide free products', 'woocommerce' ),
-			],
 			'limit_time' => [
 				'type'  => 'text',
 				'std'   => '',
 				'label' => __( 'Time limit', EHD_PLUGIN_TEXT_DOMAIN ),
 				'desc'  => __( 'Restrict to only posts within a specific time period.', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
-			'css_class'  => [
-				'type'  => 'text',
-				'std'   => '',
-				'label' => __( 'Css class', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 		];
 
@@ -88,14 +78,13 @@ class RecentProducts_Widget extends Abstract_Widget {
 	 */
 	public function get_products( $args, $instance ) {
 		$number = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
-
 		$show    = ! empty( $instance['show'] ) ? sanitize_title( $instance['show'] ) : $this->settings['show']['std'];
 		$orderby = ! empty( $instance['orderby'] ) ? sanitize_title( $instance['orderby'] ) : $this->settings['orderby']['std'];
 		$order   = ! empty( $instance['order'] ) ? sanitize_title( $instance['order'] ) : $this->settings['order']['std'];
 
-		$limit_time = $instance['limit_time'] ? trim( $instance['limit_time'] ) : '';
-
+		$limit_time = $instance['limit_time'] ? trim( $instance['limit_time'] ) : $this->settings['limit_time']['std'];
 		$product_visibility_term_ids = wc_get_product_visibility_term_ids();
+
 		$query_args                  = [
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
@@ -125,16 +114,6 @@ class RecentProducts_Widget extends Abstract_Widget {
 			}
 		}
 
-		// hide_free
-		if ( ! empty( $instance['hide_free'] ) ) {
-			$query_args['meta_query'][] = [
-				'key'     => '_price',
-				'value'   => 0,
-				'compare' => '>',
-				'type'    => 'DECIMAL',
-			];
-		}
-
 		// woocommerce_hide_out_of_stock_items
 		if ( 'yes' === Helper::getOption( 'woocommerce_hide_out_of_stock_items' ) ) {
 			$query_args['tax_query'][] = [
@@ -156,7 +135,7 @@ class RecentProducts_Widget extends Abstract_Widget {
 					'terms'    => $product_visibility_term_ids['featured'],
 				];
 				break;
-			case 'onsale':
+			case 'on_sale':
 				$product_ids_on_sale    = wc_get_product_ids_on_sale();
 				$product_ids_on_sale[]  = 0;
 				$query_args['post__in'] = $product_ids_on_sale;
@@ -197,16 +176,20 @@ class RecentProducts_Widget extends Abstract_Widget {
 			return;
 		}
 
-		$title     = apply_filters( 'widget_title', $this->get_instance_title( $instance ), $instance, $this->id_base );
-		$number    = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : 0;
-		$css_class = ! empty( $instance['css_class'] ) ? sanitize_title( $instance['css_class'] ) : '';
+		// ACF
+		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
+		$title = $this->get_instance_title( $instance );
+		$number  = ! empty( $instance['number'] ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
 
 		$products = $this->get_products( $args, $instance );
 		if ( ! $products || ! $products->have_posts() ) {
 			return;
 		}
 
-		$uniqid = esc_attr( uniqid( $this->widget_classname . '-' ) );
+		$css_class = ! empty( $ACF->css_class ) ? ' ' . sanitize_title( $ACF->css_class ) : '';
+		$css_class = $this->widget_classname . $css_class;
+		$uniqid    = esc_attr( uniqid( $this->widget_classname . '-' ) );
 
 		// has products
 		wc_set_loop_prop( 'name', 'recent_products_widget' );
@@ -214,7 +197,7 @@ class RecentProducts_Widget extends Abstract_Widget {
 		ob_start();
 
 		?>
-        <section class="section recent-products-section <?= $css_class ?>" id="<?= $uniqid ?>">
+        <section class="section recent-products-section <?= $css_class ?>">
 
 			<?php if ( $title ) {
 				echo '<h2 class="heading-title">' . $title . '</h2>';

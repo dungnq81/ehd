@@ -126,17 +126,61 @@ final class Helper {
 	// --------------------------------------------------
 
 	/**
+	 * @param $content
+	 * @param $link
+	 * @param string $class
+	 * @param string $label
+	 *
+	 * @return string
+	 */
+	public static function ACF_Link_Wrapper( $content, $link, string $class, string $label ): string {
+		$link_return = '';
+
+		if ( is_string( $link ) ) {
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
+			$link_return = $link_return . '>' . $content . '</a>';
+
+			return wp_targeted_link_rel( $link_return );
+		}
+
+		$link = (array) $link;
+		if ( $link ) {
+			$_link_title = $link['title'] ?? '';
+			$_link_url = $link['url'] ?? '#';
+			$_link_target = $link['target'] ?? '';
+
+			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( $_link_url ), esc_attr( $_link_title ), esc_attr( $class ) );
+			if ( ! empty( $_link_target ) ) {
+				$link_return .= ' target="_blank"';
+			}
+
+			$link_return .= '>';
+			$link_return .= $content;
+			$link_return .= '</a>';
+			$link_return = wp_targeted_link_rel( $link_return );
+		}
+
+		return $link_return;
+	}
+
+	// --------------------------------------------------
+
+	/**
 	 * @param array|string $link
 	 * @param string $class
 	 * @param string $label
 	 *
 	 * @return string
 	 */
-	public static function ACF_Link( $link, string $class = 'viewmore button', $label = '' ): string {
+	public static function ACF_Link( $link, string $class = 'viewmore button', string $label = '' ): string {
 		$link_return = '';
 
 		if ( is_string( $link ) ) {
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
+			$link_return .= '>';
+			$link_return .= $label;
+			$link_return .= '</a>';
+
 			return wp_targeted_link_rel( $link_return );
 		}
 

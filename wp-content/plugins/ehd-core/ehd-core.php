@@ -16,14 +16,14 @@ use EHD_Base\Plugin;
 
 \defined( 'ABSPATH' ) || die;
 
-$headers = [
+$default_headers = [
 	'Name'       => 'Plugin Name',
 	'Version'    => 'Version',
 	'TextDomain' => 'Text Domain',
 	'Author'     => 'Author',
 ];
 
-$plugin_data = get_file_data( __FILE__, $headers, 'plugin' );
+$plugin_data = get_file_data( __FILE__, $default_headers, 'plugin' );
 
 define( 'EHD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );       // https://**/wp-content/plugins/ehd-core/
 define( 'EHD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );     // **\wp-content\plugins\ehd-core/

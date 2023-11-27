@@ -73,6 +73,7 @@ class RecentPosts_Widget extends Abstract_Widget {
 		}
 
 		$ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
 		$title = $this->get_instance_title( $instance );
 
 		$number         = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : 5;

@@ -397,7 +397,7 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		if ( ! $_data['mobile'] && ! $_data['tablet'] && ! $_data['desktop'] ) {
 			$_data['autoview'] = true;
-			$swiper_class .= ' auto-view';
+			$swiper_class      .= ' auto-view';
 		}
 
 		$navigation   = $ACF->navigation ?? false;
@@ -417,7 +417,7 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		if ( 'none' != $pagination && $pagination ) {
 			$_data['pagination'] = Helper::toString( $pagination );
-			$swiper_class .= ' ' . $pagination . '-pagination';
+			$swiper_class        .= ' pagination-' . $pagination;
 		}
 
 		if ( $autoplay ) {
@@ -430,22 +430,22 @@ abstract class Abstract_Widget extends WP_Widget {
 
 		if ( $marquee ) {
 			$_data['marquee'] = Helper::toBool( $marquee );
-			$swiper_class .= ' marquee';
+			$swiper_class     .= ' marquee';
 		}
 
 		if ( $scrollbar ) {
 			$_data['scrollbar'] = Helper::toBool( $scrollbar );
-			$swiper_class .= ' scrollbar';
+			$swiper_class       .= ' scrollbar';
 		}
 
 		if ( 'default' != $direction && $direction ) {
 			$_data['direction'] = Helper::toString( $direction );
-			$swiper_class .= ' ' . $direction . '-direction';
+			$swiper_class       .= ' direction-' . $direction;
 		}
 
 		if ( 'default' != $effect_slide && $effect_slide ) {
 			$_data['effect_slide'] = Helper::toString( $effect_slide );
-			$swiper_class .= ' ' . $effect_slide . '-effect';
+			$swiper_class          .= ' effect-' . $effect_slide;
 		}
 
 		if ( $delay > 0 ) {

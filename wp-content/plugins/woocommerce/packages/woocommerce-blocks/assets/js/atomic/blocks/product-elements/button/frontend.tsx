@@ -64,6 +64,10 @@ const injectNotice = ( domNode: Element, errorMessage: string ) => {
 	} );
 };
 
+// RequestIdleCallback is not available in Safari, so we use setTimeout as an alternative.
+const callIdleCallback =
+	window.requestIdleCallback || ( ( cb ) => setTimeout( cb, 100 ) );
+
 const getProductById = ( cartState: Cart | undefined, productId: number ) => {
 	return cartState?.items.find( ( item ) => item.id === productId );
 };
@@ -229,6 +233,23 @@ interactivityStore(
 				},
 			},
 		},
+		init: {
+			woocommerce: {
+				syncTemporaryNumberOfItemsOnLoad: ( store: Store ) => {
+					const { selectors, context } = store;
+					// If the cart has loaded when we instantiate this element, we sync
+					// the temporary number of items with the number of items in the cart
+					// to avoid triggering the animation. We do this only once, but we
+					// use useLayoutEffect to avoid the useEffect flickering.
+					if ( selectors.woocommerce.hasCartLoaded( store ) ) {
+						context.woocommerce.temporaryNumberOfItems =
+							selectors.woocommerce.numberOfItemsInTheCart(
+								store
+							);
+					}
+				},
+			},
+		},
 		effects: {
 			woocommerce: {
 				startAnimation: ( store: Store ) => {
@@ -269,7 +290,7 @@ interactivityStore(
 
 			// This selector triggers a fetch of the Cart data. It is done in a
 			// `requestIdleCallback` to avoid potential performance issues.
-			requestIdleCallback( () => {
+			callIdleCallback( () => {
 				if ( ! selectors.woocommerce.hasCartLoaded( store ) ) {
 					select( storeKey ).getCartData();
 				}

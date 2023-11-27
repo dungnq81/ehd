@@ -17,24 +17,18 @@ class Posts_Widget extends Abstract_Widget {
 				'std'   => __( 'Posts', EHD_PLUGIN_TEXT_DOMAIN ),
 				'label' => __( 'Title', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
-			'desc'                  => [
-				'type'  => 'textarea',
-				'std'   => '',
-				'label' => __( 'Description', EHD_PLUGIN_TEXT_DOMAIN ),
-				//'desc'  => __( 'Short description of widget', EHD_PLUGIN_TEXT_DOMAIN ),
-			],
 			'number'                => [
 				'type'  => 'number',
 				'min'   => 0,
 				'max'   => 99,
 				'std'   => 12,
-				//'class' => 'tiny-text',
+				'class' => 'tiny-text',
 				'label' => __( 'Maximum number of posts', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'container'            => [
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Container', EHD_PLUGIN_TEXT_DOMAIN ),
+				'label' => __( 'Container layout', EHD_PLUGIN_TEXT_DOMAIN ),
 			],
 			'include_children'      => [
 				'type'  => 'checkbox',
@@ -93,10 +87,7 @@ class Posts_Widget extends Abstract_Widget {
             return;
         }
 
-	    $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
-
 	    $title = $this->get_instance_title( $instance );
-	    $desc  = $instance['desc'] ? trim( $instance['desc'] ) : '';
 
 	    $container          = ! empty( $instance['container'] );
 	    $number             = ( ! empty( $instance['number'] ) ) ? absint( $instance['number'] ) : $this->settings['number']['std'];
@@ -110,6 +101,8 @@ class Posts_Widget extends Abstract_Widget {
 	    $limit_time       = $instance['limit_time'] ? trim( $instance['limit_time'] ) : $this->settings['limit_time']['std'];
 
 	    // ACF fields
+	    $ACF = $this->acfFields( 'widget_' . $args['widget_id'] );
+
 	    $heading_tag   = ! empty( $ACF->title_tag ) ? $ACF->title_tag : 'span';
 	    $heading_class = ! empty( $ACF->title_classes ) ? $ACF->title_classes : 'heading-title';
 
@@ -153,8 +146,6 @@ class Posts_Widget extends Abstract_Widget {
 
 	            echo $args['before_title'] . $title . $args['after_title'];
             }
-
-            if ( $desc ) echo '<p class="heading-desc">' . $desc . '</p>';
 
             ?>
             <div class="<?= $uniqid ?>" aria-label="<?php echo esc_attr( $title ); ?>">

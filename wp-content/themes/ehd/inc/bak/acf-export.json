@@ -5,7 +5,7 @@
         "fields": [
             {
                 "key": "field_65025d8b1d73d",
-                "label": "Container",
+                "label": "Container layout",
                 "name": "container",
                 "aria-label": "",
                 "type": "true_false",
@@ -103,15 +103,15 @@
     },
     {
         "key": "group_650403d0cc7d4",
-        "title": "__Post Categories",
+        "title": "__Post Categories IDs",
         "fields": [
             {
                 "key": "field_650403d1ea703",
-                "label": "Post Categories",
+                "label": "Post Categories IDs",
                 "name": "post_category_ids",
                 "aria-label": "",
                 "type": "taxonomy",
-                "instructions": "List of Article Categories",
+                "instructions": "List of Article Categories IDs",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -152,6 +152,124 @@
         "style": "default",
         "label_placement": "top",
         "instruction_placement": "field",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0
+    },
+    {
+        "key": "group_65086329a7911",
+        "title": "__Products Attributes Extras",
+        "fields": [
+            {
+                "key": "field_65086329aab4b",
+                "label": "Products Categories",
+                "name": "category",
+                "aria-label": "",
+                "type": "taxonomy",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "product_cat",
+                "add_term": 0,
+                "save_terms": 0,
+                "load_terms": 0,
+                "return_format": "object",
+                "field_type": "multi_select",
+                "allow_null": 1,
+                "bidirectional": 0,
+                "multiple": 0,
+                "bidirectional_target": []
+            },
+            {
+                "key": "field_650870a869259",
+                "label": "Categories Operator",
+                "name": "cat_operator",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_65086329aab4b",
+                            "operator": "!=empty"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "IN": "IN",
+                    "AND": "AND",
+                    "NOT IN": "NOT IN"
+                },
+                "default_value": "IN",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_6541bcd046c22",
+                "label": "Products IDs",
+                "name": "ids",
+                "aria-label": "",
+                "type": "post_object",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": [
+                    "product"
+                ],
+                "post_status": [
+                    "publish"
+                ],
+                "taxonomy": "",
+                "return_format": "id",
+                "multiple": 1,
+                "allow_null": 0,
+                "bidirectional": 0,
+                "ui": 1,
+                "bidirectional_target": []
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-products"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
         "hide_on_screen": "",
         "active": true,
         "description": "",
@@ -401,6 +519,20 @@
                     "operator": "==",
                     "value": "w-postscarousel"
                 }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-products"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
+                }
             ]
         ],
         "menu_order": 96,
@@ -492,6 +624,20 @@
                     "param": "widget",
                     "operator": "==",
                     "value": "w-postscarousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-products"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
                 }
             ]
         ],
@@ -668,7 +814,7 @@
             {
                 "key": "field_6507b320e3cf2",
                 "label": "Effect",
-                "name": "effect",
+                "name": "effect_slide",
                 "aria-label": "",
                 "type": "select",
                 "instructions": "",
@@ -748,6 +894,13 @@
                     "param": "widget",
                     "operator": "==",
                     "value": "w-postscarousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
                 }
             ]
         ],
@@ -1087,6 +1240,13 @@
                     "param": "widget",
                     "operator": "==",
                     "value": "w-postscarousel"
+                }
+            ],
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
                 }
             ]
         ],

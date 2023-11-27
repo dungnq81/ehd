@@ -173,11 +173,11 @@ final class Optimizer {
             }</script>
 		<?php
 
-		if ( file_exists( $passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js' ) ) {
-			echo '<script>';
-			include $passive_events;
-			echo '</script>';
-		}
+//		if ( file_exists( $passive_events = EHD_PLUGIN_PATH . 'assets/js/plugins/passive-events-fix.js' ) ) {
+//			echo '<script>';
+//			include $passive_events;
+//			echo '</script>';
+//		}
 
 		if ( file_exists( $skip_link = EHD_PLUGIN_PATH . 'assets/js/plugins/skip-link-focus-fix.js' ) ) {
 			echo '<script>';
