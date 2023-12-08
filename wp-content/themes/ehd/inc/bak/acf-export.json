@@ -158,8 +158,57 @@
         "show_in_rest": 0
     },
     {
+        "key": "group_655cbe793622d",
+        "title": "__Product Categories IDs",
+        "fields": [
+            {
+                "key": "field_655cbe794046f",
+                "label": "Product Categories IDs",
+                "name": "product_category_ids",
+                "aria-label": "",
+                "type": "taxonomy",
+                "instructions": "List of Product Categories IDs",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "product_cat",
+                "add_term": 0,
+                "save_terms": 0,
+                "load_terms": 0,
+                "return_format": "id",
+                "field_type": "multi_select",
+                "allow_null": 1,
+                "bidirectional": 0,
+                "multiple": 0,
+                "bidirectional_target": []
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "widget",
+                    "operator": "==",
+                    "value": "w-productscarousel"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "field",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0
+    },
+    {
         "key": "group_65086329a7911",
-        "title": "__Products Attributes Extras",
+        "title": "__Products Attributes Extras Shortcode",
         "fields": [
             {
                 "key": "field_65086329aab4b",
@@ -255,13 +304,6 @@
                     "param": "widget",
                     "operator": "==",
                     "value": "w-products"
-                }
-            ],
-            [
-                {
-                    "param": "widget",
-                    "operator": "==",
-                    "value": "w-productscarousel"
                 }
             ]
         ],
@@ -802,38 +844,6 @@
                     "default": "Default",
                     "horizontal": "Horizontal",
                     "vertical": "Vertical"
-                },
-                "default_value": "default",
-                "return_format": "value",
-                "multiple": 0,
-                "allow_null": 0,
-                "ui": 0,
-                "ajax": 0,
-                "placeholder": ""
-            },
-            {
-                "key": "field_6507b320e3cf2",
-                "label": "Effect",
-                "name": "effect_slide",
-                "aria-label": "",
-                "type": "select",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "choices": {
-                    "default": "Default",
-                    "slide": "Slide",
-                    "fade": "Fade",
-                    "cube": "Cube",
-                    "coverflow": "Coverflow",
-                    "flip": "Flip",
-                    "creative": "Creative",
-                    "cards": "Cards"
                 },
                 "default_value": "default",
                 "return_format": "value",

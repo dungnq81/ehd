@@ -1,9 +1,8 @@
 <?php
 
-namespace EHD\Widgets;
+namespace EHD_Widgets;
 
 use EHD_Cores\Helper;
-
 use WP_Widget_Media;
 use WP_Widget_Media_Image;
 
