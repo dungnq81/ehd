@@ -9,7 +9,7 @@ if ( ! function_exists( 'last_dump' ) ) {
 	/**
 	 * @return void
 	 */
-	function last_dump() {
+	function last_dump(): void {
 		global $wpdb;
 
 		if ( function_exists( 'dump' ) ) {
@@ -47,7 +47,7 @@ if ( ! function_exists( 'sanitize_image' ) ) {
 	 *
 	 * @return mixed
 	 */
-	function sanitize_image( $file, $setting ) {
+	function sanitize_image( $file, $setting ): mixed {
 		$mimes = [
 			'jpg|jpeg|jpe' => 'image/jpeg',
 			'gif'          => 'image/gif',

@@ -11,7 +11,7 @@ use EHD_Themes\Options;
 use EHD_Themes\Shortcode;
 
 use EHD_Plugins\Editor\TinyMCE;
-use EHD_Plugins\ACF;
+use EHD_Plugins\ACF\ACF;
 use EHD_Plugins\CF7;
 use EHD_Plugins\Elementor\Elementor;
 use EHD_Plugins\RankMath;

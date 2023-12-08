@@ -16,7 +16,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 	 *
 	 * @return void
 	 */
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ): void {
 		$instance = wp_parse_args( $instance, wp_list_pluck( $this->get_instance_schema(), 'default' ) );
 
 		// Short-circuit if no media is selected.
@@ -105,7 +105,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 	 *
 	 * @return mixed|string
 	 */
-	protected function acf_gallery_shortcode( $attr, $ACF ) {
+	protected function acf_gallery_shortcode( $attr, $ACF ): mixed {
 		$masonry_layout = $ACF->masonry_layout ?? false;
 		$masonry_layout = $masonry_layout ? ' data-masonry' : '';
 
@@ -345,7 +345,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 	/**
 	 * @param $id
 	 *
-	 * @return object
+	 * @return object|null
 	 */
 	protected function acfFields( $id ): ?object {
 		if ( ! class_exists( '\ACF' ) ) {

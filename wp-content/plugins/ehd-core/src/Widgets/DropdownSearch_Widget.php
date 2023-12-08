@@ -37,7 +37,7 @@ class DropdownSearch_Widget extends Abstract_Widget {
 	 * @param array $args
 	 * @param array $instance
 	 */
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ): void {
 		if ( $this->get_cached_widget( $args ) ) {
 			return;
 		}

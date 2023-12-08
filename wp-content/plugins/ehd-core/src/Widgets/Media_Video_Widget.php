@@ -16,7 +16,7 @@ class Media_Video_Widget extends WP_Widget_Media_Video {
 	 *
 	 * @return void
 	 */
-	public function widget( $args, $instance ) {
+	public function widget( $args, $instance ): void {
 		$instance = wp_parse_args( $instance, wp_list_pluck( $this->get_instance_schema(), 'default' ) );
 
 		// Short-circuit if no media is selected.
@@ -70,7 +70,7 @@ class Media_Video_Widget extends WP_Widget_Media_Video {
 	/**
 	 * @param $id
 	 *
-	 * @return object
+	 * @return object|null
 	 */
 	protected function acfFields( $id ): ?object {
 		if ( ! class_exists( '\ACF' ) ) {
