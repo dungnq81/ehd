@@ -21,7 +21,7 @@ final class TinyMCE {
 	 *
 	 * @return mixed
 	 */
-	public function tinymce_add_table_button( $buttons ) {
+	public function tinymce_add_table_button( $buttons ): mixed {
 		array_push( $buttons, 'separator', 'table' );
 		array_push( $buttons, 'separator', 'codesample' );
 		array_push( $buttons, 'separator', 'toc' );
@@ -35,7 +35,7 @@ final class TinyMCE {
 	 *
 	 * @return mixed
 	 */
-	public function tinymce_add_table_plugin( $plugins ) {
+	public function tinymce_add_table_plugin( $plugins ): mixed {
 		$plugins['table']      = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/table/plugin.min.js';
 		$plugins['codesample'] = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/codesample/plugin.min.js';
 		$plugins['toc']        = EHD_PLUGIN_SRC_URL . 'Plugins/Editor/tinymce/toc/plugin.min.js';

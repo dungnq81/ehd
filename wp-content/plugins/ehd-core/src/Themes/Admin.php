@@ -128,7 +128,7 @@ final class Admin {
 	 *
 	 * @return void
 	 */
-	public function options_enqueue_assets( $hook ) {
+	public function options_enqueue_assets( $hook ): void {
 		$allowed_pages = [
 			'toplevel_page_ehd-settings',
 		];

@@ -28,7 +28,7 @@ final class Customizer {
 	 *
 	 * @return void
 	 */
-	private function _logo_and_title( WP_Customize_Manager $wp_customize ) {
+	private function _logo_and_title( WP_Customize_Manager $wp_customize ): void {
 
 		// Logo mobile
 		$wp_customize->add_setting(

@@ -41,7 +41,7 @@ final class Shortcode {
 	 *
 	 * @return false|string|null
 	 */
-	public static function posts( array $atts = [] ) {
+	public static function posts( array $atts = [] ): false|string|null {
 		$default_atts = [
 			'post_type'        => 'post',
 			'term_ids'         => '',
@@ -161,7 +161,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function vertical_menu( array $atts = [] ) {
+	public static function vertical_menu( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'location' => 'mobile-nav',
@@ -194,7 +194,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function horizontal_menu( array $atts = [] ) {
+	public static function horizontal_menu( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'location' => 'main-nav',
@@ -227,7 +227,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function off_canvas_button( array $atts = [] ) {
+	public static function off_canvas_button( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'title'           => '',
@@ -260,7 +260,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function safe_mail( array $atts = [] ) {
+	public static function safe_mail( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'title' => '',
@@ -289,7 +289,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function site_logo( array $atts = [] ) {
+	public static function site_logo( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'theme' => 'default',
@@ -309,7 +309,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function inline_search( array $atts = [] ) {
+	public static function inline_search( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'title' => '',
@@ -352,7 +352,7 @@ final class Shortcode {
 	 *
 	 * @return string
 	 */
-	public static function dropdown_search( array $atts = [] ) {
+	public static function dropdown_search( array $atts = [] ): string {
 		$atts = shortcode_atts(
 			[
 				'title' => '',

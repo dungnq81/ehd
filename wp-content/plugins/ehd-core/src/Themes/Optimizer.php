@@ -17,7 +17,7 @@ final class Optimizer {
 	/**
 	 * @var array|false|mixed
 	 */
-	public $optimizer_options = [];
+	public mixed $optimizer_options = [];
 
 	// ------------------------------------------------------
 
@@ -73,7 +73,7 @@ final class Optimizer {
 	/**
 	 * @return void
 	 */
-    private function _optimizer() {
+    private function _optimizer(): void {
 
         // Filters the rel values that are added to links with `target` attribute.
 	    add_filter( 'wp_targeted_link_rel', [ &$this, 'targeted_link_rel' ], 999, 2 );
@@ -138,7 +138,7 @@ final class Optimizer {
 	 *
 	 * @return mixed
 	 */
-	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ) {
+	public function plugin_action_links( $actions, $plugin_file, $plugin_data, $context ): mixed {
 		$keys = [
 			'deactivate',
 			'delete'
@@ -274,7 +274,7 @@ final class Optimizer {
 	 *
 	 * @return mixed|string
 	 */
-	public function post_search_by_title( $search, $wp_query ) {
+	public function post_search_by_title( $search, $wp_query ): mixed {
 		global $wpdb;
 
 		if ( empty( $search ) ) {

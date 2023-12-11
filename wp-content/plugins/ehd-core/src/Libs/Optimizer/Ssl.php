@@ -32,7 +32,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @return $this
 	 */
-	public function disable() {
+	public function disable(): static {
 		// Switch the protocol in database.
 		$protocol_switched = $this->switch_protocol( false );
 
@@ -46,7 +46,7 @@ class Ssl extends Abstract_Htaccess {
 	 *
 	 * @return $this
 	 */
-	public function enable() {
+	public function enable(): static {
 		// Switch the protocol in database.
 		$protocol_switched = $this->switch_protocol( true );
 

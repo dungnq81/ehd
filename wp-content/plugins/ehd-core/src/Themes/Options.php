@@ -59,7 +59,7 @@ final class Options {
 	 *
 	 * @return mixed
 	 */
-	public function check_simple_antispam( $commentdata ) {
+	public function check_simple_antispam( $commentdata ): mixed {
 		if ( ! isset( $_POST['antispam_input'] ) || ! isset( $_POST['antispam_result'] ) ) {
 			wp_die( esc_html__( 'Lỗi CAPTCHA. Vui lòng thử lại.', EHD_PLUGIN_TEXT_DOMAIN ) );
 		}
@@ -79,7 +79,7 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function add_simple_antispam_field() {
+	public function add_simple_antispam_field(): void {
 		$comment_options = Helper::getOption( 'comment__options', false, false );
 
 		$simple_antispam = $comment_options['simple_antispam'] ?? '';
@@ -101,7 +101,7 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function header_custom_css() {
+	public function header_custom_css(): void {
 		/** Custom CSS */
 		$css = Helper::getCustomPostContent( 'ehd_css', false );
 
@@ -118,7 +118,7 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function editor_admin_init() {
+	public function editor_admin_init(): void {
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 
 		$use_widgets_block_editor_off           = $block_editor_options['use_widgets_block_editor_off'] ?? '';
@@ -146,7 +146,7 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function editor_enqueue_scripts() {
+	public function editor_enqueue_scripts(): void {
 
 		$block_editor_options = Helper::getOption( 'block_editor__options', false, false );
 		$block_style_off = $block_editor_options['block_style_off'] ?? '';
@@ -171,7 +171,7 @@ final class Options {
 	/**
 	 * @return void
 	 */
-	public function aspect_ratio_enqueue_scripts() {
+	public function aspect_ratio_enqueue_scripts(): void {
 		$classes = [];
 		$styles  = '';
 
@@ -238,7 +238,7 @@ final class Options {
 	 *
 	 * @return void
 	 */
-	public function body_scripts_top__hook() {
+	public function body_scripts_top__hook(): void {
 		$html_body_top = Helper::getCustomPostContent( 'html_body_top', true );
 		if ( $html_body_top ) {
 			echo $html_body_top;
@@ -250,7 +250,7 @@ final class Options {
 	 *
 	 * @return void
 	 */
-	public function footer_scripts__hook() {
+	public function footer_scripts__hook(): void {
 		$html_footer = Helper::getCustomPostContent( 'html_footer', true );
 		if ( $html_footer ) {
 			echo $html_footer;
@@ -262,7 +262,7 @@ final class Options {
 	 *
 	 * @return void
 	 */
-	public function body_scripts_bottom__hook() {
+	public function body_scripts_bottom__hook(): void {
 		$html_body_bottom = Helper::getCustomPostContent( 'html_body_bottom', true );
 		if ( $html_body_bottom ) {
 			echo $html_body_bottom;

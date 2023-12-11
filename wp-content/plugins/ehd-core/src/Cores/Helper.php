@@ -215,7 +215,7 @@ final class Helper {
 	 *
 	 * @return void
 	 */
-	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ) {
+	public static function FQN_Load( ?string $path, bool $required_path = false, bool $required_new = false, string $FQN = '\\', bool $is_widget = false ): void {
 		if ( $path ) {
 			$iterator = new DirectoryIterator( $path );
 			foreach ( $iterator as $fileInfo ) {

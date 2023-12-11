@@ -60,7 +60,7 @@ final class RankMath {
 	/**
 	 * @return void
 	 */
-	public function setup_theme() {
+	public function setup_theme(): void {
 		// Rank Math Breadcrumb.
 		add_theme_support( 'rank-math-breadcrumbs' );
 	}

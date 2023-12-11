@@ -44,7 +44,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _2fa_hooks() {
+	private function _2fa_hooks(): void {
 		$two_factor_authentication = $this->security_options['two_factor_authentication'] ?? 0;
 		$two_fa = new Two_FA();
 
@@ -73,7 +73,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _login_attempts() {
+	private function _login_attempts(): void {
 		$limit_login_attempts = $this->security_options['limit_login_attempts'] ?? 0;
 		$security_login       = new Login_Attempts();
 
@@ -101,7 +101,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _illegal_users() {
+	private function _illegal_users(): void {
 		$illegal_users_option = $this->security_options['illegal_users'] ?? 0;
 		if ( $illegal_users_option ) {
 			$common_user = new Illegal_Users();
@@ -116,7 +116,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _xss_protection() {
+	private function _xss_protection(): void {
 		$xss_protection = $this->security_options['advanced_xss_protection'] ?? 0;
 		if ( $xss_protection ) {
 			$headers = new Headers();
@@ -136,7 +136,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _hide_wp_version() {
+	private function _hide_wp_version(): void {
 		$hide_wp_version = $this->security_options['hide_wp_version'] ?? 0;
 		if ( $hide_wp_version ) {
 
@@ -160,7 +160,7 @@ final class Security {
 	 *
 	 * @return false|mixed|string
 	 */
-	public function remove_version_scripts_styles( $src ) {
+	public function remove_version_scripts_styles( $src ): mixed {
 		if ( $src && str_contains( $src, 'ver=' ) ) {
 			$src = remove_query_arg( 'ver', $src );
 		}
@@ -175,7 +175,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _disable_RSSFeed() {
+	private function _disable_RSSFeed(): void {
 		$rss_feed_off = $this->security_options['rss_feed_off'] ?? 0;
 
 		// If the option is already enabled.
@@ -200,7 +200,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	public function disable_feed() {
+	public function disable_feed(): void {
 		wp_redirect( Helper::home() );
 	}
 
@@ -211,7 +211,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _remove_ReadMe() {
+	private function _remove_ReadMe(): void {
 		$remove_readme = $this->security_options['remove_readme'] ?? 0;
 		if ( $remove_readme ) {
 
@@ -228,7 +228,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	private function _disable_XMLRPC() {
+	private function _disable_XMLRPC(): void {
 		$xml_rpc_off = $this->security_options['xml_rpc_off'] ?? 0;
 		if ( $xml_rpc_off ) {
 
