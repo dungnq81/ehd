@@ -106,9 +106,6 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 	 * @return mixed|string
 	 */
 	protected function acf_gallery_shortcode( $attr, $ACF ): mixed {
-		$masonry_layout = $ACF->masonry_layout ?? false;
-		$masonry_layout = $masonry_layout ? ' data-masonry' : '';
-
 		$post = get_post();
 
 		static $instance = 0;
@@ -279,7 +276,7 @@ class Media_Gallery_Widget extends WP_Widget_Media_Gallery {
 		}
 
 		$size_class  = sanitize_html_class( is_array( $atts['size'] ) ? implode( 'x', $atts['size'] ) : $atts['size'] );
-		$gallery_div = "<div" . $masonry_layout . " id='$selector' class='gallery gallery-id-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
+		$gallery_div = "<div id='$selector' class='gallery gallery-id-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
 
 		/**
 		 * Filters the default gallery shortcode CSS styles.

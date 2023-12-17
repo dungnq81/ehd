@@ -5,7 +5,7 @@
       <tool tool_name="PHPUnit">
         <cache>
           <versions>
-            <info id="Local" version="PHPUnit version can't be detected. Default PHP interpreter is not local" />
+            <info id="LocalD:\laragon\www\ehd\phpunit.phar" version="10.5.3" />
           </versions>
         </cache>
       </tool>

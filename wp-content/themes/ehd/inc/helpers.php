@@ -73,7 +73,7 @@ if ( ! function_exists( 'ehd_post_comment' ) ) {
 	/**
 	 * @param mixed|null $id The ID, to load a single record;
 	 */
-	function ehd_post_comment( $id = null ): void {
+	function ehd_post_comment( mixed $id = null ): void {
 		if ( ! $id ) {
 			if ( get_post_type() === 'product' ) {
 				global $product;

@@ -1,5 +1,6 @@
 /* jshint esversion: 6 */
 import './_foundation';
+Object.assign(window, { $: jQuery, jQuery });
 
 import {nanoid} from 'nanoid';
 import random from "lodash/random";
@@ -18,8 +19,6 @@ const is_tablet = () => device.tablet();
 //import AOS from 'aos';
 //AOS.init();
 
-const $ = jQuery;
-
 /** Create deferred YT object */
 // const YTdeferred = $.Deferred();
 // window.onYouTubeIframeAPIReady = function () {
@@ -27,11 +26,25 @@ const $ = jQuery;
 // };
 
 $(() => {
+
     //...
+    const onload_events = () => {}
+
+    onload_events();
+    $(window).on('load', () => { onload_events(); });
+    device.onChangeOrientation(() => { onload_events(); });
+});
+
+/** DOMContentLoaded */
+document.addEventListener( 'DOMContentLoaded', () => {
+
 });
 
 /** vars */
-const getParameters = (URL) => JSON.parse('{"' + decodeURI(URL.split("?")[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+const getParameters = (url) => `${url}?`.split('?')[1].split('&').reduce((params, pair) =>
+    ((key, val) => key ? {...params, [key]: val} : params)
+    (...`${pair}=`.split('=').map(decodeURIComponent)), {});
+
 const touchSupported = () => { ('ontouchstart' in window || window.DocumentTouch && document instanceof window.DocumentTouch); };
 
 /**

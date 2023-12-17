@@ -31,7 +31,7 @@ final class Theme {
 		add_action( 'wp_enqueue_scripts', [ &$this, 'wp_enqueue_scripts' ], 91 );
 
 		// add multiple for category dropdown
-		add_filter( 'wp_dropdown_cats', [ &$this, 'dropdown_cats_multiple' ], 10, 2 );
+		//add_filter( 'wp_dropdown_cats', [ &$this, 'dropdown_cats_multiple' ], 10, 2 );
 	}
 
 	/** ---------------------------------------- */
@@ -141,7 +141,7 @@ final class Theme {
 	/**
 	 * @return void
 	 */
-	public function plugins_setup() {
+	public function plugins_setup(): void {
 
 		/** ACF */
 		( new ACF() );
@@ -229,7 +229,7 @@ final class Theme {
 	 *
 	 * @return mixed|string|string[]
 	 */
-	public function dropdown_cats_multiple( $output, $r ) {
+	/*public function dropdown_cats_multiple( $output, $r ): mixed {
 		if ( isset( $r['multiple'] ) && $r['multiple'] ) {
 			$output = preg_replace( '/^<select/i', '<select multiple', $output );
 			$output = str_replace( "name='{$r['name']}'", "name='{$r['name']}[]'", $output );
@@ -240,7 +240,7 @@ final class Theme {
 		}
 
 		return $output;
-	}
+	}*/
 
 	/** ---------------------------------------- */
 

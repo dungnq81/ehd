@@ -25,7 +25,7 @@ final class Shortcode {
 	 *
 	 * @return false|string
 	 */
-	public static function demo_shortcode( array $atts = [] ) {
+	public static function demo_shortcode( array $atts = [] ): false|string {
 		$default_atts = [];
 		$atts         = shortcode_atts(
 			$default_atts,

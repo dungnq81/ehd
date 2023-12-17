@@ -175,7 +175,8 @@ final class Helper {
 	public static function ACF_Link( $link, string $class = 'viewmore button', string $label = '' ): string {
 		$link_return = '';
 
-		if ( is_string( $link ) ) {
+		// string
+		if ( ! empty( $link ) &&  is_string( $link ) ) {
 			$link_return = sprintf( '<a class="%3$s" href="%1$s" title="%2$s"', esc_url( trim( $link ) ), esc_attr( $label ), esc_attr( $class ) );
 			$link_return .= '>';
 			$link_return .= $label;
@@ -184,8 +185,8 @@ final class Helper {
 			return wp_targeted_link_rel( $link_return );
 		}
 
-		$link = (array) $link;
-		if ( $link ) {
+		// array
+		if ( !empty( $link ) && is_array( $link ) ) {
 			$_link_title = $link['title'] ?? '';
 			$_link_url = $link['url'] ?? '#';
 			$_link_target = $link['target'] ?? '';

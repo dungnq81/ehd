@@ -1,9 +1,5 @@
-/* jshint esversion: 6 */
+/*jshint esversion: 6 */
 import $ from 'jquery';
-
-//const $ = jQuery;
-//window.$ = jQuery;
-//window.jQuery = jQuery;
 
 import { Foundation } from 'foundation-sites/js/foundation.core';
 import * as CoreUtils from 'foundation-sites/js/foundation.core.utils';
@@ -37,7 +33,7 @@ Triggers.init($, Foundation);
 MediaQuery._init();
 
 // Require non-modular scripts
-require('motion-ui');
+//require('motion-ui');
 //require('what-input');
 
 // https://get.foundation/sites/docs/dropdown.html
@@ -74,7 +70,9 @@ Foundation.plugin(Reveal, 'Reveal');
 import { Tooltip } from 'foundation-sites/js/foundation.tooltip';
 Foundation.plugin(Tooltip, 'Tooltip');
 
-// Plugins
+// https://get.foundation/sites/docs/magellan.html
+import { Magellan } from 'foundation-sites/js/foundation.magellan';
+Foundation.plugin(Magellan, 'Magellan');
 
 // https://get.foundation/sites/docs/smooth-scroll.html
 import { SmoothScroll } from 'foundation-sites/js/foundation.smoothScroll';
@@ -100,7 +98,6 @@ Foundation.plugin(Interchange, 'Interchange');
 import { Abide } from 'foundation-sites/js/foundation.abide';
 Foundation.plugin(Abide, 'Abide');
 
-//...
 Foundation.addToJquery($);
 $(() => ($(document).foundation()));
 

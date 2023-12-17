@@ -200,6 +200,7 @@ final class Options {
 	 */
 	public function aspect_ratio_post_type_default( array $arr ): array {
 		$new_arr = array_merge( $arr, [ 'post' ] );
+
 		if ( class_exists( '\WooCommerce' ) ) {
 			$new_arr = array_merge( $new_arr, [ 'product' ] );
 		}

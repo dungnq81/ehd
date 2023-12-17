@@ -89,7 +89,7 @@ final class Admin {
 	 *
 	 * @return array|mixed
 	 */
-	public function term_header( $columns ) {
+	public function term_header( $columns ): mixed {
 		if ( class_exists( '\ACF' ) ) {
 
 			// thumb
@@ -118,7 +118,7 @@ final class Admin {
 	 *
 	 * @return int|mixed|string|null
 	 */
-	public function term_column( $out, $column, $term_id ) {
+	public function term_column( $out, $column, $term_id ): mixed {
 		switch ( $column ) {
 			case 'term_thumb':
 				$term_thumb = Helper::acfTermThumb( $term_id, $column, "thumbnail", true );
@@ -152,7 +152,7 @@ final class Admin {
 	 *
 	 * @return mixed
 	 */
-	public function post_exclude_header( $columns ) {
+	public function post_exclude_header( $columns ): mixed {
 		unset( $columns['post_thumb'] );
 
 		return $columns;
@@ -212,7 +212,7 @@ final class Admin {
 	 *
 	 * @return mixed
 	 */
-	public function post_type_action_links( $actions, $_object ) {
+	public function post_type_action_links( $actions, $_object ): mixed {
 		if ( ! in_array( $_object->post_type, [ 'product', 'site-review' ] ) ) {
 			Helper::prepend( $actions, 'Id:' . $_object->ID, 'action_id' );
 		}
@@ -228,7 +228,7 @@ final class Admin {
 	 *
 	 * @return mixed
 	 */
-	public function term_action_links( $actions, $_object ) {
+	public function term_action_links( $actions, $_object ): mixed {
 		Helper::prepend( $actions, 'Id: ' . $_object->term_id, 'action_id' );
 
 		return $actions;
