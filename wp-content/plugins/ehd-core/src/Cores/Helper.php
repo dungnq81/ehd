@@ -172,7 +172,7 @@ final class Helper {
 	 *
 	 * @return string
 	 */
-	public static function ACF_Link( $link, string $class = 'viewmore button', string $label = '' ): string {
+	public static function ACF_Link( array|string $link, string $class = 'viewmore button', string $label = '' ): string {
 		$link_return = '';
 
 		// string

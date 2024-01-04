@@ -139,6 +139,30 @@ final class Theme {
 	/** ---------------------------------------- */
 
 	/**
+	 * Registers a WP_Widget widget
+	 *
+	 * @return void
+	 */
+	public function register_widgets(): void {
+		$widgets_dir = EHD_THEME_PATH . 'inc' . DIRECTORY_SEPARATOR . 'Widgets';
+		$FQN = '\\EHD\\Widgets\\';
+
+		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
+	}
+
+	/** ---------------------------------------- */
+
+	/**
+	 * Unregisters a WP_Widget widget
+	 *
+	 * @return void
+	 */
+	public function unregister_widgets(): void {}
+
+
+	/** ---------------------------------------- */
+
+	/**
 	 * @return void
 	 */
 	public function plugins_setup(): void {
@@ -151,29 +175,6 @@ final class Theme {
 
 		/** Elementor */
 		did_action( 'elementor/loaded' ) && ( new Elementor() );
-	}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Unregisters a WP_Widget widget
-	 *
-	 * @return void
-	 */
-	public function unregister_widgets(): void {}
-
-	/** ---------------------------------------- */
-
-	/**
-	 * Registers a WP_Widget widget
-	 *
-	 * @return void
-	 */
-	public function register_widgets(): void {
-		$widgets_dir = EHD_THEME_PATH . 'inc' . DIRECTORY_SEPARATOR . 'Widgets';
-		$FQN = '\\EHD\\Widgets\\';
-
-		Helper::FQN_Load( $widgets_dir, false, true, $FQN, true );
 	}
 
 	/** ---------------------------------------- */
