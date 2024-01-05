@@ -41,7 +41,7 @@ trait File {
 	/**
 	 * @return mixed
 	 */
-	public static function wpFileSystem() {
+	public static function wpFileSystem(): mixed {
 		global $wp_filesystem;
 
 		// Initialize the WP filesystem, no more using 'file-put-contents' function.
@@ -104,9 +104,9 @@ trait File {
 	 *
 	 * @param string $file Name of the file to read.
 	 *
-	 * @return string|false Read data on success, false on failure.
+	 * @return false|string|null Read data on success, false on failure.
 	 */
-	public static function fileRead( string $file ) {
+	public static function fileRead( string $file ): false|string|null {
 		// Setup wp_filesystem.
 		$wp_filesystem = self::wpFileSystem();
 
@@ -125,7 +125,7 @@ trait File {
 	 * @param string $path Full path to the file
 	 * @param string $content File content
 	 */
-	public static function fileUpdate( string $path, string $content = '' ) {
+	public static function fileUpdate( string $path, string $content = '' ): void {
 		// Setup wp_filesystem.
 		$wp_filesystem = self::wpFileSystem();
 

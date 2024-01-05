@@ -40,7 +40,7 @@ trait WooCommerce {
 	 *
 	 * @return void
 	 */
-	public static function wc_cart_link() {
+	public static function wc_cart_link(): void {
 		if ( ! self::wc_cart_available() ) {
 			return;
 		}

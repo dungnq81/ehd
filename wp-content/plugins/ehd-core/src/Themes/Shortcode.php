@@ -328,16 +328,14 @@ final class Shortcode {
 		ob_start();
 
 		?>
-        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8"
-              data-abide novalidate>
+        <form role="search" action="<?= Helper::home(); ?>" class="frm-search" method="get" accept-charset="UTF-8" data-abide novalidate>
             <label for="<?= $id; ?>" class="screen-reader-text"><?= esc_attr( $title_for ); ?></label>
-            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s"
-                   value="<?= get_search_query(); ?>" placeholder="<?= esc_attr( $placeholder_title ); ?>">
+            <input id="<?= $id; ?>" required pattern="^(.*\S+.*)$" type="search" autocomplete="off" name="s" value="<?= get_search_query(); ?>" placeholder="<?= esc_attr( $placeholder_title ); ?>">
             <button type="submit" data-glyph="">
                 <span><?= $title; ?></span>
             </button>
 			<?php if ( class_exists( '\WooCommerce' ) ) : ?>
-                <input type="hidden" name="post_type" value="product">
+            <input type="hidden" name="post_type" value="product">
 			<?php endif; ?>
         </form>
 		<?php

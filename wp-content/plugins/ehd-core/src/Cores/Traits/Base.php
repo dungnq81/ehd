@@ -69,7 +69,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function runClosure( $value ) {
+	public static function runClosure( $value ): mixed {
 		if ( $value instanceof \Closure || ( is_array( $value ) && is_callable( $value ) ) ) {
 			return call_user_func( $value );
 		}
@@ -86,7 +86,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function ifEmpty( $value, $fallback, bool $strict = false ) {
+	public static function ifEmpty( $value, $fallback, bool $strict = false ): mixed {
 		$isEmpty = $strict ? empty( $value ) : self::isEmpty( $value );
 
 		return $isEmpty ? $fallback : $value;
@@ -101,7 +101,7 @@ trait Base {
 	 *
 	 * @return mixed
 	 */
-	public static function ifTrue( $condition, $ifTrue, $ifFalse = null ) {
+	public static function ifTrue( $condition, $ifTrue, $ifFalse = null ): mixed {
 		return $condition ? self::runClosure( $ifTrue ) : self::runClosure( $ifFalse );
 	}
 
@@ -224,9 +224,9 @@ trait Base {
 	 *
 	 * @param string $email the email address
 	 * @param string $title the link title
-	 * @param string|null|array $attributes any attributes
+	 * @param string $attributes any attributes
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public static function safeMailTo( string $email, string $title = '', $attributes = '' ): ?string {
 		if ( ! $email || ! is_email( $email ) ) {

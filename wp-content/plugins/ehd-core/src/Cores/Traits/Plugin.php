@@ -19,7 +19,7 @@ trait Plugin {
 	 *
 	 * @return bool|mixed
 	 */
-	public static function isPluginActive( $plugin ) {
+	public static function isPluginActive( $plugin ): mixed {
 		if ( isset( self::$checkedPlugins[ $plugin ] ) ) {
 			return self::$checkedPlugins[ $plugin ];
 		}
@@ -185,7 +185,7 @@ trait Plugin {
 	 *
 	 * @return array|bool
 	 */
-	public static function checkPluginDependencies( bool $ret = false, array $deps = [] ) {
+	public static function checkPluginDependencies( bool $ret = false, array $deps = [] ): bool|array {
 		$depsDisabled = [];
 		if ( ! empty( $deps ) ) {
 			$isActive = true;

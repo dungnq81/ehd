@@ -50,7 +50,7 @@ trait Url {
 	 *
 	 * @return array|string|string[]
 	 */
-	public static function pathToUrl( $dir ) {
+	public static function pathToUrl( $dir ): array|string {
 		$dirs = wp_upload_dir();
 		$url  = str_replace( $dirs['basedir'], $dirs['baseurl'], $dir );
 
@@ -137,7 +137,7 @@ trait Url {
 	 *
 	 * @return string
 	 */
-	public static function query( string $url, $param, $fallback = null ) {
+	public static function query( string $url, $param, $fallback = null ): int|string|null {
 		$queries = self::queries( $url );
 		if ( ! isset( $queries[ $param ] ) ) {
 			return $fallback;
@@ -151,7 +151,7 @@ trait Url {
 	 *
 	 * @return int|false
 	 */
-	public static function remoteStatusCheck( string $url ) {
+	public static function remoteStatusCheck( string $url ): false|int {
 		$response = wp_safe_remote_head( $url, [
 			'timeout'   => 5,
 			'sslverify' => false,

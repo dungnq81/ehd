@@ -82,12 +82,12 @@ final class Optimizer {
 	    add_action( 'wp_head', [ &$this, 'fixed_archive_canonical' ] );
 
 	    // only front-end
-	    if ( ! is_admin() ) {
+	    if ( ! is_admin() && ! Helper::is_login() ) {
 		    add_filter( 'script_loader_tag', [ &$this, 'script_loader_tag' ], 12, 3 );
 		    add_filter( 'style_loader_tag', [ &$this, 'style_loader_tag' ], 12, 2 );
-	    }
 
-	    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 ); // wp_print_footer_scripts
+		    add_action( 'wp_print_footer_scripts', [ &$this, 'print_footer_scripts' ], 99 );
+	    }
 
 	    add_filter( 'posts_search', [ &$this, 'post_search_by_title' ], 500, 2 ); // filter post search only by title
 	    // add_filter( 'posts_where', [ &$this, 'posts_title_filter' ], 499, 2 ); // custom posts where, filter post search only by title

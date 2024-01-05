@@ -47,8 +47,8 @@ body.login {
     }
 
     &::before {
-        opacity: 0.1;
-        background: #000;
+        /*opacity: 0.1;
+        background: #000;*/
     }
 
     .language-switcher {
@@ -57,7 +57,7 @@ body.login {
     }
 
     form {
-        padding: 25px;
+        /*padding: 25px;*/
 
         &.shake + #nav {
             animation: shake 0.2s cubic-bezier(0.19, 0.49, 0.38, 0.79) both;

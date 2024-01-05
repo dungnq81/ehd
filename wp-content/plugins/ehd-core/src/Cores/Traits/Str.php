@@ -32,7 +32,7 @@ trait Str {
 	 *
 	 * @return array|string|string[]
 	 */
-	public static function removeEmptyP( $content ) {
+	public static function removeEmptyP( $content ): array|string {
 		return \str_replace( '<p></p>', '', $content );
 	}
 
@@ -293,7 +293,7 @@ trait Str {
 	 *
 	 * @return array|string|string[]|null
 	 */
-	public static function stripSpace( $string, bool $strip_tags = true, string $replace = '' ) {
+	public static function stripSpace( $string, bool $strip_tags = true, string $replace = '' ): array|string|null {
 		if ( true === $strip_tags ) {
 			$string = strip_tags( $string );
 		}
@@ -391,9 +391,7 @@ trait Str {
 	 * @return string
 	 */
 	public static function excerpt( string $text, int $limit = 55, bool $splitWords = true, string $showMore = '...' ): string {
-
-		$text = strip_tags( $text );
-
+		$text        = strip_tags( $text );
 		$text        = static::normalize( $text );
 		$splitLength = $limit;
 

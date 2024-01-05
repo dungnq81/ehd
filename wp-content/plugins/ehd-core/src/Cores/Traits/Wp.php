@@ -25,6 +25,24 @@ trait Wp {
 	// -------------------------------------------------------------
 
 	/**
+	 * @return bool
+	 */
+	public static function is_admin(): bool {
+		return is_admin();
+	}
+
+	// -------------------------------------------------------------
+
+	/**
+	 * @return bool
+	 */
+	public static function is_login(): bool {
+		return in_array( $GLOBALS['pagenow'], [ 'wp-login.php', 'wp-register.php' ] );
+	}
+
+	// -------------------------------------------------------------
+
+	/**
 	 * @param array $args
 	 *
 	 * @return bool|false|string|void
@@ -95,7 +113,7 @@ trait Wp {
 	 *
 	 * @return false|mixed False on failure, the result of the shortcode on success.
 	 */
-	public static function doShortcode( string $tag, array $atts = [], $content = null ) {
+	public static function doShortcode( string $tag, array $atts = [], $content = null ): mixed {
 		global $shortcode_tags;
 		if ( ! isset( $shortcode_tags[ $tag ] ) ) {
 			return false;
@@ -111,7 +129,7 @@ trait Wp {
 	 *
 	 * @return false|mixed
 	 */
-	public static function getImageId( $image_url ) {
+	public static function getImageId( $image_url ): mixed {
 		global $wpdb;
 
 		$sql_prepare = $wpdb->prepare( "SELECT ID FROM `{$wpdb->prefix}posts` WHERE `post_type` LIKE %s AND `guid` LIKE %s", "attachment", "%" . esc_sql( $image_url ) );
@@ -152,7 +170,7 @@ trait Wp {
 	 *
 	 * @return array|object|null
 	 */
-	public static function getAttachment( $attachment_id, bool $return_object = true ) {
+	public static function getAttachment( $attachment_id, bool $return_object = true ): object|array|null {
 		$attachment = get_post( $attachment_id );
 		if ( ! $attachment ) {
 			return null;
@@ -184,7 +202,7 @@ trait Wp {
 	 *
 	 * @return array|string|string[]|null
 	 */
-	public static function lazyScriptTag( array $arr_parsed, string $tag, string $handle, string $src ) {
+	public static function lazyScriptTag( array $arr_parsed, string $tag, string $handle, string $src ): array|string|null {
 		foreach ( $arr_parsed as $str => $value ) {
 			if ( str_contains( $handle, $str ) ) {
 				if ( 'defer' === $value ) {
@@ -211,7 +229,7 @@ trait Wp {
 	 *
 	 * @return array|string|string[]|null
 	 */
-	public static function lazyStyleTag( array $arr_styles, string $html, string $handle ) {
+	public static function lazyStyleTag( array $arr_styles, string $html, string $handle ): array|string|null {
 		foreach ( $arr_styles as $style ) {
 			if ( str_contains( $handle, $style ) ) {
 				return preg_replace( '/media=\'all\'/', 'media=\'print\' onload=\'this.media="all"\'', $html );
@@ -254,7 +272,7 @@ trait Wp {
 	 *
 	 * @return false|mixed
 	 */
-	public static function getOption( string $option, $default = false, bool $static_cache = false ) {
+	public static function getOption( string $option, $default = false, bool $static_cache = false ): mixed {
 		static $_is_option_loaded;
 		if ( empty( $_is_option_loaded ) ) {
 
@@ -287,7 +305,7 @@ trait Wp {
 	 *
 	 * @return false|mixed
 	 */
-	public static function getThemeMod( string $mod_name, $default = false ) {
+	public static function getThemeMod( string $mod_name, $default = false ): mixed {
 		static $_is_loaded;
 		if ( empty( $_is_loaded ) ) {
 
@@ -319,7 +337,7 @@ trait Wp {
 	 *
 	 * @return array|false|WP_Error|WP_Term|null
 	 */
-	public static function getTerm( $term_id, string $taxonomy = 'category' ) {
+	public static function getTerm( $term_id, string $taxonomy = 'category' ): WP_Term|WP_Error|false|array|null {
 		//$term = false;
 		if ( is_numeric( $term_id ) ) {
 			$term_id = intval( $term_id );
@@ -347,7 +365,7 @@ trait Wp {
 	 *
 	 * @return bool|WP_Query
 	 */
-	public static function queryByTerm( $term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], $strtotime_recent = false ) {
+	public static function queryByTerm( $term, string $post_type = 'post', bool $include_children = false, int $posts_per_page = 0, array $orderby = [], $strtotime_recent = false ): WP_Query|bool {
 		if ( ! $term ) {
 			return false;
 		}
@@ -437,7 +455,7 @@ trait Wp {
 	 *
 	 * @return false|WP_Query
 	 */
-	public static function queryByTerms( $term_ids, string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, $strtotime_str = false ) {
+	public static function queryByTerms( $term_ids, string $taxonomy = 'category', string $post_type = 'post', bool $include_children = false, int $posts_per_page = 10, $strtotime_str = false ): WP_Query|false {
 		$_args = [
 			'post_type'              => $post_type ?: 'post',
 			'post_status'            => 'publish',
@@ -672,7 +690,7 @@ trait Wp {
 	 *
 	 * @return array|false|mixed|WP_Error|WP_Term
 	 */
-	public static function primaryTerm( $post, string $taxonomy = 'category' ) {
+	public static function primaryTerm( $post, string $taxonomy = 'category' ): mixed {
 		//$post = get_post( $post );
 		//$ID   = $post->ID ?? null;
 
@@ -762,7 +780,7 @@ trait Wp {
 	 *
 	 * @return string|null
 	 */
-	public static function postTerms( $post, string $taxonomy = 'category', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>' ) {
+	public static function postTerms( $post, string $taxonomy = 'category', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>' ): false|string|null {
 		if ( ! $taxonomy ) {
 			$post_type = get_post_type( $post );
 			$taxonomy  = $post_type . '_cat';
@@ -800,7 +818,7 @@ trait Wp {
 	 *
 	 * @return void
 	 */
-	public static function hashTags( string $taxonomy = 'post_tag', int $id = 0, string $sep = '' ) {
+	public static function hashTags( string $taxonomy = 'post_tag', int $id = 0, string $sep = '' ): void {
 		if ( ! $taxonomy ) {
 			$taxonomy = 'post_tag';
 		}
@@ -910,7 +928,7 @@ trait Wp {
 	/**
 	 * @return void
 	 */
-	public static function breadcrumbs() {
+	public static function breadcrumbs(): void {
 		global $post, $wp_query;
 
 		$before = '<li class="current">';
@@ -1072,7 +1090,7 @@ trait Wp {
 	 *
 	 * @return array|false|int|mixed|string|WP_Error|WP_Term|null
 	 */
-	public static function getPermalink( $obj = null, $fallback = false ) {
+	public static function getPermalink( $obj = null, $fallback = false ): mixed {
 		if ( empty( $obj ) && ! empty( $fallback ) ) {
 			return $fallback;
 		}
@@ -1118,7 +1136,7 @@ trait Wp {
 	 *
 	 * @return false|int|mixed
 	 */
-	public static function getId( $obj = null, $fallback = false ) {
+	public static function getId( $obj = null, $fallback = false ): mixed {
 		if ( empty( $obj ) && $fallback ) {
 			return get_the_ID();
 		}
@@ -1178,7 +1196,7 @@ trait Wp {
 	 *
 	 * @return array|WP_Post|null
 	 */
-	public static function getCustomPost( string $post_type = 'ehd_css' ) {
+	public static function getCustomPost( string $post_type = 'ehd_css' ): array|WP_Post|null {
 		if ( empty( $post_type ) ) {
 			$post_type = 'ehd_css';
 		}
@@ -1220,7 +1238,7 @@ trait Wp {
 	 *
 	 * @return array|string
 	 */
-	public static function getCustomPostContent( string $post_type = 'ehd_css', bool $encode = false ) {
+	public static function getCustomPostContent( string $post_type = 'ehd_css', bool $encode = false ): array|string {
 		$post = self::getCustomPost( $post_type );
 		if ( isset( $post->post_content ) ) {
 			$post_content = wp_unslash( $post->post_content );
@@ -1245,7 +1263,7 @@ trait Wp {
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomPost( string $mixed = '', string $post_type = 'ehd_css', string $code_type = 'css', bool $encode = false, string $preprocessed = '' ) {
+	public static function updateCustomPost( string $mixed = '', string $post_type = 'ehd_css', string $code_type = 'css', bool $encode = false, string $preprocessed = '' ): WP_Error|array|int|WP_Post|null {
 		$post_type = $post_type ?: 'ehd_css';
 		$code_type = $code_type ?: 'text/css';
 
@@ -1307,7 +1325,7 @@ trait Wp {
 	 *
 	 * @return array|int|WP_Error|WP_Post|null
 	 */
-	public static function updateCustomCssPost( string $css, string $post_type = 'ehd_css', bool $encode = false, string $preprocessed = '' ) {
+	public static function updateCustomCssPost( string $css, string $post_type = 'ehd_css', bool $encode = false, string $preprocessed = '' ): WP_Error|array|int|WP_Post|null {
 		return self::updateCustomPost( $css, $post_type, 'text/css', $encode, $preprocessed );
 	}
 
@@ -1319,7 +1337,7 @@ trait Wp {
 	 *
 	 * @return string|string[]
 	 */
-	public static function getAspectRatioOption( string $post_type = '', string $option = '' ) {
+	public static function getAspectRatioOption( string $post_type = '', string $option = '' ): array|string {
 		$post_type = $post_type ?: 'post';
 		$option    = $option ?: 'aspect_ratio__options';
 
@@ -1606,7 +1624,7 @@ trait Wp {
 	 *
 	 * @return void
 	 */
-	public static function menuFallback( bool $container = false ) {
+	public static function menuFallback( bool $container = false ): void {
 		echo '<div class="menu-fallback">';
 		if ( $container ) {
 			echo '<div class="grid-container">';

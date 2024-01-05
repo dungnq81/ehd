@@ -40,8 +40,11 @@ final class Login {
 		wp_enqueue_style( "login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
 		wp_enqueue_script( "login", EHD_PLUGIN_URL . "assets/js/login.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
 
-		$default_logo    = EHD_PLUGIN_URL . "assets/img/logo.png";
-		$default_logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
+		//$default_logo    = EHD_PLUGIN_URL . "assets/img/logo.png";
+		//$default_logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
+
+		$default_logo    = '';
+		$default_logo_bg = '';
 
 		// script/style
 		$logo          = ! empty( $logo = Helper::getThemeMod( 'login_page_logo_setting' ) ) ? $logo : $default_logo;
@@ -67,9 +70,9 @@ final class Login {
 		$css->set_selector( 'body.login #login h1 a' );
 		if ( $logo ) {
 			$css->add_property( 'background-image', 'url(' . $logo . ')' );
-		} else {
-			$css->add_property( 'background-image', 'unset' );
-		}
+		} //else {
+			//$css->add_property( 'background-image', 'unset' );
+		//}
 
 		if ( $css->css_output() ) {
 			wp_add_inline_style( 'login-style', $css->css_output() );
