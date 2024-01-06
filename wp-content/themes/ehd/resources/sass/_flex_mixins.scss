@@ -3,7 +3,7 @@
 
 @import "mixins";
 
-@mixin flex-self($total: 1, $n: 1, $gap: false) {
+@mixin flex-self( $total: 1, $n: 1, $gap: false ) {
     @if type-of($gap) == bool or $gap < 0 {
         $gap: 0;
     }
@@ -16,7 +16,7 @@
     }
 }
 
-@mixin media-flex-self($m: 1, $t: false, $d: false, $gap_m: false, $gap: false) {
+@mixin media-flex-self( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false ) {
     @if is-int($m) and $m > 0 {
         @include flex-self($m, 1, $gap_m);
     }
@@ -32,7 +32,7 @@
     }
 }
 
-@mixin flex-layout($m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $class_cell: '.cell') {
+@mixin flex-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $class_cell: '.cell' ) {
     @include media-gap($gap_m, $gap, false);
 
     & > #{unquote($class_cell)} {
@@ -44,7 +44,7 @@
     }
 }
 
-@mixin cell($w: auto) {
+@mixin cell( $w: auto ) {
     flex: 0 0 auto;
     min-height: 0;
     min-width: 0;
@@ -54,7 +54,7 @@
     }
 }
 
-@mixin flex-x($reverse: false) {
+@mixin flex-x( $reverse: false ) {
     display: flex;
 
     @if false == $reverse {
@@ -64,17 +64,17 @@
     }
 }
 
-@mixin flex-y($reverse: false) {
+@mixin flex-y( $reverse: false ) {
     display: flex;
 
     @if false == $reverse {
         flex-flow: column nowrap;
     } @else {
-        flex-flow: column-reverse wrap;
+        flex-flow: column-reverse nowrap;
     }
 }
 
-@mixin flex-padding-x($padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell') {
+@mixin flex-padding-x( $padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell' ) {
     @include mx-gutter($padding_m, $padding);
 
     & > #{unquote($class_cell)} {
@@ -86,7 +86,7 @@
     }
 }
 
-@mixin flex-padding-y($padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell') {
+@mixin flex-padding-y( $padding_m: $gutter-xs, $padding: $gutter, $class_cell: '.cell' ) {
     @include my-gutter($padding_m, $padding);
 
     & > #{unquote($class_cell)} {
@@ -127,10 +127,18 @@
     }
 }
 
-@mixin flex-shrink {
+@mixin flex-shrink( $w: false ) {
     flex: 0 0 auto;
+    max-width: 100%;
+    min-height: 0;
+    min-width: 0;
+
+    @if type-of($w) != bool {
+        width: fs($w);
+    }
 }
 
 @mixin flex-auto {
     flex: 1 1 0;
+    width: auto;
 }

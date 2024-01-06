@@ -10,7 +10,18 @@
     }
 }
 
-@mixin mq($breakpoint, $type: min) {
+@mixin mq_breakpoint( $breakpoint, $type: min ) {
+    $breakpoint-value: fs($breakpoint);
+    @if $type == max {
+        $breakpoint-value: #{$breakpoint-value - fs(0.02)};
+    }
+
+    @media only screen and (#{$type}-width: $breakpoint-value) {
+        @content;
+    }
+}
+
+@mixin mq( $breakpoint, $type: min ) {
     $breakpoint-value: get-breakpoint($breakpoint, $mq-breakpoints);
     @if $breakpoint-value {
         @if $type == max {
@@ -537,6 +548,66 @@
     bottom: 0;
     right: 0;
     position: fixed;
+}
+
+
+// @link https://www.developerdrive.com/10-best-sass-mixins-for-web-developers/
+@mixin arrow($direction: down, $size: 5px, $color: #555) {
+    width: 0;
+    height: 0;
+    @if ($direction == left) {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-right: $size solid $color;
+    }
+    @else if ($direction == right) {
+        border-top: $size solid transparent;
+        border-bottom: $size solid transparent;
+        border-left: $size solid $color;
+    }
+    @else if ($direction == down) {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-top: $size solid $color;
+    }
+    @else {
+        border-left: $size solid transparent;
+        border-right: $size solid transparent;
+        border-bottom: $size solid $color;
+    }
+}
+
+// @link https://www.barrage.net/blog/technology/top-8-sass-mixins
+// Ex: @include fluid-font-size(320px, 1024px, 22px, 55px);
+@mixin fluid-font-size($min-width, $max-width, $min-font-size, $max-font-size) {
+    $unit1: unit($min-width);
+    $unit2: unit($max-width);
+    $unit3: unit($min-font-size);
+    $unit4: unit($max-font-size);
+
+    @if $unit1 == $unit2 and $unit1 == $unit3 and $unit1 == $unit4 {
+        & {
+            font-size: $min-font-size;
+            line-height: $min-font-size * 1.618;
+
+            @media screen and (min-width: $min-width) {
+                font-size: calc(
+                        #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+                        ((100vw - #{$min-width}) / #{strip-unit($max-width - $min-width)})
+                );
+                line-height: calc(
+                        #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
+                        1.618 *
+                        ((100vw - #{$min-width}) / #{strip-unit($max-width - $min-width)})
+                );
+            }
+
+            @media screen and (min-width: $max-width) {
+                font-size: $max-font-size;
+                line-height: $max-font-size * 1.618;
+            }
+        }
+    }
 }
 
 // @link http://nicolasgallagher.com/micro-clearfix-hack/ Micro Clearfix Hack

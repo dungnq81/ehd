@@ -2,7 +2,8 @@
 import './_foundation';
 Object.assign(window, { $: jQuery, jQuery });
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
+
 import random from "lodash/random";
 import isEmpty from "lodash/isEmpty";
 import toString from "lodash/toString";
@@ -14,6 +15,12 @@ const is_tablet = () => device.tablet();
 
 /** Fancybox */
 //import { Fancybox } from "@fancyapps/ui";
+
+//import SimpleBar from 'simplebar';
+
+/** for browsers that don't support it! (iOS Safari, Edge, ...) */
+//import ResizeObserver from 'resize-observer-polyfill';
+//window.ResizeObserver = ResizeObserver;
 
 /** AOS */
 //import AOS from 'aos';
