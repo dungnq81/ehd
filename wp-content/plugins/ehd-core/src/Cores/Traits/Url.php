@@ -133,9 +133,9 @@ trait Url {
 	/**
 	 * @param string $url
 	 * @param $param
-	 * @param string|int $fallback
+	 * @param null $fallback
 	 *
-	 * @return string
+	 * @return int|string|null
 	 */
 	public static function query( string $url, $param, $fallback = null ): int|string|null {
 		$queries = self::queries( $url );

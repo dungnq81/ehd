@@ -40,8 +40,8 @@ final class Login {
 		wp_enqueue_style( "login-style", EHD_PLUGIN_URL . "assets/css/admin.css", [], EHD_PLUGIN_VERSION );
 		wp_enqueue_script( "login", EHD_PLUGIN_URL . "assets/js/login.js", [ "jquery" ], EHD_PLUGIN_VERSION, true );
 
-		//$default_logo    = EHD_PLUGIN_URL . "assets/img/logo.png";
-		//$default_logo_bg = EHD_PLUGIN_URL . "assets/img/login-bg.jpg";
+		//$default_logo    = EHD_PLUGIN_URL . "storage/img/logo.png";
+		//$default_logo_bg = EHD_PLUGIN_URL . "storage/img/login-bg.jpg";
 
 		$default_logo    = '';
 		$default_logo_bg = '';

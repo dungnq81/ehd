@@ -778,7 +778,7 @@ trait Wp {
 	 * @param string $wrapper_open
 	 * @param string|null $wrapper_close
 	 *
-	 * @return string|null
+	 * @return false|string|null
 	 */
 	public static function postTerms( $post, string $taxonomy = 'category', string $wrapper_open = '<div class="terms">', ?string $wrapper_close = '</div>' ): false|string|null {
 		if ( ! $taxonomy ) {

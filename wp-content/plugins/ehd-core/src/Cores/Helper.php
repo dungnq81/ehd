@@ -41,12 +41,10 @@ final class Helper {
 		// Check if attribute has single or double quotes.
 		// @codingStandardsIgnoreLine
 		if ( $start = stripos( $str, $attr . '="' ) ) {
-			// Double.
 			$quote = '"';
 
 			// @codingStandardsIgnoreLine
 		} elseif ( $start = stripos( $str, $attr . "='" ) ) {
-			// Single.
 			$quote = "'";
 
 		} else {
@@ -61,12 +59,12 @@ final class Helper {
 
 		if ( $unique ) {
 
-			// Set start pointer to after the quote.
 			$start += strlen( $attr );
-			// Find first quote after the start pointer.
 			$end = strpos( $str, $quote, $start );
+
 			// Get the current content.
 			$content = explode( ' ', substr( $str, $start, $end - $start ) );
+
 			// Get our extra content.
 			$content_extra = explode( ' ', $content_extra );
 			foreach ( $content_extra as $class ) {
@@ -75,13 +73,12 @@ final class Helper {
 					$content[] = $class;
 				}
 			}
+
 			// Remove duplicates and empty values.
 			$content = array_filter( array_unique( $content ) );
-			// Convert to space separated string.
 			$content = implode( ' ', $content );
-			// Get HTML before content.
+
 			$before_content = substr( $str, 0, $start );
-			// Get HTML after content.
 			$after_content = substr( $str, $end );
 
 			// Combine the string again.
@@ -94,9 +91,8 @@ final class Helper {
 				$str,
 				1
 			);
-		} // End if().
+		}
 
-		// Return full HTML string.
 		return $str;
 	}
 
@@ -325,9 +321,9 @@ final class Helper {
 	 * @return string
 	 */
 	public static function placeholderSrc( bool $img_wrap = true, bool $thumb = true ): string {
-		$src = EHD_PLUGIN_URL . 'assets/img/placeholder.png';
+		$src = EHD_PLUGIN_URL . 'storage/img/placeholder.png';
 		if ( $thumb ) {
-			$src = EHD_PLUGIN_URL . 'assets/img/placeholder-320x320.png';
+			$src = EHD_PLUGIN_URL . 'storage/img/placeholder-320x320.png';
 		}
 		if ( $img_wrap ) {
 			$src = "<img loading=\"lazy\" src=\"{$src}\" alt=\"placeholder\" class=\"wp-placeholder\">";

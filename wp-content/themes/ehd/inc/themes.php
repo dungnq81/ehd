@@ -27,7 +27,7 @@ if ( ! function_exists( '__after_setup_theme' ) ) {
 				'second-nav' => __( 'Secondary Menu', EHD_TEXT_DOMAIN ),
 				'mobile-nav' => __( 'Handheld Menu', EHD_TEXT_DOMAIN ),
 				'social-nav' => __( 'Social menu', EHD_TEXT_DOMAIN ),
-				'policy-nav' => __( 'Terms menu', EHD_TEXT_DOMAIN ),
+				'policy-nav' => __( 'Term menu', EHD_TEXT_DOMAIN ),
 			]
 		);
 	}
@@ -261,7 +261,7 @@ if ( ! function_exists( '__post_classes' ) ) {
 			$classes[] = 'wp-sticky';
 		}
 
-		// remove tag-, category- classes
+		// remove 'tag-', 'category-' classes
 		foreach ( $classes as $class ) {
 			if (
 				str_contains( $class, 'tag-' )
@@ -292,7 +292,7 @@ if ( ! function_exists( '__nav_menu_css_classes' ) ) {
 			$classes = [];
 		}
 
-		// Remove menu-item-type-, menu-item-object- classes
+		// Remove 'menu-item-type-', 'menu-item-object-' classes
 		foreach ( $classes as $class ) {
 			if ( str_contains( $class, 'menu-item-type-' )
 			     || str_contains( $class, 'menu-item-object-' )
@@ -389,8 +389,7 @@ add_filter( 'ehd_aspect_ratio_default_list', function ( array $arr ) {
 		'3-2',
 		'4-3',
 		'16-9',
-		'2-1',
-		'3-1',
+		'21-9',
 	];
 
 	return array_merge( $new_arr, $update_arr );

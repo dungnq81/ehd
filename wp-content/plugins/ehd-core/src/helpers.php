@@ -55,7 +55,8 @@ if ( ! function_exists( 'sanitize_image' ) ) {
 			'bmp'          => 'image/bmp',
 			'webp'         => 'image/webp',
 			'tif|tiff'     => 'image/tiff',
-			'ico'          => 'image/x-icon'
+			'ico'          => 'image/x-icon',
+			'svg'          => 'image/svg+xml',
 		];
 
 		//check file type from file name

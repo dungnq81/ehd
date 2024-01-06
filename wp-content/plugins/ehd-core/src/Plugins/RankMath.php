@@ -47,12 +47,22 @@ final class RankMath {
 		/**
 		 * Filter to add plugins to the Rank Math SEO TOC list.
 		 */
-//        if (is_plugin_active('fixed-toc/fixed-toc.php')) {
-//            add_filter('rank_math/researches/toc_plugins', function ($toc_plugins) {
-//                $toc_plugins['fixed-toc/fixed-toc.php'] = 'Fixed TOC';
-//                return $toc_plugins;
-//            });
-//        }
+
+		/* Fixed TOC */
+		if ( is_plugin_active( 'fixed-toc/fixed-toc.php' ) ) {
+			add_filter( 'rank_math/researches/toc_plugins', function ( $toc_plugins ) {
+				$toc_plugins['fixed-toc/fixed-toc.php'] = 'Fixed TOC';
+				return $toc_plugins;
+			} );
+		}
+
+		/* Easy Table of Contents */
+		if ( is_plugin_active( 'easy-table-of-contents/easy-table-of-contents.php' ) ) {
+			add_filter( 'rank_math/researches/toc_plugins', function ( $toc_plugins ) {
+				$toc_plugins['easy-table-of-contents/easy-table-of-contents.php'] = 'Easy Table of Contents';
+				return $toc_plugins;
+			} );
+		}
 	}
 
 	/** ---------------------------------------- */

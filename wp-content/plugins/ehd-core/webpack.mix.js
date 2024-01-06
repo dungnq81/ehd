@@ -12,7 +12,6 @@ const assets = dir + '/assets';
 mix
     .disableNotifications()
 
-    //.copyDirectory(resources + '/img', assets + '/img')
     //.copyDirectory(resources + '/fonts/fontawesome/webfonts', assets + '/webfonts')
 
     .sass(resources + '/sass/editor-style.scss', assets + '/css')
