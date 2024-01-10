@@ -494,9 +494,13 @@
     }
 }
 
-@mixin list-reset( $margin: 0, $padding: 0 ) {
-    margin: fs($margin);
-    padding: fs($padding);
+@mixin list-reset( $margin: false, $padding: false ) {
+    @if is-int( $margin ) {
+        margin: fs( $margin );
+    }
+    @if is-int( $padding ) {
+        padding: fs( $padding );
+    }
     list-style: none;
 }
 
@@ -516,8 +520,8 @@
 @mixin centering-self( $width: 300, $height: $width ) {
     @include box($width, $height);
     position: absolute;
-    top: subtract(50%, fs(divide($height, 2)));
-    left: subtract(50%, fs(divide($width, 2)));
+    top: subtract( 50%, fs( divide($height, 2) ) );
+    left: subtract( 50%, fs( divide($width, 2) ) );
 }
 
 @mixin fixed-center {
@@ -552,16 +556,16 @@
 @mixin absolute-full {
     left: 0;
     top: 0;
-    bottom: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     position: absolute;
 }
 
 @mixin fixed-full {
     left: 0;
     top: 0;
-    bottom: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     position: fixed;
 }
 
