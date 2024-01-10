@@ -3,7 +3,11 @@
 
 @import "mixins";
 
-@mixin flex-self( $total: 1, $n: 1, $gap: false ) {
+@mixin flex-self(
+    $total: 1,
+    $n: 1,
+    $gap: false
+) {
     @if type-of($gap) == bool or $gap < 0 {
         $gap: 0;
     }
@@ -16,7 +20,13 @@
     }
 }
 
-@mixin media-flex-self( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false ) {
+@mixin media-flex-self(
+    $m: 1,
+    $t: false,
+    $d: false,
+    $gap_m: false,
+    $gap: false
+) {
     @if is-int($m) and $m > 0 {
         @include flex-self($m, 1, $gap_m);
     }
@@ -32,7 +42,14 @@
     }
 }
 
-@mixin flex-layout( $m: 1, $t: false, $d: false, $gap_m: false, $gap: false, $class_cell: '.cell' ) {
+@mixin flex-layout(
+    $m: 1,
+    $t: false,
+    $d: false,
+    $gap_m: false,
+    $gap: false,
+    $class_cell: '.cell'
+) {
     @include media-gap($gap_m, $gap, false);
 
     & > #{unquote($class_cell)} {

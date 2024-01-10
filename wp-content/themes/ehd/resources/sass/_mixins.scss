@@ -59,7 +59,12 @@
     }
 }
 
-@mixin media-css($css_property: font-size, $m: $body-size, $t: false, $d: false) {
+@mixin media-css(
+    $css_property: font-size,
+    $m: $body-size,
+    $t: false,
+    $d: false
+) {
     @if type-of($m) != bool {
         #{$css_property}: fs($m);
     }
@@ -264,7 +269,12 @@
     }
 }
 
-@mixin responsive-ratio( $ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100% ) {
+@mixin responsive-ratio(
+    $ratio-width: 3,
+    $ratio-height: 2,
+    $pseudo: false,
+    $width_percent: 100%
+) {
     $padding: divide($width_percent * $ratio-height, $ratio-width);
     @if $pseudo {
         &::before {
@@ -432,7 +442,11 @@
     }
 }
 
-@mixin line-clamp( $n: 2, $value_fallback: ( false, false, false ), $attr_fallback: max-height ) {
+@mixin line-clamp(
+    $n: 2,
+    $value_fallback: ( false, false, false ),
+    $attr_fallback: max-height
+) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
@@ -469,7 +483,13 @@
     }
 }
 
-@mixin underline( $color: $primary, $height: 1px, $width: 100%, $left: 0, $bottom: 0 ) {
+@mixin underline(
+    $color: $primary,
+    $height: 1px,
+    $width: 100%,
+    $left: 0,
+    $bottom: 0
+) {
     position: relative;
     display: inline-block;
 
@@ -609,7 +629,12 @@
 
 // @link https://www.barrage.net/blog/technology/top-8-sass-mixins
 // Ex: @include fluid-font-size(320px, 1024px, 22px, 55px);
-@mixin fluid-font-size( $min-width, $max-width, $min-font-size, $max-font-size ) {
+@mixin fluid-font-size(
+    $min-width,
+    $max-width,
+    $min-font-size,
+    $max-font-size
+) {
     $unit1: unit($min-width);
     $unit2: unit($max-width);
     $unit3: unit($min-font-size);
@@ -724,7 +749,7 @@
 }
 
 /** keyframes */
-@mixin keyframes($name) {
+@mixin keyframes( $name ) {
     @-webkit-keyframes #{$name} {
         @content;
     }
