@@ -10,6 +10,18 @@
     }
 }
 
+@mixin mq-max-width($width: $md) {
+    @media only screen and (max-width: #{$width}) {
+        @content;
+    }
+}
+
+@mixin mq-min-width($width: $xl) {
+    @media only screen and (min-width: #{$width}) {
+        @content;
+    }
+}
+
 @mixin mq_breakpoint( $breakpoint, $type: min ) {
     $breakpoint-value: fs($breakpoint);
     @if $type == max {
@@ -226,7 +238,7 @@
     max-height: 100%;
 }
 
-@mixin responsive-scale($scale: 1.06, $opacity: 1) {
+@mixin responsive-scale( $scale: 1.06, $opacity: 1 ) {
     transform: scale(1.0001);
     will-change: transform;
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s;
@@ -237,7 +249,7 @@
     }
 }
 
-@mixin responsive-bg-ratio($ratio-width: 4, $ratio-height: 3) {
+@mixin responsive-bg-ratio( $ratio-width: 4, $ratio-height: 3 ) {
     background-size: cover;
     background-position: center;
     display: block;
@@ -252,7 +264,7 @@
     }
 }
 
-@mixin responsive-ratio($ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100%) {
+@mixin responsive-ratio( $ratio-width: 3, $ratio-height: 2, $pseudo: false, $width_percent: 100% ) {
     $padding: divide($width_percent * $ratio-height, $ratio-width);
     @if $pseudo {
         &::before {
@@ -273,15 +285,15 @@
     }
 }
 
-@mixin linear-gradient($angle: 90deg, $c: $primary, $amount: 12deg) {
+@mixin linear-gradient( $angle: 90deg, $c: $primary, $amount: 12deg ) {
     background-image: linear-gradient($angle, $c 0%, adjust-hue($c, $amount) 100%);
 }
 
-@mixin linear-gradient2($angle: 90deg, $c1: $primary, $c2: $secondary) {
+@mixin linear-gradient2( $angle: 90deg, $c1: $primary, $c2: $secondary ) {
     background-image: linear-gradient($angle, $c1 0%, $c2 100%);
 }
 
-@mixin gradient-text($angle: 135deg, $c: $primary, $amount: 12deg) {
+@mixin gradient-text( $angle: 135deg, $c: $primary, $amount: 12deg ) {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
@@ -290,7 +302,7 @@
     @include linear-gradient($angle, $c, $amount);
 }
 
-@mixin gradient-text2($angle: 135deg, $c1: $primary, $c2: $secondary) {
+@mixin gradient-text2( $angle: 135deg, $c1: $primary, $c2: $secondary ) {
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
@@ -299,7 +311,7 @@
     @include linear-gradient($angle, $c1, $c1);
 }
 
-@mixin layout-container($padding_m: $gutter-xs, $padding: $gutter, $xxl: false, $xxxl: false) {
+@mixin layout-container( $padding_m: $gutter-xs, $padding: $gutter, $xxl: false, $xxxl: false ) {
     margin-left: auto;
     margin-right: auto;
 
@@ -354,7 +366,7 @@
     }
 }
 
-@mixin mx-gutter($m: $gutter-xs, $t: $gutter) {
+@mixin mx-gutter( $m: $gutter-xs, $t: $gutter ) {
     @if is-int($m) or unit($m) == '%' {
         margin-left: -#{fs($m)};
         margin-right: -#{fs($m)};
@@ -373,7 +385,7 @@
     }
 }
 
-@mixin my-gutter($m: $gutter-xs, $t: $gutter) {
+@mixin my-gutter( $m: $gutter-xs, $t: $gutter ) {
     @if is-int($m) or unit($m) == '%' {
         margin-top: -#{fs($m)};
         margin-bottom: -#{fs($m)};
@@ -392,7 +404,7 @@
     }
 }
 
-@mixin px-gutter($m: $gutter-xs, $t: $gutter) {
+@mixin px-gutter( $m: $gutter-xs, $t: $gutter ) {
     @if is-int($m) or unit($m) == '%' {
         padding-left: fs($m);
         padding-right: fs($m);
@@ -406,7 +418,7 @@
     }
 }
 
-@mixin py-gutter($m: $gutter-xs, $t: $gutter) {
+@mixin py-gutter( $m: $gutter-xs, $t: $gutter ) {
     @if is-int($m) or unit($m) == '%' {
         padding-top: fs($m);
         padding-bottom: fs($m);
@@ -420,7 +432,7 @@
     }
 }
 
-@mixin line-clamp($n: 2, $value_fallback: ( false, false, false ), $attr_fallback: max-height) {
+@mixin line-clamp( $n: 2, $value_fallback: ( false, false, false ), $attr_fallback: max-height ) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
@@ -439,7 +451,7 @@
     }
 }
 
-@mixin hover-color($c1: $primary, $c2: $c1, $text-decoration: false) {
+@mixin hover-color( $c1: $primary, $c2: $c1, $text-decoration: false ) {
     color: $c1;
     &:hover {
         color: $c2;
@@ -449,16 +461,18 @@
     }
 }
 
-@mixin hover-svg($c1: $primary, $c2: $c1) {
+@mixin hover-svg( $c1: $primary, $c2: $c1 ) {
     fill: $c1;
+
     &:hover {
         fill: $c2;
     }
 }
 
-@mixin underline($color: $primary, $height: 1px, $width: 100%, $left: 0, $bottom: 0) {
+@mixin underline( $color: $primary, $height: 1px, $width: 100%, $left: 0, $bottom: 0 ) {
     position: relative;
     display: inline-block;
+
     &::before {
         content: "";
         display: inline-block;
@@ -471,6 +485,7 @@
         transform: scaleX(0);
         transition: transform 0.2s cubic-bezier(1, 0, 0, 1);
     }
+
     &:hover {
         &::before {
             transform-origin: left center;
@@ -479,7 +494,7 @@
     }
 }
 
-@mixin list-reset($margin: 0, $padding: 0) {
+@mixin list-reset( $margin: 0, $padding: 0 ) {
     margin: fs($margin);
     padding: fs($padding);
     list-style: none;
@@ -498,7 +513,7 @@
     word-wrap: normal !important;
 }
 
-@mixin centering-self($width: 300, $height: $width) {
+@mixin centering-self( $width: 300, $height: $width ) {
     @include box($width, $height);
     position: absolute;
     top: subtract(50%, fs(divide($height, 2)));
@@ -550,27 +565,24 @@
     position: fixed;
 }
 
-
 // @link https://www.developerdrive.com/10-best-sass-mixins-for-web-developers/
-@mixin arrow($direction: down, $size: 5px, $color: #555) {
+@mixin arrow( $direction: down, $size: 5px, $color: #000 ) {
     width: 0;
     height: 0;
+
     @if ($direction == left) {
         border-top: $size solid transparent;
         border-bottom: $size solid transparent;
         border-right: $size solid $color;
-    }
-    @else if ($direction == right) {
+    } @else if ($direction == right) {
         border-top: $size solid transparent;
         border-bottom: $size solid transparent;
         border-left: $size solid $color;
-    }
-    @else if ($direction == down) {
+    } @else if ($direction == down) {
         border-left: $size solid transparent;
         border-right: $size solid transparent;
         border-top: $size solid $color;
-    }
-    @else {
+    } @else {
         border-left: $size solid transparent;
         border-right: $size solid transparent;
         border-bottom: $size solid $color;
@@ -579,7 +591,7 @@
 
 // @link https://www.barrage.net/blog/technology/top-8-sass-mixins
 // Ex: @include fluid-font-size(320px, 1024px, 22px, 55px);
-@mixin fluid-font-size($min-width, $max-width, $min-font-size, $max-font-size) {
+@mixin fluid-font-size( $min-width, $max-width, $min-font-size, $max-font-size ) {
     $unit1: unit($min-width);
     $unit2: unit($max-width);
     $unit3: unit($min-font-size);
