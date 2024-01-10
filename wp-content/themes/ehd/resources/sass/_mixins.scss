@@ -565,6 +565,20 @@
     position: fixed;
 }
 
+// @link https://engageinteractive.co.uk/blog/top-10-scss-mixins
+@mixin pseudo( $content: '', $display: block, $pos: absolute ) {
+    content: $content;
+    display: $display;
+    position: $pos;
+}
+
+@mixin hardware( $backface: true, $perspective: 1000 ) {
+    @if $backface {
+        backface-visibility: hidden;
+    }
+    perspective: $perspective;
+}
+
 // @link https://www.developerdrive.com/10-best-sass-mixins-for-web-developers/
 @mixin arrow( $direction: down, $size: 5px, $color: #000 ) {
     width: 0;
